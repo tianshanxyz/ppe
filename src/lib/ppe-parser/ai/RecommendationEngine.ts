@@ -1095,7 +1095,7 @@ export class RecommendationEngine {
       const standards = data.standards || [];
 
       const recommendations: RecommendationItem[] = standards.map(
-        (std: any, index: number) => ({
+        (std: unknown, index: number) => ({
           id: `std_${std.code}`,
           product: input.sourceProduct,
           type: RecommendationType.STANDARD_RECOMMENDATION,

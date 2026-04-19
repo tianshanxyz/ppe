@@ -6,7 +6,7 @@
 /**
  * 验证输入类型
  */
-function isString(input: any): input is string {
+function isString(input: unknown): input is string {
   return typeof input === 'string'
 }
 
@@ -162,7 +162,7 @@ export function validateArrayParam(
 /**
  * 验证请求体大小
  */
-export function validateBodySize(body: any, maxSize: number = 1024 * 1024): boolean {
+export function validateBodySize(body: unknown, maxSize: number = 1024 * 1024): boolean {
   const size = JSON.stringify(body).length
   return size <= maxSize
 }
@@ -248,8 +248,8 @@ export function validateApiRequest(
       min?: number
       max?: number
       pattern?: RegExp
-      allowedValues?: any[]
-      default?: any
+      allowedValues?: unknown[]
+      default?: unknown
     }
   }
 ): ApiValidationResult<Record<string, any>> {

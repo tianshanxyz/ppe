@@ -199,8 +199,8 @@ class MedplumService {
   async apiCall<T>(
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
     endpoint: string,
-    data?: any,
-    params?: any
+    data?: unknown,
+    params?: unknown
   ): Promise<T> {
     let attempts = 0
     const maxAttempts = this.config.retryAttempts || 3
@@ -209,7 +209,7 @@ class MedplumService {
       try {
         attempts++
         
-        const config: any = {
+        const config: unknown = {
           method,
           url: endpoint,
           params
@@ -362,12 +362,12 @@ class MedplumService {
   }
 
   // 创建资源
-  async createResource<T>(resourceType: string, resource: any): Promise<T> {
+  async createResource<T>(resourceType: string, resource: unknown): Promise<T> {
     return this.apiCall('POST', `/${resourceType}`, resource)
   }
 
   // 更新资源
-  async updateResource<T>(resourceType: string, id: string, resource: any): Promise<T> {
+  async updateResource<T>(resourceType: string, id: string, resource: unknown): Promise<T> {
     return this.apiCall('PUT', `/${resourceType}/${id}`, resource)
   }
 
@@ -377,7 +377,7 @@ class MedplumService {
   }
 
   // 配置预警规则
-  async createSubscription(subscription: any): Promise<any> {
+  async createSubscription(subscription: unknown): Promise<any> {
     return this.apiCall('POST', '/Subscription', subscription)
   }
 

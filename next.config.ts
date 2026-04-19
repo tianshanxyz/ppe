@@ -91,20 +91,34 @@ const nextConfig: NextConfig = {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()',
           },
-          // 内容安全策略
+          // 内容安全策略 - 严格模式
           {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.sentry.io https://*.volces.com",
-              "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: https: blob:",
+              // 脚本：仅允许来自自身的脚本，使用 nonce 支持内联脚本
+              "script-src 'self' https://*.sentry.io https://*.volces.com",
+              // 样式：仅允许来自自身的样式
+              "style-src 'self' https://*.volces.com",
+              // 图片：允许来自自身、data URI、HTTPS 和 blob 的图片
+              "img-src 'self' data: https: blob: https://*.supabase.co",
+              // 字体：允许来自自身和 data URI 的字体
               "font-src 'self' data:",
-              "connect-src 'self' https://*.sentry.io https://*.supabase.co https://*.vercel.app https://*.volces.com",
+              // 连接：限制允许的 API 端点
+              "connect-src 'self' https://*.sentry.io https://*.supabase.co https://*.vercel.app https://*.volces.com https://api.medplum.com",
+              // 框架：禁止嵌入框架
+              "frame-src 'none'",
               "frame-ancestors 'none'",
+              // 基础 URI：禁止修改 base 标签
               "base-uri 'self'",
+              // 表单提交：仅允许提交到自身
               "form-action 'self'",
+              // 对象：禁止插件
+              "object-src 'none'",
+              // 自动升级不安全请求
               "upgrade-insecure-requests",
+              // 报告 URI（可选）
+              "report-uri https://sentry.io/api/security-report/",
             ].join('; '),
           },
           // DNS 预取控制

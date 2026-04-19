@@ -32,7 +32,7 @@ export default function ProductsPage() {
     
     try {
       // 加载产品列表
-      const filters: any = {}
+      const filters: unknown = {}
       if (selectedCountry !== 'all') filters.country = selectedCountry
       if (selectedCategory !== 'all') filters.category = selectedCategory
       if (selectedPPECategory !== 'all') filters.ppe_category = selectedPPECategory

@@ -19,7 +19,7 @@ export const Tooltip = ({ children, content, side = 'top', delayDuration = 0 }: 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Extract TooltipTrigger and TooltipContent from children
-  let trigger: ReactNode = null
+  const trigger: ReactNode = null
   let tooltipContent: ReactNode = content
 
   Children.forEach(children, child => {

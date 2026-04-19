@@ -48,8 +48,8 @@ export async function generateAIContent(prompt: string): Promise<string> {
 
 export async function generateComparisonAnalysis(
   type: 'company' | 'product',
-  items: any[],
-  comparisonData: any
+  items: unknown[],
+  comparisonData: unknown
 ): Promise<string> {
   try {
     const context = {
@@ -85,9 +85,9 @@ ${JSON.stringify(comparisonData, null, 2)}
 }
 
 export async function generateRegulatoryAnalysis(
-  company: any,
-  products: any[],
-  regulations: any[]
+  company: unknown,
+  products: unknown[],
+  regulations: unknown[]
 ): Promise<string> {
   try {
     const prompt = `你是一位医疗器械法规专家，请根据以下公司和产品信息，结合相关法规要求，生成一份法规合规性分析报告：

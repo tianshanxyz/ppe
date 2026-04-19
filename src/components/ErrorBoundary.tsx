@@ -37,10 +37,16 @@ export class ErrorBoundary extends Component<Props, State> {
     // Call optional error handler
     this.props.onError?.(error, errorInfo);
     
-    // TODO: Send error to monitoring service (e.g., Sentry)
-    // if (process.env.NODE_ENV === 'production') {
-    //   Sentry.captureException(error, { extra: errorInfo });
-    // }
+    // Send error to Sentry in production
+    if (process.env.NODE_ENV === 'production') {
+      import('@/lib/monitoring/sentry').then(({ captureException }) => {
+        captureException(error, {
+          extra: {
+            componentStack: errorInfo.componentStack,
+          },
+        });
+      });
+    }
   }
 
   private handleReset = () => {

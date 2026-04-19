@@ -257,8 +257,8 @@ export async function integrateMedplumPermissions() {
  * 同步权限到本地数据库
  */
 async function syncPermissionsToLocal(
-  medplumPermissions: any,
-  mapping: any
+  medplumPermissions: unknown,
+  mapping: unknown
 ) {
   try {
     const supabase = await createSupabaseClient()
@@ -281,7 +281,7 @@ async function syncPermissionsToLocal(
 /**
  * 映射 Medplum 权限到 MDLooker 权限
  */
-function mapMedplumToMDLooker(medplumPermission: any, mapping: any): MDLookerPermission | null {
+function mapMedplumToMDLooker(medplumPermission: unknown, mapping: unknown): MDLookerPermission | null {
   // 实现权限映射逻辑
   // 这里需要根据具体的 Medplum 权限结构进行映射
   return null
@@ -354,7 +354,7 @@ function applyMedplumPermissionModel() {
 /**
  * 实施权限优化
  */
-async function implementPermissionOptimizations(improvements: any) {
+async function implementPermissionOptimizations(improvements: unknown) {
   try {
     const supabase = await createSupabaseClient()
 

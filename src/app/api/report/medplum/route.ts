@@ -72,9 +72,9 @@ function generateReport(
   companyName: string,
   reportType: string,
   language: string,
-  devices: any[],
-  organizations: any[],
-  regulations: any[]
+  devices: unknown[],
+  organizations: unknown[],
+  regulations: unknown[]
 ) {
   const typeNames: Record<string, { en: string; zh: string }> = {
     market_analysis: { en: 'Market Access Analysis', zh: '市场准入分析' },

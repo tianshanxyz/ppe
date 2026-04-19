@@ -26,7 +26,7 @@ export const GET = withRateLimit(async function GET(request: NextRequest) {
       filters: filters || undefined,
     }, 'Medplum search request')
 
-    let result: any
+    let result: unknown
 
     // 根据类型执行不同的搜索
     switch (type) {
@@ -183,11 +183,11 @@ async function searchRegulatoryAuthorizations(
 }
 
 // 处理搜索结果
-function processSearchResult(result: any, type: string) {
+function processSearchResult(result: unknown, type: string) {
   const entries = result.entry || []
   const total = result.total || entries.length
   
-  const data = entries.map((entry: any) => {
+  const data = entries.map((entry: unknown) => {
     const resource = entry.resource
     
     switch (type) {
@@ -214,7 +214,7 @@ function processSearchResult(result: any, type: string) {
 }
 
 // 处理设备资源
-function processDeviceResource(resource: any) {
+function processDeviceResource(resource: unknown) {
   return {
     id: resource.id,
     name: resource.deviceName?.[0]?.name || 'Unknown Device',
@@ -231,7 +231,7 @@ function processDeviceResource(resource: any) {
 }
 
 // 处理组织资源
-function processOrganizationResource(resource: any) {
+function processOrganizationResource(resource: unknown) {
   return {
     id: resource.id,
     name: resource.name || 'Unknown Organization',
@@ -247,7 +247,7 @@ function processOrganizationResource(resource: any) {
 }
 
 // 处理法规授权资源
-function processRegulatoryAuthorizationResource(resource: any) {
+function processRegulatoryAuthorizationResource(resource: unknown) {
   return {
     id: resource.id,
     name: resource.name || 'Unknown Authorization',
@@ -326,7 +326,7 @@ export async function POST(request: NextRequest) {
       filters: filters || undefined,
     }, 'Medplum advanced search request')
 
-    let result: any
+    let result: unknown
 
     // 根据类型执行不同的搜索
     switch (type) {

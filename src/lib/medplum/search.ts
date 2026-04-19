@@ -89,7 +89,7 @@ export async function searchDevices(params: SearchParams): Promise<SearchRespons
     const devices = await client.searchResources('Device', searchParams);
 
     // 转换结果
-    const results: SearchResult[] = (devices as any[] || []).map((device: any) => ({
+    const results: SearchResult[] = (devices as any[] || []).map((device: unknown) => ({
       id: device.id || device.resourceType + '-' + Math.random(),
       name: device.name?.[0]?.text || device.name || 'Unknown Device',
       type: device.type?.[0]?.text || device.type || 'Unknown Type',
@@ -155,7 +155,7 @@ export async function searchOrganizations(params: SearchParams): Promise<SearchR
     const organizations = await client.searchResources('Organization', searchParams);
 
     // 转换结果
-    const results: SearchResult[] = (organizations as any[] || []).map((org: any) => ({
+    const results: SearchResult[] = (organizations as any[] || []).map((org: unknown) => ({
       id: org.id || org.resourceType + '-' + Math.random(),
       name: org.name || 'Unknown Organization',
       type: org.type?.[0]?.text || 'Unknown Type',
@@ -225,7 +225,7 @@ export async function searchRegulatoryAuthorizations(params: SearchParams): Prom
     const authorizations = await client.searchResources('Device', searchParams);
 
     // 转换结果
-    const results: SearchResult[] = (authorizations as any[] || []).map((auth: any) => ({
+    const results: SearchResult[] = (authorizations as any[] || []).map((auth: unknown) => ({
       id: auth.id || auth.resourceType + '-' + Math.random(),
       name: auth.name || 'Unknown Authorization',
       type: auth.type?.[0]?.text || 'Unknown Type',

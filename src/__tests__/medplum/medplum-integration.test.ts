@@ -7,8 +7,8 @@ const mockPost = jest.fn()
 
 jest.mock('axios', () => {
   return {
-    get: (...args: any[]) => mockGet(...args),
-    post: (...args: any[]) => mockPost(...args)
+    get: (...args: unknown[]) => mockGet(...args),
+    post: (...args: unknown[]) => mockPost(...args)
   }
 })
 
@@ -297,7 +297,7 @@ describe('Medplum Integration Tests', () => {
 
       try {
         await mockedAxios.get(`${process.env.MEDPLUM_BASE_URL}/fhir/Device`)
-      } catch (error: any) {
+      } catch (error: unknown) {
         expect(error.response?.status).toBe(429)
         expect(error.response?.headers['retry-after']).toBe('60')
         // Should implement retry logic with backoff
@@ -361,7 +361,7 @@ describe('Medplum Integration Tests', () => {
 
       try {
         await mockedAxios.get(`${process.env.MEDPLUM_BASE_URL}/fhir/Device`)
-      } catch (error: any) {
+      } catch (error: unknown) {
         expect(error.response?.status).toBe(500)
         // Should have proper error handling and user feedback
       }
@@ -377,7 +377,7 @@ describe('Medplum Integration Tests', () => {
 
       try {
         await mockedAxios.get(`${process.env.MEDPLUM_BASE_URL}/fhir/Device`)
-      } catch (error: any) {
+      } catch (error: unknown) {
         expect(error.response?.status).toBe(401)
         // Should handle token refresh or re-authentication
       }

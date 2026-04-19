@@ -26,9 +26,9 @@ export interface RegulationAlertRule {
   id: string
   name: string
   description: string
-  condition: (regulation: any, lastSync: Date) => boolean
+  condition: (regulation: unknown, lastSync: Date) => boolean
   severity: AlertSeverity
-  message: string | ((regulation: any) => string)
+  message: string | ((regulation: unknown) => string)
   alertType: RegulationAlertType
 }
 

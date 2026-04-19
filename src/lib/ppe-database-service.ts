@@ -17,15 +17,15 @@ export interface PPEProduct {
   sub_category: string
   ppe_category: 'I' | 'II' | 'III'
   description: string
-  specifications: any
-  features: any
-  images: any
+  specifications: unknown
+  features: unknown
+  images: unknown
   manufacturer_id: string
   manufacturer_name: string
   manufacturer_address: string
   manufacturer_country: string
   brand_name: string
-  certifications: any
+  certifications: unknown
   ce_certificate_number: string
   ce_expiry_date: string
   fda_k_number: string
@@ -33,16 +33,16 @@ export interface PPEProduct {
   nmpa_registration_number: string
   nmpa_expiry_date: string
   iso_certifications: string[]
-  other_certifications: any
+  other_certifications: unknown
   target_markets: string[]
-  market_approvals: any
+  market_approvals: unknown
   registration_status: 'active' | 'expired' | 'suspended' | 'cancelled'
   applicable_regulations: string[]
   harmonized_standards: string[]
   risk_classification: string
-  essential_requirements: any
-  performance_metrics: any
-  test_reports: any
+  essential_requirements: unknown
+  performance_metrics: unknown
+  test_reports: unknown
   approval_date: string
   expiry_date: string
   created_at: string
@@ -64,9 +64,9 @@ export interface PPEManufacturer {
   email: string
   phone: string
   business_type: 'manufacturer' | 'distributor' | 'agent' | 'retailer'
-  certifications: any
+  certifications: unknown
   description: string
-  capabilities: any
+  capabilities: unknown
   created_at: string
   updated_at: string
 }

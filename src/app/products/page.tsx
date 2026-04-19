@@ -84,7 +84,7 @@ export default function ProductsPage() {
       const result = await response.json()
 
       if (result.data && result.data.products) {
-        const formattedProducts = result.data.products.map((p: any) => ({
+        const formattedProducts = result.data.products.map((p: unknown) => ({
           id: p.id,
           name: p.name,
           company: p.company_name || p.company,

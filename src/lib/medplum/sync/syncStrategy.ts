@@ -140,7 +140,7 @@ export class SyncService {
           }
         }
 
-        nextPage = (response as any).link?.find((link: any) => link.relation === 'next')?.url;
+        nextPage = (response as any).link?.find((link: unknown) => link.relation === 'next')?.url;
       } while (nextPage);
 
       // 更新最后同步时间
@@ -215,7 +215,7 @@ export class SyncService {
 
 // 数据映射器
 export class DeviceMapper implements DataMapper<Device, any> {
-  map(device: Device): any {
+  map(device: Device): unknown {
     return {
       id: device.id,
       name: device.deviceName?.[0]?.name || '',
@@ -241,7 +241,7 @@ export class DeviceMapper implements DataMapper<Device, any> {
     };
   }
 
-  reverseMap(product: any): Device {
+  reverseMap(product: unknown): Device {
     return {
       resourceType: 'Device',
       id: product.id,
@@ -285,7 +285,7 @@ export class DeviceMapper implements DataMapper<Device, any> {
 
 // 组织映射器
 export class OrganizationMapper implements DataMapper<Organization, any> {
-  map(organization: Organization): any {
+  map(organization: Organization): unknown {
     return {
       id: organization.id,
       name: organization.name || '',
@@ -307,7 +307,7 @@ export class OrganizationMapper implements DataMapper<Organization, any> {
     };
   }
 
-  reverseMap(company: any): Organization {
+  reverseMap(company: unknown): Organization {
     return {
       resourceType: 'Organization',
       id: company.id,
@@ -341,7 +341,7 @@ export class OrganizationMapper implements DataMapper<Organization, any> {
 
 // 法规授权映射器
 export class RegulatoryAuthorizationMapper implements DataMapper<any, any> {
-  map(regulatory: any): any {
+  map(regulatory: unknown): unknown {
     return {
       id: regulatory.id || regulatory.identifier?.[0]?.value || '',
       title: regulatory.type?.coding?.[0]?.display || '',
@@ -364,7 +364,7 @@ export class RegulatoryAuthorizationMapper implements DataMapper<any, any> {
     };
   }
 
-  reverseMap(regulation: any): any {
+  reverseMap(regulation: unknown): unknown {
     return {
       resourceType: 'Device',
       id: regulation.id,
@@ -384,7 +384,7 @@ export class RegulatoryAuthorizationMapper implements DataMapper<any, any> {
     };
   }
 
-  private extractJurisdiction(regulator?: any): string {
+  private extractJurisdiction(regulator?: unknown): string {
     if (!regulator || !regulator.reference) return '';
     // 从监管机构参考中提取司法管辖区
     const reference = regulator.reference;

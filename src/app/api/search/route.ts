@@ -7,7 +7,7 @@ import { isMedplumEnabled } from '@/lib/medplum/client'
 
 interface SearchHistoryInput {
   query: string
-  filters?: any
+  filters?: unknown
   resultsCount?: number
 }
 
@@ -265,9 +265,9 @@ export async function GET(request: NextRequest) {
  * 保存搜索历史记录
  */
 async function saveSearchHistory(
-  supabase: any,
+  supabase: unknown,
   query: string,
-  filters: any,
+  filters: unknown,
   resultsCount: number
 ) {
   try {

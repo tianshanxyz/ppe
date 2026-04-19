@@ -33,7 +33,7 @@ const CACHE_CONFIG = {
  */
 class MemoryCache {
   private cache: Map<string, {
-    value: any
+    value: unknown
     expiry: number
   }>
   private size: number
@@ -68,7 +68,7 @@ class MemoryCache {
   /**
    * 设置缓存
    */
-  set(key: string, value: any, ttl?: number) {
+  set(key: string, value: unknown, ttl?: number) {
     const expiry = Date.now() + (ttl || this.ttl)
     
     // 如果缓存已满，删除最旧的项
@@ -85,7 +85,7 @@ class MemoryCache {
   /**
    * 获取缓存
    */
-  get(key: string): any {
+  get(key: string): unknown {
     const item = this.cache.get(key)
     if (!item) return null
 
@@ -151,7 +151,7 @@ export function initializeRedis() {
 /**
  * 生成缓存键
  */
-export function generateCacheKey(prefix: string, ...args: any[]): string {
+export function generateCacheKey(prefix: string, ...args: unknown[]): string {
   const key = `${prefix}:${args.map(arg => {
     if (typeof arg === 'object') {
       return JSON.stringify(arg)
@@ -177,10 +177,10 @@ export function withCache<T>(
   cacheKey: string,
   ttl: number = CACHE_CONFIG.memory.ttl
 ) {
-  return function(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function(target: unknown, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value
     
-    descriptor.value = async function(...args: any[]): Promise<T> {
+    descriptor.value = async function(...args: unknown[]): Promise<T> {
       // 生成缓存键
       const key = generateCacheKey(cacheKey, ...args)
       
@@ -233,9 +233,9 @@ export function withCache<T>(
  * 批量 API 调用优化
  */
 export async function batchApiCalls<T>(
-  items: any[],
+  items: unknown[],
   batchSize: number,
-  apiCall: (batch: any[]) => Promise<T[]>
+  apiCall: (batch: unknown[]) => Promise<T[]>
 ): Promise<T[]> {
   const results: T[] = []
   
@@ -279,7 +279,7 @@ export function optimizeQueryParams(params: Record<string, any>): Record<string,
 /**
  * 减少 API 调用次数
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => any>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => Promise<ReturnType<T>> {

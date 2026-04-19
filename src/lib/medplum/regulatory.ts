@@ -99,7 +99,7 @@ export async function searchRegulations(params: RegulatoryParams): Promise<Regul
     const regulations = await client.searchResources('Device', searchParams);
 
     // 转换结果
-    const results: RegulatoryResult[] = (regulations as any[] || []).map((reg: any) => ({
+    const results: RegulatoryResult[] = (regulations as any[] || []).map((reg: unknown) => ({
       id: reg.id || reg.resourceType + '-' + Math.random(),
       title: reg.title || 'Unknown Regulation',
       market: reg.market || 'Unknown',
@@ -158,7 +158,7 @@ export async function getLatestChanges(days: number = 30): Promise<RegulatoryRes
     const regulations = await client.searchResources('Device', searchParams);
 
     // 转换结果
-    const results: RegulatoryResult[] = (regulations as any[] || []).map((reg: any) => ({
+    const results: RegulatoryResult[] = (regulations as any[] || []).map((reg: unknown) => ({
       id: reg.id || reg.resourceType + '-' + Math.random(),
       title: reg.title || 'Unknown Regulation',
       market: reg.market || 'Unknown',
@@ -202,7 +202,7 @@ export async function getMarketRegulations(market: 'FDA' | 'CE' | 'NMPA'): Promi
     const regulations = await client.searchResources('Device', searchParams);
 
     // 转换结果
-    const results: RegulatoryResult[] = (regulations as any[] || []).map((reg: any) => ({
+    const results: RegulatoryResult[] = (regulations as any[] || []).map((reg: unknown) => ({
       id: reg.id || reg.resourceType + '-' + Math.random(),
       title: reg.title || 'Unknown Regulation',
       market: reg.market || market,

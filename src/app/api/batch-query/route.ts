@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
-import * as XLSX from 'xlsx'
+import { SafeExcelParser, ExcelRow } from '@/lib/excel-safe'
 
 export interface BatchQueryRequest {
   type: 'company' | 'product'
@@ -9,7 +9,7 @@ export interface BatchQueryRequest {
 
 export interface BatchQueryResultItem {
   query: string
-  result: Record<string, string | number | boolean | null | undefined> | any[] | null
+  result: Record<string, string | number | boolean | null | undefined> | Array<Record<string, unknown>> | null
   row: number
   error?: string
 }
@@ -169,14 +169,12 @@ async function processSingleQuery(
 
 async function processBatchQuery(jobId: string, file: File, type: 'company' | 'product') {
   try {
-    const arrayBuffer = await file.arrayBuffer()
-    const workbook = XLSX.read(arrayBuffer)
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]]
-    const data = XLSX.utils.sheet_to_json(worksheet)
+    // 使用安全的 Excel 解析器替代有漏洞的 xlsx 库
+    const { rows: data, headers } = await SafeExcelParser.parseExcel(file)
 
     if (!data || data.length === 0) {
       jobStore[jobId].status = 'failed'
-      jobStore[jobId].errorMessage = 'No data found in file'
+      jobStore[jobId].errorMessage = '文件为空或未找到数据'
       return
     }
 
@@ -190,10 +188,10 @@ async function processBatchQuery(jobId: string, file: File, type: 'company' | 'p
     for (let i = 0; i < data.length; i += BATCH_SIZE) {
       const batch = data.slice(i, i + BATCH_SIZE)
       const batchPromises = batch.map((item, batchIndex) => {
-        const query = (item as Record<string, string | undefined>).name || 
-                     (item as Record<string, string | undefined>).company_name || 
-                     (item as Record<string, string | undefined>).k_number || 
-                     (item as Record<string, string | undefined>).product_name
+        const query = (item as ExcelRow).name || 
+                     (item as ExcelRow).company_name || 
+                     (item as ExcelRow).k_number || 
+                     (item as ExcelRow).product_name
         
         if (!query) {
           return Promise.resolve({ query: '', result: null, row: i + batchIndex + 2, error: 'Missing query field' })
@@ -219,11 +217,16 @@ async function processBatchQuery(jobId: string, file: File, type: 'company' | 'p
     }
 
     if (errors.length > 0) {
-      const errorWorkbook = XLSX.utils.book_new()
-      const errorSheet = XLSX.utils.json_to_sheet(errors)
-      XLSX.utils.book_append_sheet(errorWorkbook, errorSheet, 'Errors')
-      const errorBuffer = XLSX.write(errorWorkbook, { type: 'buffer' })
-      jobStore[jobId].errorFile = Buffer.from(errorBuffer).toString('base64')
+      // 生成 CSV 格式的错误文件（替代 xlsx）
+      const errorCsv = SafeExcelParser.generateCSV(errors, ['query', 'row', 'error'])
+      
+      const { data: uploadData, error: uploadError } = await supabaseClient.storage
+        .from('batch-query-results')
+        .upload(`${jobId}_errors.csv`, errorCsv)
+      
+      if (!uploadError) {
+        jobStore[jobId].errorFile = uploadData?.path
+      }
     }
 
     jobStore[jobId].status = 'completed'
@@ -303,23 +306,19 @@ export async function DOWNLOAD(
       )
     }
 
-    const workbook = XLSX.utils.book_new()
-
-    const resultsSheet = XLSX.utils.json_to_sheet(
-      result.results.map((r) => ({
-        Query: r.query,
-        ...r.result,
-      }))
-    )
-    XLSX.utils.book_append_sheet(workbook, resultsSheet, 'Results')
-
-    const buffer = XLSX.write(workbook, { type: 'buffer' })
-
+    // 生成 CSV 格式的结果文件（替代 xlsx）
+    const resultsData = result.results.map(r => ({
+      query: r.query,
+      ...(r.result || {})
+    }))
+    
+    const resultCsv = SafeExcelParser.generateCSV(resultsData, ['query', ...Object.keys(resultsData[0] || {}).filter(k => k !== 'query')])
+    
     const headers = new Headers()
-    headers.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    headers.set('Content-Disposition', `attachment; filename="batch_query_${jobId}.xlsx"`)
+    headers.set('Content-Type', 'text/csv')
+    headers.set('Content-Disposition', `attachment; filename="batch_query_${jobId}.csv"`)
 
-    return new Response(buffer, { headers })
+    return new Response(resultCsv, { headers })
   } catch (error) {
     console.error('Download error:', error)
     return NextResponse.json(

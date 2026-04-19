@@ -23,7 +23,7 @@ interface MDLookerProduct {
   };
   created_at: string;
   updated_at: string;
-  _medplum_extensions?: any;
+  _medplum_extensions?: unknown;
 }
 
 interface MDLookerCompany {
@@ -39,7 +39,7 @@ interface MDLookerCompany {
   products: number;
   created_at: string;
   updated_at: string;
-  _medplum_extensions?: any;
+  _medplum_extensions?: unknown;
 }
 
 interface MDLookerRegulation {
@@ -55,7 +55,7 @@ interface MDLookerRegulation {
   links: string[];
   created_at: string;
   updated_at: string;
-  _medplum_extensions?: any;
+  _medplum_extensions?: unknown;
 }
 
 // 数据映射服务类
@@ -91,12 +91,12 @@ export class DataMappingService {
   }
 
   // 映射 Medplum RegulatoryAuthorization 到 MDLooker Regulation
-  mapRegulatoryToRegulation(regulatory: any): MDLookerRegulation {
+  mapRegulatoryToRegulation(regulatory: unknown): MDLookerRegulation {
     return this.regulatoryMapper.map(regulatory) as MDLookerRegulation;
   }
 
   // 映射 MDLooker Regulation 到 Medplum RegulatoryAuthorization
-  mapRegulationToRegulatory(regulation: MDLookerRegulation): any {
+  mapRegulationToRegulatory(regulation: MDLookerRegulation): unknown {
     return this.regulatoryMapper.reverseMap(regulation);
   }
 
@@ -111,7 +111,7 @@ export class DataMappingService {
   }
 
   // 批量映射法规数据
-  batchMapRegulatory(regulatoryItems: any[]): MDLookerRegulation[] {
+  batchMapRegulatory(regulatoryItems: unknown[]): MDLookerRegulation[] {
     return regulatoryItems.map(regulatory => this.mapRegulatoryToRegulation(regulatory));
   }
 
@@ -197,7 +197,7 @@ export class DataMappingService {
   }
 
   // 生成数据来源标注
-  generateSourceAnnotation(source: 'medplum' | 'local', sourceId: string): any {
+  generateSourceAnnotation(source: 'medplum' | 'local', sourceId: string): unknown {
     return {
       source,
       source_id: sourceId,
@@ -263,7 +263,7 @@ export function testMapping() {
   console.log('Mapped Organization to Company:', mappedCompany);
 
   // 测试法规映射
-  const testRegulatory: any = {
+  const testRegulatory: unknown = {
     resourceType: 'Device',
     id: 'reg-1',
     type: {

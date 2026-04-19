@@ -121,10 +121,10 @@ export async function POST(request: Request) {
  * 生成 AI 增强的报告内容
  */
 async function generateAIReport(
-  company: any,
-  products: any[],
-  risks: any[],
-  regulations: any[]
+  company: unknown,
+  products: unknown[],
+  risks: unknown[],
+  regulations: unknown[]
 ) {
   try {
     // 构建上下文

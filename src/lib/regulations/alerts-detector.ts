@@ -112,7 +112,7 @@ export const regulationAlertRules: RegulationAlertRule[] = [
  * 检测法规更新
  */
 export function detectRegulationUpdates(
-  regulations: any[],
+  regulations: unknown[],
   lastSync: Date
 ): RegulationAlert[] {
   const alerts: RegulationAlert[] = []

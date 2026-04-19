@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button, Input, Card } from '@/components/ui';
 import { Mail, Lock, Loader2 } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,18 +20,54 @@ export default function LoginPage() {
     setError('');
 
     try {
-      // Demo mode: direct login success
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // 输入验证
+      const validation = AuthUtils.validateLoginInput(email, password);
+      if (!validation.success) {
+        const firstError = Object.values(validation.errors || {})[0];
+        throw new Error(firstError || '输入验证失败');
+      }
+
+      // 清理输入
+      const sanitizedEmail = AuthUtils.sanitizeInput(email);
+      const sanitizedPassword = AuthUtils.sanitizeInput(password);
+
+      // 检查密码强度
+      const strengthCheck = AuthUtils.checkPasswordStrength(sanitizedPassword);
+      if (strengthCheck.strength === 'weak') {
+        throw new Error('密码强度较弱，请使用更复杂的密码');
+      }
+
+      // 使用 Supabase 进行真实认证
+      const supabase = createClient();
       
-      localStorage.setItem('user', JSON.stringify({
-        email,
-        id: 'demo-user',
-        role: 'admin'
-      }));
-      
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email: sanitizedEmail,
+        password: sanitizedPassword
+      });
+
+      if (signInError) {
+        // 处理常见的认证错误
+        let errorMessage = signInError.message;
+        if (signInError.message.includes('Invalid login credentials')) {
+          errorMessage = '邮箱或密码错误';
+        } else if (signInError.message.includes('Email not confirmed')) {
+          errorMessage = '邮箱未验证，请检查您的邮箱';
+        } else if (signInError.message.includes('Too many requests')) {
+          errorMessage = '请求过于频繁，请稍后再试';
+        }
+        throw new Error(errorMessage);
+      }
+
+      if (!data.user) {
+        throw new Error('认证失败，请重试');
+      }
+
+      // 认证成功，跳转到仪表板
       router.push('/dashboard');
-    } catch {
-      setError('Login failed, please try again');
+      router.refresh(); // 刷新页面以更新认证状态
+    } catch (error) {
+      console.error('Login error:', error);
+      setError(error instanceof Error ? error.message : '登录失败，请重试');
     } finally {
       setLoading(false);
     }

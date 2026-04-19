@@ -7,6 +7,7 @@ import { Header } from '@/components/layouts/Header'
 import { Footer } from '@/components/layouts/Footer'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { Loader2 } from 'lucide-react'
+import { validateAndLog } from '@/lib/config/env-validator'
 
 export const metadata: Metadata = {
   title: 'MDLooker - Global Medical Device Regulatory Database',
@@ -46,6 +47,11 @@ export const metadata: Metadata = {
   verification: {
     google: 'your-google-verification-code',
   },
+}
+
+// 在服务器端验证环境变量
+if (typeof window === 'undefined') {
+  validateAndLog()
 }
 
 export default function RootLayout({

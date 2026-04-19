@@ -29,8 +29,8 @@ export function ComplianceProfile({ companyName, productId, className = '' }: Co
     setLoading(true);
     try {
       let companyData = null;
-      let productsData: any[] = [];
-      let regulationsData: any[] = [];
+      let productsData: unknown[] = [];
+      let regulationsData: unknown[] = [];
       let dataSource: 'local' | 'medplum' | 'other' = 'local';
 
       // 从 Medplum 获取数据

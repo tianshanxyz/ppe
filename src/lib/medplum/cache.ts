@@ -31,7 +31,7 @@ const CACHE_CONFIG = {
 
 // 内存缓存类
 class MemoryCache {
-  private cache: Map<string, { value: any; expiry: number }>
+  private cache: Map<string, { value: unknown; expiry: number }>
   private maxSize: number
 
   constructor(maxSize: number) {
@@ -39,7 +39,7 @@ class MemoryCache {
     this.maxSize = maxSize
   }
 
-  get(key: string): any {
+  get(key: string): unknown {
     const item = this.cache.get(key)
     if (!item) return null
 
@@ -54,7 +54,7 @@ class MemoryCache {
     return item.value
   }
 
-  set(key: string, value: any, ttl: number): void {
+  set(key: string, value: unknown, ttl: number): void {
     if (this.cache.size >= this.maxSize) {
       // 移除最久未使用的项
       const firstKey = this.cache.keys().next().value
@@ -113,7 +113,7 @@ function initRedisCache() {
 initRedisCache()
 
 // 缓存键生成函数
-function generateCacheKey(prefix: string, ...args: any[]): string {
+function generateCacheKey(prefix: string, ...args: unknown[]): string {
   const parts = args.map(arg => {
     if (typeof arg === 'object') {
       return JSON.stringify(arg)
@@ -158,7 +158,7 @@ class CacheService {
   }
 
   // 设置缓存
-  async set(key: string, value: any, ttl: number): Promise<void> {
+  async set(key: string, value: unknown, ttl: number): Promise<void> {
     try {
       // 设置内存缓存
       memoryCache.set(key, value, ttl)
@@ -232,10 +232,10 @@ const cacheService = new CacheService()
 
 // 缓存装饰器
 function cacheable(prefix: string, ttl: number) {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function (target: unknown, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value
 
-    descriptor.value = async function (...args: any[]) {
+    descriptor.value = async function (...args: unknown[]) {
       const cacheKey = generateCacheKey(prefix, ...args)
 
       // 尝试从缓存获取

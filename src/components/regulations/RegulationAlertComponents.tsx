@@ -39,7 +39,7 @@ export interface RegulationAlert {
 }
 
 // 风险等级图标和样式
-const severityConfig: Record<AlertSeverity, { icon: any; color: string; label: string }> = {
+const severityConfig: Record<AlertSeverity, { icon: unknown; color: string; label: string }> = {
   CRITICAL: {
     icon: AlertOctagon,
     color: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',

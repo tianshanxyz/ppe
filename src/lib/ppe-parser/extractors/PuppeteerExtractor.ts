@@ -440,7 +440,7 @@ export class PuppeteerExtractor implements FieldExtractor {
   /**
    * 执行自定义 JavaScript
    */
-  async evaluate<T>(page: Page, script: string | Function, ...args: any[]): Promise<T> {
+  async evaluate<T>(page: Page, script: string | Function, ...args: unknown[]): Promise<T> {
     return await page.evaluate(script as any, ...args);
   }
 

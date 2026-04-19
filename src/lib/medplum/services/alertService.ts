@@ -122,7 +122,7 @@ export async function configureAlertRules() {
 /**
  * 处理 Medplum Webhook 预警
  */
-export async function handleMedplumWebhook(payload: any) {
+export async function handleMedplumWebhook(payload: unknown) {
   try {
     console.log('Received Medplum webhook:', payload)
 
@@ -148,7 +148,7 @@ export async function handleMedplumWebhook(payload: any) {
 /**
  * 处理 Medplum 预警
  */
-async function processMedplumAlert(alert: any): Promise<{ success: boolean; data?: MedplumAlert }> {
+async function processMedplumAlert(alert: unknown): Promise<{ success: boolean; data?: MedplumAlert }> {
   try {
     // 映射 Medplum Alert 到 MDLooker Alert
     const mappedAlert: MedplumAlert = {

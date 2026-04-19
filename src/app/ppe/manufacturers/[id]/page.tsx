@@ -288,7 +288,7 @@ export default function ManufacturerDetailPage() {
                     Products ({manufacturer.ppe_product_manufacturers.length})
                   </h2>
                   <div className="space-y-3">
-                    {manufacturer.ppe_product_manufacturers.map((relation: any, index: number) => {
+                    {manufacturer.ppe_product_manufacturers.map((relation: unknown, index: number) => {
                       const product = relation.ppe_products
                       if (!product) return null
                       return (

@@ -271,7 +271,7 @@ export interface AIModelConfig {
  */
 export interface AIFieldRecognitionResult {
   field: string;
-  value: any;
+  value: unknown;
   confidence: number;
   xpath?: string;
   alternative?: string[];

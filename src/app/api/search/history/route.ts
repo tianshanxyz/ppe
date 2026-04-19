@@ -5,7 +5,7 @@ export interface SearchHistoryItem {
   id: string
   user_id: string
   query: string
-  filters: any
+  filters: unknown
   results_count: number
   clicked_results: string[]
   created_at: string

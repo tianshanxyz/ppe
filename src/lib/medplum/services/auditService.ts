@@ -40,7 +40,7 @@ export interface MedplumAuditLog {
   ipAddress: string
   userAgent: string
   timestamp: string
-  details: any
+  details: unknown
   medplumId: string
 }
 
@@ -115,10 +115,10 @@ export async function syncAuditLogs(startTime?: string) {
 /**
  * 保存审计日志到本地数据库
  */
-async function saveAuditLogsToLocal(auditEntries: any[]) {
+async function saveAuditLogsToLocal(auditEntries: unknown[]) {
   try {
     const supabase = await createSupabaseClient()
-    const logsToInsert = auditEntries.map((entry: any) => {
+    const logsToInsert = auditEntries.map((entry: unknown) => {
       const audit = entry.resource as any
       return mapMedplumAuditToLocal(audit)
     })
@@ -142,7 +142,7 @@ async function saveAuditLogsToLocal(auditEntries: any[]) {
 /**
  * 映射 Medplum 审计到本地格式
  */
-function mapMedplumAuditToLocal(audit: any): MedplumAuditLog {
+function mapMedplumAuditToLocal(audit: unknown): MedplumAuditLog {
   return {
     id: `medplum-${audit.id}`,
     eventType: mapAuditEventType(audit.type?.coding?.[0]?.code),
@@ -156,7 +156,7 @@ function mapMedplumAuditToLocal(audit: any): MedplumAuditLog {
     details: {
       outcome: audit.outcome,
       outcomeDesc: audit.outcomeDesc,
-      purposeOfEvent: audit.purposeOfEvent?.map((p: any) => p.text).join(', ')
+      purposeOfEvent: audit.purposeOfEvent?.map((p: unknown) => p.text).join(', ')
     },
     medplumId: audit.id
   }
@@ -238,7 +238,7 @@ export async function analyzeAuditLogs(params?: {
 /**
  * 生成审计报告
  */
-function generateAuditReport(logs: any[]) {
+function generateAuditReport(logs: unknown[]) {
   const report = {
     totalEvents: logs.length,
     eventsByType: logs.reduce((acc, log) => {

@@ -79,7 +79,7 @@ export class CheerioExtractor implements FieldExtractor {
   /**
    * 提取单个字段
    */
-  private extractField($: cheerio.CheerioAPI, rule: FieldExtractionRule): any {
+  private extractField($: cheerio.CheerioAPI, rule: FieldExtractionRule): unknown {
     for (const selector of rule.selectors) {
       try {
         const element = $(selector);
@@ -362,9 +362,9 @@ export class CheerioExtractor implements FieldExtractor {
   /**
    * 提取结构化数据（JSON-LD）
    */
-  extractJsonLd(html: string): any[] {
+  extractJsonLd(html: string): unknown[] {
     const $ = this.load(html);
-    const jsonLdData: any[] = [];
+    const jsonLdData: unknown[] = [];
 
     $('script[type="application/ld+json"]').each((_, elem) => {
       try {
