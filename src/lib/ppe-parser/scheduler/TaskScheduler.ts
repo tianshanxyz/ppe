@@ -615,6 +615,7 @@ export class TaskScheduler extends EventEmitter {
   ): Promise<TaskResult> {
     let page = 1;
     let hasMore = true;
+    const syncStartTime = Date.now();
 
     while (hasMore && task.status === TaskStatus.RUNNING) {
       const result = await parser.fetchListPage(page, task.config.params);
@@ -629,18 +630,13 @@ export class TaskScheduler extends EventEmitter {
 
       hasMore = result.hasNextPage;
       page++;
-
-      // 检查是否被取消（暂时禁用）
-      // if (task.status === TaskStatus.CANCELLED || task.status === TaskStatus.FAILED) {
-      //   break;
-      // }
     }
 
     return {
       products,
       totalFetched: products.length,
       totalSaved: products.length,
-      duration: Date.now() - startTime,
+      duration: Date.now() - syncStartTime,
     };
   }
 
@@ -672,6 +668,7 @@ export class TaskScheduler extends EventEmitter {
     parser: PPEParser,
     products: PPEProduct[]
   ): Promise<TaskResult> {
+    const startTime = Date.now();
     const page = task.config.params?.page || 1;
     const result = await parser.fetchListPage(page, task.config.params);
 
@@ -697,6 +694,7 @@ export class TaskScheduler extends EventEmitter {
     parser: PPEParser,
     products: PPEProduct[]
   ): Promise<TaskResult> {
+    const startTime = Date.now();
     const productId = task.config.params?.productId;
 
     if (!productId) {

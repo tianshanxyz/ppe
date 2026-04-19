@@ -2,6 +2,8 @@
  * 法规更新提醒系统 - 配置文件
  */
 
+import { PPERegulation } from '@/lib/ppe-database-client'
+
 // 法规更新类型
 export type RegulationAlertType = 'NEW' | 'UPDATED' | 'EXPIRED' | 'REPLACED' | 'REVIEWING'
 
@@ -26,9 +28,9 @@ export interface RegulationAlertRule {
   id: string
   name: string
   description: string
-  condition: (regulation: unknown, lastSync: Date) => boolean
+  condition: (regulation: PPERegulation, lastSync: Date) => boolean
   severity: AlertSeverity
-  message: string | ((regulation: unknown) => string)
+  message: string | ((regulation: PPERegulation) => string)
   alertType: RegulationAlertType
 }
 

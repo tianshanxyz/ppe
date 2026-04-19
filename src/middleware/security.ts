@@ -80,7 +80,8 @@ export class SecurityMiddleware {
 
     Object.entries(csp).forEach(([directive, sources]) => {
       if (sources && sources.length > 0) {
-        directives.push(`${directive} ${sources.join(' ')}`);
+        const sourceStr = Array.isArray(sources) ? sources.join(' ') : sources;
+        directives.push(`${directive} ${sourceStr}`);
       }
     });
 
@@ -220,7 +221,9 @@ export class SecurityMiddleware {
       }
 
       // 限制请求频率（简单的防刷机制）
-      const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+      const ip = request.headers.get('x-forwarded-for') || 
+                 request.headers.get('x-real-ip') || 
+                 'unknown';
       const rateLimitKey = `rate_limit_${ip}`;
       
       // 这里可以集成 Redis 或其他缓存系统进行更精确的限流

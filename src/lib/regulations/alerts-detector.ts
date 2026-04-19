@@ -22,7 +22,7 @@ export const regulationAlertRules: RegulationAlertRule[] = [
              (effectiveDate > now && effectiveDate < new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000))
     },
     severity: 'HIGH',
-    message: (regulation) => `新法规已发布：${regulation.title}，生效日期 ${regulation.effective_date}`,
+    message: (regulation) => `新法规已发布：${regulation.regulation_name}，生效日期 ${regulation.effective_date}`,
     alertType: 'NEW'
   },
   
@@ -39,7 +39,7 @@ export const regulationAlertRules: RegulationAlertRule[] = [
       return effectiveDate < now && effectiveDate > new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000)
     },
     severity: 'MEDIUM',
-    message: (regulation) => `法规即将到期：${regulation.title}，生效日期 ${regulation.effective_date}`,
+    message: (regulation) => `法规即将到期：${regulation.regulation_name}，生效日期 ${regulation.effective_date}`,
     alertType: 'EXPIRED'
   },
   
@@ -48,13 +48,13 @@ export const regulationAlertRules: RegulationAlertRule[] = [
     name: '法规近期更新',
     description: '法规在最近7天内被更新',
     condition: (regulation, lastSync) => {
-      if (!regulation.scraped_at) return false
-      const scrapedDate = new Date(regulation.scraped_at)
+      if (!regulation.created_at) return false
+      const createdDate = new Date(regulation.created_at)
       const sevenDaysAgo = new Date(lastSync.getTime() - 7 * 24 * 60 * 60 * 1000)
-      return scrapedDate > sevenDaysAgo
+      return createdDate > sevenDaysAgo
     },
     severity: 'LOW',
-    message: (regulation) => `法规近期更新：${regulation.title}`,
+    message: (regulation) => `法规近期更新：${regulation.regulation_name}`,
     alertType: 'UPDATED'
   },
   
@@ -72,7 +72,7 @@ export const regulationAlertRules: RegulationAlertRule[] = [
              effectiveDate >= thirtyDaysAgo && effectiveDate <= now
     },
     severity: 'HIGH',
-    message: (regulation) => `重要市场新法规：${regulation.jurisdiction} - ${regulation.title}`,
+    message: (regulation) => `重要市场新法规：${regulation.jurisdiction} - ${regulation.regulation_name}`,
     alertType: 'NEW'
   },
   
@@ -88,7 +88,7 @@ export const regulationAlertRules: RegulationAlertRule[] = [
       )
     },
     severity: 'HIGH',
-    message: (regulation) => `质量体系法规更新：${regulation.title}`,
+    message: (regulation) => `质量体系法规更新：${regulation.regulation_name}`,
     alertType: 'UPDATED'
   },
   
@@ -103,7 +103,7 @@ export const regulationAlertRules: RegulationAlertRule[] = [
       )
     },
     severity: 'MEDIUM',
-    message: (regulation) => `临床法规更新：${regulation.title}`,
+    message: (regulation) => `临床法规更新：${regulation.regulation_name}`,
     alertType: 'UPDATED'
   }
 ]
@@ -118,23 +118,24 @@ export function detectRegulationUpdates(
   const alerts: RegulationAlert[] = []
   
   for (const regulation of regulations) {
+    const reg = regulation as any
     for (const rule of regulationAlertRules) {
-      if (rule.condition(regulation, lastSync)) {
+      if (rule.condition(reg, lastSync)) {
         const alert: RegulationAlert = {
-          id: `${regulation.title}-${rule.id}-${regulation.jurisdiction}`,
-          regulation_id: regulation.title,
-          title: regulation.title,
-          jurisdiction: regulation.jurisdiction,
+          id: `${reg.regulation_name}-${rule.id}-${reg.jurisdiction}`,
+          regulation_id: reg.regulation_name,
+          title: reg.regulation_name,
+          jurisdiction: reg.jurisdiction,
           alert_type: rule.alertType,
           message: typeof rule.message === 'function' 
-            ? rule.message(regulation) 
+            ? rule.message(reg) 
             : rule.message,
           detected_at: new Date().toISOString(),
           severity: rule.severity,
           metadata: {
-            regulation_type: regulation.type,
-            category: regulation.category,
-            keywords: regulation.keywords
+            regulation_type: reg.regulation_type,
+            category: reg.category,
+            keywords: reg.keywords
           }
         }
         
