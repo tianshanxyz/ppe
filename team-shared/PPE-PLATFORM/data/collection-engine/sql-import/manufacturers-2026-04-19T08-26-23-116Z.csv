@@ -1,0 +1,470 @@
+id,company_name,country,data_source,source_id,created_at,updated_at,is_active
+b2e2683c-f5f7-4474-9a42-e093486470fc,Sample EU Manufacturer,Germany,EUDAMED,EU-MFG-001,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+04e98f41-b64f-47dd-b6e2-b6e7d7ba57da,Another EU Manufacturer,France,EUDAMED,EU-MFG-002,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+39ef4462-277c-4fc6-9e37-d81cdb911171,Dräger Safety AG,Germany,EUDAMED,EU-MFG-001,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+5c66d608-017d-46ee-8374-945636313a79,Medicom Group,France,EUDAMED,EU-MFG-002,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+63534ebb-595e-4e16-936c-d69133c2417f,Ansell Healthcare,Belgium,EUDAMED,EU-MFG-003,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+1da4f870-4233-4a48-831e-deda62fcf620,UVEX Safety,Germany,EUDAMED,EU-MFG-004,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+7548dcaa-bdc6-4caa-8a7a-e85462816e03,J. H. Emerson Co.,USA,FDA,J. H. Emerson Co.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+774fd0d1-1f32-4abd-8a99-f745319ecb8e,Molnlycke Health Care,USA,FDA,Molnlycke Health Care,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+90c4b80e-f08e-4048-b186-3d9a2f5d5045,Dukal Corporation,USA,FDA,Dukal Corporation,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+fa8c2e86-6549-466a-ae80-a6c359e981ac,3M Company,USA,FDA,3M Company,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+64fad998-0eec-48c9-bbe1-100b8f7cfb1c,"Alpha Protech, Inc.",USA,FDA,"Alpha Protech, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+037bc74e-b80c-403c-8863-91c97b77e985,"San-M Package Co., Ltd.",USA,FDA,"San-M Package Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+2409e3f8-2b38-473e-a608-4fb2f57dcc0c,Dept. of the Navy,USA,FDA,Dept. of the Navy,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+80aa8afc-e496-4f12-ab26-a65d0b4573a1,Emerson Intl. Co.,USA,FDA,Emerson Intl. Co.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+fc16d883-b346-4e20-ace9-9e2508b03142,3M Healthcare,USA,FDA,3M Healthcare,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+bf9b31d1-da35-46b1-b4ee-cddc5aa3995a,"Louis M. Gerson Co., Inc.",USA,FDA,"Louis M. Gerson Co., Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+d985d325-f594-44c6-8db5-f78198632bd4,"Gambro, Inc.",USA,FDA,"Gambro, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+f790e9b2-0e95-46c6-89bb-67a04a8a7266,"Healthdyne, Inc.",USA,FDA,"Healthdyne, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+0db521d5-f9bd-4b32-9ae5-36a64e75b288,"General Medical Products, Inc.",USA,FDA,"General Medical Products, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+a5a1828c-1009-4dea-9d27-fb125200df92,"Florida Medical Equipment Repair, Inc.",USA,FDA,"Florida Medical Equipment Repair, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+151f7c8e-3534-4dc1-961d-08f78f704e6f,"Intersect Medical Products, Inc.",USA,FDA,"Intersect Medical Products, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+6327ff8d-afff-4bf1-9f66-67a504d25723,Glaxosmithkline Consumer Healthcare,USA,FDA,Glaxosmithkline Consumer Healthcare,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+52ccc0fb-75d6-4557-ab60-837c8836bc6d,"Survivair Respirators, LLC",USA,FDA,"Survivair Respirators, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+f0468bc8-663d-44ed-93f3-5753404ccec4,Safelife Corp.,USA,FDA,Safelife Corp.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+c21e3049-9622-4a00-b651-f0087dc15cc9,"Inovel, LLC",USA,FDA,"Inovel, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+cf3506fe-dde1-4148-95d6-f2ae1b364391,Prestige Ameritech,USA,FDA,Prestige Ameritech,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+edbb11a6-71c8-485a-bc66-15c5eb7abceb,Aearo Company,USA,FDA,Aearo Company,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+8f9b501c-5b8a-493d-8c69-ce7f373bcafa,"Owens & Minor (O&M) Halyard, Inc.",USA,FDA,"Owens & Minor (O&M) Halyard, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+90bf686f-9919-4b9e-856a-c09e5adf5e37,Rv Systems,USA,FDA,Rv Systems,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+66a50613-06de-4804-9bad-471a535f3b02,"Thompson Respiration Products, Inc.",USA,FDA,"Thompson Respiration Products, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+01e7af6c-9e82-4fbe-9dde-ee8b3ee52790,"Makrite Industries, Inc.",USA,FDA,"Makrite Industries, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+52e7bc38-1dd0-4ec7-929c-44b9718fc820,"Respironics, Inc.",USA,FDA,"Respironics, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+891837ba-f5cc-4be5-9431-b72157c92446,"Rule Medical Instruments, Inc.",USA,FDA,"Rule Medical Instruments, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+725c7043-d5ac-4611-9d3c-ef37c9a61755,"Nexera Medical, Inc.",USA,FDA,"Nexera Medical, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+c7efb688-12f0-43e2-8e95-bbf2dada04d9,"Racal Filter Technologies, Inc.",USA,FDA,"Racal Filter Technologies, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+d5cc3105-b135-49fc-bcd8-c75d146ba5e6,"Ivy Biomedical Systems, Inc.",USA,FDA,"Ivy Biomedical Systems, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+a36b2ea6-e71a-4910-b1b8-2b655cde2ab4,Shuenn Bao Shing Corporation,USA,FDA,Shuenn Bao Shing Corporation,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+2116272c-a5a7-4991-8aa6-a3fb945dcb21,Aearo Co.,USA,FDA,Aearo Co.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+055ecbb8-315d-4243-8999-eec99041fab2,S & W Medico Teknik,USA,FDA,S & W Medico Teknik,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+efb7fa0f-d57d-484f-9d38-96ffdba22cac,"Pasture Pharma Pte, Ltd.",USA,FDA,"Pasture Pharma Pte, Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+1a15b518-f9d6-4782-92fa-d8ab402d2418,"Moldex/Metric, Inc.",USA,FDA,"Moldex/Metric, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+7fb778ac-6f21-4ca8-92b9-a8ffed968ebb,"Master & Frank Enterprise Co., Ltd.",USA,FDA,"Master & Frank Enterprise Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+076a8fdf-380d-42cb-85e1-931a7cbbf873,"Tecnol Medical Products, Inc.",USA,FDA,"Tecnol Medical Products, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+a418ac46-1a52-47c8-a84a-d12404c36b65,"Chemetron Medical Products, Inc.",USA,FDA,"Chemetron Medical Products, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+ae139535-2be3-46fd-acb1-744f042b427f,Medivent Limited,USA,FDA,Medivent Limited,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+6cda94dc-fa7b-4775-8dc0-cacf24841c4c,Dima Italia Srl,USA,FDA,Dima Italia Srl,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+57e9e15c-45dc-4cfa-97e2-a6248ae744a3,Filligent Limited,USA,FDA,Filligent Limited,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+c5283299-41ec-42e5-9460-c10aa2964c33,Percussionaire Corp.,USA,FDA,Percussionaire Corp.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+0fff5749-2336-4e96-8b1a-83e84580c2d7,"Survivair, Inc.",USA,FDA,"Survivair, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+c8f8237d-78e0-49d7-90b1-adea4f768ff6,"Pulmonetic Systems, Inc.",USA,FDA,"Pulmonetic Systems, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+d9004f1f-7ea6-4123-abf5-0b32e1b04830,"Vital Signs, Inc.",USA,FDA,"Vital Signs, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+06e010ce-f265-4277-9cf5-4ba79ab101b2,Engineered Medical Systems,USA,FDA,Engineered Medical Systems,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+d9daeb2c-34b4-42fe-93cf-3e361ab50ab6,"Fisher & Paykel Healthcare, Ltd.",USA,FDA,"Fisher & Paykel Healthcare, Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+70b6e667-293e-4067-803e-db1e207dace5,"Luoyang Sunmed Devices Co., Ltd.",USA,FDA,"Luoyang Sunmed Devices Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+42f96ed1-0527-47df-bb8f-c99b17712b3a,Sleepnet Corporation,USA,FDA,Sleepnet Corporation,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+2047ef78-f793-4fb6-b342-6f29de709ddb,"Specialty Packaging Producs, Inc.",USA,FDA,"Specialty Packaging Producs, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+b606f7c6-053c-4798-accb-6a85c8b4a73c,"Guangzhou Zhengkang Medical Equipment Co.,Ltd",USA,FDA,"Guangzhou Zhengkang Medical Equipment Co.,Ltd",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+b6fd6c17-b447-45d5-9da4-12cf8fb61343,"Jiande Chaomei Daily Chemicals Co., Ltd.",USA,FDA,"Jiande Chaomei Daily Chemicals Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+67ba6516-1de5-4b33-a0f8-9a33bb23b385,"Resmed, Ltd.",USA,FDA,"Resmed, Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+f951f572-4f83-47f7-af03-3a0bf15758dd,"Bdc Dental Corporation , Ltd.",USA,FDA,"Bdc Dental Corporation , Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+ef8ee4f5-7585-4379-9dca-de2965162523,"Shenzhen Fittop Health Technology Co., Ltd.",USA,FDA,"Shenzhen Fittop Health Technology Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+2799d08b-b307-4ab9-bb2a-6f78f634d20f,"Jiangsu Xingtong Biotechnology Group Co., Ltd.",USA,FDA,"Jiangsu Xingtong Biotechnology Group Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+dc16e221-7196-4a41-bc53-2471d6339e2f,Supermax Healthcare Canada-Supermax Medical,USA,FDA,Supermax Healthcare Canada-Supermax Medical,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+7d034a3f-06c3-4265-aeb4-a5aaf1cddf29,"Shenzhen Kaiyan Medical Equipment Co., Ltd.",USA,FDA,"Shenzhen Kaiyan Medical Equipment Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+5b5e9d85-9c69-4d3e-9caf-d177e040c782,Ventlab Corp.,USA,FDA,Ventlab Corp.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+906a012e-4d9e-44a1-89ba-f5167dc2835f,"BMC Medical Co., Ltd.",USA,FDA,"BMC Medical Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+3e10ab08-a3cd-47bc-886e-70f38d8af794,"Ekonic Company, Ltd.",USA,FDA,"Ekonic Company, Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+719434d8-e242-43a5-bea6-d07514b77103,Zhuhai Herald Datanetics Limited.,USA,FDA,Zhuhai Herald Datanetics Limited.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+410b2603-b2c0-451a-be1a-71feb783927e,H&H Research Company,USA,FDA,H&H Research Company,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+ac3f7533-7548-4500-a5a9-3b5872e359dc,"Henan Chaoya Medical Equipment Co., Ltd.",USA,FDA,"Henan Chaoya Medical Equipment Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+aac8f9dc-1737-41a6-8566-b5d19d34c65f,"Hubei Wanli Protective Products Co., Ltd.",USA,FDA,"Hubei Wanli Protective Products Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+3969dd65-6e25-4128-b203-35a78c559735,"Dispomed, Inc.",USA,FDA,"Dispomed, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+dbbba12b-ce80-4cf4-ac12-33bdac7efba3,"Hubei Qianjiang Kingphar Medical Material Co., Ltd.",USA,FDA,"Hubei Qianjiang Kingphar Medical Material Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+fb46680f-829d-4d0c-8d3c-27f170c9b084,"Jkh USA, LLC",USA,FDA,"Jkh USA, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+76ec33e8-e41f-4ab2-9e0f-e428735aacc9,"Medsys, Inc.",USA,FDA,"Medsys, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+e7848586-ba24-4f24-8fb1-a485e52c1827,"Ningbo Hesi Electric Co., Ltd.",USA,FDA,"Ningbo Hesi Electric Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+735e92ac-bc30-4307-a4cc-5d3f90785369,"Lifeguard Medical Products, Inc.",USA,FDA,"Lifeguard Medical Products, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+cc15149c-f353-4e0c-9525-51e60c8e55e1,Merlin Medical Limited,USA,FDA,Merlin Medical Limited,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+5543caa4-bf5c-43d8-a7a3-9b93d572abeb,Creative Contract (M) Sdn Bhd,USA,FDA,Creative Contract (M) Sdn Bhd,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+07c3698e-fa3e-4ffe-b645-410a570f443a,Fisher and Paykel Healthcare Limited,USA,FDA,Fisher and Paykel Healthcare Limited,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+ad43679c-bf74-464f-ac79-bbb0a9f8ae19,"Circadiance, LLC",USA,FDA,"Circadiance, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+3ca8eb49-0da3-4aff-a619-4f270fba01da,"Arcimed Laboratories, LLC",USA,FDA,"Arcimed Laboratories, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+7c8f3261-758d-4971-9219-13345295827e,"Sichuan Pharmaceutical., Inc.",USA,FDA,"Sichuan Pharmaceutical., Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+79a596f0-1618-40ed-b751-cabce41b596e,"Pfm Medical, Inc.",USA,FDA,"Pfm Medical, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+ce7a8511-db2c-43a3-a64b-871914781c64,"Spintech, LLC",USA,FDA,"Spintech, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+ead868c0-bdef-43cf-b47e-8b5c39037804,"Hong YA Non-Woven Products Co., Ltd.",USA,FDA,"Hong YA Non-Woven Products Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+6abed75c-2df8-4cf0-ba31-4c833d782df5,"Xinxiang Kangbeier Medical Technology Co., Ltd.",USA,FDA,"Xinxiang Kangbeier Medical Technology Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+b455e700-2e23-45d0-8284-ba7aeef392ab,"Fssc, LLC",USA,FDA,"Fssc, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+37786b4b-35b7-4243-ae79-03f553d6523c,Resmed Pty Ltd (Registration Number: 3004604967),USA,FDA,Resmed Pty Ltd (Registration Number: 3004604967),2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+8c2c481c-942d-43e5-b60d-9ac84ff84cc1,"Genadyne Biotechnologies, Inc.",USA,FDA,"Genadyne Biotechnologies, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+3bb91cf8-d2a9-4d8b-9fa5-180fc0e40dd3,Wealth Lead Industrial Limited,USA,FDA,Wealth Lead Industrial Limited,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+fcd251b6-4cd5-49ae-84d2-8eaadfd24129,"Johnson & Johnson Vision Care, Inc.",USA,FDA,"Johnson & Johnson Vision Care, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+5e38d51f-1416-40af-a2f9-b5d1c4ab7410,"Qingdao Likangyuan Medical Device Co., Ltd.",USA,FDA,"Qingdao Likangyuan Medical Device Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+b1c75e46-2a05-4ddd-a17a-b6c07787435a,"Winner Medical Co., Ltd.",USA,FDA,"Winner Medical Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+ea736cf9-ad10-48d3-89c9-64462f5690b9,"Plasmedics, Inc.",USA,FDA,"Plasmedics, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+cde76dd4-48bc-4d85-819b-46eb2c36b6f4,Ias,USA,FDA,Ias,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+71b5c60e-952c-46d2-ab86-521812de5ba4,"Jiangxi Feilikang Medical Technology Co., Ltd.",USA,FDA,"Jiangxi Feilikang Medical Technology Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+8b3d8352-9762-466d-8f07-410e0585856d,"Zhongshan Saifute Labor Protective Articles Co., Ltd.",USA,FDA,"Zhongshan Saifute Labor Protective Articles Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+7c280a80-0603-4de2-a37b-b3739d90896d,"Shenzhen Sungpo Hi-Tech Electronic Co., Ltd.",USA,FDA,"Shenzhen Sungpo Hi-Tech Electronic Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+3a232ece-ec0c-4614-9f12-741179e6fe00,Gale E. Dryden,USA,FDA,Gale E. Dryden,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+88901cf3-606f-43ea-9970-30a5540f34f5,"String King Lacrosse, LLC",USA,FDA,"String King Lacrosse, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+6f56b500-9efb-450e-b29d-fe6fac58b511,Monaghan Medical Corp.,USA,FDA,Monaghan Medical Corp.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+1713b60e-53b7-4aac-9d7b-34821c3e3c98,"Jiangsu Guangda Medical Material Group Co., Ltd.",USA,FDA,"Jiangsu Guangda Medical Material Group Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+e72057aa-a395-42f4-93fd-4905f942770e,"Curative Medical, Inc.",USA,FDA,"Curative Medical, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+db7f38ed-cd0a-40eb-a2dd-032dab8dc395,"Qingdao Hainuo Biological Engineering Co., Ltd.",USA,FDA,"Qingdao Hainuo Biological Engineering Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+4b720c9c-2013-40a6-9b9b-0e45a65cafc0,"Airlife, Inc.",USA,FDA,"Airlife, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+64cb31b0-d45d-4ff5-aa97-679119883c5a,"Np Medical, Inc.",USA,FDA,"Np Medical, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+dd4a5c3a-4bd7-45ee-9f2a-0b08dd7a9e94,Feliks Plastik Laminasyon VE Ambalaj Malzemeleri Sanayi,USA,FDA,Feliks Plastik Laminasyon VE Ambalaj Malzemeleri Sanayi,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+e4a52c90-0335-4226-a571-3110f1f67f31,Convertors,USA,FDA,Convertors,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+4ae1bc16-d493-4016-bfe4-f3791914a7ba,"Brigam, Inc.",USA,FDA,"Brigam, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+137b9fb2-b56e-46b2-abc3-a4397407a5e6,"Medicomp, Inc.",USA,FDA,"Medicomp, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+9ea8031e-d129-46a3-a1d0-8d9ec51c3c89,"Guangzhou Mei YI Kang Medical Technology Co., Ltd.",USA,FDA,"Guangzhou Mei YI Kang Medical Technology Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+164e8ab3-13fc-47cd-9adf-19dc9cbe50a3,"Lucky Textile Industrial(Wuxi) Co., Ltd.",USA,FDA,"Lucky Textile Industrial(Wuxi) Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+f4ada648-1915-4491-b8df-8fde080ffaf5,"Unimax Medical Products Co., Ltd.",USA,FDA,"Unimax Medical Products Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+105e6e10-e6d8-4f4e-9535-587aa1d8a9f6,"Life Design Systems, Inc.",USA,FDA,"Life Design Systems, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+fcf98e2b-2a15-4df6-9e1f-ed087f87c0c7,Aok Tooling Limited,USA,FDA,Aok Tooling Limited,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+cf262d0a-1877-4a27-935e-19097ecba342,"Wellpower Sporting Goods Co., Ltd.",USA,FDA,"Wellpower Sporting Goods Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+cbca4ecf-9fe1-49c1-af08-2cd8337f4e87,"Foshan Nanhai Plus Medical Co, Ltd.",USA,FDA,"Foshan Nanhai Plus Medical Co, Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+64d3a38c-cd22-448d-8136-46db5dad476d,"Genuine First Aid, LLC",USA,FDA,"Genuine First Aid, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+7ca84ef6-bd53-4731-bcd2-ce4ab7449095,"Marquest Medical Products, Inc.",USA,FDA,"Marquest Medical Products, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+b278da65-4efa-4d88-bae4-b32a104ed496,Tereopneuma,USA,FDA,Tereopneuma,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+4b87f187-2ce0-4434-b452-c88d0335cf8f,"Hubei Medlink Healthcare Co., Ltd.",USA,FDA,"Hubei Medlink Healthcare Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+92216077-e17b-424f-9acb-ea096aef012c,Apex Medical Corp.,USA,FDA,Apex Medical Corp.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+6f188d6a-5a82-42e7-9712-d75f85bf56b2,"Allmed Medical Products Co., Ltd.",USA,FDA,"Allmed Medical Products Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+fcdb53b4-f339-4a4e-80ee-26a4fb6a5074,"American Threshold Industries, Inc.",USA,FDA,"American Threshold Industries, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+ed50f4e9-6c9d-4e79-9542-7f7978161599,"Tianchang Kanghui Protective Products Co, Ltd.",USA,FDA,"Tianchang Kanghui Protective Products Co, Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+fdf1eb1b-d084-4f04-ae68-20e423842652,"Naton Biotechnology (Beijing) Co., Ltd.",USA,FDA,"Naton Biotechnology (Beijing) Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+07bf7dce-4555-4a24-87b4-cc8bb83cd1c3,"Heilongjiang Yinjia Medical Equipment Co., Ltd.",USA,FDA,"Heilongjiang Yinjia Medical Equipment Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+982f09aa-ae64-4bf6-8927-510d4aeedfbd,"Teleflexmedical, Inc.",USA,FDA,"Teleflexmedical, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+d6c60ad9-60bb-4e49-98b0-7d1613d45bfa,"Jiangsu Micsafe Medical Technology Co., Ltd.",USA,FDA,"Jiangsu Micsafe Medical Technology Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+94f523e7-a845-4e65-88d6-773a1e803534,"Tri/Bor Medical, Inc.",USA,FDA,"Tri/Bor Medical, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+7fbc7818-5d82-4efe-931d-4895fde17db6,"Guangzhou Quantum Laser Intelligent Equipment Co., Ltd.",USA,FDA,"Guangzhou Quantum Laser Intelligent Equipment Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+f7517ffa-18de-4467-aa23-06324d3e6775,"Unisources Group, LLC",USA,FDA,"Unisources Group, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+b5881594-982b-4974-941b-2147677cdb02,Intertech/Ohio,USA,FDA,Intertech/Ohio,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+aeed5e95-0ca0-472a-b3e0-fd5e204b3e1a,"Wanxinda (Guangzhou) Technology Product Co., Ltd.",USA,FDA,"Wanxinda (Guangzhou) Technology Product Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+6a53c2fa-283f-4a36-8dd6-5a6460cb0b7f,"Cost Rite Health Products, Inc.",USA,FDA,"Cost Rite Health Products, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+120cd48b-ecba-4842-985c-e090f16643a7,"Shandong Zhushi Pharmaceutical Group Co., Ltd.",USA,FDA,"Shandong Zhushi Pharmaceutical Group Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+23a9e161-fce4-4a94-a36b-2ebd60551a02,"Fraser Sweatman, Inc.",USA,FDA,"Fraser Sweatman, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+f1cb2279-0885-4fb5-a188-7b4e294215ee,"Epard Protective Products, Ltd.",USA,FDA,"Epard Protective Products, Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+b61abe12-c1d5-4040-994e-9366904d4bab,"Xiantao Zhongyi Safety & Protection Products Co., Ltd.",USA,FDA,"Xiantao Zhongyi Safety & Protection Products Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+37144f5e-3849-4d67-aff0-9d37a5d83aed,Baxter Healthcare Corp,USA,FDA,Baxter Healthcare Corp,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+1d1af54d-b912-448d-bedd-85d83b24239c,"Abco Dealers, Inc.",USA,FDA,"Abco Dealers, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+dd8141ec-bbb2-4bd4-a9d4-730620fcf822,"Medline Industries, Inc.",USA,FDA,"Medline Industries, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+27d0767c-a084-4dd7-8113-e12b5c01e10c,"Matrix Medica, Inc.",USA,FDA,"Matrix Medica, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+6188c96b-712d-43ef-81a3-bf51317f4303,"Gri Medical & Electrical Technology Co., Ltd.",USA,FDA,"Gri Medical & Electrical Technology Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+27224eec-e447-4440-aaaa-bde002792318,"A Plus International, Inc.",USA,FDA,"A Plus International, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+f5a321d5-77c2-4784-b02f-e9213d96f10e,"Cardinal Health, LLC",USA,FDA,"Cardinal Health, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+8dba6d03-d429-4541-8cab-fcbde425dbf6,"Custom Medical Products, Ltd.",USA,FDA,"Custom Medical Products, Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+e54a5b44-5bc5-4a4e-a66a-e690a3a23bf3,National Healthcare Linen Service,USA,FDA,National Healthcare Linen Service,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+aa03de0c-3df6-452f-bd06-5941f0e97ca8,"Kentron Health Care, Inc.",USA,FDA,"Kentron Health Care, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+488a10db-1226-45ed-af09-829a415481d4,"Cardinal Health200, LLC",USA,FDA,"Cardinal Health200, LLC",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+36f5a669-5015-4917-9b4c-4268735b5c63,"Amsco Sterile Recoveries, Inc.",USA,FDA,"Amsco Sterile Recoveries, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+c613efe5-1ed1-46d9-a327-20054474192d,Miroz Industries Co.,USA,FDA,Miroz Industries Co.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+39e2d5f9-cdee-4113-acb3-0f80867f8d79,"The Sewing Source, Inc.",USA,FDA,"The Sewing Source, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+2f39d83d-3843-4956-b38a-8c9cb4a34868,Kimberly-Clark Corp.,USA,FDA,Kimberly-Clark Corp.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+e437c1a4-c84a-4b1d-93c9-a357ce25ca82,"Weihai Dishang Medical Technology Co., Ltd.",USA,FDA,"Weihai Dishang Medical Technology Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+eeadea74-9e21-4882-ae1f-e0400daf5fed,"Medical Sterilization, Inc.",USA,FDA,"Medical Sterilization, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+674acd07-586b-40c4-b0ac-803db00dfd8b,"Yanbian Pacific Textile Co., Ltd.",USA,FDA,"Yanbian Pacific Textile Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+5aab72ff-9280-462f-9c44-0b7cc9978fdf,"Halyard Health, Inc.",USA,FDA,"Halyard Health, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+07f20019-6429-45df-af03-f042658c244d,Azac Group,USA,FDA,Azac Group,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+ead5ce2c-af3d-4c4b-92d0-c6d8a222e64f,"Wuhan Dymex Healthcare Co., Ltd.",USA,FDA,"Wuhan Dymex Healthcare Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+f3ac434e-9b89-4f11-a82c-0b1df239acbf,"Mercana Industries , Ltd.",USA,FDA,"Mercana Industries , Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+3a0946b1-9358-479c-b946-dc099c6e6bb3,"B.J.ZH.F.PANTHER MEDICAL EQUIPMENT CO., Ltd.",USA,FDA,"B.J.ZH.F.PANTHER MEDICAL EQUIPMENT CO., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+1b22a163-a384-4ff0-9a8c-3af978b454fa,"Jiangsu Guangda Medical Material, Co., Ltd.",USA,FDA,"Jiangsu Guangda Medical Material, Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+fa8e624e-e3a9-45b7-ae75-344c1b1aa80d,Liaoning-Usa Corp.,USA,FDA,Liaoning-Usa Corp.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+708ce32c-e3b9-43fe-9ff8-63376b646ac0,G.D. Searle and Co.,USA,FDA,G.D. Searle and Co.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+b15ca22a-b702-4f44-a63c-93d65e5beb3d,Boston Scientific Corporation,USA,FDA,Boston Scientific Corporation,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+7702408a-62ee-4b9a-bfbe-909100da9e48,Kappler USA,USA,FDA,Kappler USA,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+7c5ce216-07bf-4908-8d3f-52543fb18de3,"Standard Textile Co., Inc.",USA,FDA,"Standard Textile Co., Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+aaccd3f4-e73c-4f54-99bf-4f29ee0d83ba,"Yadu Medical (Henan) Co., Ltd.",USA,FDA,"Yadu Medical (Henan) Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+1ef9372b-f20c-4045-8552-dbf163a21542,"Xiantao Topmed Nonwoven Protective Products Co., Ltd.",USA,FDA,"Xiantao Topmed Nonwoven Protective Products Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+0a9b2bca-27f4-43c4-8f44-dc0ecaa823ed,"3A Medical Products Co., Ltd.",USA,FDA,"3A Medical Products Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+ab524f58-e43f-404f-aeb6-b6c536ba93f6,"Ulti-Med Intl., Inc.",USA,FDA,"Ulti-Med Intl., Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+00e78b43-ccaf-4536-a258-32cfa1a2debb,"Sri/Surgical Express, Inc.",USA,FDA,"Sri/Surgical Express, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+fd3c864c-6c53-41cb-860b-3e5167c6087d,"Repack Surgical Enterprises, Inc.",USA,FDA,"Repack Surgical Enterprises, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+3c88dda3-b94d-4413-bfdb-cc21ef39a9d6,Kenpax International Limited,USA,FDA,Kenpax International Limited,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+145ab30a-b742-48ac-b403-0c068fa14ff9,"Primed Medical Products, Inc.",USA,FDA,"Primed Medical Products, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+d975d678-56e7-45c1-8e6f-9ed32906ba3e,Techstyles,USA,FDA,Techstyles,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+fc183b74-e6bb-4910-a61f-2fea3f88e068,Medcare Saglik Urunleri Sanayi VE Ticaret Anonim Sirketi,USA,FDA,Medcare Saglik Urunleri Sanayi VE Ticaret Anonim Sirketi,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+96e79c20-ea1a-4ff9-8414-eb714a5b014b,"George Courey, Inc.",USA,FDA,"George Courey, Inc.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+4f8b785d-8df1-4ba8-ad9c-b8a40fd7e38d,"Sejong Healthcare Co., Ltd.",USA,FDA,"Sejong Healthcare Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+12c0d274-356a-48ac-a5b7-6afc7fc8338e,"Nanning Tecbod Biological Technology Co., Ltd.",USA,FDA,"Nanning Tecbod Biological Technology Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+403898f3-c171-435b-a479-2263df926056,Bayteks Teknik Tekstil San. VE Tic. A.S.,USA,FDA,Bayteks Teknik Tekstil San. VE Tic. A.S.,2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.087Z,true
+a9483d80-bfd9-4b64-af7e-7a968e324f5a,"Xiantao Rhycom Non-Woven Products Co., Ltd.",USA,FDA,"Xiantao Rhycom Non-Woven Products Co., Ltd.",2026-04-19T08:26:23.087Z,2026-04-19T08:26:23.088Z,true
+32277c33-f93c-451e-84e8-cfec04c1f8ff,Dong Nai Garment Corporation (Donagamex),USA,FDA,Dong Nai Garment Corporation (Donagamex),2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+b243e9d7-817c-4b1e-a6c0-9e2227cfcfbe,"O&M Halyard, Inc.",USA,FDA,"O&M Halyard, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+4139c4e4-1910-4d98-a631-4188e01cb82c,Nat'L Surtex Corp.,USA,FDA,Nat'L Surtex Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+67ef7a8c-4dbb-471b-ae27-bd8f1670d1e1,"Johnson & Johnson Medical, Inc.",USA,FDA,"Johnson & Johnson Medical, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+7f95f190-6cb6-4f63-89ae-21550ae92ac5,"Xiantao Zhibo Non-Woven Products Co., Ltd.",USA,FDA,"Xiantao Zhibo Non-Woven Products Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+cac335eb-e74e-4090-9530-15ebeb540772,Elevate Textiles,USA,FDA,Elevate Textiles,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+19f9f728-0d8b-4188-8f92-25baba689f99,"Omni Intl., Inc.",USA,FDA,"Omni Intl., Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+6f68fd48-6294-4d7f-aa81-ff7e3f856879,"PolyConversions, Inc.",USA,FDA,"PolyConversions, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+53d76e92-35cb-4fa8-848e-f450ac6d7978,"Custom Sterile Services, Inc.",USA,FDA,"Custom Sterile Services, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+5fced244-6e8b-4fd7-8815-ab3a3f138e58,"Exact Medical Manufacturing, Inc.",USA,FDA,"Exact Medical Manufacturing, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+b828c989-1bf7-40f9-afde-978430c181c7,"Sage Products, Inc.",USA,FDA,"Sage Products, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+d3747a2f-f566-49c5-88bc-36268edb1592,"Gri-Alleset, Inc.",USA,FDA,"Gri-Alleset, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3478d537-153a-4a77-9ef8-faa25859fbb8,"Cadillac Products, Inc.",USA,FDA,"Cadillac Products, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+f67daacd-e6e8-4b6b-bc2a-ad4b200355ca,Sri Surgical,USA,FDA,Sri Surgical,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+ae2f6198-7fd2-4431-8179-a139c2cf6dd3,"Paneffort, LLC",USA,FDA,"Paneffort, LLC",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+1f07c3b0-6a08-4093-b0e9-d12e84e655e4,Central Georgia Ancillary Health Systems,USA,FDA,Central Georgia Ancillary Health Systems,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+4be33680-b9f6-42bc-b02f-35bcd32e2e12,"Xianning Marveldas Protective Articles Co., Ltd.",USA,FDA,"Xianning Marveldas Protective Articles Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+4401c728-8f90-45c2-87a3-9e43147d6869,"Surgikos, Inc.",USA,FDA,"Surgikos, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+0f359e91-b6a4-4d8f-92de-3add39f3e390,"Precept Medical Products, Inc.",USA,FDA,"Precept Medical Products, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+f20006ac-6c96-4907-a92c-136344282739,"Medline Industries, LP",USA,FDA,"Medline Industries, LP",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+76d311b2-8656-4905-b325-6050b257f605,Medtek Development Corp.,USA,FDA,Medtek Development Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+f6b90e37-39fc-42f5-9b70-7971f596c500,"Guangzhou Fuzelong Hygiene Material Co., Ltd.",USA,FDA,"Guangzhou Fuzelong Hygiene Material Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+ef34bffe-35db-423b-a1d6-955de81c9e37,"Promedical Products Co., Ltd.",USA,FDA,"Promedical Products Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+318db4c0-614c-4cdb-bc62-31b875b40258,"Lac Mac, Ltd.",USA,FDA,"Lac Mac, Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+830d53f6-c3a6-4271-bc0c-c61a4011c3f5,"Jiangsu Medplus Non-Woven Manufacturer Co., Ltd.",USA,FDA,"Jiangsu Medplus Non-Woven Manufacturer Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3e8c48a3-33bf-4413-987c-1b5a47e22666,"Allmed Medical (Hubei) Protective Products Co., Ltd.",USA,FDA,"Allmed Medical (Hubei) Protective Products Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+ff0a43d6-4c1b-4a29-a91e-ad0346ca2386,"Jingzhou Haixin Green Cross Medical Products Co., Ltd.",USA,FDA,"Jingzhou Haixin Green Cross Medical Products Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+41611da9-7c33-42cc-8ca6-d87f8e47c981,"Robert J. Sislian, Inc.",USA,FDA,"Robert J. Sislian, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+b2232931-24d4-416c-975d-0fbca570067e,"Anago, Inc.",USA,FDA,"Anago, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+745a193e-bc3a-471a-82ae-70cfe65d3759,Baxter Interwoven Offsite,USA,FDA,Baxter Interwoven Offsite,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+45e4d173-2c74-4c8b-8bb7-5c36e5699465,"Cardinal Health 200, Inc.",USA,FDA,"Cardinal Health 200, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+e67398df-bd77-49d5-93b1-13e452c09ce7,"Xuchang Zhengde Environstar Medical Products Co., Ltd.",USA,FDA,"Xuchang Zhengde Environstar Medical Products Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+e2921e81-0302-4e49-a5d6-014c6e07873a,"Copioumed Intl., Inc.",USA,FDA,"Copioumed Intl., Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+bf0cf73a-65cd-4364-98c4-db5f0c9ad7da,Smart Glove Corp. Sdn Bhd,USA,FDA,Smart Glove Corp. Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+28cfab83-ffaf-48a4-8f2d-6f9da62e86d9,"American Gemini, Inc.",USA,FDA,"American Gemini, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+12c3c344-1293-419f-a2fb-fbf6d9d5bc42,Glovco (M) Sdn. Bhd.,USA,FDA,Glovco (M) Sdn. Bhd.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+aeebf79d-e2c3-4ba4-865d-181d0ee030c6,P.T. Surya Milani Plastic Utama,USA,FDA,P.T. Surya Milani Plastic Utama,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+80d0fb2f-a942-4894-9414-bbd8bc1b6d4a,Pt. Medisafe Technologies,USA,FDA,Pt. Medisafe Technologies,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3549fe76-47f3-4806-a046-75741e581a18,Crocker Industrial Resources Sdn. Bhd.,USA,FDA,Crocker Industrial Resources Sdn. Bhd.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+d2487f15-43ea-4592-98ec-ddcfa94d762d,"Beverly Ent., Inc.",USA,FDA,"Beverly Ent., Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+974af2a5-1e97-4118-a684-3a46f7b17303,Absolute Synthetic Technologies Malaysia Sdn. Bhd.,USA,FDA,Absolute Synthetic Technologies Malaysia Sdn. Bhd.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+bceb463e-59c3-489d-a6ba-99778114823c,A1 Glove Sdn Bhd,USA,FDA,A1 Glove Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+0acfa3e9-85ba-405a-b02d-f235763555ae,Onetexx Sdn Bhd,USA,FDA,Onetexx Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+aa69bf26-ee51-4e9f-b5f9-3cd1dcfe0e64,Top Calibre Sdn Bhd,USA,FDA,Top Calibre Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+9053c5b8-7652-414f-849f-ce66645ba060,"W. L. Gore & Associates, Inc.",USA,FDA,"W. L. Gore & Associates, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+7b14ffb5-641e-42b3-a513-16e159318c2a,"Lon Tai Chemical Industrial Co., Ltd.",USA,FDA,"Lon Tai Chemical Industrial Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+a1d3f1b4-e5d1-4d68-bdde-99dfb593ab20,Wembley Rubber Products (M) Sdn Bhd,USA,FDA,Wembley Rubber Products (M) Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+cb9a9f32-14e9-408f-a832-e113ca91b279,Shield Gloves Manufacturer (M) Sdn Bhd,USA,FDA,Shield Gloves Manufacturer (M) Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+083ae09d-b417-4ebb-a040-9e851c3142e7,"Jm Gloves Co., Ltd.",USA,FDA,"Jm Gloves Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+2d48a1da-19f7-4394-b744-9269baf37368,"Grand Universe Trading Co., Ltd.",USA,FDA,"Grand Universe Trading Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+42fe8d25-c5bd-47cd-96fe-0b4423fbc87d,"London International Group, Inc.",USA,FDA,"London International Group, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+8c759437-67cf-45eb-9c2c-aaccee4f9393,"Shanghai Champion Plastic Products Co., Ltd.",USA,FDA,"Shanghai Champion Plastic Products Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+12c87412-90c5-4445-a47c-857ee12f78ae,"Mala Intertrade Co., Ltd.",USA,FDA,"Mala Intertrade Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+0b412046-80cc-49fa-aa1e-f630f1dbcb55,Tg Medical (China) Incorporation,USA,FDA,Tg Medical (China) Incorporation,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3a0b9f49-6ae5-4c6b-a308-1948a388c93b,Riverstone Resources Sdn Bhd,USA,FDA,Riverstone Resources Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+057a0117-080a-449a-b504-3e9b8adfd1c3,"Gallimore Ent., Inc.",USA,FDA,"Gallimore Ent., Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+2ac975f8-4bad-47ec-ac5f-2eb071939c3e,"Ningbo Yujiang Plastic & Rubber Co. , Ltd.",USA,FDA,"Ningbo Yujiang Plastic & Rubber Co. , Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+d310752e-50dc-4546-9f52-a185cfeb4a46,Top Glove Sdn. Bhd.,USA,FDA,Top Glove Sdn. Bhd.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+5b4425e7-16a2-4981-8c67-3615d1e454be,"Novapro Co., Ltd.",USA,FDA,"Novapro Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+baf8eb1d-9836-418a-9a4d-cb850fa14147,S&S Glove Corporation,USA,FDA,S&S Glove Corporation,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+2f25e78e-5fae-424d-9a33-cdd00b0984b5,Dah Giap Rubber Industries Sdn Bhd,USA,FDA,Dah Giap Rubber Industries Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+f822c2e7-4cd2-46af-892d-c324e442289c,"Guardian Group, Inc.",USA,FDA,"Guardian Group, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+593a5a86-7ecb-4e3c-afd9-a27fa9970627,Eco Medi Glove Sdn. Bhd.,USA,FDA,Eco Medi Glove Sdn. Bhd.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+d7a1cb45-f7ad-4393-8ec0-e218f9625cc3,Wear Safe (Malaysia) Sdn. Bhd.,USA,FDA,Wear Safe (Malaysia) Sdn. Bhd.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+8288d894-48b5-4ea4-86dd-6a46c55873d3,"Hands-On Packaging , Ltd.",USA,FDA,"Hands-On Packaging , Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+cc327d91-a324-4625-afa7-7371ae8b46e4,Hartalega Sdn Bhd,USA,FDA,Hartalega Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+6d8ad9fb-5e8b-4686-a842-e28ef4be89c9,"Ever Growth (Vietnam) Co. , Ltd.",USA,FDA,"Ever Growth (Vietnam) Co. , Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+de459411-5fc7-4f79-aa3c-a16ca969eb85,Ncl Corp.,USA,FDA,Ncl Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+6fd738d3-aabd-40c8-b19c-ea574a7bdd10,Aspen Glove Sdn. Bhd.,USA,FDA,Aspen Glove Sdn. Bhd.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+2dce867a-27d3-4934-b263-5fccfd96f88a,"Jiangsu Sunshine Plastic Products, Co., Ltd.",USA,FDA,"Jiangsu Sunshine Plastic Products, Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+6a895f57-7f0f-4045-a6df-67e890f40973,"Inner Mongolia Cureguard Medical Technology Co., Ltd.",USA,FDA,"Inner Mongolia Cureguard Medical Technology Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+fe56eb68-94c8-44ac-8296-8e828d71f3db,"Jiangsu Dihong Industry and Trade Co., Ltd.",USA,FDA,"Jiangsu Dihong Industry and Trade Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+738b0e5e-b77e-4e68-b235-9dc0132ccd15,"Summit Glove, Inc.",USA,FDA,"Summit Glove, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+262196fe-7c97-4243-a1f1-e7ca5a4d1d2f,"Shen Wei USA, Inc.",USA,FDA,"Shen Wei USA, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+430199b6-f814-487a-afb2-154480df744e,Sri Trang Gloves (Thailand) Public Company Limited,USA,FDA,Sri Trang Gloves (Thailand) Public Company Limited,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+79a2ae4c-1615-41b8-8c14-46462a19bdc3,Vietglove Corporation,USA,FDA,Vietglove Corporation,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+884f9cc7-ec79-409b-bc0c-cb7605a0fec1,"Quantum Co., Ltd.",USA,FDA,"Quantum Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+15c5946b-be9a-4c52-a392-d477aba91d29,"Xuzhou Full Sun Medical Products , Ltd.",USA,FDA,"Xuzhou Full Sun Medical Products , Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+4d673973-951b-4aec-a8a5-13aa3ed903fa,"Siam Sempermed Corp., Ltd.",USA,FDA,"Siam Sempermed Corp., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+9248166d-bca6-424f-80c6-e9ff3660f2f8,Transcontinental Fertilizer Co.,USA,FDA,Transcontinental Fertilizer Co.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+7f76f082-476f-4d35-a58b-7a97ef785d72,"Shanghai Foremost Plastic Industrial Co., Ltd.",USA,FDA,"Shanghai Foremost Plastic Industrial Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+0c4f4f86-17cc-4537-8cd7-054842b448f7,"Hycare Intl. Co., Ltd.",USA,FDA,"Hycare Intl. Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+114778be-e10c-48b0-bff0-0b3f72ff542a,Brightway Holdings Sdn. Bhd.,USA,FDA,Brightway Holdings Sdn. Bhd.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+00efe9aa-c6cf-4078-96fe-a019658e42f9,"Yong XU Co, Ltd.",USA,FDA,"Yong XU Co, Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+44a3b0fc-634a-44e2-81e4-e59af073bea1,Hartalega NGC Sdn. Bhd.,USA,FDA,Hartalega NGC Sdn. Bhd.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3d65a9c5-a0f7-4aae-b92b-e3f0dd3cac42,"T.K. Glove Products Co., Ltd.",USA,FDA,"T.K. Glove Products Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+e7258ec3-4f13-48fa-9cf0-6bd903b6b8ee,"Ambusco Co., Inc.",USA,FDA,"Ambusco Co., Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+8ea16afc-fe77-4c25-bb8b-58a84e96f310,"Sempermed USA, Inc.",USA,FDA,"Sempermed USA, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+66743388-70ce-48aa-ac93-11413eecc75c,Kossan International Sdn Bhd,USA,FDA,Kossan International Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+eb253827-bb16-472e-ac7f-810ec3378b59,Best Manufacturing Company,USA,FDA,Best Manufacturing Company,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+324f4b6a-4c64-48ea-9494-46e3da505368,"Inner Mongolia Boming Medical Supplies Co., Ltd.",USA,FDA,"Inner Mongolia Boming Medical Supplies Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+aa53e67a-415c-40c4-9a67-5b0cbb76dc38,Wrp Specialty Products Sdn. Bhd.,USA,FDA,Wrp Specialty Products Sdn. Bhd.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+e212cdf1-4d29-446c-b402-ef1fa10bc002,"Shandong Blue Sail Innovation Co., Ltd.",USA,FDA,"Shandong Blue Sail Innovation Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+6b3ae473-26be-42fc-90d8-742ca139123e,Mwe Asia America Industries Sdn,USA,FDA,Mwe Asia America Industries Sdn,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+a9a85e23-afe7-48c3-8471-b961c37b5b21,"Ttk Healthcare , Ltd.",USA,FDA,"Ttk Healthcare , Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+c38a2c0e-492a-482f-9541-04c8263e37cf,Safeskin Retailing (Hk) Limited,USA,FDA,Safeskin Retailing (Hk) Limited,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+abb05d49-cf23-41e6-b280-19d0cbda05a4,Vip Glove Sdn Bhd,USA,FDA,Vip Glove Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+89f4dac0-a47a-44f8-ac57-b3c30c7c61b9,Parke-Davis Co.,USA,FDA,Parke-Davis Co.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3a5ebb66-49b9-45af-9a21-a2fc50c95d33,"Pollak (Intl.), Ltd.",USA,FDA,"Pollak (Intl.), Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+db1b660f-632a-48c0-ad15-5a5511223e03,"Top Glove (Zhangjiagang) Co. , Ltd.",USA,FDA,"Top Glove (Zhangjiagang) Co. , Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+f52287d5-ca2f-4bc9-b257-e729d4103b46,"Utah Medical Products, Inc.",USA,FDA,"Utah Medical Products, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+6f9f1e07-79dd-4eac-b804-4e31e9460424,Perusahaan Getah Asas Sdn. Bhd.,USA,FDA,Perusahaan Getah Asas Sdn. Bhd.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+082c1c52-8973-41a9-bb37-81e55a6e1e8c,"Rich Mountain Medical Products, Inc.",USA,FDA,"Rich Mountain Medical Products, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+6e4a5ffe-984e-48d2-811d-47c61e0eba43,Ever Global Enterprise Corporation,USA,FDA,Ever Global Enterprise Corporation,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+d578f7fe-767a-43fb-bd60-dc75a6f81a16,"Best Care Trading Co., Ltd.",USA,FDA,"Best Care Trading Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+e81edf07-a435-40bb-8ce6-237ee8a0cbae,"Guangdong Kingfa Sci. & Tech.Co., Ltd.",USA,FDA,"Guangdong Kingfa Sci. & Tech.Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+b0854c59-2288-46ca-b16d-3df48cefb3f0,"Omnigrace (Thailand) , Ltd.",USA,FDA,"Omnigrace (Thailand) , Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+81542c58-93c6-45c0-81b5-7986e25d9cd1,"Jiangsu Cureguard Glove Co., Ltd.",USA,FDA,"Jiangsu Cureguard Glove Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+a4110131-38a9-4630-bbef-8b3eedfe7099,"Sheen More Ent. Co., Ltd.",USA,FDA,"Sheen More Ent. Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+769e858d-a9a6-4755-8552-9e6fa1e473a6,"Lifestyle Safty Products (Hui Zhou) Co., Ltd.",USA,FDA,"Lifestyle Safty Products (Hui Zhou) Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+c2ee1a50-a6ab-42a4-b26c-594103b7a6d6,"Top Quality Mfg., Inc.",USA,FDA,"Top Quality Mfg., Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3d51d4db-1d56-457f-a312-b059aa894b2b,Kimberly Clark Corporation,USA,FDA,Kimberly Clark Corporation,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+2013d012-198b-42fb-9e96-329dbfb6f1e1,"Siem Aempemed Corp., Ltd.",USA,FDA,"Siem Aempemed Corp., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+857d717e-5b7c-4c1c-9e29-3ca5108f6b1a,Hong Seng Gloves Sdn Bhd,USA,FDA,Hong Seng Gloves Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+447e7839-f18f-4a58-8091-868b28ad9dd3,"Derma Care Plus Products, LLC",USA,FDA,"Derma Care Plus Products, LLC",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+405a8e2d-531f-4adf-b2b8-027e424ca473,"Allied Signal, Inc.",USA,FDA,"Allied Signal, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+7aa058a0-7323-41d2-a03d-b8a3d3a98f00,"Brilliant Ray Intl., Inc.",USA,FDA,"Brilliant Ray Intl., Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+fca4aed8-9449-4e03-8e71-d373b420a2c5,Chiron Ophthalmics,USA,FDA,Chiron Ophthalmics,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+4c388b11-4058-4ecf-bcb1-01b07c314add,"Bausch & Lomb, Inc.",USA,FDA,"Bausch & Lomb, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+0d3bb3fb-fa68-4b39-bb23-88008fe7e5ba,"Medtec, Inc.",USA,FDA,"Medtec, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+c8073fd6-eccc-4e23-aedb-0176114bd7cd,White Knight Healthcare,USA,FDA,White Knight Healthcare,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+16db8605-ccec-4648-aac6-0fe837eefdad,"Biomedical Devices, Inc.",USA,FDA,"Biomedical Devices, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+01d93f8e-ead5-4f83-b6e2-7804306b956e,Vitaphore Corp.,USA,FDA,Vitaphore Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+c97d05f0-6009-465b-967a-78c51e7790a4,Medical Technology Development Corp.,USA,FDA,Medical Technology Development Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+f481083a-990a-40b1-963c-bf82ef6e648e,"Tadco, Inc.",USA,FDA,"Tadco, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+b60dc024-058c-4acd-aa7d-b15867d52be9,Abbott Laboratories,USA,FDA,Abbott Laboratories,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+4445e9a9-9d49-42f3-8d51-6e15c3c36907,"Radiaction , Ltd.",USA,FDA,"Radiaction , Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+2d63d8eb-39ee-47e0-a66a-915a98b7bae2,"Zimmer, Inc.",USA,FDA,"Zimmer, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+4409121a-8982-4056-8435-dded41efd345,"Safe Shield Co., Ltd.",USA,FDA,"Safe Shield Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+eaa9f01d-1369-4b9d-a59e-43ef826ad142,Pulpdent Corp.,USA,FDA,Pulpdent Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+db6bbc46-f724-432a-82c9-f97fa49eb408,Zymo Research,USA,FDA,Zymo Research,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+a3b71a09-f6ea-46cf-ac55-56115724c2a3,"Johnson & Johnson Professionals, Inc.",USA,FDA,"Johnson & Johnson Professionals, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+c2b3f0f3-99a4-41cb-9efe-f5d00878c0dc,"M.S.G. Health Systems, Inc.",USA,FDA,"M.S.G. Health Systems, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+a3bc7172-e929-4d3f-a92b-bd22953ebaee,"Shield Gloves Manufacturer Sdn. Bhd. C/O Lenty, Inc.",USA,FDA,"Shield Gloves Manufacturer Sdn. Bhd. C/O Lenty, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+de2db69b-41cc-446e-a043-65f8d1d29a2a,Onyx Medical Corp.,USA,FDA,Onyx Medical Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+fc005c2b-1c29-4150-9727-d98bebb61318,Bredent GmbH & Co. KG,USA,FDA,Bredent GmbH & Co. KG,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+4f0cc22c-e44d-4395-897e-a014f1648bd3,"Sgmp Co., Ltd.",USA,FDA,"Sgmp Co., Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+002dfe08-7ec7-4c4a-8c18-feb6a61724b0,"Mimedx Group, Inc.",USA,FDA,"Mimedx Group, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+286c26fe-b3b8-42dc-9676-5fe8246e2b82,Barry S. Smith Co.,USA,FDA,Barry S. Smith Co.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+48970afe-00a6-451a-87f0-9719eafb69d6,"Eye Garter Company, Inc.",USA,FDA,"Eye Garter Company, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+f50c2202-8cac-4237-9c62-8924fd18be62,Phase One Disign Co.,USA,FDA,Phase One Disign Co.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+48eb594e-6a3a-4ca5-85cb-b498554d8d3d,Medipart Jerry Alexander,USA,FDA,Medipart Jerry Alexander,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3814c8ba-0ea9-41dd-a0b5-c30dfc4d9687,"Medical Resources International, Inc.",USA,FDA,"Medical Resources International, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+d5ea9476-4e04-4a48-bfc9-1fff8ffd81ac,"Oasis Medical, Inc.",USA,FDA,"Oasis Medical, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+0345ecf0-ab2a-4900-a17c-640d0a46e4b3,"Shield Diagnostics, Ltd.",USA,FDA,"Shield Diagnostics, Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+e75e82a0-6a39-4111-8339-89e86f15e9cc,Americal Corp.,USA,FDA,Americal Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+905c8ac5-1a60-4aa5-9cda-54c5177400e1,"Kenex , Ltd.",USA,FDA,"Kenex , Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+503b2e48-04f2-4079-9f5e-68a65e88738b,"Medical Taping Systems, Inc.",USA,FDA,"Medical Taping Systems, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+dcfd8cbb-87c3-4f8a-9639-d5eb33e1240e,"Bfd, Inc.",USA,FDA,"Bfd, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+b766c9d6-19d6-4027-8fc5-18da3d9e5a9e,"Surgeon Surgical Instrumentation, Inc.",USA,FDA,"Surgeon Surgical Instrumentation, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+a51ed613-4baa-4096-9048-b8bd370854e3,"Med-Genesis, Inc.",USA,FDA,"Med-Genesis, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+2ec62340-3209-414f-8518-8126a5337cad,"The Mochlett Laboratories, Inc.",USA,FDA,"The Mochlett Laboratories, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+2638e5ea-7ef7-4bb8-910f-a8f9713d1c17,"I.C.D. Industries, Inc.",USA,FDA,"I.C.D. Industries, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+9274c8d4-3a42-4830-a1e7-f977a08433b4,"Gaymar Industries, Inc.",USA,FDA,"Gaymar Industries, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+e09d5e21-4d7a-468d-929c-66c30fead383,"Unicoglobal, Inc.",USA,FDA,"Unicoglobal, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+e8bb0bbf-2599-4d4e-a8dc-fd5666fd9791,"Milkmate Products, Inc.",USA,FDA,"Milkmate Products, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+681dd2e6-3eb6-401a-93f0-ef977ef6e1a2,"Steri-Shield Products, Inc.",USA,FDA,"Steri-Shield Products, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+5621c6b3-9189-45f7-bf57-2e0887d962f4,Lorvic Corp.,USA,FDA,Lorvic Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+785ab0e5-949e-42ef-91bc-d079daf4553a,Shippert Medical Technologies Corp.,USA,FDA,Shippert Medical Technologies Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+81a208ec-3886-40ac-9cc9-490fc0ed42c3,"Mem, Inc.",USA,FDA,"Mem, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+2010f079-6ddc-4af0-8497-66c90983a4cd,Visitec Co.,USA,FDA,Visitec Co.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+550bb33a-7264-46cc-82a7-c827111dfb14,F. Walter Hanel GmbH,USA,FDA,F. Walter Hanel GmbH,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+035392d8-2b8e-43b1-b4ad-f68757a91fe2,"Splash Shield, Inc.",USA,FDA,"Splash Shield, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+b2b4c0e0-4741-4dad-9a95-c3ea5d9fadf8,Guthrie Medicare Products (Melaka) Sdn Bhd,USA,FDA,Guthrie Medicare Products (Melaka) Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+e7c95cce-a826-410c-9bc7-7f46b9fc0f50,"Bcg Medical, LLC",USA,FDA,"Bcg Medical, LLC",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+faee619f-5576-4511-93bd-9a0251ce152f,"Pan-Tech Research, Inc.",USA,FDA,"Pan-Tech Research, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+1864ffe5-f717-4761-9a5e-48a0612a4fd0,Ipco Corp.,USA,FDA,Ipco Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+6a6292a8-49d2-4225-b132-9750478ee2b5,Dynarex Corp.,USA,FDA,Dynarex Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+b6ca715a-e261-4a13-8d0e-34b0d1e1ae4f,"Jain Surgical Equipment, Inc.",USA,FDA,"Jain Surgical Equipment, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+c9ccea67-6fea-483c-9876-6fed7c599338,Lic-Orthion,USA,FDA,Lic-Orthion,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+d2ba145a-fb5d-4bb9-b1b0-0fa1795f0c00,"Depuy, Inc.",USA,FDA,"Depuy, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+33fa9238-0c3b-47e9-aea8-5b4f75514de3,Ballard Medical Products,USA,FDA,Ballard Medical Products,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+7d7737f0-0f2e-4a45-a186-3c1c347e14d4,Rudolfo T. Sanchez,USA,FDA,Rudolfo T. Sanchez,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+b407e5c8-2909-4edb-8790-324292e948ac,"Berkley Medical Resources, Inc.",USA,FDA,"Berkley Medical Resources, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+abb2d7ef-3544-4635-85e4-e85f45e0cfdd,"Axis-Shield Diagnostics, Ltd.",USA,FDA,"Axis-Shield Diagnostics, Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+0ca52bff-b83b-41dd-baf8-7b0d0646f29c,Elastomade Accessories Sdn Bhd,USA,FDA,Elastomade Accessories Sdn Bhd,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+fdc2a543-5b2d-4faf-b11c-95e8b441d840,Products For Medicine,USA,FDA,Products For Medicine,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+258bf20c-d2f8-4864-a88b-ac746c8f6529,"Medeon Biodesign, Inc.",USA,FDA,"Medeon Biodesign, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+69c449ff-8648-4d7b-b974-b857579ee305,"Worldwide Dental, Inc.",USA,FDA,"Worldwide Dental, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+48f38a47-5fa8-4d50-b364-e5a4f6f2d102,"Unique Management Ent., Inc.",USA,FDA,"Unique Management Ent., Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+bd6e6e0d-6f2c-4041-9242-d630a04a1fc7,Harding Medical Devices,USA,FDA,Harding Medical Devices,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+45279157-aca2-4245-b459-41ccd42ddf12,"Plasmatica, Ltd.",USA,FDA,"Plasmatica, Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+8773f944-1028-458a-8eb5-1934eca02455,Command Marketing Corp.,USA,FDA,Command Marketing Corp.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+e953047d-4089-45d8-9c4e-23b0e89c09f9,Dentsply Intl.,USA,FDA,Dentsply Intl.,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+357ddce9-50a1-42b4-9745-32a75b8476d9,"Kawasumi Laboratories, Inc.",USA,FDA,"Kawasumi Laboratories, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+a8a98bdf-7025-4f99-b5a1-0e076d9d75ad,"Colors IN Optics , Ltd.",USA,FDA,"Colors IN Optics , Ltd.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+24240ccf-4e31-4ad1-b67f-5eb7c10a05ac,Psoria-Shield,USA,FDA,Psoria-Shield,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+508ada4c-54e2-4aa5-8cc9-6fee9cbb60fd,"Sb-Kawasumi Laboratories, Inc.",USA,FDA,"Sb-Kawasumi Laboratories, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+d1df8507-7ead-40cf-80b6-c5cfe7a131f0,"Bernsco Surgical Supply, Inc.",USA,FDA,"Bernsco Surgical Supply, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3adc08fa-b993-479f-ab92-55a85048a176,"Katena Products, Inc.",USA,FDA,"Katena Products, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+ed34a29f-b5e9-4519-aef3-9bca6286baca,"Chathamborough Research Group, Inc.",USA,FDA,"Chathamborough Research Group, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+649aaa06-80c9-4a88-8014-f4d2d4d648b4,"Fuji Optical Systems, Inc.",USA,FDA,"Fuji Optical Systems, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+195f9c6f-b4d5-4167-9a43-5b218a99cb6c,North East Technology,USA,FDA,North East Technology,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3851a9b6-6e3b-4228-88d1-1410ebb0fae8,"Welch Allyn, Inc.",USA,FDA,"Welch Allyn, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+99333258-352a-4a52-b5e5-25bd16ac468c,"Marcal Paper Mills, Inc.",USA,FDA,"Marcal Paper Mills, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3555bb73-6833-4e38-9fe7-bfaff3ffc487,"Soteira, Inc.",USA,FDA,"Soteira, Inc.",2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+db30babe-4218-425a-b9bd-1c19e8dfd0e4,Syntech Mfg. Services,USA,FDA,Syntech Mfg. Services,2026-04-19T08:26:23.088Z,2026-04-19T08:26:23.088Z,true
+3dfe43d3-5bd9-41ed-9dab-c729d6228e8b,"White Knight Healthcare, Inc.",USA,FDA,"White Knight Healthcare, Inc.",2026-04-19T08:26:23.093Z,2026-04-19T08:26:23.093Z,true
+5465f08f-2301-4c39-9604-9ba3e67f2dab,"The Laryngeal Mask Co., Ltd.",USA,FDA,"The Laryngeal Mask Co., Ltd.",2026-04-19T08:26:23.093Z,2026-04-19T08:26:23.093Z,true
+18856c18-554e-4f51-8758-ae99b7fe71f2,"Smith'S Ostomy Products, Inc.",USA,FDA,"Smith'S Ostomy Products, Inc.",2026-04-19T08:26:23.093Z,2026-04-19T08:26:23.093Z,true
+be0e5fde-06e5-4e6b-b908-a3f5396b898a,"Fred Sammons, Inc.",USA,FDA,"Fred Sammons, Inc.",2026-04-19T08:26:23.093Z,2026-04-19T08:26:23.093Z,true
+78757940-39b4-4577-b3e3-4b6d3e5d09e4,Dhd Medical Products Div. Diemolding Corp.,USA,FDA,Dhd Medical Products Div. Diemolding Corp.,2026-04-19T08:26:23.093Z,2026-04-19T08:26:23.093Z,true
+5369cd9d-c22c-436a-9d45-765f94763089,Manner Medical Products,USA,FDA,Manner Medical Products,2026-04-19T08:26:23.093Z,2026-04-19T08:26:23.093Z,true
+794df8ec-9206-4d6c-bb34-2909939f7541,"Devon Industries, Inc.",USA,FDA,"Devon Industries, Inc.",2026-04-19T08:26:23.093Z,2026-04-19T08:26:23.093Z,true
+00d62c15-3914-41b3-9f95-2df0ea0ab5ff,Cabot Safety Corp.,USA,FDA,Cabot Safety Corp.,2026-04-19T08:26:23.093Z,2026-04-19T08:26:23.093Z,true
+30ff9c57-8d40-461d-866b-3c1902243b7b,"Cedar Surgical, Inc.",USA,FDA,"Cedar Surgical, Inc.",2026-04-19T08:26:23.093Z,2026-04-19T08:26:23.093Z,true
+d4bd5031-aeed-4f6b-a7f6-51e7abcc2693,"Nutra Luxe MD, LLC",USA,FDA,"Nutra Luxe MD, LLC",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+d2bbbe43-15ee-4436-9cb3-9d158fe815ee,"Certified Safety Mfg., Inc.",USA,FDA,"Certified Safety Mfg., Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+99ff30b2-f8c9-4a3d-a488-04a7f2a6d11c,James River Corp.,USA,FDA,James River Corp.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+1ba1da46-5ac3-4d85-889a-df04984c83b6,"Dentsply Sirona, Inc.",USA,FDA,"Dentsply Sirona, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+ee941a4c-6862-4369-b43a-5d458d2e9f0e,"Suzhou Frankenman Medical Equipment Co., Ltd.",USA,FDA,"Suzhou Frankenman Medical Equipment Co., Ltd.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+ffcea8c9-c5f3-4f40-96da-cd477cbb2354,Healthtronics,USA,FDA,Healthtronics,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+58aff96c-2123-4f70-8732-230249716342,"Directed Energy, Inc.",USA,FDA,"Directed Energy, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+08da6b4e-33bf-4f04-9760-df6062b5aa89,"Porex Surgical, Inc.",USA,FDA,"Porex Surgical, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+00ff71a0-0f84-462a-8aaf-65daf4fd42ae,"Intuitive Surgical, Inc.",USA,FDA,"Intuitive Surgical, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+2cea9c9b-0e68-4ab3-ac0d-4ab5b10eef98,"Whitney Products, Inc.",USA,FDA,"Whitney Products, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+fa80086f-8ad1-4636-99a4-5dea600fc329,"Weihai Hongyu Nonwoven Fabric Products Co., Ltd.",USA,FDA,"Weihai Hongyu Nonwoven Fabric Products Co., Ltd.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+61cd093e-e9a8-44a9-a26b-3a39751bb37f,"Laser Engineering, Inc.",USA,FDA,"Laser Engineering, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+623f8d54-410e-4720-8e0d-4afae6da7720,Storz Instrument Co.,USA,FDA,Storz Instrument Co.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+26344866-6348-48d7-b647-7d8fd86916be,"ETHICON, Inc.",USA,FDA,"ETHICON, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+20b90d9f-b6b7-45b0-93d8-0458e4443c5b,Foreign Trade Zone of Wisconsin,USA,FDA,Foreign Trade Zone of Wisconsin,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+53c4413c-da29-4d37-b205-ac55dbf4d9a4,Dio-Med Corp.,USA,FDA,Dio-Med Corp.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+9c96adb9-4735-4685-b33c-fdf0b1af4b1b,"Dexide, Inc.",USA,FDA,"Dexide, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+49df10be-7075-4e1e-a9be-6b83ebe29b1a,Nopa Instruments,USA,FDA,Nopa Instruments,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+a566aa64-469a-4d7e-8bb5-e603173d8470,Stryker Corp.,USA,FDA,Stryker Corp.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+3cebac08-cb59-4653-9c5c-74b1a68b7f84,Heraeus Instruments GmbH,USA,FDA,Heraeus Instruments GmbH,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+a09588a4-184c-4f91-8188-8a81d483b021,Deseret Pharmaceutical Co.,USA,FDA,Deseret Pharmaceutical Co.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+b6f2b92e-9346-4b76-b349-ec9467652408,"Micromedics, Inc.",USA,FDA,"Micromedics, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+66c82163-b74b-44eb-8de9-4d6a7d5fcd15,Allegiance Healthcare Corp.,USA,FDA,Allegiance Healthcare Corp.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+989313bf-dcd7-46bb-beff-15a7961f7d45,"Carl Zeiss, Inc.",USA,FDA,"Carl Zeiss, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+0040a641-41e4-4db6-aa5d-8d1d7f8603f2,"Shanghai Motex Healthcare Co., Ltd.",USA,FDA,"Shanghai Motex Healthcare Co., Ltd.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+c98d06bf-082b-4e32-8c4f-bc8a6853af2f,"Ansell, Inc.",USA,FDA,"Ansell, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+26312971-1524-49ad-a964-ac4fcefd8e8b,Pacificlink Export,USA,FDA,Pacificlink Export,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+0c6d12a5-d285-42b0-8ea1-ef256194ff01,"Getset Surgical, SA",USA,FDA,"Getset Surgical, SA",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+5f4bc649-4061-4a65-b16a-6b4e41ea260d,"Advanced Surgical, Inc.",USA,FDA,"Advanced Surgical, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+fa044bb0-c0a2-4069-bce6-6f87cac73be0,"Hydrofera, LLC",USA,FDA,"Hydrofera, LLC",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+24b115e1-412a-4054-9e31-2748b590a6e5,"Fdt Precision Machine Co., Inc.",USA,FDA,"Fdt Precision Machine Co., Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+07e7b6ec-1643-4f77-b2fb-d16cf756efd2,"Paragon Medical, Inc.",USA,FDA,"Paragon Medical, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+7a340ede-aaf2-408e-8f92-0af8b0d16b93,"Nakanishi, Inc.",USA,FDA,"Nakanishi, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+df949cc1-2fa5-42eb-b920-b8b13d8cf727,"United States Surgical, A Division of Tyco Healthc",USA,FDA,"United States Surgical, A Division of Tyco Healthc",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+9109345e-3d6f-4a2f-9535-37e406fb3b50,"Practical Navigation, LLC",USA,FDA,"Practical Navigation, LLC",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+d4be5fb2-e08d-4c56-9cc5-d29847550cb7,"Northgate Technologies, Inc.",USA,FDA,"Northgate Technologies, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+e860638e-020c-481f-9e8a-b6dbb79bee35,"Gemss Medical Systems Co., Ltd.",USA,FDA,"Gemss Medical Systems Co., Ltd.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+2741329c-792a-417e-bfe3-a2e68c162253,Mako Surgical Corp.,USA,FDA,Mako Surgical Corp.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+dc4548df-516d-46f8-aa56-40eb224ce17b,"Mdt Corp., Inc.",USA,FDA,"Mdt Corp., Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+f10e9580-a00f-4aa6-83c9-1667e5cc1da1,Boston Scientific Corp,USA,FDA,Boston Scientific Corp,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+4d95fccd-48b4-4b0e-a26c-98774624059b,"Procedure Pak, Inc.",USA,FDA,"Procedure Pak, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+70900981-1413-4ed5-bfc9-759943551ba6,"Corda Intl. Holdings, Inc.",USA,FDA,"Corda Intl. Holdings, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+6aaf943a-94aa-45ae-8135-92e89149554a,The Kendal Co.,USA,FDA,The Kendal Co.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+4be14238-1165-48ab-8c10-3e453d947fac,"Endoscopic Technologies, Inc. D/B/A Estech",USA,FDA,"Endoscopic Technologies, Inc. D/B/A Estech",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+0eaac28f-ac42-4ec7-a485-b9af1d0b6e7d,Porex Medical,USA,FDA,Porex Medical,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+9bb74bd6-9bfb-4f05-af68-58dd2c0097c3,"Merced Medical, Inc.",USA,FDA,"Merced Medical, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+861013cd-fe4f-4493-88de-d5374c1f4ded,Cross Country Paper Products Corp.,USA,FDA,Cross Country Paper Products Corp.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+38a4c48d-22fa-447c-a697-fb3d553c6469,Minnesota Laser Corp.,USA,FDA,Minnesota Laser Corp.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+b4e79f38-ec2a-4991-aa51-1b53865f5b3b,"Myocure, Inc.",USA,FDA,"Myocure, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+e58b2fa1-392a-40d6-9dbc-dbe4224c3c26,"Medtronic Xomed, Inc.",USA,FDA,"Medtronic Xomed, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+b27e636a-4657-4943-be9e-4faed803a7fc,Deroyal,USA,FDA,Deroyal,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+8d609b67-0e98-476f-9f30-02cc9f0e4c91,Pilling Weck Surgical,USA,FDA,Pilling Weck Surgical,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+04e7db87-22c2-4f6c-af4a-849ce2e54386,"Smtp Technology Co., Ltd.",USA,FDA,"Smtp Technology Co., Ltd.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+1cb855fa-4cea-406f-966b-5d05f79c108f,Kinetic Medical Products,USA,FDA,Kinetic Medical Products,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+d661e98d-4f86-4428-b2d3-2a4d5e6f30cc,Flexbar Machine Corp.,USA,FDA,Flexbar Machine Corp.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+54a34048-5e2e-4a67-ad31-aeabd4049e6d,"Tnco, Inc.",USA,FDA,"Tnco, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+48967583-610b-4fdc-8c7e-5ae2ef307882,C. R. Bard,USA,FDA,C. R. Bard,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+440e91ee-8df8-4b45-9b29-7494c1c031e2,"Aesculap, Inc.",USA,FDA,"Aesculap, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+311f9f02-f8d3-4f41-8045-c4e4afcaa8d0,"Acufex Microsurgical, Inc.",USA,FDA,"Acufex Microsurgical, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+798f7ae1-1809-4793-b2fa-ed706d9050b9,Misten Medical Corp.,USA,FDA,Misten Medical Corp.,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+23c14578-9c5f-43ab-a0b2-08dc9c2ebe2e,Kay Medical Concepts,USA,FDA,Kay Medical Concepts,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+2d1d6db3-418e-46b7-9fd3-fb2eb9a97d7d,"Aomori Olympus Co., Ltd.",USA,FDA,"Aomori Olympus Co., Ltd.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+d164ccbe-f943-4c0f-8881-ba6f57954660,"Professional Medical Products, Inc.",USA,FDA,"Professional Medical Products, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+0414e7a3-2993-478e-aea5-b21820ced75c,"Nice-Pak Products, Inc.",USA,FDA,"Nice-Pak Products, Inc.",2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+82986b88-ddbc-40bc-8767-d2d45079a14c,3M Canada Company,Canada,HealthCanada,CA-MFG-001,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+e8399aa3-1f2b-4db1-b87a-aebfaeb5cbad,Medicom Inc.,Canada,HealthCanada,CA-MFG-002,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+c892f483-3d42-401a-88ab-80a2006f9220,AMD Medicom Inc.,Canada,HealthCanada,CA-MFG-003,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+577805bb-3829-4ced-aa6a-8bbcddd48221,Sample CN Manufacturer,China,NMPA,CN-MFG-001,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+98558b8b-c6f5-4dbd-bd0a-aca8fd218dab,Another CN Manufacturer,China,NMPA,CN-MFG-002,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+b145be3b-5144-47b4-9c75-bd6519bbec5c,稳健医疗用品股份有限公司,China,NMPA,CN-MFG-001,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+9d12d9c7-c1b2-4c98-a9fa-34d4d3e8ef39,3M中国有限公司,China,NMPA,CN-MFG-002,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+8c985fd0-5d19-4e91-9c34-a2eb1c811f88,河南飘安集团有限公司,China,NMPA,CN-MFG-003,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+5060195a-c60d-4f28-852a-6df07f665abf,振德医疗用品股份有限公司,China,NMPA,CN-MFG-004,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+c528d40a-40d8-478d-9499-e1eb4d203e57,蓝帆医疗股份有限公司,China,NMPA,CN-MFG-005,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+13832196-9884-478b-8781-27b86b690bc5,"Kowa Company, Ltd.",Japan,PMDA,JP-MFG-001,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+7dcc1ae0-2580-40a7-bab3-eb17e21344d9,"Shigematsu Works Co., Ltd.",Japan,PMDA,JP-MFG-002,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+4c1f4809-b04e-4db0-b55d-06b38cdf03b6,Showa Glove Co.,Japan,PMDA,JP-MFG-003,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+53451029-f983-46fb-94f5-0c632e17f774,ResMed Pty Ltd,Australia,TGA,AU-MFG-001,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true
+701446be-b075-4268-beba-32f56c2da007,Ansell Limited,Australia,TGA,AU-MFG-002,2026-04-19T08:26:23.094Z,2026-04-19T08:26:23.094Z,true

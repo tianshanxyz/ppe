@@ -1,0 +1,827 @@
+[
+  {
+    "regulation_name": "Health Products Act - Medical Devices",
+    "regulation_name_en": "Health Products Act - Medical Devices",
+    "regulation_name_zh": "健康产品法 - 医疗器械",
+    "regulation_type": "regulation",
+    "jurisdiction": "SG",
+    "category": "General",
+    "effective_date": "2007-07-01",
+    "content": "The Health Products Act provides the legal framework for the regulation of health products in Singapore, including medical devices. It covers product registration, dealer licensing, and post-market surveillance.",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "health products",
+      "regulation"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "GN-12: Guidance on Medical Device Product Registration",
+    "regulation_name_en": "GN-12: Guidance on Medical Device Product Registration",
+    "regulation_name_zh": "GN-12: 医疗器械产品注册指南",
+    "regulation_type": "guidance",
+    "jurisdiction": "SG",
+    "category": "Registration",
+    "effective_date": "2021-05-01",
+    "content": "This guidance document provides detailed information on the product registration process for medical devices in Singapore, including device classification, registration routes, and documentation requirements.",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "registration",
+      "guidance"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Pharmaceutical and Medical Device Act (PMD Act)",
+    "regulation_name_en": "Pharmaceutical and Medical Device Act (PMD Act)",
+    "regulation_name_zh": "药品医疗器械法 (PMD法)",
+    "regulation_type": "regulation",
+    "jurisdiction": "JP",
+    "category": "General",
+    "effective_date": "2014-11-25",
+    "content": "The PMD Act is the fundamental law governing pharmaceuticals and medical devices in Japan. It covers marketing authorization, quality management, and post-market safety measures.",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "PMD Act",
+      "regulation"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "QMS Ministerial Ordinance",
+    "regulation_name_en": "QMS Ministerial Ordinance",
+    "regulation_name_zh": "QMS 省令",
+    "regulation_type": "regulation",
+    "jurisdiction": "JP",
+    "category": "Quality System",
+    "effective_date": "2015-03-01",
+    "content": "The Ministerial Ordinance on Quality Management System for Medical Devices establishes requirements for QMS conformity assessment and manufacturing control.",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "QMS",
+      "quality"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Therapeutic Goods Act 1989",
+    "regulation_name_en": "Therapeutic Goods Act 1989",
+    "regulation_name_zh": "治疗用品法 1989",
+    "regulation_type": "regulation",
+    "jurisdiction": "AU",
+    "category": "General",
+    "effective_date": "1991-02-15",
+    "content": "The Therapeutic Goods Act 1989 provides the legal framework for the regulation of therapeutic goods in Australia, including medical devices.",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "therapeutic goods",
+      "regulation"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Medical Devices Regulations 2002",
+    "regulation_name_en": "Medical Devices Regulations 2002",
+    "regulation_name_zh": "医疗器械法规 2002",
+    "regulation_type": "regulation",
+    "jurisdiction": "AU",
+    "category": "Registration",
+    "effective_date": "2002-10-10",
+    "content": "The Medical Devices Regulations 2002 specify requirements for the inclusion of medical devices in the Australian Register of Therapeutic Goods (ARTG).",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "ARTG",
+      "regulation"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Medical Devices Regulations (SOR/98-282)",
+    "regulation_name_en": "Medical Devices Regulations (SOR/98-282)",
+    "regulation_name_zh": "医疗器械法规 (SOR/98-282)",
+    "regulation_type": "regulation",
+    "jurisdiction": "CA",
+    "category": "General",
+    "effective_date": "1998-07-01",
+    "content": "The Medical Devices Regulations establish requirements for the sale and importation of medical devices in Canada, including device classification, licensing, and quality system requirements.",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "regulation",
+      "licensing"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance Document: ISO 13485 Quality Management System",
+    "regulation_name_en": "Guidance Document: ISO 13485 Quality Management System",
+    "regulation_name_zh": "指导文件：ISO 13485质量管理体系",
+    "regulation_type": "guidance",
+    "jurisdiction": "CA",
+    "category": "Quality System",
+    "effective_date": "2019-03-01",
+    "content": "This guidance document explains how Health Canada interprets and applies ISO 13485 for medical device quality management systems in Canada.",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "ISO 13485",
+      "QMS",
+      "guidance"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Clinical Evaluation of Medical Devices 2024",
+    "regulation_name_en": "Guidance on Clinical Evaluation of Medical Devices 2024",
+    "regulation_name_zh": "医疗器械临床评价指南2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "SG",
+    "category": "Clinical",
+    "effective_date": "2024-06-10",
+    "content": "HSA Guidance: Guidance on Clinical Evaluation of Medical Devices 2024",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "clinical"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Ministerial Ordinance on Standards for Post-marketing Safety Management of Medical Devices (2024 Amendment)",
+    "regulation_name_en": "Ministerial Ordinance on Standards for Post-marketing Safety Management of Medical Devices (2024 Amendment)",
+    "regulation_name_zh": "医疗器械上市后安全管理标准省令（2024年改正）",
+    "regulation_type": "regulation",
+    "jurisdiction": "JP",
+    "category": "Post Market",
+    "effective_date": "2024-04-01",
+    "content": "PMDA Regulation: Ministerial Ordinance on Standards for Post-marketing Safety Management of Medical Devices (2024 Amendment)",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "post market"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Ministerial Ordinance on Standards for Conducting Clinical Trials of Medical Devices (2024 Amendment)",
+    "regulation_name_en": "Ministerial Ordinance on Standards for Conducting Clinical Trials of Medical Devices (2024 Amendment)",
+    "regulation_name_zh": "医疗器械临床试验实施标准省令（2024年改正）",
+    "regulation_type": "regulation",
+    "jurisdiction": "JP",
+    "category": "Clinical",
+    "effective_date": "2024-05-15",
+    "content": "PMDA Regulation: Ministerial Ordinance on Standards for Conducting Clinical Trials of Medical Devices (2024 Amendment)",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "clinical"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Ministerial Ordinance on Standards for Manufacturing Control and Quality Control of Medical Devices (GQP) (2024 Amendment)",
+    "regulation_name_en": "Ministerial Ordinance on Standards for Manufacturing Control and Quality Control of Medical Devices (GQP) (2024 Amendment)",
+    "regulation_name_zh": "医疗器械制造管理和质量管理标准省令（GQP省令）（2024年改正）",
+    "regulation_type": "regulation",
+    "jurisdiction": "JP",
+    "category": "Quality System",
+    "effective_date": "2024-06-01",
+    "content": "PMDA Regulation: Ministerial Ordinance on Standards for Manufacturing Control and Quality Control of Medical Devices (GQP) (2024 Amendment)",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "quality system"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Regulations on Standards for Licensing of Manufacturing and Sales Business of Medical Devices (2024 Amendment)",
+    "regulation_name_en": "Regulations on Standards for Licensing of Manufacturing and Sales Business of Medical Devices (2024 Amendment)",
+    "regulation_name_zh": "医疗器械制造销售业许可标准规则（2024年改正）",
+    "regulation_type": "regulation",
+    "jurisdiction": "JP",
+    "category": "Licensing",
+    "effective_date": "2024-07-01",
+    "content": "PMDA Regulation: Regulations on Standards for Licensing of Manufacturing and Sales Business of Medical Devices (2024 Amendment)",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "licensing"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Approval Review of Medical Devices Using AI (2024)",
+    "regulation_name_en": "Guidance on Approval Review of Medical Devices Using AI (2024)",
+    "regulation_name_zh": "使用AI的医疗器械批准审查指南（2024年）",
+    "regulation_type": "guidance",
+    "jurisdiction": "JP",
+    "category": "AI/ML",
+    "effective_date": "2024-08-20",
+    "content": "PMDA Guidance: Guidance on Approval Review of Medical Devices Using AI (2024)",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "ai/ml"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Approval Review of Medical Devices with Cybersecurity (2024)",
+    "regulation_name_en": "Guidance on Approval Review of Medical Devices with Cybersecurity (2024)",
+    "regulation_name_zh": "具有网络安全的医疗器械批准审查指南（2024年）",
+    "regulation_type": "guidance",
+    "jurisdiction": "JP",
+    "category": "Cybersecurity",
+    "effective_date": "2024-09-10",
+    "content": "PMDA Guidance: Guidance on Approval Review of Medical Devices with Cybersecurity (2024)",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "cybersecurity"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Software as a Medical Device (SaMD) (2024 Revision)",
+    "regulation_name_en": "Guidance on Software as a Medical Device (SaMD) (2024 Revision)",
+    "regulation_name_zh": "医疗器械软件(SaMD)指南（2024年修订）",
+    "regulation_type": "guidance",
+    "jurisdiction": "JP",
+    "category": "Software",
+    "effective_date": "2024-10-15",
+    "content": "PMDA Guidance: Guidance on Software as a Medical Device (SaMD) (2024 Revision)",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "software"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Approval Review of Regenerative Medicine Products (2024)",
+    "regulation_name_en": "Guidance on Approval Review of Regenerative Medicine Products (2024)",
+    "regulation_name_zh": "再生医疗产品批准审查指南（2024年）",
+    "regulation_type": "guidance",
+    "jurisdiction": "JP",
+    "category": "Regenerative Medicine",
+    "effective_date": "2024-11-01",
+    "content": "PMDA Guidance: Guidance on Approval Review of Regenerative Medicine Products (2024)",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "regenerative medicine"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Risk Management of Medical Devices (2024 Revision)",
+    "regulation_name_en": "Guidance on Risk Management of Medical Devices (2024 Revision)",
+    "regulation_name_zh": "医疗器械风险管理指南（2024年修订）",
+    "regulation_type": "guidance",
+    "jurisdiction": "JP",
+    "category": "Risk Management",
+    "effective_date": "2024-12-01",
+    "content": "PMDA Guidance: Guidance on Risk Management of Medical Devices (2024 Revision)",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "risk management"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Compliance with QMS Ministerial Ordinance for Medical Devices (2025)",
+    "regulation_name_en": "Guidance on Compliance with QMS Ministerial Ordinance for Medical Devices (2025)",
+    "regulation_name_zh": "医疗器械QMS省令应对手册（2025年）",
+    "regulation_type": "guidance",
+    "jurisdiction": "JP",
+    "category": "QMS",
+    "effective_date": "2025-01-15",
+    "content": "PMDA Guidance: Guidance on Compliance with QMS Ministerial Ordinance for Medical Devices (2025)",
+    "keywords": [
+      "PMDA",
+      "Japan",
+      "qms"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Health Products (Medical Devices) Regulations 2024 Amendment",
+    "regulation_name_en": "Health Products (Medical Devices) Regulations 2024 Amendment",
+    "regulation_name_zh": "健康产品（医疗器械）法规2024年修订版",
+    "regulation_type": "regulation",
+    "jurisdiction": "SG",
+    "category": "Regulation",
+    "effective_date": "2024-03-01",
+    "content": "HSA Regulation: Health Products (Medical Devices) Regulations 2024 Amendment",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "regulation"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Registration of Medical Devices (GN-12) 2024 Revision",
+    "regulation_name_en": "Guidance on Registration of Medical Devices (GN-12) 2024 Revision",
+    "regulation_name_zh": "医疗器械注册指南（GN-12）2024年修订版",
+    "regulation_type": "guidance",
+    "jurisdiction": "SG",
+    "category": "Registration",
+    "effective_date": "2024-04-15",
+    "content": "HSA Guidance: Guidance on Registration of Medical Devices (GN-12) 2024 Revision",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "registration"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Change Notification for Registered Medical Devices (GN-15) 2024",
+    "regulation_name_en": "Guidance on Change Notification for Registered Medical Devices (GN-15) 2024",
+    "regulation_name_zh": "已注册医疗器械变更通知指南（GN-15）2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "SG",
+    "category": "Change Management",
+    "effective_date": "2024-05-20",
+    "content": "HSA Guidance: Guidance on Change Notification for Registered Medical Devices (GN-15) 2024",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "change management"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Post-Market Surveillance of Medical Devices 2024",
+    "regulation_name_en": "Guidance on Post-Market Surveillance of Medical Devices 2024",
+    "regulation_name_zh": "医疗器械上市后监督指南2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "SG",
+    "category": "Post Market",
+    "effective_date": "2024-07-01",
+    "content": "HSA Guidance: Guidance on Post-Market Surveillance of Medical Devices 2024",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "post market"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Software as a Medical Device (SaMD) 2024",
+    "regulation_name_en": "Guidance on Software as a Medical Device (SaMD) 2024",
+    "regulation_name_zh": "医疗器械软件(SaMD)指南2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "SG",
+    "category": "Software",
+    "effective_date": "2024-08-15",
+    "content": "HSA Guidance: Guidance on Software as a Medical Device (SaMD) 2024",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "software"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Artificial Intelligence Medical Devices 2024",
+    "regulation_name_en": "Guidance on Artificial Intelligence Medical Devices 2024",
+    "regulation_name_zh": "人工智能医疗器械指南2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "SG",
+    "category": "AI/ML",
+    "effective_date": "2024-09-20",
+    "content": "HSA Guidance: Guidance on Artificial Intelligence Medical Devices 2024",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "ai/ml"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Cybersecurity for Medical Devices 2024",
+    "regulation_name_en": "Guidance on Cybersecurity for Medical Devices 2024",
+    "regulation_name_zh": "医疗器械网络安全指南2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "SG",
+    "category": "Cybersecurity",
+    "effective_date": "2024-10-10",
+    "content": "HSA Guidance: Guidance on Cybersecurity for Medical Devices 2024",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "cybersecurity"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on In Vitro Diagnostic Medical Devices (GN-17) 2024",
+    "regulation_name_en": "Guidance on In Vitro Diagnostic Medical Devices (GN-17) 2024",
+    "regulation_name_zh": "体外诊断医疗器械指南（GN-17）2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "SG",
+    "category": "IVD",
+    "effective_date": "2024-11-05",
+    "content": "HSA Guidance: Guidance on In Vitro Diagnostic Medical Devices (GN-17) 2024",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "ivd"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance on Quality Management System for Medical Devices 2025",
+    "regulation_name_en": "Guidance on Quality Management System for Medical Devices 2025",
+    "regulation_name_zh": "医疗器械质量管理体系指南2025年",
+    "regulation_type": "guidance",
+    "jurisdiction": "SG",
+    "category": "QMS",
+    "effective_date": "2025-01-10",
+    "content": "HSA Guidance: Guidance on Quality Management System for Medical Devices 2025",
+    "keywords": [
+      "HSA",
+      "Singapore",
+      "qms"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Therapeutic Goods (Medical Devices) Regulations 2024 Amendment",
+    "regulation_name_en": "Therapeutic Goods (Medical Devices) Regulations 2024 Amendment",
+    "regulation_name_zh": "治疗用品（医疗器械）法规2024年修订版",
+    "regulation_type": "regulation",
+    "jurisdiction": "AU",
+    "category": "Regulation",
+    "effective_date": "2024-02-15",
+    "content": "TGA Regulation: Therapeutic Goods (Medical Devices) Regulations 2024 Amendment",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "regulation"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Medical Device Inclusion Process Guidance 2024 Revision",
+    "regulation_name_en": "Medical Device Inclusion Process Guidance 2024 Revision",
+    "regulation_name_zh": "医疗器械纳入流程指南2024年修订版",
+    "regulation_type": "guidance",
+    "jurisdiction": "AU",
+    "category": "Registration",
+    "effective_date": "2024-03-20",
+    "content": "TGA Guidance: Medical Device Inclusion Process Guidance 2024 Revision",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "registration"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Clinical Evidence Guidelines: Medical Devices 2024",
+    "regulation_name_en": "Clinical Evidence Guidelines: Medical Devices 2024",
+    "regulation_name_zh": "临床证据指南：医疗器械2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "AU",
+    "category": "Clinical",
+    "effective_date": "2024-04-10",
+    "content": "TGA Guidance: Clinical Evidence Guidelines: Medical Devices 2024",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "clinical"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Software as a Medical Device (SaMD) Guidance 2024",
+    "regulation_name_en": "Software as a Medical Device (SaMD) Guidance 2024",
+    "regulation_name_zh": "医疗器械软件(SaMD)指南2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "AU",
+    "category": "Software",
+    "effective_date": "2024-05-25",
+    "content": "TGA Guidance: Software as a Medical Device (SaMD) Guidance 2024",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "software"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Cybersecurity Guidance for Medical Devices 2024",
+    "regulation_name_en": "Cybersecurity Guidance for Medical Devices 2024",
+    "regulation_name_zh": "医疗器械网络安全指南2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "AU",
+    "category": "Cybersecurity",
+    "effective_date": "2024-06-15",
+    "content": "TGA Guidance: Cybersecurity Guidance for Medical Devices 2024",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "cybersecurity"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Artificial Intelligence (AI) Based Medical Devices Guidance 2024",
+    "regulation_name_en": "Artificial Intelligence (AI) Based Medical Devices Guidance 2024",
+    "regulation_name_zh": "基于人工智能(AI)的医疗器械指南2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "AU",
+    "category": "AI/ML",
+    "effective_date": "2024-07-30",
+    "content": "TGA Guidance: Artificial Intelligence (AI) Based Medical Devices Guidance 2024",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "ai/ml"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Post-Market Monitoring of Medical Devices 2024",
+    "regulation_name_en": "Post-Market Monitoring of Medical Devices 2024",
+    "regulation_name_zh": "医疗器械上市后监测2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "AU",
+    "category": "Post Market",
+    "effective_date": "2024-08-20",
+    "content": "TGA Guidance: Post-Market Monitoring of Medical Devices 2024",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "post market"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Unique Device Identification (UDI) for Medical Devices 2024",
+    "regulation_name_en": "Unique Device Identification (UDI) for Medical Devices 2024",
+    "regulation_name_zh": "医疗器械唯一标识(UDI)2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "AU",
+    "category": "UDI",
+    "effective_date": "2024-09-15",
+    "content": "TGA Guidance: Unique Device Identification (UDI) for Medical Devices 2024",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "udi"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Essential Principles Checklist for Medical Devices 2024",
+    "regulation_name_en": "Essential Principles Checklist for Medical Devices 2024",
+    "regulation_name_zh": "医疗器械基本原则检查表2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "AU",
+    "category": "Essential Principles",
+    "effective_date": "2024-10-05",
+    "content": "TGA Guidance: Essential Principles Checklist for Medical Devices 2024",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "essential principles"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Medical Device Reclassification Guidance 2025",
+    "regulation_name_en": "Medical Device Reclassification Guidance 2025",
+    "regulation_name_zh": "医疗器械重新分类指南2025年",
+    "regulation_type": "guidance",
+    "jurisdiction": "AU",
+    "category": "Classification",
+    "effective_date": "2025-01-20",
+    "content": "TGA Guidance: Medical Device Reclassification Guidance 2025",
+    "keywords": [
+      "TGA",
+      "Australia",
+      "classification"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Medical Devices Regulations (SOR/98-282) 2024 Amendment",
+    "regulation_name_en": "Medical Devices Regulations (SOR/98-282) 2024 Amendment",
+    "regulation_name_zh": "医疗器械法规(SOR/98-282) 2024年修订版",
+    "regulation_type": "regulation",
+    "jurisdiction": "CA",
+    "category": "Regulation",
+    "effective_date": "2024-01-30",
+    "content": "Health Canada Regulation: Medical Devices Regulations (SOR/98-282) 2024 Amendment",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "regulation"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance Document: Medical Device Licence Applications 2024",
+    "regulation_name_en": "Guidance Document: Medical Device Licence Applications 2024",
+    "regulation_name_zh": "指导文件：医疗器械许可证申请2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "CA",
+    "category": "Registration",
+    "effective_date": "2024-03-15",
+    "content": "Health Canada Guidance: Guidance Document: Medical Device Licence Applications 2024",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "registration"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance Document: Software as a Medical Device (SaMD) 2024",
+    "regulation_name_en": "Guidance Document: Software as a Medical Device (SaMD) 2024",
+    "regulation_name_zh": "指导文件：医疗器械软件(SaMD) 2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "CA",
+    "category": "Software",
+    "effective_date": "2024-04-20",
+    "content": "Health Canada Guidance: Guidance Document: Software as a Medical Device (SaMD) 2024",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "software"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance Document: Artificial Intelligence/Machine Learning (AI/ML) Enabled Medical Devices 2024",
+    "regulation_name_en": "Guidance Document: Artificial Intelligence/Machine Learning (AI/ML) Enabled Medical Devices 2024",
+    "regulation_name_zh": "指导文件：人工智能/机器学习(AI/ML)医疗器械2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "CA",
+    "category": "AI/ML",
+    "effective_date": "2024-05-25",
+    "content": "Health Canada Guidance: Guidance Document: Artificial Intelligence/Machine Learning (AI/ML) Enabled Medical Devices 2024",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "ai/ml"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance Document: Cybersecurity for Medical Devices 2024",
+    "regulation_name_en": "Guidance Document: Cybersecurity for Medical Devices 2024",
+    "regulation_name_zh": "指导文件：医疗器械网络安全2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "CA",
+    "category": "Cybersecurity",
+    "effective_date": "2024-06-30",
+    "content": "Health Canada Guidance: Guidance Document: Cybersecurity for Medical Devices 2024",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "cybersecurity"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance Document: Clinical Evidence for Medical Devices 2024",
+    "regulation_name_en": "Guidance Document: Clinical Evidence for Medical Devices 2024",
+    "regulation_name_zh": "指导文件：医疗器械临床证据2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "CA",
+    "category": "Clinical",
+    "effective_date": "2024-07-20",
+    "content": "Health Canada Guidance: Guidance Document: Clinical Evidence for Medical Devices 2024",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "clinical"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance Document: Post-Market Surveillance of Medical Devices 2024",
+    "regulation_name_en": "Guidance Document: Post-Market Surveillance of Medical Devices 2024",
+    "regulation_name_zh": "指导文件：医疗器械上市后监督2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "CA",
+    "category": "Post Market",
+    "effective_date": "2024-08-15",
+    "content": "Health Canada Guidance: Guidance Document: Post-Market Surveillance of Medical Devices 2024",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "post market"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance Document: Quality Management System Requirements for Medical Devices 2024",
+    "regulation_name_en": "Guidance Document: Quality Management System Requirements for Medical Devices 2024",
+    "regulation_name_zh": "指导文件：医疗器械质量管理体系要求2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "CA",
+    "category": "QMS",
+    "effective_date": "2024-09-10",
+    "content": "Health Canada Guidance: Guidance Document: Quality Management System Requirements for Medical Devices 2024",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "qms"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance Document: Labelling Requirements for Medical Devices 2024",
+    "regulation_name_en": "Guidance Document: Labelling Requirements for Medical Devices 2024",
+    "regulation_name_zh": "指导文件：医疗器械标签要求2024年",
+    "regulation_type": "guidance",
+    "jurisdiction": "CA",
+    "category": "Labeling",
+    "effective_date": "2024-10-25",
+    "content": "Health Canada Guidance: Guidance Document: Labelling Requirements for Medical Devices 2024",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "labeling"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  },
+  {
+    "regulation_name": "Guidance Document: Risk Classification of Medical Devices 2025",
+    "regulation_name_en": "Guidance Document: Risk Classification of Medical Devices 2025",
+    "regulation_name_zh": "指导文件：医疗器械风险分类2025年",
+    "regulation_type": "guidance",
+    "jurisdiction": "CA",
+    "category": "Classification",
+    "effective_date": "2025-02-01",
+    "content": "Health Canada Guidance: Guidance Document: Risk Classification of Medical Devices 2025",
+    "keywords": [
+      "Health Canada",
+      "Canada",
+      "classification"
+    ],
+    "source": "regulations",
+    "created_at": "2026-04-14T14:04:59.348Z"
+  }
+]

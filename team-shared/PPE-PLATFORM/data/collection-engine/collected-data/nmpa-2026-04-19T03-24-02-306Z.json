@@ -1,0 +1,79 @@
+{
+  "sourceType": "NMPA",
+  "collectedAt": "2026-04-19T03:24:02.306Z",
+  "result": {
+    "totalRecords": 2,
+    "successRecords": 2,
+    "failedRecords": 0,
+    "products": [
+      {
+        "productName": "医用防护口罩",
+        "productNameEn": "Medical Protective Mask",
+        "productNameLocal": "医用防护口罩",
+        "category": "呼吸防护",
+        "ppeCategory": "II",
+        "manufacturerName": "Sample CN Manufacturer",
+        "manufacturerCountry": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-001",
+        "createdAt": "2026-04-19T03:24:02.306Z",
+        "updatedAt": "2026-04-19T03:24:02.306Z"
+      },
+      {
+        "productName": "KN95口罩",
+        "productNameEn": "KN95 Mask",
+        "productNameLocal": "KN95口罩",
+        "category": "呼吸防护",
+        "ppeCategory": "II",
+        "manufacturerName": "Another CN Manufacturer",
+        "manufacturerCountry": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-002",
+        "createdAt": "2026-04-19T03:24:02.306Z",
+        "updatedAt": "2026-04-19T03:24:02.306Z"
+      }
+    ],
+    "manufacturers": [
+      {
+        "companyName": "Sample CN Manufacturer",
+        "country": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-MFG-001",
+        "createdAt": "2026-04-19T03:24:02.306Z",
+        "updatedAt": "2026-04-19T03:24:02.306Z"
+      },
+      {
+        "companyName": "Another CN Manufacturer",
+        "country": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-MFG-002",
+        "createdAt": "2026-04-19T03:24:02.306Z",
+        "updatedAt": "2026-04-19T03:24:02.306Z"
+      }
+    ],
+    "certifications": [
+      {
+        "certificationType": "NMPA",
+        "certificationNumber": "国械注准CN-001",
+        "standardCode": "GB 19083",
+        "certBodyName": "国家药品监督管理局",
+        "status": "active",
+        "dataSource": "NMPA",
+        "sourceId": "CN-001",
+        "createdAt": "2026-04-19T03:24:02.306Z",
+        "updatedAt": "2026-04-19T03:24:02.306Z"
+      },
+      {
+        "certificationType": "NMPA",
+        "certificationNumber": "国械注准CN-002",
+        "standardCode": "GB 19083",
+        "certBodyName": "国家药品监督管理局",
+        "status": "active",
+        "dataSource": "NMPA",
+        "sourceId": "CN-002",
+        "createdAt": "2026-04-19T03:24:02.306Z",
+        "updatedAt": "2026-04-19T03:24:02.306Z"
+      }
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "export": "Export",
+    "import": "Import",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "submit": "Submit"
+  },
+  "nav": {
+    "home": "Home",
+    "search": "Search",
+    "companies": "Companies",
+    "products": "Products",
+    "regulations": "Regulations",
+    "tools": "Tools",
+    "reports": "Reports",
+    "help": "Help",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "search": {
+    "placeholder": "Search companies, products, registration numbers...",
+    "button": "Search",
+    "advanced": "Advanced Search",
+    "filters": {
+      "market": "Market",
+      "industry": "Industry",
+      "complianceType": "Compliance Type",
+      "status": "Status",
+      "dateRange": "Date Range",
+      "companySize": "Company Size",
+      "productCategory": "Product Category"
+    },
+    "results": {
+      "total": "Found {total} results",
+      "empty": "No results found",
+      "loading": "Searching..."
+    },
+    "suggestions": {
+      "spellCheck": "Did you mean: {suggestion}?",
+      "related": "Related searches"
+    }
+  },
+  "company": {
+    "title": "Company Details",
+    "basicInfo": "Basic Information",
+    "registration": "Registration Info",
+    "compliance": "Compliance Qualifications",
+    "products": "Products",
+    "marketDistribution": "Market Distribution",
+    "relatedCompanies": "Related Companies",
+    "website": "Website",
+    "address": "Address",
+    "country": "Country",
+    "foundedDate": "Founded Date",
+    "employeeCount": "Employee Count",
+    "description": "Description"
+  },
+  "market": {
+    "all": "All Markets",
+    "fda": "FDA (USA)",
+    "ce": "CE (EU)",
+    "nmpa": "NMPA (China)",
+    "pmda": "PMDA (Japan)",
+    "hc": "Health Canada",
+    "tga": "TGA (Australia)"
+  },
+  "compliance": {
+    "510k": "510(k)",
+    "pma": "PMA",
+    "denovo": "De Novo",
+    "ceMark": "CE Mark",
+    "registration": "Registration",
+    "certificate": "Certificate",
+    "status": {
+      "active": "Active",
+      "expired": "Expired",
+      "withdrawn": "Withdrawn",
+      "pending": "Pending"
+    }
+  },
+  "tools": {
+    "title": "Tools",
+    "currencyConverter": "Currency Converter",
+    "hsCode": "HS Code Query",
+    "shippingSchedule": "Shipping Schedule",
+    "portInfo": "Port Information",
+    "complianceCost": "Compliance Cost Calculator",
+    "timelinePlanner": "Timeline Planner",
+    "gapAnalysis": "Gap Analysis",
+    "regulationTracker": "Regulation Tracker"
+  },
+  "ai": {
+    "assistant": "AI Assistant",
+    "placeholder": "Ask me anything about compliance...",
+    "suggestions": [
+      "How to register in FDA?",
+      "What is 510(k)?",
+      "Compare companies in EU market"
+    ]
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "serverError": "Server error",
+    "networkError": "Network error, please try again",
+    "unauthorized": "Please login to continue",
+    "forbidden": "You don't have permission to access this"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email",
+    "minLength": "Must be at least {min} characters",
+    "maxLength": "Must not exceed {max} characters"
+  }
+}

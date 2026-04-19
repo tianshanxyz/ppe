@@ -1,0 +1,512 @@
+[
+  {
+    "product_name": "Promisemed Blood Lancet, VeriFine Safety Lancet, VeriFine Mini-Safety Lancet",
+    "product_code": "FMK",
+    "manufacturer_name": "Promisemed Hangzhou Meditech Co., Ltd.",
+    "fda_k_number": "K192666",
+    "fda_decision_date": "2019-12-02",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "STETH-SHIELD(TM)",
+    "product_code": "DQD",
+    "manufacturer_name": "North East Technology",
+    "fda_k_number": "K892890",
+    "fda_decision_date": "1989-12-01",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Gangi-SoftGuard Coaxial Needle, Gangi-HydroGuard Coaxial Needle",
+    "product_code": "FCG",
+    "manufacturer_name": "Apriomed AB",
+    "fda_k_number": "K181756",
+    "fda_decision_date": "2018-12-18",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "JAIN INSULATING BOOT MODEL 225B",
+    "product_code": "DXY",
+    "manufacturer_name": "Cook Pacemaker Corp.",
+    "fda_k_number": "K822652",
+    "fda_decision_date": "1982-10-04",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "LATEX POWDER FREE EXAMINATION GLOVES",
+    "product_code": "LYY",
+    "manufacturer_name": "Maika Rubber Products Sdn Bhd",
+    "fda_k_number": "K981942",
+    "fda_decision_date": "1998-12-14",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "NEEDLE BARN STICK STOPPER WITH SAFETY CAP, IN KIT WITH STERILE FIELD DRAPE",
+    "product_code": "FMI",
+    "manufacturer_name": "Cambridge Marketing, Inc.",
+    "fda_k_number": "K010038",
+    "fda_decision_date": "2001-01-24",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Disposable Vinyl Examination Gloves",
+    "product_code": "LYZ",
+    "manufacturer_name": "Viet Phu Trade and Import Export Co., Ltd.",
+    "fda_k_number": "K252467",
+    "fda_decision_date": "2025-10-27",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "SHIELD DIASTAT ANTI-B2 GLYCOPROTEIN 1 IGG (ELISA) ASSAY",
+    "product_code": "MSV",
+    "manufacturer_name": "Shield Diagnostics, Ltd.",
+    "fda_k_number": "K982879",
+    "fda_decision_date": "1998-10-15",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "DURAPRENE STERILE SYNTHETIC POWDER-FREE SURGICAL GLOVES WITH TESTED FOR USE WITH CHEMOTHERAPY DRUGS LABELING CLAIM",
+    "product_code": "KGO",
+    "manufacturer_name": "Allegiance Healthcare Corp.",
+    "fda_k_number": "K013302",
+    "fda_decision_date": "2001-12-17",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "POWDER-FREE VINYL EXAM GLOVES",
+    "product_code": "LYZ",
+    "manufacturer_name": "Shijiazhuang Huijingyuan Plastic Co, Ltd.",
+    "fda_k_number": "K091772",
+    "fda_decision_date": "2010-04-08",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Surgical Mask",
+    "product_code": "FXX",
+    "manufacturer_name": "Changzhou Holymed Products Co., Ltd.",
+    "fda_k_number": "K210524",
+    "fda_decision_date": "2021-07-07",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "GERSON 2130/31 TYPE N95 NIOSH CERTIFIED SURGICAL RESPIRATOR",
+    "product_code": "MSH",
+    "manufacturer_name": "Louis M. Gerson Co., Inc.",
+    "fda_k_number": "K050193",
+    "fda_decision_date": "2005-04-11",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "NitriTec Vinyl Glove Powder Free Blue",
+    "product_code": "LYZ",
+    "manufacturer_name": "Zhonghong Pulin Medical Products Co., Ltd.",
+    "fda_k_number": "K210460",
+    "fda_decision_date": "2021-05-17",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "PATIENT EXAM GLOVES (MFG. UNITED LION RUBBER)",
+    "product_code": "LYY",
+    "manufacturer_name": "Chori America, Inc.",
+    "fda_k_number": "K892489",
+    "fda_decision_date": "1989-07-28",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "MASTER-GUARD",
+    "product_code": "KCT",
+    "manufacturer_name": "Sparco, Inc.",
+    "fda_k_number": "K884041",
+    "fda_decision_date": "1988-10-07",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "PATIENT EXAMINATION GLOVES",
+    "product_code": "LYY",
+    "manufacturer_name": "R.J.M. Precaution Products, Inc.",
+    "fda_k_number": "K892945",
+    "fda_decision_date": "1989-06-14",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "PEARLSCENT BLACK TEXTURED POWDER-FREE LATEX EXAMINATION GLOVES, COATED WITH ALOE VERA",
+    "product_code": "LYY",
+    "manufacturer_name": "Shen Wei (Usa), Inc.",
+    "fda_k_number": "K100211",
+    "fda_decision_date": "2010-05-11",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "SUPERVISOR SUN GOGGLES(TM)",
+    "product_code": "HQY",
+    "manufacturer_name": "Eye Communications, Inc.",
+    "fda_k_number": "K873405",
+    "fda_decision_date": "1988-01-11",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "NON-STERILE SURGICAL MASK",
+    "product_code": "FXX",
+    "manufacturer_name": "A.R. Medicom, Inc.",
+    "fda_k_number": "K051291",
+    "fda_decision_date": "2005-09-20",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Halyard Purple Nitrile, Powder-Free Exam Gloves Tested for Use with Chemotherapy Drugs, Fentanyl Citrate, Simulated Gastric Acid and Fentanyl in Simulated Gastric Acid",
+    "product_code": "LZA",
+    "manufacturer_name": "O&M Halyard, Inc.",
+    "fda_k_number": "K213929",
+    "fda_decision_date": "2022-08-01",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "TROCARS TROTEC WITH AUTOMATIC PROTECTIVE MECHANISM",
+    "product_code": "HET",
+    "manufacturer_name": "Richard Wolf Medical Instruments Corp.",
+    "fda_k_number": "K003164",
+    "fda_decision_date": "2001-01-08",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Powder-free PVC Vinyl Exam Gloves",
+    "product_code": "LYZ",
+    "manufacturer_name": "Hebei Grandeast Plastic Products Co., Ltd.",
+    "fda_k_number": "K142703",
+    "fda_decision_date": "2015-01-15",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "PATIENT EXAMINATION GLOVES",
+    "product_code": "LYY",
+    "manufacturer_name": "Supergrade Healthcare Products Sdn. Bhd.",
+    "fda_k_number": "K891232",
+    "fda_decision_date": "1989-03-22",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "MEDIGLOVES STERILE POWDER-FREE SYNTHETIC POLYISOPRENE SURGICAL GLOVES",
+    "product_code": "KGO",
+    "manufacturer_name": "Medigloves , Ltd.",
+    "fda_k_number": "K050181",
+    "fda_decision_date": "2005-04-13",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "POWDERFREE LATEX EXAMINATION GLOVES",
+    "product_code": "LYY",
+    "manufacturer_name": "Liwe Trading",
+    "fda_k_number": "K933288",
+    "fda_decision_date": "1994-08-17",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "RETRAX SAFETY SYRINGE",
+    "product_code": "FMF",
+    "manufacturer_name": "Retrax, Inc.",
+    "fda_k_number": "K901508",
+    "fda_decision_date": "1990-06-14",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "CLASS III REVERSE PULL FACEMASK",
+    "product_code": "DZB",
+    "manufacturer_name": "Ortho Kinetics Corp.",
+    "fda_k_number": "K980436",
+    "fda_decision_date": "1998-04-27",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Medical Surgical Mask (Model: JM92, JM92B)",
+    "product_code": "FXX",
+    "manufacturer_name": "Guangdong Jia Mei Biological Technology Co.Ltd",
+    "fda_k_number": "K220187",
+    "fda_decision_date": "2022-03-25",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Non-Sterile Powder Free Blue Nitrile Examination Gloves Tested for Use with Chemotherapy Drugs",
+    "product_code": "LZC",
+    "manufacturer_name": "Maxter Glove Manufacturing Sdn Bhd",
+    "fda_k_number": "K172864",
+    "fda_decision_date": "2018-05-02",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "LATEX EXAMINATION GLOVES",
+    "product_code": "LYY",
+    "manufacturer_name": "Ek Hong Rubber Industry (Thailand) Co., Ltd.",
+    "fda_k_number": "K902796",
+    "fda_decision_date": "1990-12-04",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "BRIGHTWAY BRAND LATEX EXAMINATION GLOVES (POWDER FREE, BLACK COLOR)",
+    "product_code": "LYY",
+    "manufacturer_name": "Brightway Holdings Sdn. Bhd.",
+    "fda_k_number": "K060658",
+    "fda_decision_date": "2006-04-10",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "POWDER FREE VINYL PATIENT EXAMINATION GLOVES, CLEAR (NON-COLORED)",
+    "product_code": "LYZ",
+    "manufacturer_name": "Tangshan Zhongpu Plastic Products Co., Ltd.",
+    "fda_k_number": "K090551",
+    "fda_decision_date": "2009-08-12",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "RESPIRATORY FLOW MODULE",
+    "product_code": "JAX",
+    "manufacturer_name": "Thoratec Laboratories Corp.",
+    "fda_k_number": "K833265",
+    "fda_decision_date": "1983-11-28",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "ENDOSHIELD BURN PROTECTION SYSTEM",
+    "product_code": "GEI",
+    "manufacturer_name": "Encision, Inc.",
+    "fda_k_number": "K140006",
+    "fda_decision_date": "2014-06-16",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "GEN 2 Nitrile Examination Glove (Blue) With Low Dermatitis Potential Claim and with tested for use with Chemotherapy Drugs Claims",
+    "product_code": "LZA",
+    "manufacturer_name": "Eco Medi Glove Sdn. Bhd.",
+    "fda_k_number": "K193121",
+    "fda_decision_date": "2020-03-20",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Nitrile Powder Free Examination Glove Tested for Use with Chemotherapy Drugs (Pink)",
+    "product_code": "LZA",
+    "manufacturer_name": "Hartalega Sdn Bhd",
+    "fda_k_number": "K173137",
+    "fda_decision_date": "2017-12-12",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "LATEX EXAMINATION GLOVES",
+    "product_code": "LYY",
+    "manufacturer_name": "Modern Rubber Industrial Co., Ltd.",
+    "fda_k_number": "K893492",
+    "fda_decision_date": "1989-08-24",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Powder Free Nitrile Examination Glove, Non-Sterile, and Tested for Use with Chemotherapy Drugs and Fentanyl Citrate",
+    "product_code": "LZA",
+    "manufacturer_name": "Professional Latex Sdn Bhd",
+    "fda_k_number": "K220088",
+    "fda_decision_date": "2023-03-30",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Program insite® Powder-Free, Disposable Nitrile Exam Gloves",
+    "product_code": "LZA",
+    "manufacturer_name": "Program Insite, LLC",
+    "fda_k_number": "K252075",
+    "fda_decision_date": "2025-10-17",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "WHITE KNIGHT MASKS, BLUE, PINK, YELLOW, WHITE MASKS (13 MODELS)",
+    "product_code": "FXX",
+    "manufacturer_name": "White Knight Healthcare, Inc.",
+    "fda_k_number": "K001893",
+    "fda_decision_date": "2001-04-02",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "OSTAR D'PRO LATEX POWDERED EXAMINATION GLOVES, PROTEIN CLAIM OF 100 MCGM OR/LESS OF TOTAL WATER EXTRACTABLE PROTEIN PER",
+    "product_code": "LYY",
+    "manufacturer_name": "Contract Latex Dippers Sdn Bhd",
+    "fda_k_number": "K983568",
+    "fda_decision_date": "1998-12-21",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "PATIENT EXAMINATION GLOVES, POWDER-FREE VINYL",
+    "product_code": "LYZ",
+    "manufacturer_name": "Cartagloves S.A.",
+    "fda_k_number": "K091471",
+    "fda_decision_date": "2009-10-15",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Medical surgical mask",
+    "product_code": "FXX",
+    "manufacturer_name": "Guangdong Kingfa Sci. & Tech.Co., Ltd.",
+    "fda_k_number": "K201622",
+    "fda_decision_date": "2020-11-24",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "MIRAGE FULL FACE MASK SERIES 2",
+    "product_code": "BZD",
+    "manufacturer_name": "Resmed, Ltd.",
+    "fda_k_number": "K023244",
+    "fda_decision_date": "2002-11-27",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Disposable Automatically Retractable Insulin Safety Syringe",
+    "product_code": "MEG",
+    "manufacturer_name": "Shantou Wealy Medical Instrument Co.,Ltd",
+    "fda_k_number": "K210216",
+    "fda_decision_date": "2022-03-04",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "MODERN (STERILE SURGEON'S GLOVES)",
+    "product_code": "KGO",
+    "manufacturer_name": "Firestone Financial Corp.",
+    "fda_k_number": "K892285",
+    "fda_decision_date": "1989-05-05",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "BODYGUARD INFUSION PUMP SYSTEM",
+    "product_code": "FRN",
+    "manufacturer_name": "Caesarea Medical Electronics , Ltd.",
+    "fda_k_number": "K042696",
+    "fda_decision_date": "2005-03-11",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "Guardian Burr Hole Cover System, Guardian Screw, Burr Hole Cover",
+    "product_code": "GXR",
+    "manufacturer_name": "St Jude Medical",
+    "fda_k_number": "K152342",
+    "fda_decision_date": "2016-06-09",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "LATEX EXAMINATION GLOVES",
+    "product_code": "LYY",
+    "manufacturer_name": "Ken FA Latex Products Corp.",
+    "fda_k_number": "K893450",
+    "fda_decision_date": "1989-08-31",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "SYNTHETIC POWDER-FREE VINYL PATIENT EXAMINATION GLOVES",
+    "product_code": "LYZ",
+    "manufacturer_name": "Zibo Yinghao Medical Products Co., Ltd.",
+    "fda_k_number": "K100294",
+    "fda_decision_date": "2010-05-14",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  },
+  {
+    "product_name": "RESPIRONICS SILHOUETTE NASAL MASK, MODELS 1003224 AND 1003223",
+    "product_code": "BZD",
+    "manufacturer_name": "Respironics, Inc.",
+    "fda_k_number": "K000705",
+    "fda_decision_date": "2000-09-08",
+    "description": null,
+    "market": "FDA",
+    "source": "fda_510k"
+  }
+]

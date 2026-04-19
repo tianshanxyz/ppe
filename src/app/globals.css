@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Colors - H-Guardian Style (#339999) */
+  --background: #ffffff;
+  --foreground: #1f2937;
+  
+  /* Primary Brand Color - Shield Teal (#339999) */
+  --primary: #339999;
+  --primary-dark: #2D8585;
+  --primary-light: #57B9B9;
+  --primary-50: #E8F5F5;
+  --primary-100: #D1EDED;
+  --primary-200: #A3DBDB;
+  --primary-300: #75C9C9;
+  --primary-400: #57B9B9;
+  --primary-500: #339999;
+  --primary-600: #2D8585;
+  --primary-700: #267373;
+  --primary-800: #1F5F5F;
+  --primary-900: #194D4D;
+  
+  /* Legacy Support - H-Guardian Colors */
+  --medical: #339999;
+  --medical-dark: #2D8585;
+  --medical-light: #E8F5F5;
+  --medical-50: #E8F5F5;
+  --medical-100: #D1EDED;
+  --medical-200: #A3DBDB;
+  --medical-300: #75C9C9;
+  --medical-400: #57B9B9;
+  --medical-500: #339999;
+  --medical-600: #2D8585;
+  --medical-700: #267373;
+  --medical-800: #1F5F5F;
+  --medical-900: #194D4D;
+}
+
+/* Dark Mode Colors */
+.dark {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  /* Primary - H-Guardian Teal */
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+  /* Medical - Alias for Primary */
+  --color-medical: var(--medical);
+  --color-medical-dark: var(--medical-dark);
+  --color-medical-light: var(--medical-light);
+  --color-medical-50: var(--medical-50);
+  --color-medical-100: var(--medical-100);
+  --color-medical-200: var(--medical-200);
+  --color-medical-300: var(--medical-300);
+  --color-medical-400: var(--medical-400);
+  --color-medical-500: var(--medical-500);
+  --color-medical-600: var(--medical-600);
+  --color-medical-700: var(--medical-700);
+  --color-medical-800: var(--medical-800);
+  --color-medical-900: var(--medical-900);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Medical Card Styles */
+.medical-card {
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-all duration-300;
+}
+
+.medical-card:hover {
+  @apply -translate-y-1 shadow-md;
+}
+
+/* Medical Button Styles */
+.btn-medical {
+  @apply bg-medical text-white px-6 py-2 rounded-xl hover:bg-medical-dark transition-colors;
+}
+
+.btn-medical-outline {
+  @apply border border-medical text-medical px-6 py-2 rounded-xl hover:bg-medical-50 dark:hover:bg-gray-700 transition-colors;
+}
+
+/* Medical Input Styles */
+.input-medical {
+  @apply border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2 
+         bg-white dark:bg-gray-800 
+         text-gray-900 dark:text-gray-100
+         focus:ring-2 focus:ring-medical focus:border-medical outline-none transition-all;
+}
+
+/* Gradient Background */
+.bg-medical-gradient {
+  background: linear-gradient(to right, var(--medical), var(--medical-dark));
+}
+
+/* ============================================
+   自定义动画
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   滚动条美化
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}

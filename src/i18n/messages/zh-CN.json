@@ -1,0 +1,130 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "confirm": "确认",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "search": "搜索",
+    "filter": "筛选",
+    "sort": "排序",
+    "export": "导出",
+    "import": "导入",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "close": "关闭",
+    "submit": "提交"
+  },
+  "nav": {
+    "home": "首页",
+    "search": "搜索",
+    "companies": "企业",
+    "products": "产品",
+    "regulations": "法规",
+    "tools": "工具",
+    "reports": "报告",
+    "help": "帮助",
+    "dashboard": "仪表板",
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出"
+  },
+  "search": {
+    "placeholder": "搜索企业、产品、注册证号...",
+    "button": "搜索",
+    "advanced": "高级搜索",
+    "filters": {
+      "market": "市场",
+      "industry": "行业",
+      "complianceType": "合规类型",
+      "status": "状态",
+      "dateRange": "时间范围",
+      "companySize": "企业规模",
+      "productCategory": "产品类别"
+    },
+    "results": {
+      "total": "找到 {total} 条结果",
+      "empty": "未找到相关结果",
+      "loading": "搜索中..."
+    },
+    "suggestions": {
+      "spellCheck": "您是否要搜索：{suggestion}？",
+      "related": "相关搜索"
+    }
+  },
+  "company": {
+    "title": "企业详情",
+    "basicInfo": "基本信息",
+    "registration": "注册信息",
+    "compliance": "合规资质",
+    "products": "产品信息",
+    "marketDistribution": "市场分布",
+    "relatedCompanies": "关联企业",
+    "website": "官方网站",
+    "address": "注册地址",
+    "country": "国家/地区",
+    "foundedDate": "成立日期",
+    "employeeCount": "员工规模",
+    "description": "企业简介"
+  },
+  "market": {
+    "all": "全部市场",
+    "fda": "FDA (美国)",
+    "ce": "CE (欧盟)",
+    "nmpa": "NMPA (中国)",
+    "pmda": "PMDA (日本)",
+    "hc": "加拿大卫生部",
+    "tga": "澳大利亚 TGA"
+  },
+  "compliance": {
+    "510k": "510(k)",
+    "pma": "PMA",
+    "denovo": "De Novo",
+    "ceMark": "CE 认证",
+    "registration": "注册证",
+    "certificate": "证书",
+    "status": {
+      "active": "活跃",
+      "expired": "过期",
+      "withdrawn": "撤销",
+      "pending": "待审批"
+    }
+  },
+  "tools": {
+    "title": "工具箱",
+    "currencyConverter": "汇率计算器",
+    "hsCode": "海关编码查询",
+    "shippingSchedule": "船期查询",
+    "portInfo": "港口信息",
+    "complianceCost": "合规成本计算器",
+    "timelinePlanner": "注册时间规划器",
+    "gapAnalysis": "合规差距分析",
+    "regulationTracker": "法规变更追踪"
+  },
+  "ai": {
+    "assistant": "AI 智能助手",
+    "placeholder": "询问任何合规相关问题...",
+    "suggestions": [
+      "如何在 FDA 注册？",
+      "什么是 510(k)？",
+      "对比欧盟市场的公司"
+    ]
+  },
+  "errors": {
+    "notFound": "页面不存在",
+    "serverError": "服务器错误",
+    "networkError": "网络错误，请重试",
+    "unauthorized": "请先登录后继续",
+    "forbidden": "您无权访问此页面"
+  },
+  "validation": {
+    "required": "此字段为必填项",
+    "email": "请输入有效的邮箱地址",
+    "minLength": "至少需要 {min} 个字符",
+    "maxLength": "不能超过 {max} 个字符"
+  }
+}

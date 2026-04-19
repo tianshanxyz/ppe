@@ -1,0 +1,111 @@
+{
+  "sourceType": "PMDA",
+  "collectedAt": "2026-04-19T08:10:01.416Z",
+  "result": {
+    "totalRecords": 3,
+    "successRecords": 3,
+    "failedRecords": 0,
+    "products": [
+      {
+        "productName": "Surgical Mask",
+        "productNameEn": "Surgical Mask",
+        "productNameLocal": "医療用マスク",
+        "category": "呼吸防护",
+        "ppeCategory": "II",
+        "manufacturerName": "Kowa Company, Ltd.",
+        "manufacturerCountry": "Japan",
+        "dataSource": "PMDA",
+        "sourceId": "JP-001",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      },
+      {
+        "productName": "N95 Respirator",
+        "productNameEn": "N95 Respirator",
+        "productNameLocal": "N95マスク",
+        "category": "呼吸防护",
+        "ppeCategory": "II",
+        "manufacturerName": "Shigematsu Works Co., Ltd.",
+        "manufacturerCountry": "Japan",
+        "dataSource": "PMDA",
+        "sourceId": "JP-002",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      },
+      {
+        "productName": "Disposable Gloves",
+        "productNameEn": "Disposable Gloves",
+        "productNameLocal": "使い捨て手袋",
+        "category": "手部防护",
+        "ppeCategory": "I",
+        "manufacturerName": "Showa Glove Co.",
+        "manufacturerCountry": "Japan",
+        "dataSource": "PMDA",
+        "sourceId": "JP-003",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      }
+    ],
+    "manufacturers": [
+      {
+        "companyName": "Kowa Company, Ltd.",
+        "country": "Japan",
+        "dataSource": "PMDA",
+        "sourceId": "JP-MFG-001",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      },
+      {
+        "companyName": "Shigematsu Works Co., Ltd.",
+        "country": "Japan",
+        "dataSource": "PMDA",
+        "sourceId": "JP-MFG-002",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      },
+      {
+        "companyName": "Showa Glove Co.",
+        "country": "Japan",
+        "dataSource": "PMDA",
+        "sourceId": "JP-MFG-003",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      }
+    ],
+    "certifications": [
+      {
+        "certificationType": "PMDA",
+        "certificationNumber": "PMDA-JP-001",
+        "standardCode": "JIS T 8151",
+        "certBodyName": "Pharmaceuticals and Medical Devices Agency",
+        "status": "active",
+        "dataSource": "PMDA",
+        "sourceId": "JP-001",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      },
+      {
+        "certificationType": "PMDA",
+        "certificationNumber": "PMDA-JP-002",
+        "standardCode": "JIS T 8151",
+        "certBodyName": "Pharmaceuticals and Medical Devices Agency",
+        "status": "active",
+        "dataSource": "PMDA",
+        "sourceId": "JP-002",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      },
+      {
+        "certificationType": "PMDA",
+        "certificationNumber": "PMDA-JP-003",
+        "standardCode": "JIS T 8151",
+        "certBodyName": "Pharmaceuticals and Medical Devices Agency",
+        "status": "active",
+        "dataSource": "PMDA",
+        "sourceId": "JP-003",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      }
+    ]
+  }
+}

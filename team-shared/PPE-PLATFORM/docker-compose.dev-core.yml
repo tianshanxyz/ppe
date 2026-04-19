@@ -1,0 +1,145 @@
+# PPE Platform Development Environment - Core Services Only
+# 仅包含核心服务（PostgreSQL, Redis, Elasticsearch, Kibana）
+# 适用于网络不稳定环境
+
+services:
+  # PostgreSQL 数据库
+  postgres:
+    image: docker.m.daocloud.io/library/postgres:15-alpine
+    container_name: ppe-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ppe_dev
+      POSTGRES_PASSWORD: ppe_dev_password_2026
+      POSTGRES_DB: ppe_platform
+      POSTGRES_INITDB_ARGS: --encoding=UTF-8 --locale=C
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./data/postgres/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - ppe-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ppe_dev -d ppe_platform"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
+
+  # Redis 缓存
+  redis:
+    image: docker.m.daocloud.io/library/redis:7-alpine
+    container_name: ppe-redis
+    restart: unless-stopped
+    command: redis-server --requirepass ppe_redis_password_2026 --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ppe-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "ppe_redis_password_2026", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  # Elasticsearch 搜索引擎
+  elasticsearch:
+    image: docker.m.daocloud.io/library/elasticsearch:8.11.0
+    container_name: ppe-elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - cluster.name=ppe-cluster
+      - node.name=ppe-es-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - ppe-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 2m
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+
+  # Kibana 可视化
+  kibana:
+    image: docker.m.daocloud.io/library/kibana:8.11.0
+    container_name: ppe-kibana
+    restart: unless-stopped
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - xpack.security.enabled=false
+    ports:
+      - "5601:5601"
+    volumes:
+      - kibana_data:/usr/share/kibana/data
+    networks:
+      - ppe-network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:5601/api/status | grep -q '\"overall\":{\"level\":\"available\"}'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 1m
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+# 数据卷
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  kibana_data:
+    driver: local
+
+# 网络
+networks:
+  ppe-network:
+    driver: bridge
+
+# 服务访问地址：
+# - PostgreSQL: localhost:5432
+#   - 用户名：ppe_dev
+#   - 密码：ppe_dev_password_2026
+#   - 数据库：ppe_platform
+#
+# - Redis: localhost:6379
+#   - 密码：ppe_redis_password_2026
+#
+# - Elasticsearch: http://localhost:9200
+#
+# - Kibana: http://localhost:5601

@@ -1,0 +1,175 @@
+{
+  "sourceType": "NMPA",
+  "collectedAt": "2026-04-19T08:10:01.416Z",
+  "result": {
+    "totalRecords": 5,
+    "successRecords": 5,
+    "failedRecords": 0,
+    "products": [
+      {
+        "productName": "医用防护口罩",
+        "productNameEn": "Medical Protective Mask",
+        "productNameLocal": "医用防护口罩",
+        "category": "呼吸防护",
+        "ppeCategory": "II",
+        "manufacturerName": "稳健医疗用品股份有限公司",
+        "manufacturerCountry": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-001",
+        "createdAt": "2026-04-19T08:10:01.415Z",
+        "updatedAt": "2026-04-19T08:10:01.415Z"
+      },
+      {
+        "productName": "KN95防护口罩",
+        "productNameEn": "KN95 Protective Mask",
+        "productNameLocal": "KN95防护口罩",
+        "category": "呼吸防护",
+        "ppeCategory": "II",
+        "manufacturerName": "3M中国有限公司",
+        "manufacturerCountry": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-002",
+        "createdAt": "2026-04-19T08:10:01.415Z",
+        "updatedAt": "2026-04-19T08:10:01.415Z"
+      },
+      {
+        "productName": "医用外科口罩",
+        "productNameEn": "Medical Surgical Mask",
+        "productNameLocal": "医用外科口罩",
+        "category": "呼吸防护",
+        "ppeCategory": "II",
+        "manufacturerName": "河南飘安集团有限公司",
+        "manufacturerCountry": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-003",
+        "createdAt": "2026-04-19T08:10:01.415Z",
+        "updatedAt": "2026-04-19T08:10:01.415Z"
+      },
+      {
+        "productName": "一次性医用防护服",
+        "productNameEn": "Disposable Medical Protective Clothing",
+        "productNameLocal": "一次性医用防护服",
+        "category": "身体防护",
+        "ppeCategory": "II",
+        "manufacturerName": "振德医疗用品股份有限公司",
+        "manufacturerCountry": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-004",
+        "createdAt": "2026-04-19T08:10:01.415Z",
+        "updatedAt": "2026-04-19T08:10:01.415Z"
+      },
+      {
+        "productName": "医用检查手套",
+        "productNameEn": "Medical Examination Gloves",
+        "productNameLocal": "医用检查手套",
+        "category": "手部防护",
+        "ppeCategory": "I",
+        "manufacturerName": "蓝帆医疗股份有限公司",
+        "manufacturerCountry": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-005",
+        "createdAt": "2026-04-19T08:10:01.415Z",
+        "updatedAt": "2026-04-19T08:10:01.415Z"
+      }
+    ],
+    "manufacturers": [
+      {
+        "companyName": "稳健医疗用品股份有限公司",
+        "country": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-MFG-001",
+        "createdAt": "2026-04-19T08:10:01.415Z",
+        "updatedAt": "2026-04-19T08:10:01.415Z"
+      },
+      {
+        "companyName": "3M中国有限公司",
+        "country": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-MFG-002",
+        "createdAt": "2026-04-19T08:10:01.415Z",
+        "updatedAt": "2026-04-19T08:10:01.415Z"
+      },
+      {
+        "companyName": "河南飘安集团有限公司",
+        "country": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-MFG-003",
+        "createdAt": "2026-04-19T08:10:01.415Z",
+        "updatedAt": "2026-04-19T08:10:01.415Z"
+      },
+      {
+        "companyName": "振德医疗用品股份有限公司",
+        "country": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-MFG-004",
+        "createdAt": "2026-04-19T08:10:01.415Z",
+        "updatedAt": "2026-04-19T08:10:01.415Z"
+      },
+      {
+        "companyName": "蓝帆医疗股份有限公司",
+        "country": "China",
+        "dataSource": "NMPA",
+        "sourceId": "CN-MFG-005",
+        "createdAt": "2026-04-19T08:10:01.415Z",
+        "updatedAt": "2026-04-19T08:10:01.415Z"
+      }
+    ],
+    "certifications": [
+      {
+        "certificationType": "NMPA",
+        "certificationNumber": "国械注准CN-001",
+        "standardCode": "GB 19083",
+        "certBodyName": "国家药品监督管理局",
+        "status": "active",
+        "dataSource": "NMPA",
+        "sourceId": "CN-001",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      },
+      {
+        "certificationType": "NMPA",
+        "certificationNumber": "国械注准CN-002",
+        "standardCode": "GB 19083",
+        "certBodyName": "国家药品监督管理局",
+        "status": "active",
+        "dataSource": "NMPA",
+        "sourceId": "CN-002",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      },
+      {
+        "certificationType": "NMPA",
+        "certificationNumber": "国械注准CN-003",
+        "standardCode": "GB 19083",
+        "certBodyName": "国家药品监督管理局",
+        "status": "active",
+        "dataSource": "NMPA",
+        "sourceId": "CN-003",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      },
+      {
+        "certificationType": "NMPA",
+        "certificationNumber": "国械注准CN-004",
+        "standardCode": "GB 24539",
+        "certBodyName": "国家药品监督管理局",
+        "status": "active",
+        "dataSource": "NMPA",
+        "sourceId": "CN-004",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      },
+      {
+        "certificationType": "NMPA",
+        "certificationNumber": "国械注准CN-005",
+        "standardCode": "GB 24539",
+        "certBodyName": "国家药品监督管理局",
+        "status": "active",
+        "dataSource": "NMPA",
+        "sourceId": "CN-005",
+        "createdAt": "2026-04-19T08:10:01.416Z",
+        "updatedAt": "2026-04-19T08:10:01.416Z"
+      }
+    ]
+  }
+}

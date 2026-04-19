@@ -1,0 +1,108 @@
+{
+  "sourceType": "HealthCanada",
+  "collectedAt": "2026-04-19T08:10:01.417Z",
+  "result": {
+    "totalRecords": 3,
+    "successRecords": 3,
+    "failedRecords": 0,
+    "products": [
+      {
+        "productName": "N95 Respirator",
+        "productNameEn": "N95 Respirator",
+        "category": "呼吸防护",
+        "ppeCategory": "II",
+        "manufacturerName": "3M Canada Company",
+        "manufacturerCountry": "Canada",
+        "dataSource": "HealthCanada",
+        "sourceId": "CA-001",
+        "createdAt": "2026-04-19T08:10:01.417Z",
+        "updatedAt": "2026-04-19T08:10:01.417Z"
+      },
+      {
+        "productName": "Medical Face Mask",
+        "productNameEn": "Medical Face Mask",
+        "category": "呼吸防护",
+        "ppeCategory": "II",
+        "manufacturerName": "Medicom Inc.",
+        "manufacturerCountry": "Canada",
+        "dataSource": "HealthCanada",
+        "sourceId": "CA-002",
+        "createdAt": "2026-04-19T08:10:01.417Z",
+        "updatedAt": "2026-04-19T08:10:01.417Z"
+      },
+      {
+        "productName": "Examination Gloves",
+        "productNameEn": "Examination Gloves",
+        "category": "手部防护",
+        "ppeCategory": "I",
+        "manufacturerName": "AMD Medicom Inc.",
+        "manufacturerCountry": "Canada",
+        "dataSource": "HealthCanada",
+        "sourceId": "CA-003",
+        "createdAt": "2026-04-19T08:10:01.417Z",
+        "updatedAt": "2026-04-19T08:10:01.417Z"
+      }
+    ],
+    "manufacturers": [
+      {
+        "companyName": "3M Canada Company",
+        "country": "Canada",
+        "dataSource": "HealthCanada",
+        "sourceId": "CA-MFG-001",
+        "createdAt": "2026-04-19T08:10:01.417Z",
+        "updatedAt": "2026-04-19T08:10:01.417Z"
+      },
+      {
+        "companyName": "Medicom Inc.",
+        "country": "Canada",
+        "dataSource": "HealthCanada",
+        "sourceId": "CA-MFG-002",
+        "createdAt": "2026-04-19T08:10:01.417Z",
+        "updatedAt": "2026-04-19T08:10:01.417Z"
+      },
+      {
+        "companyName": "AMD Medicom Inc.",
+        "country": "Canada",
+        "dataSource": "HealthCanada",
+        "sourceId": "CA-MFG-003",
+        "createdAt": "2026-04-19T08:10:01.417Z",
+        "updatedAt": "2026-04-19T08:10:01.417Z"
+      }
+    ],
+    "certifications": [
+      {
+        "certificationType": "HealthCanada",
+        "certificationNumber": "MDL-CA-001",
+        "standardCode": "CSA Z94.4.1",
+        "certBodyName": "Health Canada",
+        "status": "active",
+        "dataSource": "HealthCanada",
+        "sourceId": "CA-001",
+        "createdAt": "2026-04-19T08:10:01.417Z",
+        "updatedAt": "2026-04-19T08:10:01.417Z"
+      },
+      {
+        "certificationType": "HealthCanada",
+        "certificationNumber": "MDL-CA-002",
+        "standardCode": "CSA Z94.4.1",
+        "certBodyName": "Health Canada",
+        "status": "active",
+        "dataSource": "HealthCanada",
+        "sourceId": "CA-002",
+        "createdAt": "2026-04-19T08:10:01.417Z",
+        "updatedAt": "2026-04-19T08:10:01.417Z"
+      },
+      {
+        "certificationType": "HealthCanada",
+        "certificationNumber": "MDL-CA-003",
+        "standardCode": "CSA Z94.4.1",
+        "certBodyName": "Health Canada",
+        "status": "active",
+        "dataSource": "HealthCanada",
+        "sourceId": "CA-003",
+        "createdAt": "2026-04-19T08:10:01.417Z",
+        "updatedAt": "2026-04-19T08:10:01.417Z"
+      }
+    ]
+  }
+}
