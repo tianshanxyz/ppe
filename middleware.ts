@@ -10,7 +10,7 @@ const RATE_LIMIT = {
   maxRequests: 100, // 每分钟最多100个请求
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const response = NextResponse.next()
 
   // 1. 安全响应头
