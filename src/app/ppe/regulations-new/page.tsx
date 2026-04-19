@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Search, FileText, Filter, ExternalLink, BookOpen } from 'lucide-react'
-import { getPPERegulations } from '@/lib/ppe-database-service'
+import { getPPERegulationsClient } from '@/lib/ppe-database-client'
 
 export default function RegulationsPage() {
   const [regulations, setRegulations] = useState<any[]>([])
@@ -91,11 +91,13 @@ export default function RegulationsPage() {
   async function loadRegulations() {
     setLoading(true)
     try {
-      const result = await getPPERegulations({
+      const result = await getPPERegulationsClient({
         page,
         limit,
-        jurisdiction: selectedJurisdiction !== 'all' ? selectedJurisdiction : undefined,
-        category: selectedCategory !== 'all' ? selectedCategory : undefined,
+        filters: {
+          jurisdiction: selectedJurisdiction !== 'all' ? selectedJurisdiction : undefined,
+          category: selectedCategory !== 'all' ? selectedCategory : undefined,
+        },
       })
       
       // 如果数据库没有数据，使用示例数据
