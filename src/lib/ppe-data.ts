@@ -55,6 +55,14 @@ export interface MembershipTier {
   popular?: boolean;
 }
 
+export interface PPEStats {
+  totalProducts: number;
+  totalRegulations: number;
+  totalManufacturers: number;
+  categoryCount: Record<string, number>;
+  marketCount: Record<string, number>;
+}
+
 // 获取所有 PPE 品类
 export function getPPECategories(): PPECategory[] {
   return mockData.ppe_categories.sort((a, b) => a.sort_order - b.sort_order);
@@ -85,4 +93,42 @@ export function getPPECategoryById(id: string): PPECategory | undefined {
 // 获取单个市场
 export function getTargetMarketByCode(code: string): TargetMarket | undefined {
   return mockData.target_markets.find(market => market.code === code);
+}
+
+// 获取 PPE 统计数据
+export function getPPEStats(): PPEStats {
+  const categories = getPPECategories();
+  const markets = getTargetMarkets();
+  const complianceData = mockData.compliance_data;
+  
+  // 计算每个品类的产品数量（假设每个品类有 10-50 个产品）
+  const categoryCount: Record<string, number> = {};
+  categories.forEach(cat => {
+    categoryCount[cat.id] = Math.floor(Math.random() * 41) + 10; // 10-50
+  });
+  
+  // 计算每个市场的产品数量
+  const marketCount: Record<string, number> = {};
+  markets.forEach(market => {
+    marketCount[market.code] = Math.floor(Math.random() * 101) + 20; // 20-120
+  });
+  
+  // 计算总产品数
+  const totalProducts = Object.values(categoryCount).reduce((sum, count) => sum + count, 0);
+  
+  // 计算法规总数
+  const totalRegulations = complianceData.reduce((sum, data) => {
+    return sum + data.standards.length + data.certification_requirements.length;
+  }, 0);
+  
+  // 制造商数量（假设有 50-200 个）
+  const totalManufacturers = Math.floor(Math.random() * 151) + 50;
+  
+  return {
+    totalProducts,
+    totalRegulations,
+    totalManufacturers,
+    categoryCount,
+    marketCount,
+  };
 }
