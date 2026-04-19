@@ -30,9 +30,6 @@ const nextConfig: NextConfig = {
     ],
   },
   
-  // 启用缓存组件（Next.js 16+）
-  cacheComponents: true,
-
   // 输出配置
   output: 'standalone',
 
