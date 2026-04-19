@@ -1,9 +1,25 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { Search, Filter, Package, TrendingUp, BarChart3, Download, ExternalLink } from 'lucide-react'
+import { Search, Filter, Package, TrendingUp, BarChart3, Download, ExternalLink, CheckCircle2 } from 'lucide-react'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { getPPEProductsClient, getPPEProductStats, getPPECategories, getPPECountries } from '@/lib/ppe-database-client'
+import { PPEIcon } from '@/components/ppe/PPEIcons'
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5 }
+}
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<any[]>([])
@@ -78,12 +94,17 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <section className="bg-gradient-to-br from-[#339999]/10 via-white to-white py-20">
+      <motion.section 
+        className="bg-gradient-to-br from-[#339999]/10 via-white to-white py-20"
+        initial="initial"
+        animate="animate"
+        variants={staggerContainer}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+          <motion.div className="text-center" variants={fadeInUp}>
             <div className="flex justify-center mb-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-[#339999]/10 rounded-full">
-                <Package className="w-8 h-8 text-[#339999]" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#339999]/20 to-[#339999]/10 rounded-2xl shadow-lg">
+                <Package className="w-10 h-10 text-[#339999]" />
               </div>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
@@ -92,56 +113,60 @@ export default function ProductsPage() {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Browse and search our comprehensive database of PPE products
             </p>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Stats Bar */}
       {stats && (
-        <section className="py-6 bg-white border-b">
+        <motion.section 
+          className="py-8 bg-white border-b"
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={staggerContainer}
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#339999]">{stats.totalProducts}</div>
-                <div className="text-sm text-gray-600">Total Products</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#339999]">{Object.keys(stats.countryCount).length}</div>
-                <div className="text-sm text-gray-600">Countries</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#339999]">{Object.keys(stats.categoryCount).length}</div>
-                <div className="text-sm text-gray-600">Categories</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#339999]">{stats.ppeCategoryCount['II'] || 0}</div>
-                <div className="text-sm text-gray-600">Class II</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#339999]">{stats.ppeCategoryCount['III'] || 0}</div>
-                <div className="text-sm text-gray-600">Class III</div>
-              </div>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+              {[
+                { value: stats.totalProducts, label: 'Total Products' },
+                { value: Object.keys(stats.countryCount).length, label: 'Countries' },
+                { value: Object.keys(stats.categoryCount).length, label: 'Categories' },
+                { value: stats.ppeCategoryCount['II'] || 0, label: 'Class II' },
+                { value: stats.ppeCategoryCount['III'] || 0, label: 'Class III' }
+              ].map((stat, i) => (
+                <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
+                  <div className="text-4xl font-bold text-[#339999] mb-1">{stat.value}</div>
+                  <div className="text-sm text-gray-600">{stat.label}</div>
+                </motion.div>
+              ))}
             </div>
           </div>
-        </section>
+        </motion.section>
       )}
 
       {/* Main Content */}
-      <section className="py-12">
+      <motion.section 
+        className="py-12"
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: '-100px' }}
+        variants={staggerContainer}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Filters Sidebar */}
-            <div className="lg:w-64 flex-shrink-0">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-4">
-                <div className="flex items-center mb-4">
-                  <Filter className="w-5 h-5 text-[#339999] mr-2" />
-                  <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+            <motion.div className="lg:w-64 flex-shrink-0" variants={fadeInUp}>
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-4 hover:shadow-xl transition-shadow duration-300">
+                <div className="flex items-center mb-6">
+                  <Filter className="w-6 h-6 text-[#339999] mr-3" />
+                  <h2 className="text-xl font-bold text-gray-900">Filters</h2>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {/* Country Filter */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Country
                     </label>
                     <select
@@ -150,7 +175,7 @@ export default function ProductsPage() {
                         setSelectedCountry(e.target.value)
                         setPage(1)
                       }}
-                      className="w-full rounded-lg border-gray-300 focus:border-[#339999] focus:ring-[#339999]"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
                       <option value="all">All Countries</option>
                       {countries.map(country => (
@@ -163,7 +188,7 @@ export default function ProductsPage() {
 
                   {/* Category Filter */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Category
                     </label>
                     <select
@@ -172,7 +197,7 @@ export default function ProductsPage() {
                         setSelectedCategory(e.target.value)
                         setPage(1)
                       }}
-                      className="w-full rounded-lg border-gray-300 focus:border-[#339999] focus:ring-[#339999]"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
                       <option value="all">All Categories</option>
                       {categories.map(category => (
@@ -185,7 +210,7 @@ export default function ProductsPage() {
 
                   {/* PPE Category Filter */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
                       PPE Class
                     </label>
                     <select
@@ -194,7 +219,7 @@ export default function ProductsPage() {
                         setSelectedPPECategory(e.target.value)
                         setPage(1)
                       }}
-                      className="w-full rounded-lg border-gray-300 focus:border-[#339999] focus:ring-[#339999]"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
                       <option value="all">All Classes</option>
                       <option value="I">Class I</option>
@@ -212,33 +237,33 @@ export default function ProductsPage() {
                       setSearchQuery('')
                       setPage(1)
                     }}
-                    className="w-full py-2 px-4 text-sm text-[#339999] hover:text-[#2d8b8b] font-medium"
+                    className="w-full py-3 px-4 text-sm font-semibold text-[#339999] hover:text-[#2d8b8b] bg-[#339999]/5 hover:bg-[#339999]/10 rounded-xl transition-all duration-300"
                   >
                     Reset Filters
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Products List */}
-            <div className="flex-1">
+            <motion.div className="flex-1" variants={fadeInUp}>
               {/* Search Bar */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-                <div className="flex gap-4">
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-8 hover:shadow-xl transition-shadow duration-300">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                       placeholder="Search products by name, code, or manufacturer..."
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:border-[#339999] focus:ring-[#339999]"
+                      className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     />
                   </div>
                   <button
                     onClick={handleSearch}
-                    className="px-6 py-2 bg-[#339999] text-white rounded-lg hover:bg-[#2d8b8b] transition-colors"
+                    className="px-8 py-3 bg-gradient-to-r from-[#339999] to-[#2d8b8b] text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
                   >
                     Search
                   </button>
@@ -247,80 +272,90 @@ export default function ProductsPage() {
 
               {/* Loading State */}
               {loading && (
-                <div className="text-center py-12">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#339999]"></div>
-                  <p className="mt-4 text-gray-600">Loading products...</p>
+                <div className="text-center py-20">
+                  <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-[#339999]/20 border-b-[#339999]"></div>
+                  <p className="mt-6 text-lg text-gray-600 font-medium">Loading products...</p>
                 </div>
               )}
 
               {/* Products Grid */}
               {!loading && products.length > 0 && (
                 <>
-                  <div className="mb-4 flex items-center justify-between">
-                    <p className="text-sm text-gray-600">
+                  <div className="mb-6 flex items-center justify-between bg-white rounded-xl p-4 border border-gray-100">
+                    <p className="text-sm text-gray-600 font-medium">
                       Showing {startIndex}-{endIndex} of {total} products
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {products.map((product) => (
-                      <Link
-                        key={product.id}
-                        href={`/ppe/products/${product.id}`}
-                        className="group bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-[#339999] transition-all"
-                      >
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-gray-900 group-hover:text-[#339999] transition-colors">
-                              {product.product_name}
-                            </h3>
-                            <p className="text-sm text-gray-500 mt-1">
-                              {product.product_code}
-                            </p>
+                  <motion.div 
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                    variants={staggerContainer}
+                  >
+                    {products.map((product, index) => (
+                      <motion.div key={product.id} variants={fadeInUp} custom={index}>
+                        <Link
+                          href={`/ppe/products/${product.id}`}
+                          className="group block bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-xl hover:border-[#339999]/30 hover:-translate-y-2 transition-all duration-300"
+                        >
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex-1">
+                              <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#339999] transition-colors">
+                                {product.product_name}
+                              </h3>
+                              <p className="text-sm text-gray-500 mt-1 font-mono">
+                                {product.product_code}
+                              </p>
+                            </div>
+                            <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-[#339999] group-hover:translate-x-1 transition-all" />
                           </div>
-                          <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-[#339999] transition-colors" />
-                        </div>
 
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center text-sm text-gray-600">
-                            <Package className="w-4 h-4 mr-2" />
-                            <span>{product.product_category}</span>
+                          <div className="space-y-3 mb-6">
+                            <div className="flex items-center text-sm text-gray-600">
+                              <Package className="w-4 h-4 mr-2 text-[#339999]" />
+                              <span>{product.product_category}</span>
+                            </div>
+                            <div className="flex items-center text-sm text-gray-600">
+                              <TrendingUp className="w-4 h-4 mr-2 text-[#339999]" />
+                              <span>Class {product.ppe_category}</span>
+                            </div>
+                            <div className="flex items-center text-sm text-gray-600">
+                              <BarChart3 className="w-4 h-4 mr-2 text-[#339999]" />
+                              <span>{product.manufacturer_country}</span>
+                            </div>
                           </div>
-                          <div className="flex items-center text-sm text-gray-600">
-                            <TrendingUp className="w-4 h-4 mr-2" />
-                            <span>Class {product.ppe_category}</span>
-                          </div>
-                          <div className="flex items-center text-sm text-gray-600">
-                            <BarChart3 className="w-4 h-4 mr-2" />
-                            <span>{product.manufacturer_country}</span>
-                          </div>
-                        </div>
 
-                        <div className="pt-4 border-t border-gray-100">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600">
-                              {product.manufacturer_name}
-                            </span>
-                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                              product.registration_status === 'active'
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-gray-100 text-gray-700'
-                            }`}>
-                              {product.registration_status}
-                            </span>
+                          <div className="pt-4 border-t border-gray-100">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm text-gray-700 font-medium">
+                                {product.manufacturer_name}
+                              </span>
+                              <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                                product.registration_status === 'active'
+                                  ? 'bg-green-100 text-green-700'
+                                  : 'bg-gray-100 text-gray-700'
+                              }`}>
+                                {product.registration_status === 'active' && (
+                                  <CheckCircle2 className="w-3 h-3 mr-1" />
+                                )}
+                                {product.registration_status}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </Link>
+                        </Link>
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
 
                   {/* Pagination */}
                   {totalPages > 1 && (
-                    <div className="mt-8 flex items-center justify-center gap-2">
+                    <motion.div 
+                      className="mt-10 flex items-center justify-center gap-2"
+                      variants={fadeInUp}
+                    >
                       <button
                         onClick={() => setPage(page - 1)}
                         disabled={page === 1}
-                        className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-5 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 hover:border-[#339999]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
                       >
                         Previous
                       </button>
@@ -329,10 +364,10 @@ export default function ProductsPage() {
                         <button
                           key={pageNum}
                           onClick={() => setPage(pageNum)}
-                          className={`px-4 py-2 rounded-lg ${
+                          className={`px-5 py-2.5 rounded-xl font-medium transition-all ${
                             pageNum === page
-                              ? 'bg-[#339999] text-white'
-                              : 'border border-gray-300 hover:bg-gray-50'
+                              ? 'bg-gradient-to-r from-[#339999] to-[#2d8b8b] text-white shadow-lg'
+                              : 'border border-gray-200 hover:bg-gray-50 hover:border-[#339999]/30'
                           }`}
                         >
                           {pageNum}
@@ -342,20 +377,20 @@ export default function ProductsPage() {
                       <button
                         onClick={() => setPage(page + 1)}
                         disabled={page === totalPages}
-                        className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-5 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 hover:border-[#339999]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
                       >
                         Next
                       </button>
-                    </div>
+                    </motion.div>
                   )}
                 </>
               )}
 
               {/* Empty State */}
               {!loading && products.length === 0 && (
-                <div className="text-center py-12">
-                  <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
+                  <Package className="w-20 h-20 text-gray-300 mx-auto mb-6" />
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
                     No products found
                   </h3>
                   <p className="text-gray-600">
@@ -363,10 +398,10 @@ export default function ProductsPage() {
                   </p>
                 </div>
               )}
-            </div>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
     </div>
   )
 }

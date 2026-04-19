@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Shield } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -12,74 +12,81 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-1 md:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-[#339999] flex items-center justify-center">
-                <Shield className="w-5 h-5 text-white" />
+              <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
+                <ShieldCheck className="w-5 h-5 text-white" />
               </div>
               <span className="text-lg font-bold text-gray-900">MDLooker</span>
             </Link>
             <p className="text-gray-500 text-sm">
-              Global medical device regulatory database providing access to FDA, EUDAMED, NMPA, and worldwide regulatory information.
+              Global PPE compliance platform providing CE, FDA, UKCA certification guidance for personal protective equipment exporters.
             </p>
           </div>
 
-          {/* Links */}
+          {/* Product Links */}
           <div>
             <h4 className="font-semibold text-gray-900 mb-4">Product</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/search" className="text-gray-500 hover:text-[#339999] transition-colors">
-                  Search
+                <Link href="/ppe/products" className="text-gray-500 hover:text-primary transition-colors">
+                  Product Database
                 </Link>
               </li>
               <li>
-                <Link href="/companies" className="text-gray-500 hover:text-[#339999] transition-colors">
-                  Companies
+                <Link href="/ppe/manufacturers" className="text-gray-500 hover:text-primary transition-colors">
+                  Manufacturers
                 </Link>
               </li>
               <li>
-                <Link href="/tools" className="text-gray-500 hover:text-[#339999] transition-colors">
-                  Tools
+                <Link href="/ppe/market-access" className="text-gray-500 hover:text-primary transition-colors">
+                  Market Access
+                </Link>
+              </li>
+              <li>
+                <Link href="/ppe/certification-comparison" className="text-gray-500 hover:text-primary transition-colors">
+                  Certification Compare
                 </Link>
               </li>
             </ul>
           </div>
 
+          {/* Resources */}
           <div>
             <h4 className="font-semibold text-gray-900 mb-4">Resources</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/regulations" className="text-gray-500 hover:text-[#339999] transition-colors">
+                <Link href="/ppe/regulations" className="text-gray-500 hover:text-primary transition-colors">
                   Regulations
                 </Link>
               </li>
               <li>
-                <Link href="/data-sources" className="text-gray-500 hover:text-[#339999] transition-colors">
-                  Data Sources
+                <Link href="/ppe/pricing" className="text-gray-500 hover:text-primary transition-colors">
+                  Pricing
                 </Link>
               </li>
               <li>
-                <Link href="/help" className="text-gray-500 hover:text-[#339999] transition-colors">
+                <Link href="/help" className="text-gray-500 hover:text-primary transition-colors">
                   Help Center
                 </Link>
               </li>
             </ul>
           </div>
 
+          {/* Company */}
           <div>
             <h4 className="font-semibold text-gray-900 mb-4">Company</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/about" className="text-gray-500 hover:text-[#339999] transition-colors">
+                <Link href="/about" className="text-gray-500 hover:text-primary transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="text-gray-500 hover:text-[#339999] transition-colors">
+                <Link href="/privacy" className="text-gray-500 hover:text-primary transition-colors">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-gray-500 hover:text-[#339999] transition-colors">
+                <Link href="/terms" className="text-gray-500 hover:text-primary transition-colors">
                   Terms of Service
                 </Link>
               </li>

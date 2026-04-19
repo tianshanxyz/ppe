@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui';
-import { Menu, X, User, Shield, Globe } from 'lucide-react';
+import { Menu, X, User, ShieldCheck, Globe } from 'lucide-react';
 
 const languages = [
   { code: 'en', label: 'EN' },
@@ -33,34 +33,31 @@ export function Header() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-[#339999] flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
+              <ShieldCheck className="w-5 h-5 text-white" />
             </div>
             <span className="text-lg font-bold text-gray-900">MDLooker</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            <Link href="/search" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all">
-              Search
-            </Link>
-            <Link href="/products" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all">
+            <Link href="/ppe/products" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
               Products
             </Link>
-            <Link href="/companies" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all">
-              Companies
+            <Link href="/ppe/manufacturers" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
+              Manufacturers
             </Link>
-            <Link href="/tools" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all">
-              Tools
+            <Link href="/ppe/market-access" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
+              Markets
             </Link>
-            <Link href="/regulations" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all">
+            <Link href="/ppe/certification-comparison" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
+              Compare
+            </Link>
+            <Link href="/ppe/regulations" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
               Regulations
             </Link>
-            <Link href="/compliance" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all">
-              Compliance
-            </Link>
-            <Link href="/reports" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all">
-              Reports
+            <Link href="/ppe/pricing" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
+              Pricing
             </Link>
           </nav>
 
@@ -70,7 +67,7 @@ export function Header() {
             <div className="relative">
               <button
                 onClick={() => setShowLangMenu(!showLangMenu)}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
               >
                 <Globe className="w-4 h-4" />
                 <span>{languages.find(l => l.code === currentLang)?.label}</span>
@@ -83,7 +80,7 @@ export function Header() {
                       key={lang.code}
                       onClick={() => handleLangChange(lang.code)}
                       className={`w-full px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
-                        currentLang === lang.code ? 'text-[#339999] font-medium' : 'text-gray-600'
+                        currentLang === lang.code ? 'text-primary font-medium' : 'text-gray-600'
                       }`}
                     >
                       {lang.label}
@@ -95,7 +92,7 @@ export function Header() {
 
             {isLoggedIn ? (
               <Link href="/dashboard">
-                <Button variant="outline" size="sm" className="border-gray-200 hover:border-[#339999] hover:text-[#339999]">
+                <Button variant="outline" size="sm" className="border-gray-200 hover:border-primary hover:text-primary">
                   <User className="w-4 h-4 mr-2" />
                   Dashboard
                 </Button>
@@ -103,13 +100,13 @@ export function Header() {
             ) : (
               <>
                 <Link href="/auth/login">
-                  <Button variant="ghost" size="sm" className="text-gray-600 hover:text-[#339999]">
+                  <Button variant="ghost" size="sm" className="text-gray-600 hover:text-primary">
                     Login
                   </Button>
                 </Link>
                 <Link href="/auth/register">
-                  <Button size="sm" className="bg-[#339999] hover:bg-[#2a8080] text-white">
-                    Sign Up
+                  <Button size="sm" className="bg-primary hover:bg-primary-dark text-white">
+                    Get Started
                   </Button>
                 </Link>
               </>
@@ -118,7 +115,7 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-gray-600 hover:text-[#339999] rounded-lg hover:bg-gray-50"
+            className="md:hidden p-2 text-gray-600 hover:text-primary rounded-lg hover:bg-gray-50"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
@@ -134,46 +131,46 @@ export function Header() {
           <div className="md:hidden py-2 border-t border-gray-100">
             <nav className="flex flex-col gap-1 pb-2">
               <Link
-                href="/search"
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all"
+                href="/ppe/products"
+                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Search
+                Products
               </Link>
               <Link
-                href="/companies"
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all"
+                href="/ppe/manufacturers"
+                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Companies
+                Manufacturers
               </Link>
               <Link
-                href="/tools"
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all"
+                href="/ppe/market-access"
+                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Tools
+                Markets
               </Link>
               <Link
-                href="/regulations"
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all"
+                href="/ppe/certification-comparison"
+                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Compare Certifications
+              </Link>
+              <Link
+                href="/ppe/regulations"
+                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Regulations
               </Link>
               <Link
-                href="/compliance"
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all"
+                href="/ppe/pricing"
+                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Compliance
-              </Link>
-              <Link
-                href="/reports"
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Reports
+                Pricing
               </Link>
               
               {/* Mobile Language Switcher */}
@@ -187,8 +184,8 @@ export function Header() {
                       onClick={() => handleLangChange(lang.code)}
                       className={`px-2 py-1 rounded ${
                         currentLang === lang.code 
-                          ? 'text-[#339999] font-medium bg-[#339999]/5' 
-                          : 'text-gray-500 hover:text-[#339999]'
+                          ? 'text-primary font-medium bg-primary/5' 
+                          : 'text-gray-500 hover:text-primary'
                       }`}
                     >
                       {lang.label}
@@ -213,8 +210,8 @@ export function Header() {
                       </Button>
                     </Link>
                     <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
-                      <Button className="w-full bg-[#339999] hover:bg-[#2a8080] text-white">
-                        Sign Up
+                      <Button className="w-full bg-primary hover:bg-primary-dark text-white">
+                        Get Started
                       </Button>
                     </Link>
                   </>

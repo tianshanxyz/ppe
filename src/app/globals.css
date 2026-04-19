@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand Colors - H-Guardian Style (#339999) */
+  /* H-Guardian Brand Colors - Consistent with h-guardian.com */
   --background: #ffffff;
   --foreground: #1f2937;
   
@@ -19,6 +19,17 @@
   --primary-700: #267373;
   --primary-800: #1F5F5F;
   --primary-900: #194D4D;
+  
+  /* Accent Colors */
+  --accent: #F59E0B;
+  --accent-light: #FBBF24;
+  --accent-dark: #D97706;
+  
+  /* Functional Colors */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --info: #339999;
   
   /* Legacy Support - H-Guardian Colors */
   --medical: #339999;
@@ -59,6 +70,15 @@
   --color-primary-700: var(--primary-700);
   --color-primary-800: var(--primary-800);
   --color-primary-900: var(--primary-900);
+  /* Accent Colors */
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-dark: var(--accent-dark);
+  /* Functional Colors */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
   /* Medical - Alias for Primary */
   --color-medical: var(--medical);
   --color-medical-dark: var(--medical-dark);

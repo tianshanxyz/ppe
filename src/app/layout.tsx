@@ -10,9 +10,9 @@ import { Loader2 } from 'lucide-react'
 import { validateAndLog } from '@/lib/config/env-validator'
 
 export const metadata: Metadata = {
-  title: 'MDLooker - Global Medical Device Regulatory Database',
-  description: 'Search 43,000+ medical device registrations from FDA, EUDAMED, NMPA, and global regulatory databases. Find device approvals, classifications, and company information.',
-  keywords: 'medical device, FDA 510k, EUDAMED, medical device registration, regulatory database, NMPA, PMDA, device search',
+  title: 'MDLooker - Global PPE Compliance Platform',
+  description: 'Free PPE compliance check tool. Get instant CE, FDA, UKCA certification requirements for masks, protective clothing, gloves & more. Export to EU, US, UK, GCC markets.',
+  keywords: 'PPE compliance, CE certification, FDA registration, UKCA marking, personal protective equipment, mask export, protective clothing, gloves compliance, EU PPE regulation',
   authors: [{ name: 'MDLooker' }],
   creator: 'MDLooker',
   publisher: 'MDLooker',
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     canonical: '/'
   },
   openGraph: {
-    title: 'MDLooker - Global Medical Device Regulatory Database',
-    description: 'Search FDA, EUDAMED, NMPA medical device databases. 43,000+ device registrations.',
+    title: 'MDLooker - Global PPE Compliance Platform',
+    description: 'Free PPE compliance check. Get CE, FDA, UKCA certification requirements in 60 seconds.',
     url: 'https://mdlooker.com',
     siteName: 'MDLooker',
     locale: 'en_US',
@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MDLooker - Medical Device Regulatory Database',
-    description: 'Search 43,000+ medical device registrations from FDA, EUDAMED, and global databases.',
+    title: 'MDLooker - PPE Compliance Made Simple',
+    description: 'Free compliance check for masks, protective clothing, gloves. CE/FDA/UKCA certification guidance.',
   },
   robots: {
     index: true,

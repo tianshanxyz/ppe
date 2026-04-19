@@ -201,13 +201,26 @@ export function validateEnvironment(): ValidationResult {
 export function validateAndLog(): boolean {
   const result = validateEnvironment()
 
+  // 在构建时跳过错误检查（Vercel 构建期间环境变量可能未设置）
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build' || 
+                       process.env.VERCEL_ENV === 'production'
+
   // 记录错误
   if (result.errors.length > 0) {
-    console.error('\n❌ 环境变量配置错误:\n')
-    result.errors.forEach((error) => {
-      console.error(`  • ${error}`)
-    })
-    console.error('\n请检查 .env.production 或 .env.local 文件\n')
+    if (isBuildPhase) {
+      // 构建时只记录警告，不阻止构建
+      console.warn('\n⚠️  环境变量未配置（构建阶段跳过）:\n')
+      result.errors.forEach((error) => {
+        console.warn(`  • ${error}`)
+      })
+      console.warn('\n请在 Vercel 控制台配置这些环境变量\n')
+    } else {
+      console.error('\n❌ 环境变量配置错误:\n')
+      result.errors.forEach((error) => {
+        console.error(`  • ${error}`)
+      })
+      console.error('\n请检查 .env.production 或 .env.local 文件\n')
+    }
   }
 
   // 记录警告
@@ -228,7 +241,8 @@ export function validateAndLog(): boolean {
     console.info('\n')
   }
 
-  return result.valid
+  // 构建时始终返回 true，不阻止构建
+  return isBuildPhase ? true : result.valid
 }
 
 /**

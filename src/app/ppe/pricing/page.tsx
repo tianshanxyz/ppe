@@ -1,12 +1,28 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, X, Star, Zap, Building2, CreditCard, Shield, Mail } from 'lucide-react'
+import { Check, X, Star, Zap, Building2, CreditCard, Shield, Mail, ChevronDown, ChevronUp } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { getMembershipTiers } from '@/lib/ppe-data'
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5 }
+}
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
 
 export default function PricingPage() {
   const tiers = getMembershipTiers()
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('yearly')
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   const proTier = tiers.find(t => t.popular)
   const freeTier = tiers.find(t => t.id === 'free')
@@ -15,9 +31,14 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <section className="bg-gradient-to-br from-[#339999]/10 via-white to-white py-20">
+      <motion.section 
+        className="bg-gradient-to-br from-[#339999]/10 via-white to-white py-20"
+        initial="initial"
+        animate="animate"
+        variants={staggerContainer}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+          <motion.div className="text-center" variants={fadeInUp}>
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
               Simple, Transparent Pricing
             </h1>
@@ -30,16 +51,19 @@ export default function PricingPage() {
               <span className={`text-sm font-medium ${billingPeriod === 'monthly' ? 'text-gray-900' : 'text-gray-500'}`}>
                 Monthly
               </span>
-              <button
+              <motion.button
                 onClick={() => setBillingPeriod(billingPeriod === 'monthly' ? 'yearly' : 'monthly')}
                 className="relative w-14 h-7 bg-[#339999] rounded-full transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <div
+                <motion.div
                   className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform ${
                     billingPeriod === 'yearly' ? 'translate-x-8' : 'translate-x-1'
                   }`}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 />
-              </button>
+              </motion.button>
               <span className={`text-sm font-medium ${billingPeriod === 'yearly' ? 'text-gray-900' : 'text-gray-500'}`}>
                 Yearly
                 <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
@@ -63,17 +87,28 @@ export default function PricingPage() {
                 <span>Stripe & PayPal</span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Pricing Cards */}
-      <section className="py-20">
+      <motion.section 
+        className="py-20"
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: '-100px' }}
+        variants={staggerContainer}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Free Tier */}
             {freeTier && (
-              <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 hover:border-[#339999] transition-colors">
+              <motion.div
+                className="bg-white rounded-2xl border-2 border-gray-200 p-8 hover:border-[#339999] transition-colors"
+                variants={fadeInUp}
+                whileHover={{ y: -8, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
                 <div className="mb-6">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{freeTier.name}</h3>
                   <p className="text-gray-600 text-sm">{freeTier.recommended_for}</p>
@@ -91,9 +126,13 @@ export default function PricingPage() {
                   <p className="text-gray-500 text-sm mt-2">Forever free</p>
                 </div>
 
-                <button className="w-full py-3 px-6 bg-gray-100 text-gray-900 font-semibold rounded-lg hover:bg-gray-200 transition-colors mb-8">
+                <motion.button 
+                  className="w-full py-3 px-6 bg-gray-100 text-gray-900 font-semibold rounded-lg hover:bg-gray-200 transition-colors mb-8"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
                   Get Started Free
-                </button>
+                </motion.button>
 
                 <div className="space-y-4">
                   <h4 className="font-semibold text-gray-900">What&apos;s included:</h4>
@@ -112,14 +151,19 @@ export default function PricingPage() {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* Pro Tier */}
             {proTier && (
-              <div className="relative bg-gradient-to-b from-[#339999]/5 to-white rounded-2xl border-2 border-[#339999] p-8 shadow-xl">
+              <motion.div
+                className="relative bg-gradient-to-b from-[#339999]/5 to-white rounded-2xl border-2 border-[#339999] p-8 shadow-xl"
+                variants={fadeInUp}
+                whileHover={{ y: -12, scale: 1.03 }}
+                transition={{ duration: 0.3 }}
+              >
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#339999] text-white rounded-full text-sm font-semibold">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#339999] text-white rounded-full text-sm font-semibold shadow-lg">
                     <Star className="w-4 h-4" />
                     Most Popular
                   </div>
@@ -152,9 +196,13 @@ export default function PricingPage() {
                   <p className="text-gray-500 text-sm mt-2">Billed {proTier.billing_period}</p>
                 </div>
 
-                <button className="w-full py-3 px-6 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors mb-8 shadow-md">
+                <motion.button 
+                  className="w-full py-3 px-6 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors mb-8 shadow-md"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
                   Start Free Trial
-                </button>
+                </motion.button>
 
                 <div className="space-y-4">
                   <h4 className="font-semibold text-gray-900">Everything in Free, plus:</h4>
@@ -173,12 +221,17 @@ export default function PricingPage() {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* Enterprise Tier */}
             {enterpriseTier && (
-              <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 hover:border-[#339999] transition-colors">
+              <motion.div
+                className="bg-white rounded-2xl border-2 border-gray-200 p-8 hover:border-[#339999] transition-colors"
+                variants={fadeInUp}
+                whileHover={{ y: -8, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
                 <div className="mb-6">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{enterpriseTier.name}</h3>
                   <p className="text-gray-600 text-sm">{enterpriseTier.recommended_for}</p>
@@ -206,9 +259,13 @@ export default function PricingPage() {
                   <p className="text-gray-500 text-sm mt-2">Billed {enterpriseTier.billing_period}</p>
                 </div>
 
-                <button className="w-full py-3 px-6 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors mb-8 shadow-md">
+                <motion.button 
+                  className="w-full py-3 px-6 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors mb-8 shadow-md"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
                   Contact Sales
-                </button>
+                </motion.button>
 
                 <div className="space-y-4">
                   <h4 className="font-semibold text-gray-900">Everything in Pro, plus:</h4>
@@ -227,25 +284,31 @@ export default function PricingPage() {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </motion.div>
             )}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Feature Comparison */}
-      <section className="py-20 bg-gray-50">
+      <motion.section 
+        className="py-20 bg-gray-50"
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: '-100px' }}
+        variants={staggerContainer}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <motion.div className="text-center mb-12" variants={fadeInUp}>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Compare Features
             </h2>
             <p className="text-xl text-gray-600">
               See what&apos;s included in each plan
             </p>
-          </div>
+          </motion.div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <motion.div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden" variants={fadeInUp}>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -272,7 +335,11 @@ export default function PricingPage() {
                     { name: 'White-label Reports', free: false, pro: false, enterprise: true },
                     { name: '24/7 Support', free: false, pro: false, enterprise: true },
                   ].map((feature, idx) => (
-                    <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                    <motion.tr 
+                      key={idx} 
+                      className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                      whileHover={{ backgroundColor: '#f0fdfa' }}
+                    >
                       <td className="px-6 py-4 text-sm font-medium text-gray-900">{feature.name}</td>
                       <td className="px-6 py-4 text-center text-sm text-gray-600">
                         {typeof feature.free === 'boolean' ? (
@@ -307,26 +374,32 @@ export default function PricingPage() {
                           feature.enterprise
                         )}
                       </td>
-                    </tr>
+                    </motion.tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* FAQ */}
-      <section className="py-20">
+      <motion.section 
+        className="py-20"
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: '-100px' }}
+        variants={staggerContainer}
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <motion.div className="text-center mb-12" variants={fadeInUp}>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Frequently Asked Questions
             </h2>
             <p className="text-xl text-gray-600">
               Everything you need to know about our pricing and plans
             </p>
-          </div>
+          </motion.div>
 
           <div className="space-y-6">
             {[
@@ -355,38 +428,81 @@ export default function PricingPage() {
                 answer: 'Yes! We offer special pricing for non-profit organizations and educational institutions. Contact us to learn more.'
               },
             ].map((faq, idx) => (
-              <div key={idx} className="bg-white rounded-xl border border-gray-200 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {faq.question}
-                </h3>
-                <p className="text-gray-600">
-                  {faq.answer}
-                </p>
-              </div>
+              <motion.div 
+                key={idx} 
+                className="bg-white rounded-xl border border-gray-200 overflow-hidden"
+                variants={fadeInUp}
+              >
+                <motion.button
+                  className="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  whileHover={{ backgroundColor: '#f9fafb' }}
+                >
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {faq.question}
+                  </h3>
+                  {openFaq === idx ? (
+                    <ChevronUp className="w-6 h-6 text-[#339999]" />
+                  ) : (
+                    <ChevronDown className="w-6 h-6 text-gray-400" />
+                  )}
+                </motion.button>
+                <motion.div
+                  initial={false}
+                  animate={{
+                    height: openFaq === idx ? 'auto' : 0,
+                    opacity: openFaq === idx ? 1 : 0
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 pb-5">
+                    <p className="text-gray-600">
+                      {faq.answer}
+                    </p>
+                  </div>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-r from-[#339999] to-[#2d8b8b]">
+      <motion.section 
+        className="py-20 bg-gradient-to-r from-[#339999] to-[#2d8b8b]"
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: '-100px' }}
+        variants={staggerContainer}
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to Get Started?
-          </h2>
-          <p className="text-xl text-white/90 mb-8">
-            Join hundreds of PPE exporters and manufacturers who trust MDLooker for their compliance needs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-white text-[#339999] font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-lg">
-              Start Free Trial
-            </button>
-            <button className="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors">
-              Contact Sales
-            </button>
-          </div>
+          <motion.div variants={fadeInUp}>
+            <h2 className="text-4xl font-bold text-white mb-6">
+              Ready to Get Started?
+            </h2>
+            <p className="text-xl text-white/90 mb-8">
+              Join hundreds of PPE exporters and manufacturers who trust MDLooker for their compliance needs.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.button 
+                className="px-8 py-4 bg-white text-[#339999] font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Start Free Trial
+              </motion.button>
+              <motion.button 
+                className="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Contact Sales
+              </motion.button>
+            </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
     </div>
   )
 }

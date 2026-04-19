@@ -6,17 +6,27 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-// Supabase 客户端
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+/**
+ * 获取 Supabase 客户端
+ */
+function getSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn('Supabase environment variables not configured')
+    throw new Error('Supabase 配置错误：缺少必要的环境变量')
+  }
+
+  return createClient(supabaseUrl, supabaseAnonKey)
+}
 
 /**
  * 获取用户收藏的法规列表
  */
 export async function GET(request: NextRequest) {
   try {
+    const supabase = getSupabaseClient()
     const { searchParams } = new URL(request.url)
     const limit = parseInt(searchParams.get('limit') || '100')
     const offset = parseInt(searchParams.get('offset') || '0')
@@ -61,6 +71,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    const supabase = getSupabaseClient()
     const body = await request.json()
     const { regulationId, title, jurisdiction, category, status, effective_date } = body
 
@@ -114,6 +125,7 @@ export async function POST(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
+    const supabase = getSupabaseClient()
     const body = await request.json()
     const { id } = body
 
@@ -146,6 +158,7 @@ export async function DELETE(request: NextRequest) {
  */
 export async function PATCH(request: NextRequest) {
   try {
+    const supabase = getSupabaseClient()
     const body = await request.json()
     const { id, notes } = body
 

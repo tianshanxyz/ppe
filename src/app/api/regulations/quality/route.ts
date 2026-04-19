@@ -6,21 +6,31 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-// Supabase 客户端
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+/**
+ * 获取 Supabase 客户端
+ */
+function getSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn('Supabase environment variables not configured')
+    throw new Error('Supabase 配置错误：缺少必要的环境变量')
+  }
+
+  return createClient(supabaseUrl, supabaseAnonKey)
+}
 
 /**
  * 获取法规数据质量报告
  */
 export async function GET(request: NextRequest) {
   try {
+    const supabase = getSupabaseClient()
     const { searchParams } = new URL(request.url)
     const jurisdiction = searchParams.get('jurisdiction')
     const limit = parseInt(searchParams.get('limit') || '100')
-    
+
     // 查询所有法规
     const { data: regulations, error: regulationsError } = await supabase
       .from('regulations')
@@ -151,9 +161,10 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    const supabase = getSupabaseClient()
     const { searchParams } = new URL(request.url)
     const jurisdiction = searchParams.get('jurisdiction')
-    
+
     // 查询所有法规
     const { data: regulations, error: regulationsError } = await supabase
       .from('regulations')
