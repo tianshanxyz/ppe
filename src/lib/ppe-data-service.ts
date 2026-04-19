@@ -271,7 +271,7 @@ export async function getComplianceData(categoryId: string, marketCode: string) 
   
   // 汇总合规要求
   const allRegulations = products.flatMap(product => 
-    product.ppe_product_regulations?.map(pr => pr.ppe_regulations) || []
+    product.ppe_product_regulations?.map((pr: any) => pr.ppe_regulations) || []
   )
   
   const uniqueRegulations = allRegulations.filter(

@@ -179,7 +179,7 @@ export class ParserFactory {
    */
   static registerAll(): void {
     // 注册 FDA 解析器
-    this.register(DataSourceType.FDA, FDAParser);
+    this.register(DataSourceType.FDA, FDAParser as any);
 
     console.log('[ParserFactory] All built-in parsers registered');
   }

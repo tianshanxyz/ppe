@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, ResponsiveContainer, Cell } from 'recharts'
+import { BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, ResponsiveContainer, Cell, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 import { Building, TrendingUp, Award, Target, Users, Globe, Shield, Zap } from 'lucide-react'
-import { getCompetitors } from '@/lib/ppe-database-service'
+import { getCompetitors } from '@/lib/ppe-database-client'
 
 const COLORS = ['#339999', '#2d8b8b', '#267a7a', '#1f6969', '#185858']
 

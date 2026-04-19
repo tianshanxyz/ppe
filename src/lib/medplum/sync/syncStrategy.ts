@@ -140,7 +140,7 @@ export class SyncService {
           }
         }
 
-        nextPage = (response as any).link?.find((link: unknown) => link.relation === 'next')?.url;
+       const nextUrl = (response as any).link?.find((link: any) => link.relation === 'next')?.url;
       } while (nextPage);
 
       // 更新最后同步时间
@@ -241,7 +241,7 @@ export class DeviceMapper implements DataMapper<Device, any> {
     };
   }
 
-  reverseMap(product: unknown): Device {
+  reverseMap(product: any): Device {
     return {
       resourceType: 'Device',
       id: product.id,
@@ -307,7 +307,11 @@ export class OrganizationMapper implements DataMapper<Organization, any> {
     };
   }
 
-  reverseMap(company: unknown): Organization {
+  reverseMap(item: any): Organization {
+    return this.reverseMapCompany(item);
+  }
+
+  reverseMapCompany(company: any): Organization {
     return {
       resourceType: 'Organization',
       id: company.id,
@@ -341,7 +345,7 @@ export class OrganizationMapper implements DataMapper<Organization, any> {
 
 // 法规授权映射器
 export class RegulatoryAuthorizationMapper implements DataMapper<any, any> {
-  map(regulatory: unknown): unknown {
+  map(regulatory: any): unknown {
     return {
       id: regulatory.id || regulatory.identifier?.[0]?.value || '',
       title: regulatory.type?.coding?.[0]?.display || '',
@@ -364,7 +368,7 @@ export class RegulatoryAuthorizationMapper implements DataMapper<any, any> {
     };
   }
 
-  reverseMap(regulation: unknown): unknown {
+  reverseMap(regulation: any): unknown {
     return {
       resourceType: 'Device',
       id: regulation.id,
@@ -384,7 +388,7 @@ export class RegulatoryAuthorizationMapper implements DataMapper<any, any> {
     };
   }
 
-  private extractJurisdiction(regulator?: unknown): string {
+  private extractJurisdiction(regulator?: any): string {
     if (!regulator || !regulator.reference) return '';
     // 从监管机构参考中提取司法管辖区
     const reference = regulator.reference;

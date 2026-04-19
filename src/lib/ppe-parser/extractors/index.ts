@@ -5,13 +5,17 @@
 
 export {
   CheerioExtractor,
-  CheerioExtractOptions,
   createCheerioExtractor,
+} from './CheerioExtractor';
+export type {
+  CheerioExtractOptions,
 } from './CheerioExtractor';
 
 export {
   PuppeteerExtractor,
+  createPuppeteerExtractor,
+} from './PuppeteerExtractor';
+export type {
   PuppeteerExtractOptions,
   LoadStrategy,
-  createPuppeteerExtractor,
 } from './PuppeteerExtractor';

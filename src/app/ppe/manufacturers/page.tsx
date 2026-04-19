@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Search, Building, Globe, Mail, Phone, MapPin } from 'lucide-react'
 import Link from 'next/link'
-import { getPPEManufacturers } from '@/lib/ppe-database-service'
+import { getPPEManufacturers } from '@/lib/ppe-database-client'
 
 export default function ManufacturersPage() {
   const [manufacturers, setManufacturers] = useState<any[]>([])

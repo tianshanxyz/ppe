@@ -5,7 +5,9 @@
 
 export {
   FDAParser,
+  createFDAParser,
+} from './FDAParser';
+export type {
   FDA510kProduct,
   FDA510kProductDetail,
-  createFDAParser,
 } from './FDAParser';

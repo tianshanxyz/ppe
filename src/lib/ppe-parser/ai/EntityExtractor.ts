@@ -446,7 +446,7 @@ Respond with ONLY a JSON array of entities, no additional text:
         throw new Error('Response is not an array');
       }
 
-      const entities: Entity[] = parsed.map((item: unknown) => ({
+      const entities: Entity[] = parsed.map((item: any) => ({
         type: this.normalizeEntityType(item.type),
         value: String(item.value || '').trim(),
         rawText: String(item.rawText || item.value || '').trim(),

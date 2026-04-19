@@ -8,6 +8,7 @@
 
 import { BaseParser } from '../core/BaseParser';
 import { CheerioExtractor } from '../extractors/CheerioExtractor';
+import * as cheerio from 'cheerio';
 import {
   DataSourceType,
   ParserConfig,
@@ -43,7 +44,7 @@ export interface FDA510kProductDetail extends PPEProductDetail, FDA510kProduct {
     email?: string;
   };
   predicates?: string[];
-  indications?: string;
+  indications?: string[];
   deviceDescription?: string;
   substantialEquivalence?: string;
 }
@@ -318,7 +319,7 @@ export class FDAParser extends BaseParser {
       productCode: this.cleanText(extracted.productCode) || '',
       manufacturerInfo,
       contactInfo,
-      indications: this.cleanText(extracted.indications),
+      indications: this.cleanText(extracted.indications) ? [this.cleanText(extracted.indications)] : undefined,
       deviceDescription: this.cleanText(extracted.deviceDescription),
       predicates,
       summaryUrl,
@@ -402,7 +403,7 @@ export class FDAParser extends BaseParser {
   /**
    * 提取制造商信息
    */
-  private extractManufacturerInfo($: cheerio.Root): ManufacturerInfo | undefined {
+  private extractManufacturerInfo($: cheerio.CheerioAPI): ManufacturerInfo | undefined {
     const applicant = $('td:contains("Applicant") + td').text().trim();
     const address = $('td:contains("Address") + td').text().trim();
 
@@ -420,7 +421,7 @@ export class FDAParser extends BaseParser {
   /**
    * 提取联系信息
    */
-  private extractContactInfo($: cheerio.Root): { phone?: string; fax?: string; email?: string } | undefined {
+  private extractContactInfo($: cheerio.CheerioAPI): { phone?: string; fax?: string; email?: string } | undefined {
     const contactText = $('td:contains("Contact") + td, .contact-info').text();
 
     if (!contactText) {
@@ -449,7 +450,7 @@ export class FDAParser extends BaseParser {
   /**
    * 提取 predicate devices
    */
-  private extractPredicates($: cheerio.Root): string[] {
+  private extractPredicates($: cheerio.CheerioAPI): string[] {
     const predicates: string[] = [];
 
     $('td:contains("Predicate") + td, .predicate-device').each((_, elem) => {
@@ -466,7 +467,7 @@ export class FDAParser extends BaseParser {
   /**
    * 提取文档链接
    */
-  private extractDocumentLink($: cheerio.Root, docType: string): string | undefined {
+  private extractDocumentLink($: cheerio.CheerioAPI, docType: string): string | undefined {
     const link = $(`a:contains("${docType}"), a[href*="${docType.toLowerCase()}"]`).attr('href');
     return link ? this.resolveUrl(link, this.config.baseUrl) : undefined;
   }

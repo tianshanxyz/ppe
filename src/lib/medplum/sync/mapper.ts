@@ -87,7 +87,7 @@ export class DataMappingService {
 
   // 映射 MDLooker Company 到 Medplum Organization
   mapCompanyToOrganization(company: MDLookerCompany): Organization {
-    return this.organizationMapper.reverseMap(company);
+    return this.organizationMapper.reverseMapCompany(company);
   }
 
   // 映射 Medplum RegulatoryAuthorization 到 MDLooker Regulation

@@ -188,10 +188,10 @@ async function processBatchQuery(jobId: string, file: File, type: 'company' | 'p
     for (let i = 0; i < data.length; i += BATCH_SIZE) {
       const batch = data.slice(i, i + BATCH_SIZE)
       const batchPromises = batch.map((item, batchIndex) => {
-        const query = (item as ExcelRow).name || 
+        const query = ((item as ExcelRow).name || 
                      (item as ExcelRow).company_name || 
                      (item as ExcelRow).k_number || 
-                     (item as ExcelRow).product_name
+                     (item as ExcelRow).product_name) as string
         
         if (!query) {
           return Promise.resolve({ query: '', result: null, row: i + batchIndex + 2, error: 'Missing query field' })
@@ -309,8 +309,8 @@ export async function DOWNLOAD(
     // 生成 CSV 格式的结果文件（替代 xlsx）
     const resultsData = result.results.map(r => ({
       query: r.query,
-      ...(r.result || {})
-    }))
+      ...(r.result as Record<string, any> || {})
+    })) as any[]
     
     const resultCsv = SafeExcelParser.generateCSV(resultsData, ['query', ...Object.keys(resultsData[0] || {}).filter(k => k !== 'query')])
     

@@ -7,7 +7,7 @@ import {
   ArrowLeft, Building, Globe, Mail, Phone, MapPin, FileText,
   Package, CheckCircle, ExternalLink, Download
 } from 'lucide-react'
-import { getPPEManufacturer } from '@/lib/ppe-database-service'
+import { getPPEManufacturer } from '@/lib/ppe-database-client'
 
 export default function ManufacturerDetailPage() {
   const params = useParams()
@@ -288,7 +288,7 @@ export default function ManufacturerDetailPage() {
                     Products ({manufacturer.ppe_product_manufacturers.length})
                   </h2>
                   <div className="space-y-3">
-                    {manufacturer.ppe_product_manufacturers.map((relation: unknown, index: number) => {
+                    {manufacturer.ppe_product_manufacturers.map((relation: any, index: number) => {
                       const product = relation.ppe_products
                       if (!product) return null
                       return (

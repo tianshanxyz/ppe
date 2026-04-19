@@ -48,20 +48,15 @@ export async function generateAIContent(prompt: string): Promise<string> {
 
 export async function generateComparisonAnalysis(
   type: 'company' | 'product',
-  items: unknown[],
-  comparisonData: unknown
-): Promise<string> {
+  items: any[],
+  comparisonData: any
+) {
   try {
-    const context = {
-      type,
-      items,
-      comparison: comparisonData,
-    }
-
+    const company = items[0] as any
     const prompt = `你是一位医疗器械行业分析师，请根据以下${type === 'company' ? '企业' : '产品'}对比数据生成一份专业的对比分析报告：
 
-对比类型: ${type === 'company' ? '企业' : '产品'}对比
-对比项数量: ${items.length}
+对比类型：${type === 'company' ? '企业' : '产品'}对比
+对比项数量：${items.length}
 
 ${type === 'company' ? '企业信息：' : '产品信息：'}
 ${items.map((item, i) => `${i + 1}. ${item.name || item.product_name} - ${item.country || item.market}`).join('\n')}
@@ -85,17 +80,17 @@ ${JSON.stringify(comparisonData, null, 2)}
 }
 
 export async function generateRegulatoryAnalysis(
-  company: unknown,
-  products: unknown[],
-  regulations: unknown[]
+  company: any,
+  products: any[],
+  regulations: any[]
 ): Promise<string> {
   try {
     const prompt = `你是一位医疗器械法规专家，请根据以下公司和产品信息，结合相关法规要求，生成一份法规合规性分析报告：
 
 公司信息：
-- 公司名称: ${company.name}
-- 所在国家: ${company.country}
-- 注册号: ${company.registration_number}
+- 公司名称：${company.name}
+- 所在国家：${company.country}
+- 注册号：${company.registration_number}
 
 产品信息：
 ${products.slice(0, 5).map((p, i) => `${i + 1}. ${p.product_name} - ${p.market}市场 - ${p.device_class}类别`).join('\n')}

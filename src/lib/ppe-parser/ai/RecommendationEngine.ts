@@ -6,7 +6,6 @@
  */
 
 import { Logger } from '../monitoring/Logger';
-import { VolcengineAIClient } from './AIClient';
 import { SimilarityMatcher, ProductInfo, SimilarityResult } from './SimilarityMatcher';
 import { ComplianceEvaluator, ProductComplianceInfo, EvaluationResult } from './ComplianceEvaluator';
 
@@ -287,28 +286,26 @@ export interface RecommendationEngineConfig {
  */
 export class RecommendationEngine {
   private logger: Logger;
-  private aiClient: VolcengineAIClient;
   private similarityMatcher: SimilarityMatcher;
   private complianceEvaluator: ComplianceEvaluator;
   private config: RecommendationEngineConfig;
   private cache: Map<string, RecommendationResult>;
 
   constructor(config?: Partial<RecommendationEngineConfig>) {
-    this.logger = new Logger('RecommendationEngine');
-    this.aiClient = new VolcengineAIClient();
+    this.logger = new Logger();
     this.config = {
       enableCache: true,
       cacheMaxSize: 500,
       defaultRecommendationCount: 10,
       minRecommendationScore: 60,
-      useAIModel: true,
+      useAIModel: false,
       ...config,
     };
     this.cache = new Map();
 
     // 初始化相似度匹配器和评估器
     this.similarityMatcher = new SimilarityMatcher({
-      useAIModel: this.config.similarityMatcherConfig?.useAIModel ?? true,
+      useAIModel: this.config.similarityMatcherConfig?.useAIModel ?? false,
       defaultThreshold: this.config.similarityMatcherConfig?.defaultThreshold ?? 0.6,
     });
 
@@ -581,41 +578,14 @@ export class RecommendationEngine {
   private async recommendStandards(
     input: RecommendationInput
   ): Promise<RecommendationResult> {
-    // 使用AI模型生成标准推荐
+    // 使用规则推荐（AI 功能已禁用）
     if (this.config.useAIModel) {
-      return this.recommendStandardsWithAI(input);
+      console.warn('AI recommendation is currently disabled, using rule-based recommendation');
+      return this.recommendStandardsWithRules(input);
     }
 
     // 使用规则推荐
     return this.recommendStandardsWithRules(input);
-  }
-
-  /**
-   * 使用AI推荐标准
-   */
-  private async recommendStandardsWithAI(
-    input: RecommendationInput
-  ): Promise<RecommendationResult> {
-    const prompt = this.buildStandardRecommendationPrompt(input);
-
-    const response = await this.aiClient.generateContent({
-      model: this.config.aiModel?.model || 'doubao-pro-32k-241215',
-      messages: [
-        {
-          role: 'system',
-          content: `你是一个PPE（个人防护设备）标准专家。请根据产品信息推荐适用的标准和法规要求。
-请以JSON格式输出推荐结果。`,
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      temperature: 0.3,
-      maxTokens: 2000,
-    });
-
-    return this.parseStandardRecommendationResponse(response, input);
   }
 
   /**
@@ -1095,7 +1065,7 @@ export class RecommendationEngine {
       const standards = data.standards || [];
 
       const recommendations: RecommendationItem[] = standards.map(
-        (std: unknown, index: number) => ({
+        (std: any, index: number) => ({
           id: `std_${std.code}`,
           product: input.sourceProduct,
           type: RecommendationType.STANDARD_RECOMMENDATION,
@@ -1152,7 +1122,9 @@ export class RecommendationEngine {
   private setCache(input: RecommendationInput, result: RecommendationResult): void {
     if (this.cache.size >= this.config.cacheMaxSize) {
       const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
+      if (firstKey) {
+        this.cache.delete(firstKey);
+      }
     }
     const key = this.generateCacheKey(input);
     this.cache.set(key, result);

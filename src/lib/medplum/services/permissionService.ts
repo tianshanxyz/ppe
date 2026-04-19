@@ -264,7 +264,7 @@ async function syncPermissionsToLocal(
     const supabase = await createSupabaseClient()
 
     // 处理每个 Medplum 权限
-    for (const permission of medplumPermissions.entry || []) {
+    for (const permission of (medplumPermissions as any).entry || []) {
       const mapped = mapMedplumToMDLooker(permission, mapping)
       if (mapped) {
         await supabase
@@ -364,7 +364,7 @@ async function implementPermissionOptimizations(improvements: unknown) {
       .delete()
 
     // 2. 应用新权限模型
-    for (const [role, config] of Object.entries(improvements.roles)) {
+    for (const [role, config] of Object.entries((improvements as any).roles)) {
       for (const permission of (config as any).permissions) {
         const [resourceType, action] = permission.split(':')
         await supabase

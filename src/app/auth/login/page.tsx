@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button, Input, Card } from '@/components/ui';
 import { Mail, Lock, Loader2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { AuthUtils } from '@/lib/auth-utils';
 
 export default function LoginPage() {
   const router = useRouter();

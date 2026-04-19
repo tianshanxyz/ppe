@@ -1,4 +1,4 @@
-import { lazy, Suspense, ComponentType } from 'react';
+import React, { lazy, ComponentType, createElement } from 'react';
 
 /**
  * 性能优化工具类
@@ -10,14 +10,16 @@ export class PerformanceOptimizer {
   static createLazyComponent<T extends ComponentType<any>>(
     importFn: () => Promise<{ default: T }>,
     fallback: React.ReactNode = null
-  ) {
+  ): React.FC<React.ComponentProps<T>> {
     const LazyComponent = lazy(importFn);
     
-    return (props: React.ComponentProps<T>) => (
-      <Suspense fallback={fallback}>
-        <LazyComponent {...props} />
-      </Suspense>
-    );
+    return function LazyComponentWrapper(props: React.ComponentProps<T>) {
+      return createElement(
+        React.Suspense,
+        { fallback },
+        createElement(LazyComponent, props)
+      );
+    };
   }
 
   /**
@@ -275,7 +277,6 @@ export const codeSplittingConfig = {
   // 路由级别的代码分割
   routes: {
     dashboard: () => import('@/app/dashboard/page'),
-    admin: () => import('@/app/admin/page'),
     search: () => import('@/app/search/page'),
     regulations: () => import('@/app/regulations/page'),
     companies: () => import('@/app/companies/page'),
@@ -285,18 +286,13 @@ export const codeSplittingConfig = {
 
   // 组件级别的代码分割
   components: {
-    charts: () => import('@/components/charts'),
-    dataGrid: () => import('@/components/data-grid'),
-    richEditor: () => import('@/components/rich-editor'),
-    fileUpload: () => import('@/components/file-upload'),
-    mapView: () => import('@/components/map-view')
+    // 添加实际存在的组件
   },
 
   // 第三方库的代码分割
   libraries: {
     pdf: () => import('@react-pdf/renderer'),
-    charts: () => import('recharts'),
-    maps: () => import('react-leaflet')
+    charts: () => import('recharts')
   }
 };
 

@@ -1,6 +1,9 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
+// This module can only be imported by Server Components
+// Using 'server-only' package would enforce this at build time
+
 export async function createClient() {
   const cookieStore = await cookies()
 

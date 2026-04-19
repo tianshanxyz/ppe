@@ -19,25 +19,28 @@ export const Tooltip = ({ children, content, side = 'top', delayDuration = 0 }: 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Extract TooltipTrigger and TooltipContent from children
-  const trigger: ReactNode = null
+  let extractedTrigger: ReactNode = null
   let tooltipContent: ReactNode = content
 
+  // Safe extraction of TooltipTrigger and TooltipContent
   Children.forEach(children, child => {
     if (child && typeof child === 'object' && 'type' in child) {
       const type = (child as any).type
-      if (type === TooltipTrigger) {
-        trigger = (child as any).props.children
+      // Use displayName for safer type checking
+      const displayName = (child as any).type?.displayName || (child as any).type?.name
+      
+      if (displayName === 'TooltipTrigger' || type === TooltipTrigger) {
+        // Safely access children using React.Children utilities
+        extractedTrigger = Children.toArray((child as any).props?.children || [])
       }
-      if (type === TooltipContent) {
-        tooltipContent = (child as any).props.children
+      if (displayName === 'TooltipContent' || type === TooltipContent) {
+        tooltipContent = Children.toArray((child as any).props?.children || [])
       }
     }
   })
 
-  // If no explicit trigger, use the whole children as trigger
-  if (!trigger) {
-    trigger = children
-  }
+  // Use extracted trigger or fallback to whole children
+  const trigger = extractedTrigger || children
 
   useEffect(() => {
     if (isOpen) {
@@ -85,7 +88,9 @@ export const Tooltip = ({ children, content, side = 'top', delayDuration = 0 }: 
 export const TooltipTrigger = ({ children, asChild }: { children: ReactNode; asChild?: boolean }) => {
   return <>{children}</>
 }
+TooltipTrigger.displayName = 'TooltipTrigger'
 
 export const TooltipContent = ({ children, className }: { children: ReactNode; className?: string }) => {
   return <>{children}</>
 }
+TooltipContent.displayName = 'TooltipContent'

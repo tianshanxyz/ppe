@@ -86,7 +86,7 @@ export async function getExpiryAlerts(params: AlertParams): Promise<AlertRespons
 
     // 转换和过滤结果
     const alerts: AlertResult[] = (authorizations as any[] || [])
-      .filter((auth: unknown) => {
+      .filter((auth: any) => {
         if (!auth.validityPeriod || !auth.validityPeriod.end) {
           return false;
         }
@@ -97,7 +97,7 @@ export async function getExpiryAlerts(params: AlertParams): Promise<AlertRespons
         // 只保留在预警范围内的
         return daysUntil <= days && daysUntil >= -30; // 包括已过期30天内的
       })
-      .map((auth: unknown) => {
+      .map((auth: any) => {
         const endDate = new Date(auth.validityPeriod.end);
         const daysUntil = Math.ceil((endDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
 
@@ -150,8 +150,8 @@ export async function getProductAlerts(productId: string): Promise<AlertResult[]
 
     // 转换结果
     const alerts: AlertResult[] = (authorizations as any[] || [])
-      .filter((auth: unknown) => auth.validityPeriod && auth.validityPeriod.end)
-      .map((auth: unknown) => {
+      .filter((auth: any) => auth.validityPeriod && auth.validityPeriod.end)
+      .map((auth: any) => {
         const endDate = new Date(auth.validityPeriod.end);
         const daysUntil = Math.ceil((endDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
 
@@ -255,7 +255,7 @@ export async function getExpiryStats(): Promise<{
     let expired = 0;
     let active = 0;
 
-    (authorizations as any[] || []).forEach((auth: unknown) => {
+    (authorizations as any[] || []).forEach((auth: any) => {
       if (!auth.validityPeriod || !auth.validityPeriod.end) {
         return;
       }

@@ -49,9 +49,7 @@ export class CheerioExtractor implements FieldExtractor {
    * 加载 HTML 并返回 Cheerio 实例
    */
   load(html: string): cheerio.CheerioAPI {
-    return cheerio.load(html, {
-      decodeEntities: this.options.decodeEntities,
-    });
+    return cheerio.load(html);
   }
 
   /**

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { CheckCircle, XCircle, AlertCircle, ArrowRight, FileText, Clock, DollarSign, Shield, Globe } from 'lucide-react'
+import { CheckCircle, XCircle, AlertCircle, ArrowRight, FileText, Clock, DollarSign, Shield, Globe, ExternalLink } from 'lucide-react'
 import { getPPECategories, getTargetMarkets, getComplianceData } from '@/lib/ppe-data'
 
 export default function MarketAccessPage() {

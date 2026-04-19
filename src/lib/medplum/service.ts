@@ -209,7 +209,7 @@ class MedplumService {
       try {
         attempts++
         
-        const config: unknown = {
+        const config: any = {
           method,
           url: endpoint,
           params

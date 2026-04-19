@@ -33,7 +33,17 @@ export * from './extractors';
 export * from './parsers';
 
 // 调度器模块
-export * from './scheduler';
+export {
+  TaskScheduler,
+  createTaskScheduler,
+} from './scheduler';
+export type {
+  TaskStatus,
+  TaskPriority,
+  Task,
+  TaskResult,
+  SchedulerConfig,
+} from './scheduler';
 
 // 监控模块
 export * from './monitoring';

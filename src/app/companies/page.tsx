@@ -118,7 +118,7 @@ export default function CompaniesPage() {
       const result = await response.json()
       
       if (result.data && result.data.companies) {
-        const formattedCompanies = result.data.companies.map((c: unknown) => ({
+        const formattedCompanies = result.data.companies.map((c: any) => ({
           id: c.id,
           name: c.name,
           country: c.country || 'Unknown',
@@ -160,8 +160,8 @@ export default function CompaniesPage() {
         const result = await response.json()
         if (result.data) {
           const favoriteIds = result.data
-            .filter((b: unknown) => b.entity_type === 'company')
-            .map((b: unknown) => b.entity_id)
+            .filter((b: any) => b.entity_type === 'company')
+            .map((b: any) => b.entity_id)
           setFavorites(favoriteIds)
         }
       }

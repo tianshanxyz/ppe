@@ -169,13 +169,13 @@ export class PuppeteerExtractor implements FieldExtractor {
     strategy: LoadStrategy = LoadStrategy.NETWORK_IDLE
   ): Promise<void> {
     await page.goto(url, {
-      waitUntil: strategy as puppeteer.WaitForOptions['waitUntil'],
+      waitUntil: strategy as any,
       timeout: this.options.timeout,
     });
 
     // 额外等待时间，确保动态内容加载
     if (this.options.waitForTimeout > 0) {
-      await page.waitForTimeout(this.options.waitForTimeout);
+      await new Promise(resolve => setTimeout(resolve, this.options.waitForTimeout));
     }
   }
 
@@ -368,7 +368,7 @@ export class PuppeteerExtractor implements FieldExtractor {
 
     // 等待动态内容加载
     if (this.options.waitForTimeout > 0) {
-      await page.waitForTimeout(this.options.waitForTimeout);
+      await new Promise(resolve => setTimeout(resolve, this.options.waitForTimeout));
     }
   }
 
@@ -423,18 +423,20 @@ export class PuppeteerExtractor implements FieldExtractor {
   async screenshot(
     page: Page,
     options: { path?: string; fullPage?: boolean; selector?: string } = {}
-  ): Promise<Buffer | string | void> {
+  ): Promise<Buffer | void> {
     const { path, fullPage = false, selector } = options;
 
     if (selector) {
       const element = await page.$(selector);
       if (element) {
-        return await element.screenshot({ path });
+        const screenshot = await element.screenshot();
+        return screenshot as Buffer;
       }
       return;
     }
 
-    return await page.screenshot({ path, fullPage });
+    const screenshot = await page.screenshot({ path, fullPage });
+    return screenshot as Buffer;
   }
 
   /**

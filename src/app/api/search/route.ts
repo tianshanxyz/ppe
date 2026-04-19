@@ -182,19 +182,22 @@ export async function GET(request: NextRequest) {
               market: markets.length > 0 ? markets[0] : undefined
             });
             
-            const medplumProductResults = medplumDevices.map(device => ({
-              id: `medplum-device-${device.id}`,
-              name: device.deviceName?.[0]?.name || device.id,
-              company_name: device.manufacturer?.display || 'Unknown Manufacturer',
-              market: 'Global',
-              device_class: device.type?.[0]?.coding?.[0]?.code || 'Unknown',
-              product_code: device.modelNumber || '',
-              status: 'active',
-              registration_number: device.identifier?.[0]?.value || '',
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-              data_source: 'medplum'
-            }));
+            const medplumProductResults = medplumDevices.map(device => {
+              const dev = device as any
+              return {
+                id: `medplum-device-${dev.id}`,
+                name: dev.deviceName?.[0]?.name || dev.id,
+                company_name: dev.manufacturer?.display || 'Unknown Manufacturer',
+                market: 'Global',
+                device_class: dev.type?.[0]?.coding?.[0]?.code || 'Unknown',
+                product_code: dev.modelNumber || '',
+                status: 'active',
+                registration_number: dev.identifier?.[0]?.value || '',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                data_source: 'medplum'
+              }
+            });
             
             results.products = [...(results.products || []), ...medplumProductResults].slice(0, limit);
           }
@@ -206,16 +209,19 @@ export async function GET(request: NextRequest) {
               limit: limit / 2
             });
             
-            const medplumCompanyResults = medplumOrganizations.map(org => ({
-              id: `medplum-org-${org.id}`,
-              name: org.name || org.id,
-              legal_name: org.alias?.[0] || '',
-              registration_number: org.identifier?.[0]?.value || '',
-              country: org.address?.[0]?.country || '',
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-              data_source: 'medplum'
-            }));
+            const medplumCompanyResults = medplumOrganizations.map(org => {
+              const organization = org as any
+              return {
+                id: `medplum-org-${organization.id}`,
+                name: organization.name || organization.id,
+                legal_name: organization.alias?.[0] || '',
+                registration_number: organization.identifier?.[0]?.value || '',
+                country: organization.address?.[0]?.country || '',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                data_source: 'medplum'
+              }
+            });
             
             results.companies = [...(results.companies || []), ...medplumCompanyResults].slice(0, limit);
           }
@@ -265,7 +271,7 @@ export async function GET(request: NextRequest) {
  * 保存搜索历史记录
  */
 async function saveSearchHistory(
-  supabase: unknown,
+  supabase: any,
   query: string,
   filters: unknown,
   resultsCount: number

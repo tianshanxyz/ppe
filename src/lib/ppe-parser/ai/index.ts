@@ -6,17 +6,21 @@
 // AI-002: 自动分类模型
 export {
   Classifier,
+  createClassifier,
+} from './Classifier';
+export type {
   PPECategory,
   DeviceClass,
   ClassificationResult,
   ClassificationInput,
   ClassifierConfig,
-  createClassifier,
 } from './Classifier';
 
 // AI-003: 实体识别模型
 export {
   EntityExtractor,
+} from './EntityExtractor';
+export type {
   EntityType,
   Entity,
   EntityExtractionResult,
@@ -27,6 +31,8 @@ export {
 // AI-004: 相似度匹配模型
 export {
   SimilarityMatcher,
+} from './SimilarityMatcher';
+export type {
   SimilarityType,
   MatchType,
   ProductInfo,
@@ -40,6 +46,8 @@ export {
 // AI-005: 评估算法
 export {
   ComplianceEvaluator,
+} from './ComplianceEvaluator';
+export type {
   EvaluationDimension,
   RiskLevel,
   EvaluationStatus,
@@ -53,6 +61,8 @@ export {
 // AI-006: 推荐算法
 export {
   RecommendationEngine,
+} from './RecommendationEngine';
+export type {
   RecommendationType,
   RecommendationScenario,
   RecommendationItem,

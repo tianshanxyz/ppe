@@ -184,11 +184,13 @@ async function searchRegulatoryAuthorizations(
 
 // 处理搜索结果
 function processSearchResult(result: unknown, type: string) {
-  const entries = result.entry || []
-  const total = result.total || entries.length
+  const resultAny = result as any
+  const entries = resultAny.entry || []
+  const total = resultAny.total || entries.length
   
   const data = entries.map((entry: unknown) => {
-    const resource = entry.resource
+    const entryAny = entry as any
+    const resource = entryAny.resource
     
     switch (type) {
       case 'Device':
@@ -215,52 +217,55 @@ function processSearchResult(result: unknown, type: string) {
 
 // 处理设备资源
 function processDeviceResource(resource: unknown) {
+  const res = resource as any
   return {
-    id: resource.id,
-    name: resource.deviceName?.[0]?.name || 'Unknown Device',
-    type: resource.type?.coding?.[0]?.display || 'Unknown Type',
-    manufacturer: resource.manufacturer || 'Unknown Manufacturer',
-    model: resource.modelNumber || 'Unknown Model',
-    version: resource.version?.[0]?.value || 'Unknown Version',
-    status: resource.status || 'unknown',
-    description: resource.description || '',
+    id: res.id,
+    name: res.deviceName?.[0]?.name || 'Unknown Device',
+    type: res.type?.coding?.[0]?.display || 'Unknown Type',
+    manufacturer: res.manufacturer || 'Unknown Manufacturer',
+    model: res.modelNumber || 'Unknown Model',
+    version: res.version?.[0]?.value || 'Unknown Version',
+    status: res.status || 'unknown',
+    description: res.description || '',
     dataSource: 'Medplum',
     resourceType: 'Device',
-    medplumId: resource.id
+    medplumId: res.id
   }
 }
 
 // 处理组织资源
 function processOrganizationResource(resource: unknown) {
+  const res = resource as any
   return {
-    id: resource.id,
-    name: resource.name || 'Unknown Organization',
-    type: resource.type?.[0]?.coding?.[0]?.display || 'Unknown Type',
-    address: resource.address?.[0]?.text || '',
-    city: resource.address?.[0]?.city || '',
-    country: resource.address?.[0]?.country || '',
-    phone: resource.telecom?.[0]?.value || '',
+    id: res.id,
+    name: res.name || 'Unknown Organization',
+    type: res.type?.[0]?.coding?.[0]?.display || 'Unknown Type',
+    address: res.address?.[0]?.text || '',
+    city: res.address?.[0]?.city || '',
+    country: res.address?.[0]?.country || '',
+    phone: res.telecom?.[0]?.value || '',
     dataSource: 'Medplum',
     resourceType: 'Organization',
-    medplumId: resource.id
+    medplumId: res.id
   }
 }
 
 // 处理法规授权资源
 function processRegulatoryAuthorizationResource(resource: unknown) {
+  const res = resource as any
   return {
-    id: resource.id,
-    name: resource.name || 'Unknown Authorization',
-    status: resource.status || 'unknown',
-    authority: resource.authority?.display || 'Unknown Authority',
-    device: resource.device?.display || 'Unknown Device',
+    id: res.id,
+    name: res.name || 'Unknown Authorization',
+    status: res.status || 'unknown',
+    authority: res.authority?.display || 'Unknown Authority',
+    device: res.device?.display || 'Unknown Device',
     validityPeriod: {
-      start: resource.validityPeriod?.start || '',
-      end: resource.validityPeriod?.end || ''
+      start: res.validityPeriod?.start || '',
+      end: res.validityPeriod?.end || ''
     },
     dataSource: 'Medplum',
     resourceType: 'RegulatoryAuthorization',
-    medplumId: resource.id
+    medplumId: res.id
   }
 }
 

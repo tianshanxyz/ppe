@@ -4,7 +4,7 @@ import { isMedplumEnabled } from '@/lib/medplum/client';
 import { withRateLimit } from '@/lib/middleware/rateLimit';
 
 export async function POST(request: NextRequest) {
-  return withRateLimit(async (request: NextRequest) => {
+  return await withRateLimit(async (request: NextRequest) => {
     try {
       const { companyName, reportType, language } = await request.json();
 
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     windowInSeconds: 60,
     enableAuthBoost: true,
     authBoostMultiplier: 2,
-  });
+  })(request);
 }
 
 function generateReport(
@@ -119,7 +119,10 @@ function generateReport(
     report += language === 'zh' ? `### 2.1 产品注册情况\n` : `### 2.1 Product Registration Status\n`;
     report += `- **${language === 'zh' ? '设备数量' : 'Device Count'}**: ${devices.length}\n`;
     
-    const deviceTypes = [...new Set(devices.map(d => d.type?.[0]?.coding?.[0]?.display || 'Unknown'))];
+    const deviceTypes = [...new Set(devices.map(d => {
+      const device = d as any
+      return device.type?.[0]?.coding?.[0]?.display || 'Unknown'
+    }))];
     report += `- **${language === 'zh' ? '设备类型' : 'Device Types'}**: ${deviceTypes.join(', ')}\n\n`;
   } else {
     report += language === 'zh' ? '未找到相关设备数据\n\n' : 'No device data found\n\n';
@@ -131,7 +134,10 @@ function generateReport(
     report += language === 'zh' ? `### 3.1 法规授权\n` : `### 3.1 Regulatory Authorizations\n`;
     report += `- **${language === 'zh' ? '授权数量' : 'Authorization Count'}**: ${regulations.length}\n`;
     
-    const regions = [...new Set(regulations.map(r => r.region?.[0]?.coding?.[0]?.display || 'Global'))];
+    const regions = [...new Set(regulations.map(r => {
+      const reg = r as any
+      return reg.region?.[0]?.coding?.[0]?.display || 'Global'
+    }))];
     report += `- **${language === 'zh' ? '覆盖地区' : 'Regions'}**: ${regions.join(', ')}\n\n`;
   } else {
     report += language === 'zh' ? '未找到相关法规数据\n\n' : 'No regulatory data found\n\n';
@@ -159,7 +165,8 @@ function generateReport(
         ? `### 5.1 相关组织\n` 
         : `### 5.1 Related Organizations\n`;
       organizations.slice(0, 5).forEach((org, index) => {
-        report += `- ${index + 1}. ${org.name || 'Unknown Organization'}\n`;
+        const organization = org as any
+        report += `- ${index + 1}. ${organization.name || 'Unknown Organization'}\n`;
       });
     } else {
       report += language === 'zh' ? '未找到相关组织数据\n\n' : 'No organization data found\n\n';

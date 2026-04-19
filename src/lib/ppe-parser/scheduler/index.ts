@@ -5,6 +5,9 @@
 
 export {
   TaskScheduler,
+  createTaskScheduler,
+} from './TaskScheduler';
+export type {
   TaskStatus,
   TaskType,
   TaskPriority,
@@ -14,5 +17,4 @@ export {
   TaskResult,
   SchedulerConfig,
   TaskStatistics,
-  createTaskScheduler,
 } from './TaskScheduler';

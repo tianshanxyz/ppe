@@ -127,17 +127,18 @@ export async function handleMedplumWebhook(payload: unknown) {
     console.log('Received Medplum webhook:', payload)
 
     // 验证 payload
-    if (!payload || !payload.resourceType) {
+    const payloadAny = payload as any
+    if (!payloadAny || !payloadAny.resourceType) {
       throw new Error('Invalid webhook payload')
     }
 
     // 处理 Alert 资源
-    if (payload.resourceType === 'Alert') {
-      return await processMedplumAlert(payload)
+    if (payloadAny.resourceType === 'Alert') {
+      return await processMedplumAlert(payloadAny)
     }
 
     // 处理其他资源类型
-    console.log('Unhandled resource type:', payload.resourceType)
+    console.log('Unhandled resource type:', payloadAny.resourceType)
     return { success: false, message: 'Unhandled resource type' }
   } catch (error) {
     console.error('Error processing webhook:', error)
@@ -148,7 +149,7 @@ export async function handleMedplumWebhook(payload: unknown) {
 /**
  * 处理 Medplum 预警
  */
-async function processMedplumAlert(alert: unknown): Promise<{ success: boolean; data?: MedplumAlert }> {
+async function processMedplumAlert(alert: any): Promise<{ success: boolean; data?: MedplumAlert }> {
   try {
     // 映射 Medplum Alert 到 MDLooker Alert
     const mappedAlert: MedplumAlert = {

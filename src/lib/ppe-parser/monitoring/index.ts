@@ -6,19 +6,26 @@
 export {
   Logger,
   LogLevel,
+  getLogger,
+  setLogger,
+  createLogger,
+} from './Logger';
+export type {
   LogEntry,
   LoggerConfig,
   LogHandler,
   ConsoleHandler,
   MemoryHandler,
-  getLogger,
-  setLogger,
-  createLogger,
 } from './Logger';
 
 export {
   Monitor,
   MetricType,
+  getMonitor,
+  setMonitor,
+  createMonitor,
+} from './Monitor';
+export type {
   Metric,
   MetricDataPoint,
   PerformanceMetrics,
@@ -28,7 +35,4 @@ export {
   AlertRule,
   AlertEvent,
   MonitorConfig,
-  getMonitor,
-  setMonitor,
-  createMonitor,
 } from './Monitor';

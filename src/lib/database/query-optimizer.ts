@@ -5,7 +5,7 @@
  */
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { logDatabaseQuery, logPerformance } from './logger';
+import { logDatabaseQuery, logPerformance } from '../logging/logger';
 
 export interface QueryMetrics {
   duration: number;

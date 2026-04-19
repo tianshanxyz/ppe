@@ -1,9 +1,6 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import '../globals.css'
 import { PPENavbar } from '@/components/layout/PPENavbar'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'MDLooker PPE - Free PPE Compliance Check',
@@ -17,7 +14,7 @@ export default function PPELayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <PPENavbar />
         <main>{children}</main>
         <footer className="bg-gray-900 text-white py-12">

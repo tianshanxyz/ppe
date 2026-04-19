@@ -6,7 +6,6 @@
  */
 
 import { Logger } from '../monitoring/Logger';
-import { VolcengineAIClient } from './AIClient';
 
 /**
  * 评估维度
@@ -365,13 +364,11 @@ export interface EvaluatorConfig {
  */
 export class ComplianceEvaluator {
   private logger: Logger;
-  private aiClient: VolcengineAIClient;
   private config: EvaluatorConfig;
   private cache: Map<string, EvaluationResult>;
 
   constructor(config?: Partial<EvaluatorConfig>) {
-    this.logger = new Logger('ComplianceEvaluator');
-    this.aiClient = new VolcengineAIClient();
+    this.logger = new Logger();
     this.config = {
       enableCache: true,
       cacheMaxSize: 500,
@@ -403,8 +400,9 @@ export class ComplianceEvaluator {
       let result: EvaluationResult;
 
       if (this.config.useAIModel) {
-        // 使用AI模型评估
-        result = await this.evaluateWithAI(input);
+        // 使用规则评估（AI 功能已禁用）
+        console.warn('AI evaluation is currently disabled, using rule-based evaluation');
+        result = await this.evaluateWithRules(input);
       } else {
         // 使用规则评估
         result = await this.evaluateWithRules(input);
@@ -486,41 +484,6 @@ export class ComplianceEvaluator {
       status: result.overallStatus,
       riskLevel: result.overallRiskLevel,
     };
-  }
-
-  /**
-   * 使用AI模型评估
-   */
-  private async evaluateWithAI(input: EvaluationInput): Promise<EvaluationResult> {
-    const prompt = this.buildEvaluationPrompt(input);
-
-    const response = await this.aiClient.generateContent({
-      model: this.config.aiModel?.model || 'doubao-pro-32k-241215',
-      messages: [
-        {
-          role: 'system',
-          content: `你是一个专业的医疗器械合规性评估专家。你需要根据提供的产品信息，
-从多个维度评估产品的合规性，识别潜在风险，并给出详细的评估报告。
-
-请以JSON格式输出结果，包含以下字段：
-- overallScore: 综合分数 (0-100)
-- overallStatus: 总体状态 (passed, conditional, failed, needs_info)
-- overallRiskLevel: 总体风险等级 (none, low, medium, high, critical)
-- dimensions: 各维度评估结果数组
-- keyFindings: 关键发现数组
-- priorityRecommendations: 优先建议数组
-- gapAnalysis: 差距分析对象`,
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      temperature: this.config.aiModel?.temperature ?? 0.3,
-      maxTokens: this.config.aiModel?.maxTokens ?? 3000,
-    });
-
-    return this.parseEvaluationResponse(response, input);
   }
 
   /**
@@ -1316,7 +1279,9 @@ ${product.riskManagement ? Object.entries(product.riskManagement).map(([k, v]) =
   private setCache(input: EvaluationInput, result: EvaluationResult): void {
     if (this.cache.size >= this.config.cacheMaxSize) {
       const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
+      if (firstKey) {
+        this.cache.delete(firstKey);
+      }
     }
     const key = this.generateCacheKey(input);
     this.cache.set(key, result);

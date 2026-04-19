@@ -6,7 +6,6 @@
  */
 
 import { Logger } from '../monitoring/Logger';
-import { VolcengineAIClient } from './AIClient';
 
 /**
  * 相似度类型
@@ -183,19 +182,17 @@ export interface SimilarityMatcherConfig {
  */
 export class SimilarityMatcher {
   private logger: Logger;
-  private aiClient: VolcengineAIClient;
   private config: SimilarityMatcherConfig;
   private cache: Map<string, SimilarityResult>;
 
   constructor(config?: Partial<SimilarityMatcherConfig>) {
-    this.logger = new Logger('SimilarityMatcher');
-    this.aiClient = new VolcengineAIClient();
+    this.logger = new Logger();
     this.config = {
       enableCache: true,
       cacheMaxSize: 1000,
       defaultThreshold: 0.7,
       minConfidence: 0.6,
-      useAIModel: true,
+      useAIModel: false,
       defaultWeights: {
         [SimilarityType.PRODUCT]: 0.25,
         [SimilarityType.MANUFACTURER]: 0.1,
@@ -229,8 +226,9 @@ export class SimilarityMatcher {
       let result: SimilarityResult;
 
       if (this.config.useAIModel) {
-        // 使用AI模型计算相似度
-        result = await this.calculateWithAI(input);
+        // 使用规则计算相似度（AI 功能已禁用）
+        console.warn('AI similarity calculation is currently disabled, using rule-based calculation');
+        result = await this.calculateWithRules(input);
       } else {
         // 使用规则计算相似度
         result = await this.calculateWithRules(input);
@@ -322,45 +320,6 @@ export class SimilarityMatcher {
       (match) => match.matchType === MatchType.EQUIVALENT ||
                 match.matchType === MatchType.HIGHLY_SIMILAR
     );
-  }
-
-  /**
-   * 使用AI模型计算相似度
-   */
-  private async calculateWithAI(input: SimilarityInput): Promise<SimilarityResult> {
-    const prompt = this.buildSimilarityPrompt(input);
-
-    const response = await this.aiClient.generateContent({
-      model: this.config.aiModel?.model || 'doubao-pro-32k-241215',
-      messages: [
-        {
-          role: 'system',
-          content: `你是一个专业的产品相似度分析专家。你需要比较两个PPE（个人防护设备）产品的相似度，
-从多个维度进行分析，并给出详细的相似度评分和理由。
-
-请以JSON格式输出结果，包含以下字段：
-- overallScore: 综合相似度分数 (0-1)
-- matchType: 匹配类型 (equivalent, highly_similar, moderately_similar, low_similarity, dissimilar)
-- isSubstitutable: 是否可替代 (boolean)
-- substitutionAdvice: 替代建议 (string)
-- scores: 各维度评分数组，每个元素包含：
-  - type: 维度类型
-  - score: 分数 (0-1)
-  - confidence: 置信度 (0-1)
-  - reasoning: 评分理由
-  - keyMatches: 关键匹配点数组
-  - keyDifferences: 关键差异点数组`,
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      temperature: this.config.aiModel?.temperature ?? 0.3,
-      maxTokens: this.config.aiModel?.maxTokens ?? 2000,
-    });
-
-    return this.parseSimilarityResponse(response, input);
   }
 
   /**
@@ -860,7 +819,9 @@ export class SimilarityMatcher {
     if (this.cache.size >= this.config.cacheMaxSize) {
       // LRU: 删除最早的条目
       const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
+      if (firstKey) {
+        this.cache.delete(firstKey);
+      }
     }
     const key = this.generateCacheKey(input);
     this.cache.set(key, result);

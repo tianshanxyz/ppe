@@ -630,10 +630,10 @@ export class TaskScheduler extends EventEmitter {
       hasMore = result.hasNextPage;
       page++;
 
-      // 检查是否被取消
-      if (task.status === TaskStatus.CANCELLED) {
-        break;
-      }
+      // 检查是否被取消（暂时禁用）
+      // if (task.status === TaskStatus.CANCELLED || task.status === TaskStatus.FAILED) {
+      //   break;
+      // }
     }
 
     return {

@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Search, Filter, Package, TrendingUp, BarChart3, Download, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
-import { getPPEProducts, getPPEProductStats, getPPECategories, getPPECountries } from '@/lib/ppe-database-service'
+import { getPPEProductsClient, getPPEProductStats, getPPECategories, getPPECountries } from '@/lib/ppe-database-client'
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<any[]>([])
@@ -32,13 +32,13 @@ export default function ProductsPage() {
     
     try {
       // 加载产品列表
-      const filters: unknown = {}
+      const filters: any = {}
       if (selectedCountry !== 'all') filters.country = selectedCountry
       if (selectedCategory !== 'all') filters.category = selectedCategory
       if (selectedPPECategory !== 'all') filters.ppe_category = selectedPPECategory
       if (searchQuery) filters.search = searchQuery
       
-      const result = await getPPEProducts({
+      const result = await getPPEProductsClient({
         page,
         limit,
         filters,

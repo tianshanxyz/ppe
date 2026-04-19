@@ -89,7 +89,7 @@ export async function searchDevices(params: SearchParams): Promise<SearchRespons
     const devices = await client.searchResources('Device', searchParams);
 
     // 转换结果
-    const results: SearchResult[] = (devices as any[] || []).map((device: unknown) => ({
+    const results: SearchResult[] = (devices as any[] || []).map((device: any) => ({
       id: device.id || device.resourceType + '-' + Math.random(),
       name: device.name?.[0]?.text || device.name || 'Unknown Device',
       type: device.type?.[0]?.text || device.type || 'Unknown Type',
@@ -155,11 +155,11 @@ export async function searchOrganizations(params: SearchParams): Promise<SearchR
     const organizations = await client.searchResources('Organization', searchParams);
 
     // 转换结果
-    const results: SearchResult[] = (organizations as any[] || []).map((org: unknown) => ({
+    const orgResults: SearchResult[] = (organizations as any[] || []).map((org: any) => ({
       id: org.id || org.resourceType + '-' + Math.random(),
       name: org.name || 'Unknown Organization',
-      type: org.type?.[0]?.text || 'Unknown Type',
-      market: 'Global',
+      type: org.type?.[0]?.text || 'Organization',
+      market: org.country || 'Global',
       status: 'active',
       manufacturer: org.name,
       dataSource: 'Medplum',
@@ -167,8 +167,8 @@ export async function searchOrganizations(params: SearchParams): Promise<SearchR
     }));
 
     return {
-      results,
-      total: (organizations as any).total || results.length,
+      results: orgResults,
+      total: (organizations as any).total || orgResults.length,
       offset,
       limit,
     };
@@ -225,7 +225,7 @@ export async function searchRegulatoryAuthorizations(params: SearchParams): Prom
     const authorizations = await client.searchResources('Device', searchParams);
 
     // 转换结果
-    const results: SearchResult[] = (authorizations as any[] || []).map((auth: unknown) => ({
+    const results: SearchResult[] = (authorizations as any[] || []).map((auth: any) => ({
       id: auth.id || auth.resourceType + '-' + Math.random(),
       name: auth.name || 'Unknown Authorization',
       type: auth.type?.[0]?.text || 'Unknown Type',

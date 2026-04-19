@@ -127,25 +127,32 @@ async function generateAIReport(
   regulations: unknown[]
 ) {
   try {
+    const companyAny = company as any
     // 构建上下文
     const context = {
       company: {
-        name: company.name,
-        country: company.country,
-        status: company.status,
-        registrationNumber: company.registration_number,
+        name: companyAny.name,
+        country: companyAny.country,
+        status: companyAny.status,
+        registrationNumber: companyAny.registration_number,
       },
-      products: products?.slice(0, 5).map(p => ({
-        name: p.product_name,
-        market: p.market,
-        status: p.status,
-        deviceClass: p.device_class,
-      })) || [],
-      risks: risks?.slice(0, 3).map(r => ({
-        level: r.risk_level,
-        message: r.message,
-        date: r.created_at,
-      })) || [],
+      products: products?.slice(0, 5).map(p => {
+        const product = p as any
+        return {
+          name: product.product_name,
+          market: product.market,
+          status: product.status,
+          deviceClass: product.device_class,
+        }
+      }) || [],
+      risks: risks?.slice(0, 3).map(r => {
+        const risk = r as any
+        return {
+          level: risk.risk_level,
+          message: risk.message,
+          date: risk.created_at,
+        }
+      }) || [],
     }
 
     // 构建 AI 提示词

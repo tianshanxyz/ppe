@@ -404,7 +404,7 @@ export default function StatisticsPage() {
                       </td>
                       <td className="px-6 py-4 text-center">
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">
-                          {markets.find(m => m.code === market.name)?.certification_name || 'N/A'}
+                          {(markets.find(m => m.code === market.name) as any)?.certification_name || 'N/A'}
                         </span>
                       </td>
                     </tr>

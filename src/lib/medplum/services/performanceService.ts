@@ -188,7 +188,7 @@ export function withCache<T>(
       let cached = memoryCache.get(key)
       if (cached) {
         console.log(`Cache hit: ${key}`)
-        return cached
+        return cached as T
       }
 
       // 尝试从 Redis 获取
@@ -199,7 +199,7 @@ export function withCache<T>(
             console.log(`Redis cache hit: ${key}`)
             // 更新内存缓存
             memoryCache.set(key, cached, ttl)
-            return cached
+            return cached as T
           }
         } catch (error) {
           console.warn('Redis cache error:', error)

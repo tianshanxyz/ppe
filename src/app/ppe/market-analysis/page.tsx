@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { TrendingUp, BarChart3, Globe, Package, Building, ArrowUpRight } from 'lucide-react'
-import { getPPEProductStats, getMarketStats } from '@/lib/ppe-database-service'
+import { getPPEProductStats, getMarketStats } from '@/lib/ppe-database-client'
 
 const COLORS = ['#339999', '#2d8b8b', '#267a7a', '#1f6969', '#185858', '#114747', '#0a3636', '#032525']
 
@@ -271,7 +271,10 @@ export default function MarketAnalysisPage() {
               <div className="bg-gradient-to-br from-[#339999]/5 to-white rounded-lg p-6 border border-[#339999]/20">
                 <h3 className="text-lg font-semibold text-gray-900 mb-3">Market Concentration</h3>
                 <p className="text-gray-700">
-                  The majority of PPE products in our database come from {Object.entries(stats?.countryCount || {}).sort((a, b) => b[1] - a[1])[0]?.[0] || 'multiple regions'}, 
+                  The majority of PPE products in our database come from {(() => {
+                    const entries = Object.entries(stats?.countryCount || {}) as [string, number][]
+                    return entries.sort((a, b) => b[1] - a[1])[0]?.[0] || 'multiple regions'
+                  })()}, 
                   representing a significant share of the global PPE market.
                 </p>
               </div>
@@ -285,7 +288,10 @@ export default function MarketAnalysisPage() {
               <div className="bg-gradient-to-br from-[#339999]/5 to-white rounded-lg p-6 border border-[#339999]/20">
                 <h3 className="text-lg font-semibold text-gray-900 mb-3">Category Trends</h3>
                 <p className="text-gray-700">
-                  {Object.entries(stats?.categoryCount || {}).sort((a, b) => b[1] - a[1])[0]?.[0] || 'Hand protection'} is the largest product category, 
+                  {(() => {
+                    const entries = Object.entries(stats?.categoryCount || {}) as [string, number][]
+                    return entries.sort((a, b) => b[1] - a[1])[0]?.[0] || 'Hand protection'
+                  })()} is the largest product category, 
                   reflecting strong demand in this segment.
                 </p>
               </div>

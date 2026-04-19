@@ -118,7 +118,7 @@ export async function syncAuditLogs(startTime?: string) {
 async function saveAuditLogsToLocal(auditEntries: unknown[]) {
   try {
     const supabase = await createSupabaseClient()
-    const logsToInsert = auditEntries.map((entry: unknown) => {
+    const logsToInsert = auditEntries.map((entry: any) => {
       const audit = entry.resource as any
       return mapMedplumAuditToLocal(audit)
     })
@@ -142,7 +142,7 @@ async function saveAuditLogsToLocal(auditEntries: unknown[]) {
 /**
  * 映射 Medplum 审计到本地格式
  */
-function mapMedplumAuditToLocal(audit: unknown): MedplumAuditLog {
+function mapMedplumAuditToLocal(audit: any): MedplumAuditLog {
   return {
     id: `medplum-${audit.id}`,
     eventType: mapAuditEventType(audit.type?.coding?.[0]?.code),
@@ -156,7 +156,7 @@ function mapMedplumAuditToLocal(audit: unknown): MedplumAuditLog {
     details: {
       outcome: audit.outcome,
       outcomeDesc: audit.outcomeDesc,
-      purposeOfEvent: audit.purposeOfEvent?.map((p: unknown) => p.text).join(', ')
+      purposeOfEvent: audit.purposeOfEvent?.map((p: any) => p.text).join(', ')
     },
     medplumId: audit.id
   }
@@ -238,18 +238,18 @@ export async function analyzeAuditLogs(params?: {
 /**
  * 生成审计报告
  */
-function generateAuditReport(logs: unknown[]) {
+function generateAuditReport(logs: any[]) {
   const report = {
     totalEvents: logs.length,
-    eventsByType: logs.reduce((acc, log) => {
+    eventsByType: logs.reduce((acc: Record<string, number>, log: any) => {
       acc[log.event_type] = (acc[log.event_type] || 0) + 1
       return acc
     }, {} as Record<string, number>),
-    eventsByResource: logs.reduce((acc, log) => {
+    eventsByResource: logs.reduce((acc: Record<string, number>, log: any) => {
       acc[log.resource_type] = (acc[log.resource_type] || 0) + 1
       return acc
     }, {} as Record<string, number>),
-    topUsers: logs.reduce((acc, log) => {
+    topUsers: logs.reduce((acc: Record<string, number>, log: any) => {
       acc[log.user_id] = (acc[log.user_id] || 0) + 1
       return acc
     }, {} as Record<string, number>),
