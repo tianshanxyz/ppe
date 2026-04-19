@@ -7,7 +7,7 @@ import {
   ArrowLeft, Package, Building, Globe, FileText, Shield, CheckCircle,
   AlertCircle, Calendar, DollarSign, Clock, Download, ExternalLink
 } from 'lucide-react'
-import { getPPEProduct } from '@/lib/ppe-database-service'
+import { getPPEProduct } from '@/lib/ppe-database-client'
 
 export default function ProductDetailPage() {
   const params = useParams()

@@ -176,6 +176,13 @@ export async function getPPEProductByIdClient(id: string) {
 }
 
 /**
+ * 获取单个产品详情（客户端）- 别名
+ */
+export async function getPPEProduct(id: string) {
+  return getPPEProductByIdClient(id)
+}
+
+/**
  * 获取单个法规详情（客户端）
  */
 export async function getPPERegulationByIdClient(id: string) {
