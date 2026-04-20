@@ -136,7 +136,7 @@ export default function CertificationComparisonPage() {
             </p>
           </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Selection Form */}
       <motion.section 
