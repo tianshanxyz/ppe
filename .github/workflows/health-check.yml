@@ -1,0 +1,61 @@
+name: 外部 API 健康检查
+
+on:
+  schedule:
+    # 每 5 分钟执行一次
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+    # 支持手动触发
+
+jobs:
+  health-check:
+    name: 外部 API 健康检查
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 运行健康检查
+        run: node scripts/health-check-external-apis.js
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
+
+      - name: 发送告警通知（如果失败）
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `
+            ## 🚨 外部 API 健康告警
+            
+            **检查时间**: ${new Date().toISOString()}
+            **工作流**: ${context.workflow}
+            
+            一个或多个外部 API 健康检查失败，请立即检查：
+            https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}
+            
+            ### 可能受影响的业务
+            - FDA 数据同步
+            - EUDAMED 数据查询
+            - NMPA 数据访问
+            
+            ### 建议操作
+            1. 访问相关 API 官网确认状态
+            2. 检查 API 密钥是否过期
+            3. 查看网络连通性
+            `;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 外部 API 健康告警 - ${new Date().toISOString().split('T')[0]}`,
+              body: body,
+              labels: ['monitoring', 'external-api', 'critical']
+            });

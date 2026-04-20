@@ -1,0 +1,97 @@
+name: 手动回滚部署
+
+on:
+  workflow_dispatch:
+    inputs:
+      target-deployment:
+        description: '要回滚到的部署版本（Vercel Deployment ID）'
+        required: true
+        type: string
+      reason:
+        description: '回滚原因'
+        required: true
+        type: string
+
+env:
+  NODE_VERSION: '20'
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  rollback:
+    name: 回滚部署
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 安装 Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: 验证目标部署
+        run: |
+          echo "验证目标部署：${{ inputs.target-deployment }}"
+          vercel ls --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: 执行回滚
+        run: |
+          echo "开始回滚到部署：${{ inputs.target-deployment }}"
+          # Vercel 回滚通过重新部署指定版本实现
+          vercel deploy ${{ inputs.target-deployment }} --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: 创建回滚记录
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `
+            ## 🔄 部署回滚记录
+            
+            **项目**: ${context.repo.repo}
+            **目标版本**: ${{ inputs.target-deployment }}
+            **回滚原因**: ${{ inputs.reason }}
+            **执行时间**: ${new Date().toISOString()}
+            **执行人**: ${{ github.actor }}
+            **工作流**: ${context.workflow}
+            
+            ### 回滚操作
+            - 已重新部署到指定版本
+            - 生产环境已更新
+            
+            ### 后续操作
+            1. 验证生产环境功能
+            2. 检查用户反馈
+            3. 分析回滚原因
+            `;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🔄 部署回滚 - ${new Date().toISOString().split('T')[0]}`,
+              body: body,
+              labels: ['rollback', 'deployment']
+            });
+
+      - name: 发送回滚通知
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ job.status }}';
+            const message = status === 'success' 
+              ? '✅ 回滚成功！生产环境已恢复到指定版本'
+              : '❌ 回滚失败！请立即手动处理';
+            
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: status === 'success' ? 'success' : 'failure',
+              context: 'Rollback Deployment',
+              description: message
+            });

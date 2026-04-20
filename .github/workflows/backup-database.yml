@@ -1,0 +1,86 @@
+name: 数据库自动备份
+
+on:
+  schedule:
+    # 每天凌晨 2 点执行
+    - cron: '0 2 * * *'
+    # 每小时执行一次增量备份
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    # 支持手动触发
+
+env:
+  BACKUP_BUCKET: ${{ secrets.BACKUP_BUCKET }}
+  BACKUP_RETENTION_DAYS: 30
+
+jobs:
+  backup:
+    name: 数据库备份
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 安装依赖
+        working-directory: ppe-platform
+        run: npm ci
+
+      - name: 安装 PostgreSQL 客户端
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: 配置 AWS CLI
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: 执行数据库备份
+        run: |
+          chmod +x scripts/backup-database.sh
+          ./scripts/backup-database.sh
+        env:
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: 上传备份清单
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backup-manifest
+          path: /tmp/backup_manifest.json
+          retention-days: 30
+
+      - name: 备份失败告警
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `
+            ## 🚨 数据库备份失败
+            
+            **时间**: ${new Date().toISOString()}
+            **工作流**: ${context.workflow}
+            **运行 ID**: ${context.runId}
+            
+            请立即检查备份系统，确保数据安全！
+            
+            [查看详细信息](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+            `;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 数据库备份失败 - ${new Date().toISOString().split('T')[0]}`,
+              body: body,
+              labels: ['backup', 'critical']
+            });
