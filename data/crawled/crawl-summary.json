@@ -1,0 +1,12 @@
+{
+  "crawlDate": "2026-04-21T12:34:00.368Z",
+  "duration": "344.96s",
+  "dataDirectory": "/Users/maxiaoha/Desktop/mdlooker/mdlooker/ppe-platform/data/crawled",
+  "results": {
+    "ppeInfo": "completed",
+    "ppeRFU": "4 documents",
+    "nando": "0 bodies",
+    "euStandards": "0 standards",
+    "eudamed": "completed"
+  }
+}

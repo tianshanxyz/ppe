@@ -80,17 +80,17 @@ CREATE TRIGGER trigger_update_api_keys
 CREATE TABLE IF NOT EXISTS api_key_rate_limits (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     key_id UUID NOT NULL REFERENCES api_keys(id) ON DELETE CASCADE,
-    window VARCHAR(20) NOT NULL CHECK (window IN ('second', 'minute', 'hour', 'day')),
+    time_window VARCHAR(20) NOT NULL CHECK (time_window IN ('second', 'minute', 'hour', 'day')),
     window_start TIMESTAMPTZ NOT NULL,
     request_count INTEGER NOT NULL DEFAULT 1,
 
     -- 唯一约束：每个密钥在每个时间窗口只有一条记录
-    CONSTRAINT unique_key_window UNIQUE (key_id, window, window_start)
+    CONSTRAINT unique_key_window UNIQUE (key_id, time_window, window_start)
 );
 
 -- 创建索引
 CREATE INDEX IF NOT EXISTS idx_rate_limits_key_id ON api_key_rate_limits(key_id);
-CREATE INDEX IF NOT EXISTS idx_rate_limits_window ON api_key_rate_limits(window);
+CREATE INDEX IF NOT EXISTS idx_rate_limits_window ON api_key_rate_limits(time_window);
 CREATE INDEX IF NOT EXISTS idx_rate_limits_window_start ON api_key_rate_limits(window_start);
 
 -- 自动清理过期限流记录（保留7天）

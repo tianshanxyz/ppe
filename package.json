@@ -22,7 +22,11 @@
     "db:init": "node scripts/init-db.js",
     "ppe:validate": "node scripts/validate-ppe-data.js",
     "ppe:import": "node scripts/import-ppe-data.js",
-    "ppe:check": "pnpm ppe:validate && pnpm ppe:import"
+    "ppe:check": "pnpm ppe:validate && pnpm ppe:import",
+    "crawl:ppe:all": "node scripts/crawl-ppe-data-unified.js",
+    "crawl:ppe:rfu": "node scripts/crawl-ppe-rfu-enhanced.js",
+    "crawl:eudamed": "node scripts/crawl-eudamed.js",
+    "sync:all": "pnpm crawl:ppe:all && pnpm ppe:import"
   },
   "dependencies": {
     "@medplum/core": "^5.1.7",
