@@ -2,12 +2,12 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { Filter, Building2, Package, X } from 'lucide-react'
+import { Filter, Building2, Package, X, Sparkles, TrendingUp } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { SearchBar } from '@/components/search/SearchBar'
 import { SearchResults } from '@/components/search/SearchResults'
 import { Skeleton } from '@/components/ui/Skeleton'
-import { EmptyState } from '@/components/search/EmptyState'
+import { EmptyState, LoadingState } from '@/components/search/EmptyState'
 
 function SearchContent() {
   const router = useRouter()
@@ -18,6 +18,7 @@ function SearchContent() {
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([])
   const [deviceClass, setDeviceClass] = useState('')
   const [showFilters, setShowFilters] = useState(false)
+  const [hasSearched, setHasSearched] = useState(false)
 
   useEffect(() => {
     const query = searchParams.get('q') || ''
@@ -26,9 +27,11 @@ function SearchContent() {
     setSearchType(type)
     
     if (query) {
+      setHasSearched(true)
       performSearch(query, type)
     } else {
       setLoading(false)
+      setHasSearched(false)
     }
   }, [searchParams])
 
@@ -77,6 +80,74 @@ function SearchContent() {
     const query = searchParams.get('q') || ''
     const type = searchParams.get('type') || 'all'
     router.push(`/search?q=${query}&type=${type}`)
+  }
+
+  // 初始状态 - 没有搜索词
+  if (!hasSearched && !loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <div className="bg-white border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#339999]/20 to-[#339999]/5 rounded-2xl mb-4">
+                <Sparkles className="w-8 h-8 text-[#339999]" />
+              </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Search PPE Database
+              </h1>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Search for products, manufacturers, and compliance regulations across FDA, NMPA, and EUDAMED databases
+              </p>
+            </div>
+            
+            {/* Search Bar */}
+            <div className="max-w-3xl mx-auto">
+              <SearchBar 
+                initialQuery=""
+                placeholder="Search products, companies, or regulations..."
+              />
+            </div>
+
+            {/* Quick Filters */}
+            <div className="mt-6 flex justify-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => router.push('/search?type=product')}
+                className="border-gray-200"
+              >
+                <Package className="w-4 h-4 mr-1" />
+                Products
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => router.push('/search?type=company')}
+                className="border-gray-200"
+              >
+                <Building2 className="w-4 h-4 mr-1" />
+                Companies
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => router.push('/search?q=CE+FDA')}
+                className="border-gray-200"
+              >
+                <TrendingUp className="w-4 h-4 mr-1" />
+                Popular
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Empty State with suggestions */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <EmptyState type="initial" />
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -234,15 +305,12 @@ function SearchContent() {
       {/* Results */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
-          <div className="space-y-4">
-            {[...Array(10)].map((_, i) => (
-              <Skeleton key={i} className="h-32" />
-            ))}
-          </div>
+          <LoadingState />
         ) : results.length === 0 ? (
           <EmptyState 
             type="no-results" 
-            message="Try adjusting your search or filters"
+            searchQuery={searchParams.get('q') || ''}
+            message="Try adjusting your search terms or browse our popular searches below"
             onReset={() => router.push('/search')}
           />
         ) : (
@@ -257,10 +325,7 @@ export default function SearchPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 animate-spin border-4 border-[#339999] border-t-transparent rounded-full mx-auto mb-4" />
-          <p className="text-gray-600">Loading search...</p>
-        </div>
+        <LoadingState />
       </div>
     }>
       <SearchContent />
