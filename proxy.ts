@@ -13,14 +13,10 @@ const RATE_LIMIT = {
 export function proxy(request: NextRequest) {
   const response = NextResponse.next()
 
-  // 1. 安全响应头
+  // 1. 安全响应头（简化版，避免与next.config.ts冲突）
   response.headers.set('X-Frame-Options', 'DENY')
   response.headers.set('X-Content-Type-Options', 'nosniff')
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
-  response.headers.set(
-    'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://*.supabase.co;"
-  )
 
   // 2. API 路由速率限制
   if (request.nextUrl.pathname.startsWith('/api/')) {
