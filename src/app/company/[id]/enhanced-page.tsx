@@ -141,27 +141,46 @@ export default function EnhancedCompanyDetailPage() {
           open_count: 0,
         },
       },
+      registration_info: {
+        registration_number: '3M-REG-001',
+        registration_country: 'United States',
+        registration_date: '1902-01-01',
+        legal_form: 'Corporation',
+      },
+      capabilities: {
+        product_categories: ['Respiratory Protection', 'Hand Protection', 'Eye Protection', 'Hearing Protection', 'Head Protection', 'Fall Protection'],
+        certifications_held: ['ISO 9001', 'ISO 13485', 'FDA 510(k)', 'CE Marking', 'NIOSH'],
+        production_facilities: [
+          {
+            location: 'Saint Paul, MN, USA',
+            certifications: ['ISO 9001', 'ISO 13485'],
+          },
+          {
+            location: 'Wroclaw, Poland',
+            certifications: ['CE Marking', 'ISO 9001'],
+          },
+        ],
+        quality_systems: ['ISO 9001', 'ISO 13485', 'FDA QSR'],
+      },
+      last_sync_at: new Date().toISOString(),
       related_companies: [
         {
           company_id: '3m-healthcare',
           company_name: '3M Healthcare',
           relationship: 'subsidiary',
           ownership_percentage: 100,
-          country: 'United States',
         },
         {
           company_id: '3m-europe',
           company_name: '3M Europe',
           relationship: 'subsidiary',
           ownership_percentage: 100,
-          country: 'Belgium',
         },
         {
           company_id: '3m-china',
           company_name: '3M China',
           relationship: 'subsidiary',
           ownership_percentage: 100,
-          country: 'China',
         },
       ],
       created_at: new Date().toISOString(),

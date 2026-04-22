@@ -14,9 +14,10 @@ import { apiKeyService } from '@/lib/api-keys'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const startTime = Date.now()
+  const { id } = await params
 
   try {
     const supabase = await createClient()
@@ -31,7 +32,7 @@ export async function GET(
       )
     }
 
-    const result = await apiKeyService.getApiKeyUsage(params.id, user.id)
+    const result = await apiKeyService.getApiKeyUsage(id, user.id)
 
     return NextResponse.json({
       ...result,

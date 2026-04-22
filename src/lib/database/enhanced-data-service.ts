@@ -593,13 +593,15 @@ export async function updateDataQualityScores() {
 // 导出
 // ============================================
 
-export {
-  // 类型
+export type {
   EnhancedPPEProduct,
   EnhancedPPEManufacturer,
   DataSyncStatus,
   ManufacturerCreditScore,
-  DB_TABLES,
   MarketCode,
   CertificationType,
+}
+
+export {
+  DB_TABLES,
 }

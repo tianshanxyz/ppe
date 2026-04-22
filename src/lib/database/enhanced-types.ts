@@ -50,7 +50,7 @@ export interface ProductSpecifications {
 // 认证详情
 // ============================================
 
-export interface CE CertificationDetail {
+export interface CE {
   certificate_number: string
   notified_body: {
     name: string
@@ -165,7 +165,7 @@ export interface EnhancedPPEProduct {
   
   // 认证详情（完整结构化）
   certifications: {
-    ce?: CE CertificationDetail
+    ce?: CE
     fda_510k?: FDA510kDetail
     nmpa?: NMPARegistrationDetail
     ukca?: UKCADetail

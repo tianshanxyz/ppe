@@ -5,7 +5,7 @@
  */
 
 // 导出类型
-export {
+export type {
   ProductInfo,
   CompanyProfile,
   ExistingCertification,
@@ -18,6 +18,10 @@ export {
   MarketRecommendationResponse,
   MarketComparisonMatrix,
   ScoringWeights,
+} from './types'
+
+// 导出常量
+export {
   DEFAULT_SCORING_WEIGHTS,
 } from './types'
 

@@ -48,7 +48,7 @@ export class MarketRecommendationEngine {
         (market, index) => {
           const scores = this.calculateScores(market, request)
           const entryPath = this.generateEntryPath(market, request)
-          const recommendations = this.generateRecommendations(market, request, scores)
+          const recs = this.generateMarketRecommendations(market, request, scores)
 
           return {
             market,
@@ -62,7 +62,7 @@ export class MarketRecommendationEngine {
               difficulty_adjusted_score: scores.difficulty_adjusted,
             },
             entry_path: entryPath,
-            recommendations,
+            recommendations: recs,
           }
         }
       )
@@ -191,7 +191,7 @@ export class MarketRecommendationEngine {
     const totalWeight = Object.values(weights).reduce((a, b) => a + b, 0)
     weights = Object.fromEntries(
       Object.entries(weights).map(([k, v]) => [k, v / totalWeight])
-    ) as ScoringWeights
+    ) as unknown as ScoringWeights
 
     // 计算综合得分
     const overall =
@@ -449,9 +449,9 @@ export class MarketRecommendationEngine {
   }
 
   /**
-   * 生成建议
+   * 生成市场建议
    */
-  private generateRecommendations(
+  private generateMarketRecommendations(
     market: any,
     request: MarketRecommendationRequest,
     scores: any

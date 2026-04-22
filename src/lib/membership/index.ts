@@ -5,7 +5,7 @@
  */
 
 // 导出类型
-export {
+export type {
   MembershipTier,
   MembershipConfig,
   MembershipLimits,
@@ -23,6 +23,10 @@ export {
   CheckLimitResponse,
   FeatureAccessCheck,
   LimitCheck,
+} from './types'
+
+// 导出常量和工具函数
+export {
   MEMBERSHIP_TIERS,
   getMembershipConfig,
   getAllMembershipConfigs,

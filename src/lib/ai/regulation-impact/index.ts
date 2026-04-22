@@ -5,10 +5,7 @@
  */
 
 // 导出类型
-export {
-  RegulationChangeType,
-  ImpactSeverity,
-  ImpactScope,
+export type {
   RegulationChange,
   AffectedProduct,
   AffectedCompany,
@@ -18,6 +15,13 @@ export {
   MonitoringTask,
   ImpactAnalysisRequest,
   ImpactQueryRequest,
+} from './types'
+
+// 导出枚举和常量
+export {
+  RegulationChangeType,
+  ImpactSeverity,
+  ImpactScope,
   DEFAULT_MONITORING_CONFIG,
   CHANGE_TYPE_LABELS,
   SEVERITY_LABELS,

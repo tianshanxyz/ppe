@@ -13,8 +13,7 @@ import {
   CostPredictionRequest,
   PriceTrendRequest,
 } from '@/lib/ai/price-prediction'
-import { withMembershipCheck } from '@/lib/membership'
-import { rateLimit } from '@/lib/middleware/rateLimit'
+import { checkRateLimit } from '@/lib/middleware/rateLimit'
 
 /**
  * POST /api/price-prediction
@@ -25,9 +24,9 @@ export async function POST(request: NextRequest) {
 
   try {
     // 速率限制检查
-    const rateLimitResult = await rateLimit(request, {
-      anonymous: 10,
-      authenticated: 60,
+    const rateLimitResult = await checkRateLimit(request, {
+      maxRequests: 60,
+      windowInSeconds: 60,
     })
     if (!rateLimitResult.success) {
       return NextResponse.json(

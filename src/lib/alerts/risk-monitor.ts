@@ -497,10 +497,3 @@ export class AlertNotificationService {
 // ============================================
 // 导出
 // ============================================
-
-export {
-  RiskType,
-  RiskAlert,
-  RiskMonitorConfig,
-  UserAlertConfig,
-}

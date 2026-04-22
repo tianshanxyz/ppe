@@ -22,7 +22,7 @@ interface QueryRequest {
 }
 
 export async function POST(request: NextRequest) {
-  return withRateLimit(async (request: NextRequest) => {
+  const handler = withRateLimit(async (request: NextRequest) => {
     try {
       const body: QueryRequest = await request.json()
       const { query, sessionId, useAI = false, maxResults = 20 } = body
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       // 验证请求
       if (!query || query.trim().length < 2) {
         return NextResponse.json(
-          { error: '查询内容不能为空，至少需要2个字符' },
+          { error: '查询内容不能为空，至少需要 2 个字符' },
           { status: 400 }
         )
       }
@@ -77,7 +77,9 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       )
     }
-  }, request)
+  })
+  
+  return handler(request)
 }
 
 /**
@@ -85,13 +87,13 @@ export async function POST(request: NextRequest) {
  * 获取会话历史
  */
 export async function GET(request: NextRequest) {
-  return withRateLimit(async (request: NextRequest) => {
+  const handler = withRateLimit(async (request: NextRequest) => {
     try {
       const sessionId = request.nextUrl.searchParams.get('sessionId')
 
       if (!sessionId) {
         return NextResponse.json(
-          { error: '缺少sessionId参数' },
+          { error: '缺少 sessionId 参数' },
           { status: 400 }
         )
       }
@@ -120,7 +122,9 @@ export async function GET(request: NextRequest) {
         { status: 500 }
       )
     }
-  }, request)
+  })
+  
+  return handler(request)
 }
 
 /**
@@ -128,13 +132,13 @@ export async function GET(request: NextRequest) {
  * 删除会话
  */
 export async function DELETE(request: NextRequest) {
-  return withRateLimit(async (request: NextRequest) => {
+  const handler = withRateLimit(async (request: NextRequest) => {
     try {
       const sessionId = request.nextUrl.searchParams.get('sessionId')
 
       if (!sessionId) {
         return NextResponse.json(
-          { error: '缺少sessionId参数' },
+          { error: '缺少 sessionId 参数' },
           { status: 400 }
         )
       }
@@ -152,5 +156,7 @@ export async function DELETE(request: NextRequest) {
         { status: 500 }
       )
     }
-  }, request)
+  })
+  
+  return handler(request)
 }

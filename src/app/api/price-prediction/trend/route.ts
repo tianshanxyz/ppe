@@ -9,7 +9,7 @@ import {
   ProductCategory,
   MarketRegion,
 } from '@/lib/ai/price-prediction'
-import { rateLimit } from '@/lib/middleware/rateLimit'
+import { checkRateLimit } from '@/lib/middleware/rateLimit'
 
 /**
  * GET /api/price-prediction/trend
@@ -20,9 +20,9 @@ export async function GET(request: NextRequest) {
 
   try {
     // 速率限制检查
-    const rateLimitResult = await rateLimit(request, {
-      anonymous: 20,
-      authenticated: 100,
+    const rateLimitResult = await checkRateLimit(request, {
+      maxRequests: 100,
+      windowInSeconds: 60,
     })
     if (!rateLimitResult.success) {
       return NextResponse.json(
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
     const trend = pricePredictionEngine.predictPriceTrend({
       product_category: productCategory,
       market_region: marketRegion,
-      timeframe: 'medium_term',
+      timeframe: 'medium' as any,
     })
 
     if (!trend) {

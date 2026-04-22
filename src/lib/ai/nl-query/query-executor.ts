@@ -72,13 +72,16 @@ export class QueryBuilder {
   }
 
   /**
-   * 构建Supabase查询
+   * 构建 Supabase 查询
    */
-  buildQuery(structuredQuery: StructuredQuery) {
+  async buildQuery(structuredQuery: StructuredQuery) {
     const { filters, sort, pagination, fields } = structuredQuery
 
     // 开始构建查询
-    let query = this.createBaseQuery(fields)
+    const supabase = await createClient()
+    const defaultFields = ENTITY_TABLE_MAP[this.entityType].fields
+    const selectFields = fields || defaultFields
+    let query = supabase.from(this.table).select(selectFields.join(','), { count: 'exact' })
 
     // 应用过滤条件
     query = this.applyFilters(query, filters)
@@ -92,17 +95,6 @@ export class QueryBuilder {
     query = query.range(pagination.offset, pagination.offset + pagination.pageSize - 1)
 
     return query
-  }
-
-  /**
-   * 创建基础查询
-   */
-  private createBaseQuery(fields?: string[]) {
-    const supabase = createClient()
-    const defaultFields = ENTITY_TABLE_MAP[this.entityType].fields
-    const selectFields = fields || defaultFields
-
-    return supabase.from(this.table).select(selectFields.join(','), { count: 'exact' })
   }
 
   /**
@@ -173,7 +165,7 @@ export class QueryExecutor {
 
     try {
       const builder = new QueryBuilder(structuredQuery.entityType)
-      const query = builder.buildQuery(structuredQuery)
+      const query = await builder.buildQuery(structuredQuery)
 
       const { data, error, count } = await query
 
@@ -211,7 +203,7 @@ export class QueryExecutor {
     entityType: EntityType,
     aggregation: { field: string; function: 'count' | 'sum' | 'avg' | 'max' | 'min' }
   ): Promise<number> {
-    const supabase = createClient()
+    const supabase = await createClient()
     const table = ENTITY_TABLE_MAP[entityType].table
 
     const { data, error } = await supabase
@@ -236,7 +228,7 @@ export class QueryExecutor {
     entityId: string,
     relatedType: EntityType
   ): Promise<unknown[]> {
-    const supabase = createClient()
+    const supabase = await createClient()
 
     // 根据实体类型确定关联关系
     const relationMap: Record<string, Record<string, { table: string; field: string }>> = {

@@ -118,22 +118,22 @@ export class ScoreExplainer {
       {
         label: '总认证数',
         value: detail.total_certifications.toString(),
-        impact: detail.total_certifications >= 5 ? 'positive' : 'neutral',
+        impact: detail.total_certifications >= 5 ? 'positive' as const : 'neutral' as const,
       },
       {
         label: '活跃认证',
         value: `${detail.active_certifications}/${detail.total_certifications}`,
-        impact: detail.active_certifications / Math.max(detail.total_certifications, 1) > 0.8 ? 'positive' : 'negative',
+        impact: detail.active_certifications / Math.max(detail.total_certifications, 1) > 0.8 ? 'positive' as const : 'negative' as const,
       },
       {
         label: '平均认证时长',
         value: `${Math.round(detail.avg_certification_duration_days / 365)}年`,
-        impact: detail.avg_certification_duration_days > 365 * 2 ? 'positive' : 'neutral',
+        impact: detail.avg_certification_duration_days > 365 * 2 ? 'positive' as const : 'neutral' as const,
       },
       {
         label: '认证趋势',
         value: detail.certification_trend === 'increasing' ? '上升' : detail.certification_trend === 'decreasing' ? '下降' : '稳定',
-        impact: detail.certification_trend === 'increasing' ? 'positive' : detail.certification_trend === 'decreasing' ? 'negative' : 'neutral',
+        impact: detail.certification_trend === 'increasing' ? 'positive' as const : detail.certification_trend === 'decreasing' ? 'negative' as const : 'neutral' as const,
       },
     ]
 
@@ -169,22 +169,22 @@ export class ScoreExplainer {
       {
         label: '召回次数',
         value: detail.recalls_count.toString(),
-        impact: detail.recalls_count === 0 ? 'positive' : detail.recalls_count > 2 ? 'negative' : 'neutral',
+        impact: detail.recalls_count === 0 ? 'positive' as const : detail.recalls_count > 2 ? 'negative' as const : 'neutral' as const,
       },
       {
         label: '警告信',
         value: detail.warning_letters_count.toString(),
-        impact: detail.warning_letters_count === 0 ? 'positive' : 'negative',
+        impact: detail.warning_letters_count === 0 ? 'positive' as const : 'negative' as const,
       },
       {
         label: '进口警报',
         value: detail.import_alerts_count.toString(),
-        impact: detail.import_alerts_count === 0 ? 'positive' : 'negative',
+        impact: detail.import_alerts_count === 0 ? 'positive' as const : 'negative' as const,
       },
       {
         label: '事件趋势',
         value: detail.incidents_trend === 'improving' ? '改善' : detail.incidents_trend === 'worsening' ? '恶化' : '稳定',
-        impact: detail.incidents_trend === 'improving' ? 'positive' : detail.incidents_trend === 'worsening' ? 'negative' : 'neutral',
+        impact: detail.incidents_trend === 'improving' ? 'positive' as const : detail.incidents_trend === 'worsening' ? 'negative' as const : 'neutral' as const,
       },
     ]
 
@@ -219,22 +219,22 @@ export class ScoreExplainer {
       {
         label: '去年新认证',
         value: detail.certifications_last_year.toString(),
-        impact: detail.certifications_last_year >= 3 ? 'positive' : detail.certifications_last_year === 0 ? 'negative' : 'neutral',
+        impact: detail.certifications_last_year >= 3 ? 'positive' as const : detail.certifications_last_year === 0 ? 'negative' as const : 'neutral' as const,
       },
       {
-        label: '近6个月',
+        label: '近 6 个月',
         value: detail.certifications_last_6_months.toString(),
-        impact: detail.certifications_last_6_months >= 2 ? 'positive' : 'neutral',
+        impact: detail.certifications_last_6_months >= 2 ? 'positive' as const : 'neutral' as const,
       },
       {
         label: '新市场',
         value: detail.new_markets_last_year.toString(),
-        impact: detail.new_markets_last_year > 0 ? 'positive' : 'neutral',
+        impact: detail.new_markets_last_year > 0 ? 'positive' as const : 'neutral' as const,
       },
       {
         label: '活跃频率',
         value: detail.activity_frequency === 'high' ? '高' : detail.activity_frequency === 'medium' ? '中' : '低',
-        impact: detail.activity_frequency === 'high' ? 'positive' : detail.activity_frequency === 'low' ? 'negative' : 'neutral',
+        impact: detail.activity_frequency === 'high' ? 'positive' as const : detail.activity_frequency === 'low' ? 'negative' as const : 'neutral' as const,
       },
     ]
 
@@ -269,22 +269,22 @@ export class ScoreExplainer {
       {
         label: '覆盖市场',
         value: detail.market_count.toString(),
-        impact: detail.market_count >= 3 ? 'positive' : detail.market_count === 1 ? 'negative' : 'neutral',
+        impact: detail.market_count >= 3 ? 'positive' as const : detail.market_count === 1 ? 'negative' as const : 'neutral' as const,
       },
       {
         label: '产品类别',
         value: detail.product_category_count.toString(),
-        impact: detail.product_category_count >= 2 ? 'positive' : 'neutral',
+        impact: detail.product_category_count >= 2 ? 'positive' as const : 'neutral' as const,
       },
       {
         label: '认证类型',
         value: detail.certification_type_count.toString(),
-        impact: detail.certification_type_count >= 2 ? 'positive' : 'neutral',
+        impact: detail.certification_type_count >= 2 ? 'positive' as const : 'neutral' as const,
       },
       {
         label: '监管框架',
         value: detail.regulatory_frameworks.join(', ') || '无',
-        impact: detail.regulatory_frameworks.length >= 2 ? 'positive' : 'neutral',
+        impact: detail.regulatory_frameworks.length >= 2 ? 'positive' as const : 'neutral' as const,
       },
     ]
 

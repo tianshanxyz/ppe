@@ -5,7 +5,7 @@
  */
 
 // 导出类型
-export {
+export type {
   ApiKey,
   ApiKeyPermission,
   RateLimitConfig,
@@ -19,9 +19,17 @@ export {
   ValidateApiKeyResponse,
   ApiKeyUsageResponse,
   ApiKeyAuditLog,
+} from './types'
+
+// 导出常量
+export {
   DEFAULT_RATE_LIMIT,
   DEFAULT_USAGE_QUOTA,
   DEFAULT_PERMISSIONS,
+} from './types'
+
+// 导出工具函数
+export {
   generateApiKey,
   generateApiKeyPrefix,
   maskApiKey,

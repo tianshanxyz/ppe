@@ -5,7 +5,7 @@
  */
 
 // 导出类型
-export {
+export type {
   CompanyEntity,
   EntityCluster,
   EntityMatchResult,
@@ -19,6 +19,10 @@ export {
   EntityGraph,
   EntityGraphNode,
   EntityGraphEdge,
+} from './types'
+
+// 导出常量
+export {
   LEGAL_SUFFIXES,
   ABBREVIATION_MAP,
   PHONETIC_MAP,

@@ -5,18 +5,22 @@
  */
 
 // 导出类型
-export {
-  PPECategory,
-  CATEGORY_LABELS,
-  CATEGORY_KEYWORDS,
+export type {
   ProductClassificationRequest,
   ClassificationResult,
   BatchClassificationRequest,
   BatchClassificationResponse,
   ClassificationModelConfig,
-  DEFAULT_CLASSIFICATION_CONFIG,
   TrainingSample,
   ModelEvaluationResult,
+} from './types'
+
+// 导出常量和枚举
+export {
+  PPECategory,
+  CATEGORY_LABELS,
+  CATEGORY_KEYWORDS,
+  DEFAULT_CLASSIFICATION_CONFIG,
 } from './types'
 
 // 导出训练数据

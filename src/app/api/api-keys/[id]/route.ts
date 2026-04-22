@@ -14,9 +14,10 @@ import { apiKeyService } from '@/lib/api-keys'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const startTime = Date.now()
+  const { id } = await params
 
   try {
     const supabase = await createClient()
@@ -31,7 +32,7 @@ export async function GET(
       )
     }
 
-    const apiKey = await apiKeyService.getApiKey(params.id, user.id)
+    const apiKey = await apiKeyService.getApiKey(id, user.id)
 
     if (!apiKey) {
       return NextResponse.json(
@@ -64,9 +65,10 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const startTime = Date.now()
+  const { id } = await params
 
   try {
     const supabase = await createClient()
@@ -83,7 +85,7 @@ export async function PATCH(
 
     const body = await request.json()
 
-    const result = await apiKeyService.updateApiKey(params.id, user.id, {
+    const result = await apiKeyService.updateApiKey(id, user.id, {
       name: body.name,
       description: body.description,
       status: body.status,
@@ -117,9 +119,10 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const startTime = Date.now()
+  const { id } = await params
 
   try {
     const supabase = await createClient()
@@ -136,7 +139,7 @@ export async function DELETE(
 
     const body = await request.json().catch(() => ({}))
 
-    const result = await apiKeyService.revokeApiKey(params.id, user.id, body.reason)
+    const result = await apiKeyService.revokeApiKey(id, user.id, body.reason)
 
     return NextResponse.json({
       ...result,

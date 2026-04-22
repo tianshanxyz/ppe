@@ -357,7 +357,7 @@ export class CreditScoreCalculator {
       certifications_last_6_months: certsLast6Months,
       new_markets_last_year: newMarkets.size,
       new_products_last_year: certsLastYear,
-      last_activity_date: lastActivityDate?.toISOString(),
+      last_activity_date: lastActivityDate ? new Date(lastActivityDate).toISOString() : undefined,
       activity_frequency: activityFrequency,
     }
   }

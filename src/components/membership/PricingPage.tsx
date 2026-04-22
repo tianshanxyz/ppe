@@ -39,7 +39,7 @@ export function PricingPage({ currentTier = 'free', onSelectTier, className = ''
     switch (tierId) {
       case 'free':
         return Shield
-      case 'pro':
+      case 'professional':
         return Zap
       case 'enterprise':
         return Building2
@@ -52,7 +52,7 @@ export function PricingPage({ currentTier = 'free', onSelectTier, className = ''
     switch (tierId) {
       case 'free':
         return 'bg-gray-100 text-gray-900 border-gray-200'
-      case 'pro':
+      case 'professional':
         return 'bg-gradient-to-br from-[#339999] to-[#2d8b8b] text-white border-[#339999]'
       case 'enterprise':
         return 'bg-gradient-to-br from-purple-600 to-purple-800 text-white border-purple-600'
@@ -69,7 +69,7 @@ export function PricingPage({ currentTier = 'free', onSelectTier, className = ''
     switch (tierId) {
       case 'free':
         return 'bg-gray-900 text-white hover:bg-gray-800'
-      case 'pro':
+      case 'professional':
         return 'bg-white text-[#339999] hover:bg-gray-50'
       case 'enterprise':
         return 'bg-white text-purple-600 hover:bg-gray-50'
@@ -119,22 +119,22 @@ export function PricingPage({ currentTier = 'free', onSelectTier, className = ''
         {/* 定价卡片 */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {tiers.map((tier) => {
-            const Icon = getTierIcon(tier.id)
-            const isCurrent = currentTier === tier.id
-            const isPopular = tier.id === 'pro'
-            const price = billingCycle === 'monthly' ? tier.price.monthly : tier.price.yearly
+            const Icon = getTierIcon(tier.tier)
+            const isCurrent = currentTier === tier.tier
+            const isPopular = tier.tier === 'professional'
+            const price = billingCycle === 'monthly' ? tier.monthlyPrice : tier.yearlyPrice
 
             return (
               <motion.div
-                key={tier.id}
+                key={tier.tier}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 whileHover={{ y: -8 }}
-                onHoverStart={() => setHoveredTier(tier.id)}
+                onHoverStart={() => setHoveredTier(tier.tier)}
                 onHoverEnd={() => setHoveredTier(null)}
                 className={`relative rounded-2xl border-2 overflow-hidden transition-shadow ${
                   isPopular ? 'border-[#339999] shadow-xl' : 'border-gray-200 shadow-sm'
-                } ${hoveredTier === tier.id ? 'shadow-2xl' : ''}`}
+                } ${hoveredTier === tier.tier ? 'shadow-2xl' : ''}`}
               >
                 {/* 推荐标签 */}
                 {isPopular && (
@@ -150,15 +150,15 @@ export function PricingPage({ currentTier = 'free', onSelectTier, className = ''
                   </div>
                 )}
 
-                <div className={`p-8 ${getTierColor(tier.id)}`}>
+                <div className={`p-8 ${getTierColor(tier.tier)}`}>
                   {/* 图标和名称 */}
                   <div className="flex items-center mb-4">
-                    <div className={`p-3 rounded-xl ${tier.id === 'free' ? 'bg-gray-200' : 'bg-white/20'}`}>
+                    <div className={`p-3 rounded-xl ${tier.tier === 'free' ? 'bg-gray-200' : 'bg-white/20'}`}>
                       <Icon className="w-6 h-6" />
                     </div>
                     <div className="ml-4">
                       <h3 className="text-2xl font-bold">{tier.name}</h3>
-                      <p className="text-sm opacity-80">{tier.nameZh}</p>
+                      <p className="text-sm opacity-80">{tier.description}</p>
                     </div>
                   </div>
 
@@ -170,23 +170,23 @@ export function PricingPage({ currentTier = 'free', onSelectTier, className = ''
                         /{billingCycle === 'monthly' ? '月' : '年'}
                       </span>
                     </div>
-                    {billingCycle === 'yearly' && tier.price.yearly > 0 && (
+                    {billingCycle === 'yearly' && tier.yearlyPrice > 0 && (
                       <p className="text-sm mt-1 opacity-80">
-                        相当于 ${Math.round(tier.price.yearly / 12)}/月
+                        相当于 ${Math.round(tier.yearlyPrice / 12)}/月
                       </p>
                     )}
                   </div>
 
                   {/* 按钮 */}
                   <button
-                    onClick={() => !isCurrent && onSelectTier?.(tier.id, billingCycle)}
+                    onClick={() => !isCurrent && onSelectTier?.(tier.tier, billingCycle)}
                     disabled={isCurrent}
                     className={`w-full py-3 px-4 rounded-xl font-medium transition-colors ${getButtonStyle(
-                      tier.id,
+                      tier.tier,
                       isCurrent
                     )}`}
                   >
-                    {isCurrent ? '当前套餐' : tier.id === 'free' ? '开始使用' : '立即升级'}
+                    {isCurrent ? '当前套餐' : tier.tier === 'free' ? '开始使用' : '立即升级'}
                   </button>
                 </div>
 
@@ -207,32 +207,32 @@ export function PricingPage({ currentTier = 'free', onSelectTier, className = ''
                     <h4 className="text-sm font-medium text-gray-900 mb-4">使用限制</h4>
                     <ul className="space-y-2 text-sm">
                       <li className="flex justify-between">
-                        <span className="text-gray-500">搜索查询</span>
+                        <span className="text-gray-500">搜索结果</span>
                         <span className="font-medium">
-                          {tier.limits.searchQueriesPerDay === -1
+                          {tier.limits.maxSearchResults === -1
                             ? '无限'
-                            : `${tier.limits.searchQueriesPerDay}次/天`}
+                            : `${tier.limits.maxSearchResults}条`}
                         </span>
                       </li>
                       <li className="flex justify-between">
-                        <span className="text-gray-500">API调用</span>
+                        <span className="text-gray-500">API 调用</span>
                         <span className="font-medium">
-                          {tier.limits.apiCallsPerMonth === 0
+                          {tier.limits.maxApiCallsPerDay === 0
                             ? '不可用'
-                            : `${tier.limits.apiCallsPerMonth}次/月`}
+                            : `${tier.limits.maxApiCallsPerDay}次/天`}
                         </span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-gray-500">监控预警</span>
-                        <span className="font-medium">{tier.limits.monitoredEntities}个</span>
+                        <span className="font-medium">{tier.limits.maxMonitoredProducts}个</span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-gray-500">报告下载</span>
-                        <span className="font-medium">{tier.limits.reportsPerMonth}份/月</span>
+                        <span className="font-medium">{tier.limits.maxReportsPerMonth}份/月</span>
                       </li>
                       <li className="flex justify-between">
                         <span className="text-gray-500">团队成员</span>
-                        <span className="font-medium">{tier.limits.teamMembers}人</span>
+                        <span className="font-medium">{tier.limits.maxTeamMembers}人</span>
                       </li>
                     </ul>
                   </div>
@@ -253,7 +253,7 @@ export function PricingPage({ currentTier = 'free', onSelectTier, className = ''
                 <tr className="bg-gray-50">
                   <th className="px-8 py-4 text-left text-sm font-medium text-gray-500">功能</th>
                   {tiers.map((tier) => (
-                    <th key={tier.id} className="px-8 py-4 text-center text-sm font-medium text-gray-900">
+                    <th key={tier.tier} className="px-8 py-4 text-center text-sm font-medium text-gray-900">
                       {tier.name}
                     </th>
                   ))}
