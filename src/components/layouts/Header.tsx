@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui';
 import { Menu, X, User, ShieldCheck, Globe } from 'lucide-react';
 
@@ -11,10 +12,16 @@ const languages = [
 ];
 
 export function Header() {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentLang, setCurrentLang] = useState('en');
   const [showLangMenu, setShowLangMenu] = useState(false);
+
+  // 在 PPE 路由下不显示此 Header（PPE 有自己的 PPENavbar）
+  if (pathname?.startsWith('/ppe')) {
+    return null;
+  }
 
   useEffect(() => {
     const user = localStorage.getItem('user');

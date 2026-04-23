@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Header } from '@/components/layouts/Header';
-import { Footer } from '@/components/layouts/Footer';
 import { Button, Card } from '@/components/ui';
 import { 
   User, 
@@ -94,8 +92,6 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      
       <main className="flex-1 py-8 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           {/* User Profile Card */}
@@ -194,8 +190,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }
