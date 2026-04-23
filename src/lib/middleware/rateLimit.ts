@@ -167,10 +167,10 @@ export function createRateLimitHeaders(result: RateLimitResult): Record<string, 
  * 速率限制中间件
  */
 export function withRateLimit(
-  handler: (request: NextRequest) => Promise<NextResponse>,
+  handler: (request: NextRequest) => Promise<Response>,
   config: RateLimitConfig = DEFAULT_CONFIG
 ) {
-  return async (request: NextRequest): Promise<NextResponse> => {
+  return async (request: NextRequest): Promise<Response> => {
     const result = await checkRateLimit(request, config)
 
     if (!result.success) {

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { CheckCircle, XCircle, AlertCircle, Scale, FileText, Clock, DollarSign, Shield, Globe, ArrowRight, Info, ExternalLink, CheckCircle2 } from 'lucide-react'
+import { CheckCircle, XCircle, AlertCircle, Scale, FileText, Clock, DollarSign, Shield, Globe, ArrowRight, Info, ExternalLink, CheckCircle2, Download, Table2, BarChart3, TrendingUp } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { getPPECategories, getTargetMarkets, getComplianceData } from '@/lib/ppe-data'
 import { PPEIcon } from '@/components/ppe/PPEIcons'
@@ -36,6 +36,8 @@ export default function CertificationComparisonPage() {
   const markets = getTargetMarkets()
   
   const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table')
+  const [showExport, setShowExport] = useState(false)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -92,7 +94,7 @@ export default function CertificationComparisonPage() {
       })
     }
 
-    // 获取中国 NMPA 认证数据（估算）
+    // 获取中国 NMPA 认证数据
     const cnData = getComplianceData(selectedCategory, 'CN')
     if (cnData) {
       certifications.push({
@@ -112,6 +114,11 @@ export default function CertificationComparisonPage() {
 
   const category = categories.find(c => c.id === selectedCategory)
 
+  const handleExport = (format: 'pdf' | 'excel') => {
+    alert(`Exporting comparison as ${format.toUpperCase()}...\n\nNote: This is a demo. In production, this would generate and download the actual file.`)
+    setShowExport(false)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -129,10 +136,10 @@ export default function CertificationComparisonPage() {
               </div>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Certification Standards Comparison
+              Multi-Market Comparison
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Compare CE, FDA, UKCA, and NMPA certification requirements side by side
+              Side-by-side comparison of CE, FDA, UKCA, and NMPA certification requirements
             </p>
           </motion.div>
         </div>
@@ -188,7 +195,7 @@ export default function CertificationComparisonPage() {
         </div>
       </motion.section>
 
-      {/* Comparison Table */}
+      {/* Comparison Results */}
       {comparisonData && comparisonData.length > 0 && (
         <motion.section 
           className="py-12"
@@ -198,154 +205,295 @@ export default function CertificationComparisonPage() {
           variants={staggerContainer}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Category Info */}
+            {/* Header with controls */}
             <motion.div className="bg-white rounded-2xl shadow-xl p-8 mb-8" variants={fadeInUp}>
-              <div className="flex items-center">
-                <div className="mr-6">
-                  {category && <PPEIcon categoryId={category.id} size={48} />}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="mr-6">
+                    {category && <PPEIcon categoryId={category.id} size={48} />}
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      {category?.name} - Market Comparison
+                    </h2>
+                    <p className="text-gray-600">{category?.name_zh}</p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    {category?.name} - Certification Comparison
-                  </h2>
-                  <p className="text-gray-600">{category?.name_zh}</p>
+                <div className="flex items-center gap-3">
+                  {/* View Mode Toggle */}
+                  <div className="flex items-center bg-gray-100 rounded-lg p-1">
+                    <button
+                      onClick={() => setViewMode('table')}
+                      className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                        viewMode === 'table'
+                          ? 'bg-white text-[#339999] shadow-sm'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      <Table2 className="w-4 h-4 inline mr-1" />
+                      Table
+                    </button>
+                    <button
+                      onClick={() => setViewMode('cards')}
+                      className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                        viewMode === 'cards'
+                          ? 'bg-white text-[#339999] shadow-sm'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      <BarChart3 className="w-4 h-4 inline mr-1" />
+                      Cards
+                    </button>
+                  </div>
+                  {/* Export Button */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowExport(!showExport)}
+                      className="px-4 py-2 bg-[#339999] text-white rounded-lg hover:bg-[#2d8b8b] transition-colors flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      Export
+                    </button>
+                    {showExport && (
+                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-10">
+                        <button
+                          onClick={() => handleExport('pdf')}
+                          className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-t-lg flex items-center gap-2"
+                        >
+                          <FileText className="w-4 h-4 text-red-500" />
+                          Export as PDF
+                        </button>
+                        <button
+                          onClick={() => handleExport('excel')}
+                          className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-b-lg flex items-center gap-2"
+                        >
+                          <FileText className="w-4 h-4 text-green-500" />
+                          Export as Excel
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </motion.div>
 
-            {/* Comparison Overview */}
-            <motion.div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8" variants={fadeInUp}>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gradient-to-r from-[#339999]/5 to-[#339999]/10">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                        Feature
-                      </th>
-                      {comparisonData.map((cert) => (
-                        <th key={cert.market} className="px-6 py-4 text-center">
-                          <div className="flex flex-col items-center">
-                            <div className="text-4xl mb-2">
-                              {cert.market === 'EU' && '🇪🇺'}
-                              {cert.market === 'US' && '🇺🇸'}
-                              {cert.market === 'UK' && '🇬🇧'}
-                              {cert.market === 'CN' && '🇨🇳'}
+            {/* Table View */}
+            {viewMode === 'table' && (
+              <motion.div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8" variants={fadeInUp}>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gradient-to-r from-[#339999]/5 to-[#339999]/10">
+                      <tr>
+                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                          Comparison Item
+                        </th>
+                        {comparisonData.map((cert) => (
+                          <th key={cert.market} className="px-6 py-4 text-center">
+                            <div className="flex flex-col items-center">
+                              <div className="text-4xl mb-2">
+                                {cert.market === 'EU' && '🇪🇺'}
+                                {cert.market === 'US' && '🇺🇸'}
+                                {cert.market === 'UK' && '🇬🇧'}
+                                {cert.market === 'CN' && '🇨🇳'}
+                              </div>
+                              <div className="font-bold text-[#339999]">
+                                {cert.name}
+                              </div>
+                              <div className="text-xs text-gray-500 mt-1">
+                                {cert.market}
+                              </div>
                             </div>
-                            <div className="font-bold text-[#339999]">
-                              {cert.name}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {/* Classification */}
+                      <motion.tr 
+                        className="bg-white hover:bg-[#339999]/5 transition-colors"
+                        whileHover={{ scale: 1.01 }}
+                      >
+                        <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                          Risk Classification
+                        </td>
+                        {comparisonData.map((cert) => (
+                          <td key={cert.market} className="px-6 py-4 text-center">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#339999]/10 text-[#339999]">
+                              {cert.classification}
+                            </span>
+                          </td>
+                        ))}
+                      </motion.tr>
+
+                      {/* Timeline */}
+                      <motion.tr 
+                        className="bg-gray-50 hover:bg-[#339999]/10 transition-colors"
+                        whileHover={{ scale: 1.01 }}
+                      >
+                        <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                          <div className="flex items-center">
+                            <Clock className="w-4 h-4 mr-2 text-[#339999]" />
+                            Timeline
+                          </div>
+                        </td>
+                        {comparisonData.map((cert) => (
+                          <td key={cert.market} className="px-6 py-4 text-center">
+                            <div className="text-sm font-semibold text-[#339999]">
+                              {cert.timeline.min}-{cert.timeline.max} {cert.timeline.unit}
+                            </div>
+                          </td>
+                        ))}
+                      </motion.tr>
+
+                      {/* Cost */}
+                      <motion.tr 
+                        className="bg-white hover:bg-[#339999]/5 transition-colors"
+                        whileHover={{ scale: 1.01 }}
+                      >
+                        <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                          <div className="flex items-center">
+                            <DollarSign className="w-4 h-4 mr-2 text-[#339999]" />
+                            Estimated Cost
+                          </div>
+                        </td>
+                        {comparisonData.map((cert) => (
+                          <td key={cert.market} className="px-6 py-4 text-center">
+                            <div className="text-sm font-semibold text-[#339999]">
+                              ${cert.cost.min.toLocaleString()} - ${cert.cost.max.toLocaleString()}
                             </div>
                             <div className="text-xs text-gray-500 mt-1">
-                              {cert.market}
+                              {cert.cost.currency}
                             </div>
-                          </div>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {/* Classification */}
-                    <motion.tr 
-                      className="bg-white hover:bg-[#339999]/5 transition-colors"
-                      whileHover={{ scale: 1.01 }}
-                    >
-                      <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                        Risk Classification
-                      </td>
-                      {comparisonData.map((cert) => (
-                        <td key={cert.market} className="px-6 py-4 text-center">
-                          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#339999]/10 text-[#339999]">
-                            {cert.classification}
-                          </span>
-                        </td>
-                      ))}
-                    </motion.tr>
+                          </td>
+                        ))}
+                      </motion.tr>
 
-                    {/* Timeline */}
-                    <motion.tr 
-                      className="bg-gray-50 hover:bg-[#339999]/10 transition-colors"
-                      whileHover={{ scale: 1.01 }}
-                    >
-                      <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                        <div className="flex items-center">
-                          <Clock className="w-4 h-4 mr-2 text-[#339999]" />
-                          Timeline
-                        </div>
-                      </td>
-                      {comparisonData.map((cert) => (
-                        <td key={cert.market} className="px-6 py-4 text-center">
-                          <div className="text-sm font-semibold text-[#339999]">
-                            {cert.timeline.min}-{cert.timeline.max} {cert.timeline.unit}
+                      {/* Requirements Count */}
+                      <motion.tr 
+                        className="bg-gray-50 hover:bg-[#339999]/10 transition-colors"
+                        whileHover={{ scale: 1.01 }}
+                      >
+                        <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                          <div className="flex items-center">
+                            <FileText className="w-4 h-4 mr-2 text-[#339999]" />
+                            Requirements
                           </div>
                         </td>
-                      ))}
-                    </motion.tr>
+                        {comparisonData.map((cert) => (
+                          <td key={cert.market} className="px-6 py-4 text-center">
+                            <div className="text-sm font-semibold text-[#339999]">
+                              {cert.requirements.length} items
+                            </div>
+                          </td>
+                        ))}
+                      </motion.tr>
 
-                    {/* Cost */}
-                    <motion.tr 
-                      className="bg-white hover:bg-[#339999]/5 transition-colors"
-                      whileHover={{ scale: 1.01 }}
-                    >
-                      <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                        <div className="flex items-center">
-                          <DollarSign className="w-4 h-4 mr-2 text-[#339999]" />
-                          Estimated Cost
-                        </div>
-                      </td>
-                      {comparisonData.map((cert) => (
-                        <td key={cert.market} className="px-6 py-4 text-center">
-                          <div className="text-sm font-semibold text-[#339999]">
-                            ${cert.cost.min.toLocaleString()} - ${cert.cost.max.toLocaleString()}
-                          </div>
-                          <div className="text-xs text-gray-500 mt-1">
-                            {cert.cost.currency}
+                      {/* Documents Count */}
+                      <motion.tr 
+                        className="bg-white hover:bg-[#339999]/5 transition-colors"
+                        whileHover={{ scale: 1.01 }}
+                      >
+                        <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                          <div className="flex items-center">
+                            <Shield className="w-4 h-4 mr-2 text-[#339999]" />
+                            Documents
                           </div>
                         </td>
-                      ))}
-                    </motion.tr>
+                        {comparisonData.map((cert) => (
+                          <td key={cert.market} className="px-6 py-4 text-center">
+                            <div className="text-sm font-semibold text-[#339999]">
+                              {cert.documents.length} items
+                            </div>
+                          </td>
+                        ))}
+                      </motion.tr>
 
-                    {/* Requirements Count */}
-                    <motion.tr 
-                      className="bg-gray-50 hover:bg-[#339999]/10 transition-colors"
-                      whileHover={{ scale: 1.01 }}
-                    >
-                      <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                        <div className="flex items-center">
-                          <FileText className="w-4 h-4 mr-2 text-[#339999]" />
-                          Requirements
-                        </div>
-                      </td>
-                      {comparisonData.map((cert) => (
-                        <td key={cert.market} className="px-6 py-4 text-center">
-                          <div className="text-sm font-semibold text-[#339999]">
-                            {cert.requirements.length} items
+                      {/* Difficulty Level */}
+                      <motion.tr 
+                        className="bg-gray-50 hover:bg-[#339999]/10 transition-colors"
+                        whileHover={{ scale: 1.01 }}
+                      >
+                        <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                          <div className="flex items-center">
+                            <TrendingUp className="w-4 h-4 mr-2 text-[#339999]" />
+                            Difficulty Level
                           </div>
                         </td>
-                      ))}
-                    </motion.tr>
+                        {comparisonData.map((cert) => (
+                          <td key={cert.market} className="px-6 py-4 text-center">
+                            <div className="flex items-center justify-center gap-1">
+                              {[1, 2, 3, 4, 5].map((level) => (
+                                <div
+                                  key={level}
+                                  className={`w-3 h-3 rounded-full ${
+                                    level <= (cert.market === 'US' ? 4 : cert.market === 'CN' ? 5 : 3)
+                                      ? 'bg-[#339999]'
+                                      : 'bg-gray-200'
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                            <div className="text-xs text-gray-500 mt-1">
+                              {cert.market === 'US' ? 'High' : cert.market === 'CN' ? 'Very High' : 'Medium'}
+                            </div>
+                          </td>
+                        ))}
+                      </motion.tr>
+                    </tbody>
+                  </table>
+                </div>
+              </motion.div>
+            )}
 
-                    {/* Documents Count */}
-                    <motion.tr 
-                      className="bg-white hover:bg-[#339999]/5 transition-colors"
-                      whileHover={{ scale: 1.01 }}
-                    >
-                      <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                        <div className="flex items-center">
-                          <Shield className="w-4 h-4 mr-2 text-[#339999]" />
-                          Documents
-                        </div>
-                      </td>
-                      {comparisonData.map((cert) => (
-                        <td key={cert.market} className="px-6 py-4 text-center">
-                          <div className="text-sm font-semibold text-[#339999]">
-                            {cert.documents.length} items
-                          </div>
-                        </td>
-                      ))}
-                    </motion.tr>
-                  </tbody>
-                </table>
+            {/* Cards View */}
+            {viewMode === 'cards' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {comparisonData.map((cert, index) => (
+                  <motion.div
+                    key={cert.market}
+                    className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow"
+                    variants={fadeInUp}
+                    custom={index}
+                  >
+                    <div className="flex items-center mb-6">
+                      <div className="text-4xl mr-4">
+                        {cert.market === 'EU' && '🇪🇺'}
+                        {cert.market === 'US' && '🇺🇸'}
+                        {cert.market === 'UK' && '🇬🇧'}
+                        {cert.market === 'CN' && '🇨🇳'}
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900">{cert.name}</h3>
+                        <p className="text-sm text-gray-500">{cert.market}</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between p-3 bg-[#339999]/5 rounded-lg">
+                        <span className="text-sm text-gray-600">Classification</span>
+                        <span className="text-sm font-semibold text-[#339999]">{cert.classification}</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span className="text-sm text-gray-600">Timeline</span>
+                        <span className="text-sm font-semibold text-gray-900">{cert.timeline.min}-{cert.timeline.max} {cert.timeline.unit}</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-[#339999]/5 rounded-lg">
+                        <span className="text-sm text-gray-600">Cost</span>
+                        <span className="text-sm font-semibold text-[#339999]">${cert.cost.min.toLocaleString()} - ${cert.cost.max.toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span className="text-sm text-gray-600">Requirements</span>
+                        <span className="text-sm font-semibold text-gray-900">{cert.requirements.length} items</span>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-[#339999]/5 rounded-lg">
+                        <span className="text-sm text-gray-600">Documents</span>
+                        <span className="text-sm font-semibold text-[#339999]">{cert.documents.length} items</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
-            </motion.div>
+            )}
 
             {/* Detailed Requirements */}
             {comparisonData.map((cert, index) => (

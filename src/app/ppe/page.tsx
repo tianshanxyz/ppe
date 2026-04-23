@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, Shield, Globe, Zap, Users, DollarSign, Package, Building, ChevronDown } from 'lucide-react';
+import { ArrowRight, CheckCircle, Shield, Globe, Zap, Users, DollarSign, Package, Building, ChevronDown, Clock, ClipboardList, Bell, AlertTriangle, Newspaper, BookOpen, Library } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getPPECategories, getTargetMarkets } from '@/lib/ppe-data';
 import { ComplianceCheckTool } from '@/components/ppe/ComplianceCheckTool';
@@ -295,6 +295,70 @@ export default function PPEHomePage() {
                 cta: 'Compare Certifications'
               },
               {
+                href: '/ppe/cost-calculator',
+                icon: DollarSign,
+                title: 'Cost Calculator',
+                subtitle: 'Estimate certification costs',
+                description: 'Calculate detailed cost estimates for PPE certification across global markets. Includes testing fees, Notified Body charges, and ongoing compliance costs.',
+                cta: 'Calculate Costs'
+              },
+              {
+                href: '/ppe/timeline-estimator',
+                icon: Clock,
+                title: 'Timeline Estimator',
+                subtitle: 'Plan your certification journey',
+                description: 'Get realistic timeline estimates for PPE certification with detailed phase breakdowns, dependencies, and best practices for each step.',
+                cta: 'Estimate Timeline'
+              },
+              {
+                href: '/ppe/compliance-tracker',
+                icon: ClipboardList,
+                title: 'Compliance Tracker',
+                subtitle: 'Track certification progress',
+                description: 'Manage and track your PPE certification projects across all markets. Monitor progress, set reminders, and export status reports.',
+                cta: 'Track Progress'
+              },
+              {
+                href: '/ppe/certificate-alerts',
+                icon: Bell,
+                title: 'Certificate Alerts',
+                subtitle: 'Never miss a deadline',
+                description: 'Track certificate expiry dates and receive alerts before renewal deadlines. Manage all your PPE certifications in one dashboard.',
+                cta: 'Set Alerts'
+              },
+              {
+                href: '/ppe/regulatory-alerts',
+                icon: AlertTriangle,
+                title: 'Regulatory Alerts',
+                subtitle: 'Stay ahead of changes',
+                description: 'Real-time alerts on regulatory changes, recalls, import bans, and new guidance documents across EU, US, UK, China, and GCC markets.',
+                cta: 'View Alerts'
+              },
+              {
+                href: '/ppe/regulatory-news',
+                icon: Newspaper,
+                title: 'Regulatory News',
+                subtitle: 'Curated industry intelligence',
+                description: 'Stay informed with curated regulatory news, market analysis, and industry updates specifically for PPE professionals.',
+                cta: 'Read News'
+              },
+              {
+                href: '/ppe/case-studies',
+                icon: BookOpen,
+                title: 'Case Studies',
+                subtitle: 'Learn from real examples',
+                description: 'Real-world compliance stories, success and failure analyses, and actionable lessons from PPE manufacturers worldwide.',
+                cta: 'Read Cases'
+              },
+              {
+                href: '/ppe/knowledge-base',
+                icon: Library,
+                title: 'Knowledge Base',
+                subtitle: 'Guides, standards & FAQs',
+                description: 'Comprehensive guides, standards explanations, FAQs, and step-by-step procedures for PPE compliance across all markets.',
+                cta: 'Explore Knowledge'
+              },
+              {
                 href: '/ppe/products',
                 icon: Package,
                 title: 'Product Database',
@@ -309,14 +373,6 @@ export default function PPEHomePage() {
                 subtitle: 'Verified manufacturers worldwide',
                 description: 'Find verified PPE manufacturers from around the world. View company profiles, certifications, product catalogs, and contact information all in one place.',
                 cta: 'Find Manufacturers'
-              },
-              {
-                href: '/ppe/statistics',
-                icon: Zap,
-                title: 'Market Statistics',
-                subtitle: 'Data-driven insights',
-                description: 'Explore market trends, product distributions, and competitive analysis with interactive charts and data visualizations.',
-                cta: 'View Statistics'
               }
             ].map((tool, i) => (
               <motion.div key={i} variants={fadeInUp}>

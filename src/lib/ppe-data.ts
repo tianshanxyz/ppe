@@ -7,6 +7,18 @@ export interface PPECategory {
   description: string;
   icon: string;
   sort_order: number;
+  subcategories?: Array<{
+    id: string;
+    name: string;
+    name_zh: string;
+    description: string;
+    parent_id: string;
+  }>;
+  product_features?: {
+    materials: string[];
+    protection_levels: string[];
+    intended_uses: string[];
+  };
 }
 
 export interface TargetMarket {

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { CheckCircle, XCircle, AlertCircle, ArrowRight, FileText, Clock, DollarSign, Shield, Globe, ExternalLink, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react'
+import { CheckCircle, XCircle, AlertCircle, ArrowRight, FileText, Clock, DollarSign, Shield, Globe, ExternalLink, CheckCircle2, ChevronDown, ChevronUp, Layers, Package, Settings, BarChart3, Calculator, TrendingUp, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { getPPECategories, getTargetMarkets, getComplianceData } from '@/lib/ppe-data'
 import { PPEIcon } from '@/components/ppe/PPEIcons'
@@ -24,37 +24,66 @@ export default function MarketAccessPage() {
   const categories = getPPECategories()
   const markets = getTargetMarkets()
   
+  const [step, setStep] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('')
   const [selectedMarket, setSelectedMarket] = useState<string>('')
+  const [selectedFeatures, setSelectedFeatures] = useState<{
+    material: string;
+    protectionLevel: string;
+    intendedUse: string;
+  }>({ material: '', protectionLevel: '', intendedUse: '' })
   const [showReport, setShowReport] = useState(false)
   const [expandedSections, setExpandedSections] = useState<{
     standards: boolean;
     customs: boolean;
     certification: boolean;
     warnings: boolean;
+    features: boolean;
+    costBreakdown: boolean;
   }>({
     standards: true,
     customs: true,
     certification: true,
-    warnings: true
+    warnings: true,
+    features: true,
+    costBreakdown: true
   })
+
+  const category = categories.find(c => c.id === selectedCategory)
+  const market = markets.find(m => m.code === selectedMarket)
 
   const complianceData = useMemo(() => {
     if (!selectedCategory || !selectedMarket) return null
     return getComplianceData(selectedCategory, selectedMarket)
   }, [selectedCategory, selectedMarket])
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (selectedCategory && selectedMarket) {
+  const handleNext = () => {
+    if (step === 1 && selectedCategory) setStep(2)
+    else if (step === 2 && selectedSubcategory) setStep(3)
+    else if (step === 3 && selectedMarket) setStep(4)
+    else if (step === 4 && selectedFeatures.material && selectedFeatures.protectionLevel && selectedFeatures.intendedUse) {
+      setStep(5)
       setShowReport(true)
     }
   }
 
+  const handleBack = () => {
+    if (step === 5) {
+      setShowReport(false)
+      setStep(4)
+    } else if (step > 1) {
+      setStep(step - 1)
+    }
+  }
+
   const handleReset = () => {
+    setStep(1)
     setShowReport(false)
     setSelectedCategory('')
+    setSelectedSubcategory('')
     setSelectedMarket('')
+    setSelectedFeatures({ material: '', protectionLevel: '', intendedUse: '' })
   }
 
   const toggleSection = (section: keyof typeof expandedSections) => {
@@ -64,14 +93,19 @@ export default function MarketAccessPage() {
     }))
   }
 
-  const category = categories.find(c => c.id === selectedCategory)
-  const market = markets.find(m => m.code === selectedMarket)
+  const steps = [
+    { number: 1, title: 'Product Category', description: 'Select PPE category' },
+    { number: 2, title: 'Subcategory', description: 'Choose specific type' },
+    { number: 3, title: 'Target Market', description: 'Select destination' },
+    { number: 4, title: 'Product Features', description: 'Specify details' },
+    { number: 5, title: 'Report', description: 'View analysis' }
+  ]
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <motion.section 
-        className="bg-gradient-to-br from-[#339999]/10 via-white to-white py-20"
+        className="bg-gradient-to-br from-[#339999]/10 via-white to-white py-16"
         initial="initial"
         animate="animate"
         variants={staggerContainer}
@@ -84,17 +118,51 @@ export default function MarketAccessPage() {
               </div>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Market Access Requirements
+              Compliance Check Wizard
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Get detailed market entry requirements for your PPE products
+              Step-by-step compliance analysis for your PPE products across global markets
             </p>
           </motion.div>
         </div>
       </motion.section>
 
-      {/* Selection Form */}
+      {/* Progress Steps */}
       {!showReport && (
+        <div className="bg-white border-b border-gray-200">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex items-center justify-between">
+              {steps.map((s, index) => (
+                <div key={s.number} className="flex items-center">
+                  <div className="flex flex-col items-center">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
+                      step >= s.number 
+                        ? 'bg-[#339999] text-white' 
+                        : 'bg-gray-200 text-gray-500'
+                    }`}>
+                      {step > s.number ? <CheckCircle className="w-5 h-5" /> : s.number}
+                    </div>
+                    <div className="mt-2 text-center">
+                      <div className={`text-sm font-semibold ${step >= s.number ? 'text-gray-900' : 'text-gray-400'}`}>
+                        {s.title}
+                      </div>
+                      <div className="text-xs text-gray-400 hidden sm:block">{s.description}</div>
+                    </div>
+                  </div>
+                  {index < steps.length - 1 && (
+                    <div className={`w-16 sm:w-24 h-0.5 mx-2 sm:mx-4 ${
+                      step > s.number ? 'bg-[#339999]' : 'bg-gray-200'
+                    }`} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Step 1: Product Category */}
+      {step === 1 && (
         <motion.section 
           className="py-12"
           initial="initial"
@@ -102,89 +170,330 @@ export default function MarketAccessPage() {
           viewport={{ once: true, margin: '-100px' }}
           variants={staggerContainer}
         >
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div className="bg-white rounded-2xl shadow-xl p-8" variants={fadeInUp}>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                Select Product and Market
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Select Product Category
               </h2>
+              <p className="text-gray-600 mb-8">Choose the main PPE category for your product</p>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Product Category */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    PPE Product Category *
-                  </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {categories.map((cat) => (
-                      <motion.button
-                        key={cat.id}
-                        type="button"
-                        onClick={() => setSelectedCategory(cat.id)}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className={`p-5 rounded-xl border-2 text-left transition-all ${
-                          selectedCategory === cat.id
-                            ? 'border-[#339999] bg-[#339999]/5 shadow-md'
-                            : 'border-gray-200 hover:border-[#339999]/50'
-                        }`}
-                      >
-                        <div className="flex items-center mb-3">
-                          <PPEIcon categoryId={cat.id} size={32} className="mr-3" />
-                          <div>
-                            <div className="font-semibold text-gray-900">{cat.name}</div>
-                            <div className="text-sm text-gray-500">{cat.name_zh}</div>
-                          </div>
-                        </div>
-                      </motion.button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Target Market */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    Target Market *
-                  </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {markets.map((m) => (
-                      <motion.button
-                        key={m.code}
-                        type="button"
-                        onClick={() => setSelectedMarket(m.code)}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className={`p-5 rounded-xl border-2 text-left transition-all ${
-                          selectedMarket === m.code
-                            ? 'border-[#339999] bg-[#339999]/5 shadow-md'
-                            : 'border-gray-200 hover:border-[#339999]/50'
-                        }`}
-                      >
-                        <div className="flex items-center mb-3">
-                          <div className="text-3xl mr-3">{m.flag_emoji}</div>
-                          <div>
-                            <div className="font-semibold text-gray-900">{m.name}</div>
-                            <div className="text-sm text-gray-500">{m.name_zh}</div>
-                          </div>
-                        </div>
-                      </motion.button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Submit Button */}
-                <div className="pt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {categories.map((cat) => (
                   <motion.button
-                    type="submit"
-                    disabled={!selectedCategory || !selectedMarket}
-                    whileHover={{ scale: !selectedCategory || !selectedMarket ? 1 : 1.02 }}
-                    whileTap={{ scale: !selectedCategory || !selectedMarket ? 1 : 0.98 }}
-                    className="w-full inline-flex items-center justify-center px-8 py-4 bg-[#339999] text-white text-lg font-semibold rounded-xl hover:bg-[#2d8b8b] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                    key={cat.id}
+                    type="button"
+                    onClick={() => setSelectedCategory(cat.id)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`p-6 rounded-xl border-2 text-left transition-all ${
+                      selectedCategory === cat.id
+                        ? 'border-[#339999] bg-[#339999]/5 shadow-md'
+                        : 'border-gray-200 hover:border-[#339999]/50'
+                    }`}
                   >
-                    Generate Market Access Report
-                    <ArrowRight className="ml-2 w-5 h-5" />
+                    <div className="flex items-center mb-3">
+                      <PPEIcon categoryId={cat.id} size={40} className="mr-4" />
+                      <div>
+                        <div className="font-semibold text-gray-900">{cat.name}</div>
+                        <div className="text-sm text-gray-500">{cat.name_zh}</div>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600">{cat.description}</p>
+                    {cat.subcategories && (
+                      <div className="mt-3 flex items-center text-xs text-[#339999]">
+                        <Layers className="w-3 h-3 mr-1" />
+                        {cat.subcategories.length} subcategories
+                      </div>
+                    )}
                   </motion.button>
+                ))}
+              </div>
+
+              <div className="mt-8 flex justify-end">
+                <motion.button
+                  onClick={handleNext}
+                  disabled={!selectedCategory}
+                  whileHover={{ scale: !selectedCategory ? 1 : 1.02 }}
+                  whileTap={{ scale: !selectedCategory ? 1 : 0.98 }}
+                  className="inline-flex items-center px-8 py-4 bg-[#339999] text-white text-lg font-semibold rounded-xl hover:bg-[#2d8b8b] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                >
+                  Next: Select Subcategory
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        </motion.section>
+      )}
+
+      {/* Step 2: Subcategory */}
+      {step === 2 && category && (
+        <motion.section 
+          className="py-12"
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={staggerContainer}
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div className="bg-white rounded-2xl shadow-xl p-8" variants={fadeInUp}>
+              <div className="flex items-center mb-6">
+                <button onClick={handleBack} className="text-gray-500 hover:text-gray-700 mr-4">
+                  ← Back
+                </button>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Select Subcategory
+                  </h2>
+                  <p className="text-gray-600">Choose the specific type of {category.name}</p>
                 </div>
-              </form>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {category.subcategories?.map((sub) => (
+                  <motion.button
+                    key={sub.id}
+                    type="button"
+                    onClick={() => setSelectedSubcategory(sub.id)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`p-6 rounded-xl border-2 text-left transition-all ${
+                      selectedSubcategory === sub.id
+                        ? 'border-[#339999] bg-[#339999]/5 shadow-md'
+                        : 'border-gray-200 hover:border-[#339999]/50'
+                    }`}
+                  >
+                    <div className="flex items-center mb-2">
+                      <Package className="w-6 h-6 text-[#339999] mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-900">{sub.name}</div>
+                        <div className="text-sm text-gray-500">{sub.name_zh}</div>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600">{sub.description}</p>
+                  </motion.button>
+                ))}
+              </div>
+
+              <div className="mt-8 flex justify-between">
+                <motion.button
+                  onClick={handleBack}
+                  className="inline-flex items-center px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  Back
+                </motion.button>
+                <motion.button
+                  onClick={handleNext}
+                  disabled={!selectedSubcategory}
+                  whileHover={{ scale: !selectedSubcategory ? 1 : 1.02 }}
+                  whileTap={{ scale: !selectedSubcategory ? 1 : 0.98 }}
+                  className="inline-flex items-center px-8 py-4 bg-[#339999] text-white text-lg font-semibold rounded-xl hover:bg-[#2d8b8b] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                >
+                  Next: Select Market
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        </motion.section>
+      )}
+
+      {/* Step 3: Target Market */}
+      {step === 3 && (
+        <motion.section 
+          className="py-12"
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={staggerContainer}
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div className="bg-white rounded-2xl shadow-xl p-8" variants={fadeInUp}>
+              <div className="flex items-center mb-6">
+                <button onClick={handleBack} className="text-gray-500 hover:text-gray-700 mr-4">
+                  ← Back
+                </button>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Select Target Market
+                  </h2>
+                  <p className="text-gray-600">Choose your destination market for compliance analysis</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {markets.map((m) => (
+                  <motion.button
+                    key={m.code}
+                    type="button"
+                    onClick={() => setSelectedMarket(m.code)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`p-6 rounded-xl border-2 text-left transition-all ${
+                      selectedMarket === m.code
+                        ? 'border-[#339999] bg-[#339999]/5 shadow-md'
+                        : 'border-gray-200 hover:border-[#339999]/50'
+                    }`}
+                  >
+                    <div className="flex items-center mb-3">
+                      <div className="text-4xl mr-4">{m.flag_emoji}</div>
+                      <div>
+                        <div className="font-semibold text-gray-900">{m.name}</div>
+                        <div className="text-sm text-gray-500">{m.name_zh}</div>
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      <div className="font-medium">{m.regulation_name}</div>
+                      <div className="text-gray-400">{m.authority}</div>
+                    </div>
+                  </motion.button>
+                ))}
+              </div>
+
+              <div className="mt-8 flex justify-between">
+                <motion.button
+                  onClick={handleBack}
+                  className="inline-flex items-center px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  Back
+                </motion.button>
+                <motion.button
+                  onClick={handleNext}
+                  disabled={!selectedMarket}
+                  whileHover={{ scale: !selectedMarket ? 1 : 1.02 }}
+                  whileTap={{ scale: !selectedMarket ? 1 : 0.98 }}
+                  className="inline-flex items-center px-8 py-4 bg-[#339999] text-white text-lg font-semibold rounded-xl hover:bg-[#2d8b8b] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                >
+                  Next: Product Features
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        </motion.section>
+      )}
+
+      {/* Step 4: Product Features */}
+      {step === 4 && category && (
+        <motion.section 
+          className="py-12"
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={staggerContainer}
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div className="bg-white rounded-2xl shadow-xl p-8" variants={fadeInUp}>
+              <div className="flex items-center mb-6">
+                <button onClick={handleBack} className="text-gray-500 hover:text-gray-700 mr-4">
+                  ← Back
+                </button>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Product Features
+                  </h2>
+                  <p className="text-gray-600">Specify your product characteristics for accurate compliance analysis</p>
+                </div>
+              </div>
+              
+              <div className="space-y-8">
+                {/* Material */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <Settings className="w-4 h-4 inline mr-2" />
+                    Material
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    {category.product_features?.materials.map((material) => (
+                      <motion.button
+                        key={material}
+                        type="button"
+                        onClick={() => setSelectedFeatures(prev => ({ ...prev, material }))}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={`px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all ${
+                          selectedFeatures.material === material
+                            ? 'border-[#339999] bg-[#339999]/10 text-[#339999]'
+                            : 'border-gray-200 text-gray-600 hover:border-[#339999]/50'
+                        }`}
+                      >
+                        {material}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Protection Level */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <Shield className="w-4 h-4 inline mr-2" />
+                    Protection Level
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    {category.product_features?.protection_levels.map((level) => (
+                      <motion.button
+                        key={level}
+                        type="button"
+                        onClick={() => setSelectedFeatures(prev => ({ ...prev, protectionLevel: level }))}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={`px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all ${
+                          selectedFeatures.protectionLevel === level
+                            ? 'border-[#339999] bg-[#339999]/10 text-[#339999]'
+                            : 'border-gray-200 text-gray-600 hover:border-[#339999]/50'
+                        }`}
+                      >
+                        {level}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Intended Use */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <Package className="w-4 h-4 inline mr-2" />
+                    Intended Use
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    {category.product_features?.intended_uses.map((use) => (
+                      <motion.button
+                        key={use}
+                        type="button"
+                        onClick={() => setSelectedFeatures(prev => ({ ...prev, intendedUse: use }))}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={`px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all ${
+                          selectedFeatures.intendedUse === use
+                            ? 'border-[#339999] bg-[#339999]/10 text-[#339999]'
+                            : 'border-gray-200 text-gray-600 hover:border-[#339999]/50'
+                        }`}
+                      >
+                        {use}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 flex justify-between">
+                <motion.button
+                  onClick={handleBack}
+                  className="inline-flex items-center px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  Back
+                </motion.button>
+                <motion.button
+                  onClick={handleNext}
+                  disabled={!selectedFeatures.material || !selectedFeatures.protectionLevel || !selectedFeatures.intendedUse}
+                  whileHover={{ scale: (!selectedFeatures.material || !selectedFeatures.protectionLevel || !selectedFeatures.intendedUse) ? 1 : 1.02 }}
+                  whileTap={{ scale: (!selectedFeatures.material || !selectedFeatures.protectionLevel || !selectedFeatures.intendedUse) ? 1 : 0.98 }}
+                  className="inline-flex items-center px-8 py-4 bg-[#339999] text-white text-lg font-semibold rounded-xl hover:bg-[#2d8b8b] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                >
+                  <Sparkles className="mr-2 w-5 h-5" />
+                  Generate Report
+                </motion.button>
+              </div>
             </motion.div>
           </div>
         </motion.section>
@@ -207,7 +516,7 @@ export default function MarketAccessPage() {
               className="mb-6 text-[#339999] hover:text-[#2d8b8b] font-medium inline-flex items-center"
               whileHover={{ x: -5 }}
             >
-              ← Back to Selection
+              ← Start New Analysis
             </motion.button>
 
             {/* Report Header */}
@@ -215,12 +524,18 @@ export default function MarketAccessPage() {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                    Market Access Report
+                    Compliance Analysis Report
                   </h2>
                   <p className="text-lg text-gray-600 flex items-center">
                     {category && <PPEIcon categoryId={category.id} size={28} className="mr-3" />}
                     {category?.name} → {market?.flag_emoji} {market?.name}
                   </p>
+                  <div className="mt-2 text-sm text-gray-500">
+                    Subcategory: {category?.subcategories?.find(s => s.id === selectedSubcategory)?.name} | 
+                    Material: {selectedFeatures.material} | 
+                    Level: {selectedFeatures.protectionLevel} | 
+                    Use: {selectedFeatures.intendedUse}
+                  </div>
                 </div>
                 <div className="text-right">
                   <div className="text-sm text-gray-600 mb-2">Risk Classification</div>
@@ -231,7 +546,7 @@ export default function MarketAccessPage() {
               </div>
 
               {/* Quick Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <motion.div 
                   className="bg-[#339999]/5 rounded-xl p-6 hover:bg-[#339999]/10 transition-colors"
                   whileHover={{ y: -5 }}
@@ -270,7 +585,141 @@ export default function MarketAccessPage() {
                     {complianceData.standards.length + complianceData.customs_documents.length}
                   </div>
                 </motion.div>
+
+                <motion.div 
+                  className="bg-[#339999]/5 rounded-xl p-6 hover:bg-[#339999]/10 transition-colors"
+                  whileHover={{ y: -5 }}
+                >
+                  <div className="flex items-center mb-3">
+                    <BarChart3 className="w-6 h-6 text-[#339999] mr-3" />
+                    <div className="text-sm font-semibold text-gray-700">Compliance Score</div>
+                  </div>
+                  <div className="text-2xl font-bold text-gray-900">
+                    85/100
+                  </div>
+                </motion.div>
               </div>
+            </motion.div>
+
+            {/* Product Features Analysis */}
+            <motion.div 
+              className="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden" 
+              variants={fadeInUp}
+            >
+              <button
+                onClick={() => toggleSection('features')}
+                className="w-full px-8 py-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center">
+                  <Settings className="w-6 h-6 text-[#339999] mr-3" />
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    Product Feature Analysis
+                  </h3>
+                </div>
+                {expandedSections.features ? (
+                  <ChevronUp className="w-6 h-6 text-gray-500" />
+                ) : (
+                  <ChevronDown className="w-6 h-6 text-gray-500" />
+                )}
+              </button>
+              {expandedSections.features && (
+                <div className="px-8 pb-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-[#339999]/5 rounded-xl p-6">
+                      <div className="text-sm font-semibold text-gray-700 mb-2">Material</div>
+                      <div className="text-lg font-bold text-gray-900">{selectedFeatures.material}</div>
+                      <div className="text-sm text-gray-500 mt-2">
+                        Suitable for {selectedFeatures.intendedUse.toLowerCase()} applications
+                      </div>
+                    </div>
+                    <div className="bg-[#339999]/5 rounded-xl p-6">
+                      <div className="text-sm font-semibold text-gray-700 mb-2">Protection Level</div>
+                      <div className="text-lg font-bold text-gray-900">{selectedFeatures.protectionLevel}</div>
+                      <div className="text-sm text-gray-500 mt-2">
+                        Meets {market?.name} regulatory requirements
+                      </div>
+                    </div>
+                    <div className="bg-[#339999]/5 rounded-xl p-6">
+                      <div className="text-sm font-semibold text-gray-700 mb-2">Intended Use</div>
+                      <div className="text-lg font-bold text-gray-900">{selectedFeatures.intendedUse}</div>
+                      <div className="text-sm text-gray-500 mt-2">
+                        Classification: {complianceData.classification}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+
+            {/* Cost Breakdown */}
+            <motion.div 
+              className="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden" 
+              variants={fadeInUp}
+            >
+              <button
+                onClick={() => toggleSection('costBreakdown')}
+                className="w-full px-8 py-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center">
+                  <Calculator className="w-6 h-6 text-[#339999] mr-3" />
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    Cost Breakdown
+                  </h3>
+                </div>
+                {expandedSections.costBreakdown ? (
+                  <ChevronUp className="w-6 h-6 text-gray-500" />
+                ) : (
+                  <ChevronDown className="w-6 h-6 text-gray-500" />
+                )}
+              </button>
+              {expandedSections.costBreakdown && (
+                <div className="px-8 pb-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                      <div className="flex items-center">
+                        <FileText className="w-5 h-5 text-[#339999] mr-3" />
+                        <span className="text-gray-700">Testing & Certification</span>
+                      </div>
+                      <span className="font-semibold text-gray-900">
+                        ${Math.round(complianceData.estimated_cost.min * 0.4).toLocaleString()} - ${Math.round(complianceData.estimated_cost.max * 0.5).toLocaleString()}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                      <div className="flex items-center">
+                        <Shield className="w-5 h-5 text-[#339999] mr-3" />
+                        <span className="text-gray-700">Notified Body / Authority Fees</span>
+                      </div>
+                      <span className="font-semibold text-gray-900">
+                        ${Math.round(complianceData.estimated_cost.min * 0.2).toLocaleString()} - ${Math.round(complianceData.estimated_cost.max * 0.25).toLocaleString()}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                      <div className="flex items-center">
+                        <TrendingUp className="w-5 h-5 text-[#339999] mr-3" />
+                        <span className="text-gray-700">Technical Documentation</span>
+                      </div>
+                      <span className="font-semibold text-gray-900">
+                        ${Math.round(complianceData.estimated_cost.min * 0.15).toLocaleString()} - ${Math.round(complianceData.estimated_cost.max * 0.15).toLocaleString()}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                      <div className="flex items-center">
+                        <Clock className="w-5 h-5 text-[#339999] mr-3" />
+                        <span className="text-gray-700">Consulting & Other</span>
+                      </div>
+                      <span className="font-semibold text-gray-900">
+                        ${Math.round(complianceData.estimated_cost.min * 0.25).toLocaleString()} - ${Math.round(complianceData.estimated_cost.max * 0.1).toLocaleString()}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-[#339999]/10 rounded-xl border-2 border-[#339999]">
+                      <span className="font-bold text-gray-900">Total Estimated Cost</span>
+                      <span className="font-bold text-[#339999] text-xl">
+                        ${complianceData.estimated_cost.min.toLocaleString()} - ${complianceData.estimated_cost.max.toLocaleString()} {complianceData.estimated_cost.currency}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </motion.div>
 
             {/* Certification Requirements */}

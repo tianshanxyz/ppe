@@ -5,18 +5,19 @@ import {
   FileText,
   Download,
   Search,
-  Filter,
   FileSpreadsheet,
   FileCheck,
-  FileCode,
   BookOpen,
   Shield,
-  Globe,
-  Building2,
   ClipboardList,
-  CheckCircle,
   Clock,
-  X
+  X,
+  Eye,
+  CheckCircle,
+  AlertCircle,
+  ChevronDown,
+  ChevronUp,
+  Lightbulb
 } from 'lucide-react'
 import { Button } from '@/components/ui'
 
@@ -29,6 +30,143 @@ const CATEGORIES = [
   { id: 'regulations', name: 'Regulations', icon: Shield },
   { id: 'standards', name: 'Standards', icon: FileCheck },
 ]
+
+// 填写指南数据
+const FILLING_GUIDES: Record<string, {
+  title: string;
+  sections: Array<{
+    heading: string;
+    content: string;
+    tips: string[];
+    required: boolean;
+  }>;
+}> = {
+  'ce-technical-file': {
+    title: 'CE Technical File Filling Guide',
+    sections: [
+      {
+        heading: '1. Product Description',
+        content: 'Provide a complete description of the PPE product including intended use, target users, and product variants.',
+        tips: [
+          'Include all product variants and accessories',
+          'Specify the protection level and performance characteristics',
+          'Attach product photos and technical drawings'
+        ],
+        required: true
+      },
+      {
+        heading: '2. Risk Assessment (ISO 14971)',
+        content: 'Document all identified risks, risk analysis, and risk control measures implemented.',
+        tips: [
+          'Cover all foreseeable hazards for intended use',
+          'Include risk-benefit analysis',
+          'Document residual risks after controls'
+        ],
+        required: true
+      },
+      {
+        heading: '3. Essential Requirements Checklist',
+        content: 'Demonstrate compliance with all applicable essential requirements of EU 2016/425.',
+        tips: [
+          'Reference each ER from Annex II',
+          'Provide justification for non-applicable ERs',
+          'Link to supporting documentation'
+        ],
+        required: true
+      },
+      {
+        heading: '4. Test Reports',
+        content: 'Include all test reports from accredited laboratories demonstrating compliance with harmonized standards.',
+        tips: [
+          'Ensure lab is ISO 17025 accredited',
+          'Tests must cover all claimed performance levels',
+          'Include raw test data where required'
+        ],
+        required: true
+      },
+      {
+        heading: '5. Quality Assurance',
+        content: 'Describe the quality management system and production control procedures.',
+        tips: [
+          'Reference ISO 9001 or ISO 13485 certification if applicable',
+          'Include production process flow chart',
+          'Document incoming material inspection procedures'
+        ],
+        required: true
+      }
+    ]
+  },
+  'ce-risk-assessment': {
+    title: 'Risk Assessment Template Filling Guide',
+    sections: [
+      {
+        heading: '1. Hazard Identification',
+        content: 'List all potential hazards associated with the product throughout its lifecycle.',
+        tips: [
+          'Consider hazards during normal use, foreseeable misuse, and disposal',
+          'Include chemical, biological, mechanical, and thermal hazards',
+          'Use structured methods like FMEA or HAZOP'
+        ],
+        required: true
+      },
+      {
+        heading: '2. Risk Estimation',
+        content: 'Estimate the probability and severity of each identified hazard.',
+        tips: [
+          'Use quantitative or semi-quantitative scales',
+          'Consider worst-case scenarios',
+          'Document the rationale for probability assignments'
+        ],
+        required: true
+      },
+      {
+        heading: '3. Risk Control Measures',
+        content: 'Document all risk control measures implemented following the hierarchy of controls.',
+        tips: [
+          'Prioritize inherent safety design over protective measures',
+          'Include warnings and instructions as last resort',
+          'Verify each control measure is effective'
+        ],
+        required: true
+      }
+    ]
+  },
+  'fda-510k-cover': {
+    title: 'FDA 510(k) Cover Letter Guide',
+    sections: [
+      {
+        heading: '1. Device Identification',
+        content: 'Provide clear identification of the device including trade name, model numbers, and classification.',
+        tips: [
+          'Include all model numbers and variants',
+          'Reference the correct FDA product code',
+          'Specify the regulation number (21 CFR)'
+        ],
+        required: true
+      },
+      {
+        heading: '2. Predicate Device',
+        content: 'Identify the legally marketed predicate device to which substantial equivalence is claimed.',
+        tips: [
+          'Use FDA 510(k) number or K-number',
+          'Ensure predicate is legally marketed',
+          'Document similarities and differences'
+        ],
+        required: true
+      },
+      {
+        heading: '3. Indications for Use',
+        content: 'Clearly state the intended use and indications for use of the device.',
+        tips: [
+          'Match predicate device indications as closely as possible',
+          'Be specific about patient population',
+          'Avoid overly broad claims'
+        ],
+        required: true
+      }
+    ]
+  }
+}
 
 // 文档数据
 const DOCUMENTS = [
@@ -44,7 +182,9 @@ const DOCUMENTS = [
     downloads: 1234,
     updatedAt: '2026-04-15',
     tags: ['CE Marking', 'Technical File', 'EU'],
-    icon: FileSpreadsheet
+    icon: FileSpreadsheet,
+    hasGuide: true,
+    guideSections: 5
   },
   {
     id: 'ce-risk-assessment',
@@ -57,7 +197,9 @@ const DOCUMENTS = [
     downloads: 987,
     updatedAt: '2026-04-10',
     tags: ['Risk Management', 'ISO 14971', 'CE Marking'],
-    icon: FileSpreadsheet
+    icon: FileSpreadsheet,
+    hasGuide: true,
+    guideSections: 3
   },
   {
     id: 'ce-doc',
@@ -70,7 +212,8 @@ const DOCUMENTS = [
     downloads: 2156,
     updatedAt: '2026-04-01',
     tags: ['CE Marking', 'DoC', 'Compliance'],
-    icon: FileCheck
+    icon: FileCheck,
+    hasGuide: false
   },
   {
     id: 'ce-test-report',
@@ -83,7 +226,8 @@ const DOCUMENTS = [
     downloads: 876,
     updatedAt: '2026-03-20',
     tags: ['Testing', 'CE Marking', 'Documentation'],
-    icon: FileText
+    icon: FileText,
+    hasGuide: false
   },
   // FDA Templates
   {
@@ -97,7 +241,9 @@ const DOCUMENTS = [
     downloads: 1543,
     updatedAt: '2026-04-12',
     tags: ['FDA', '510(k)', 'Submission'],
-    icon: FileText
+    icon: FileText,
+    hasGuide: true,
+    guideSections: 3
   },
   {
     id: 'fda-substantial-equiv',
@@ -110,7 +256,8 @@ const DOCUMENTS = [
     downloads: 1123,
     updatedAt: '2026-04-08',
     tags: ['FDA', '510(k)', 'Predicate'],
-    icon: FileCheck
+    icon: FileCheck,
+    hasGuide: false
   },
   {
     id: 'fda-device-desc',
@@ -123,7 +270,8 @@ const DOCUMENTS = [
     downloads: 987,
     updatedAt: '2026-03-25',
     tags: ['FDA', 'Documentation', 'Device'],
-    icon: FileText
+    icon: FileText,
+    hasGuide: false
   },
   {
     id: 'fda-labeling',
@@ -136,7 +284,8 @@ const DOCUMENTS = [
     downloads: 1432,
     updatedAt: '2026-04-05',
     tags: ['FDA', 'Labeling', 'IFU'],
-    icon: FileText
+    icon: FileText,
+    hasGuide: false
   },
   // NMPA Templates
   {
@@ -150,7 +299,8 @@ const DOCUMENTS = [
     downloads: 654,
     updatedAt: '2026-04-10',
     tags: ['NMPA', 'China', 'Registration'],
-    icon: FileSpreadsheet
+    icon: FileSpreadsheet,
+    hasGuide: false
   },
   {
     id: 'nmpa-technical',
@@ -163,7 +313,8 @@ const DOCUMENTS = [
     downloads: 543,
     updatedAt: '2026-03-28',
     tags: ['NMPA', 'Technical', 'China'],
-    icon: FileText
+    icon: FileText,
+    hasGuide: false
   },
   {
     id: 'nmpa-clinical',
@@ -176,7 +327,8 @@ const DOCUMENTS = [
     downloads: 432,
     updatedAt: '2026-04-02',
     tags: ['NMPA', 'Clinical', 'CER'],
-    icon: FileCheck
+    icon: FileCheck,
+    hasGuide: false
   },
   // Checklists
   {
@@ -190,7 +342,8 @@ const DOCUMENTS = [
     downloads: 2345,
     updatedAt: '2026-04-18',
     tags: ['CE Marking', 'Checklist', 'Compliance'],
-    icon: ClipboardList
+    icon: ClipboardList,
+    hasGuide: false
   },
   {
     id: 'fda-510k-checklist',
@@ -203,7 +356,8 @@ const DOCUMENTS = [
     downloads: 1876,
     updatedAt: '2026-04-15',
     tags: ['FDA', '510(k)', 'Checklist'],
-    icon: ClipboardList
+    icon: ClipboardList,
+    hasGuide: false
   },
   {
     id: 'iso-13485-checklist',
@@ -216,7 +370,8 @@ const DOCUMENTS = [
     downloads: 1654,
     updatedAt: '2026-04-12',
     tags: ['ISO 13485', 'QMS', 'Audit'],
-    icon: ClipboardList
+    icon: ClipboardList,
+    hasGuide: false
   },
   // Guides
   {
@@ -230,7 +385,8 @@ const DOCUMENTS = [
     downloads: 3456,
     updatedAt: '2026-04-20',
     tags: ['CE Marking', 'Guide', 'EU'],
-    icon: BookOpen
+    icon: BookOpen,
+    hasGuide: false
   },
   {
     id: 'fda-guide-pdf',
@@ -243,7 +399,8 @@ const DOCUMENTS = [
     downloads: 2890,
     updatedAt: '2026-04-18',
     tags: ['FDA', '510(k)', 'Guide'],
-    icon: BookOpen
+    icon: BookOpen,
+    hasGuide: false
   },
   {
     id: 'biocompatibility-guide',
@@ -256,7 +413,8 @@ const DOCUMENTS = [
     downloads: 1234,
     updatedAt: '2026-04-10',
     tags: ['Biocompatibility', 'ISO 10993', 'Testing'],
-    icon: BookOpen
+    icon: BookOpen,
+    hasGuide: false
   },
   // Regulations
   {
@@ -270,7 +428,8 @@ const DOCUMENTS = [
     downloads: 4567,
     updatedAt: '2026-01-01',
     tags: ['Regulation', 'EU', 'PPE'],
-    icon: Shield
+    icon: Shield,
+    hasGuide: false
   },
   {
     id: 'fda-act',
@@ -283,7 +442,8 @@ const DOCUMENTS = [
     downloads: 2345,
     updatedAt: '2026-01-01',
     tags: ['FDA', 'Regulation', 'US'],
-    icon: Shield
+    icon: Shield,
+    hasGuide: false
   },
   {
     id: 'china-regulation',
@@ -296,7 +456,8 @@ const DOCUMENTS = [
     downloads: 876,
     updatedAt: '2026-01-01',
     tags: ['NMPA', 'Regulation', 'China'],
-    icon: Shield
+    icon: Shield,
+    hasGuide: false
   },
   // Standards
   {
@@ -310,7 +471,8 @@ const DOCUMENTS = [
     downloads: 5678,
     updatedAt: '2026-01-01',
     tags: ['Standard', 'EN', 'Respiratory'],
-    icon: FileCheck
+    icon: FileCheck,
+    hasGuide: false
   },
   {
     id: 'en-14683',
@@ -323,7 +485,8 @@ const DOCUMENTS = [
     downloads: 4321,
     updatedAt: '2026-01-01',
     tags: ['Standard', 'EN', 'Masks'],
-    icon: FileCheck
+    icon: FileCheck,
+    hasGuide: false
   },
   {
     id: 'astm-f2100',
@@ -336,7 +499,8 @@ const DOCUMENTS = [
     downloads: 3456,
     updatedAt: '2026-01-01',
     tags: ['Standard', 'ASTM', 'Masks'],
-    icon: FileCheck
+    icon: FileCheck,
+    hasGuide: false
   },
   {
     id: 'iso-13485',
@@ -349,7 +513,8 @@ const DOCUMENTS = [
     downloads: 6789,
     updatedAt: '2026-01-01',
     tags: ['Standard', 'ISO', 'QMS'],
-    icon: FileCheck
+    icon: FileCheck,
+    hasGuide: false
   }
 ]
 
@@ -357,6 +522,8 @@ export default function DocumentsPage() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedMarket, setSelectedMarket] = useState<string | null>(null)
+  const [selectedDoc, setSelectedDoc] = useState<string | null>(null)
+  const [expandedGuideSections, setExpandedGuideSections] = useState<Record<number, boolean>>({})
 
   // 过滤文档
   const filteredDocuments = DOCUMENTS.filter(doc => {
@@ -371,8 +538,14 @@ export default function DocumentsPage() {
   })
 
   const handleDownload = (docId: string, docTitle: string) => {
-    // 模拟下载功能
     alert(`Downloading: ${docTitle}\n\nNote: This is a demo. In production, this would download the actual document.`)
+  }
+
+  const toggleGuideSection = (index: number) => {
+    setExpandedGuideSections(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }))
   }
 
   const getFormatIcon = (format: string) => {
@@ -395,6 +568,103 @@ export default function DocumentsPage() {
       case 'CN': return '🇨🇳'
       default: return '🌍'
     }
+  }
+
+  // 显示填写指南
+  if (selectedDoc) {
+    const guide = FILLING_GUIDES[selectedDoc]
+    if (!guide) return null
+
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <button
+            onClick={() => {
+              setSelectedDoc(null)
+              setExpandedGuideSections({})
+            }}
+            className="mb-6 text-[#339999] hover:text-[#2d8b8b] font-medium inline-flex items-center"
+          >
+            ← Back to Documents
+          </button>
+
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-[#339999]/10 rounded-xl flex items-center justify-center mr-4">
+                <Lightbulb className="w-6 h-6 text-[#339999]" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">{guide.title}</h1>
+                <p className="text-gray-600 mt-1">Step-by-step instructions for completing this template</p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              {guide.sections.map((section, index) => (
+                <div key={index} className="border border-gray-200 rounded-xl overflow-hidden">
+                  <button
+                    onClick={() => toggleGuideSection(index)}
+                    className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center">
+                      {section.required ? (
+                        <CheckCircle className="w-5 h-5 text-red-500 mr-3" />
+                      ) : (
+                        <CheckCircle className="w-5 h-5 text-gray-300 mr-3" />
+                      )}
+                      <span className="font-semibold text-gray-900">{section.heading}</span>
+                      {section.required && (
+                        <span className="ml-2 px-2 py-0.5 bg-red-100 text-red-600 text-xs rounded-full">
+                          Required
+                        </span>
+                      )}
+                    </div>
+                    {expandedGuideSections[index] ? (
+                      <ChevronUp className="w-5 h-5 text-gray-500" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-gray-500" />
+                    )}
+                  </button>
+                  
+                  {expandedGuideSections[index] && (
+                    <div className="px-6 pb-6">
+                      <p className="text-gray-700 mb-4">{section.content}</p>
+                      <div className="bg-[#339999]/5 rounded-lg p-4">
+                        <div className="flex items-center mb-3">
+                          <Lightbulb className="w-4 h-4 text-[#339999] mr-2" />
+                          <span className="font-semibold text-gray-900 text-sm">Tips & Best Practices</span>
+                        </div>
+                        <ul className="space-y-2">
+                          {section.tips.map((tip, tipIndex) => (
+                            <li key={tipIndex} className="flex items-start text-sm text-gray-600">
+                              <span className="w-1.5 h-1.5 bg-[#339999] rounded-full mr-2 mt-1.5 flex-shrink-0" />
+                              {tip}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 p-4 bg-orange-50 rounded-xl border border-orange-200">
+              <div className="flex items-start">
+                <AlertCircle className="w-5 h-5 text-orange-500 mr-3 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Important Notice</h4>
+                  <p className="text-sm text-gray-600">
+                    This guide provides general instructions. Always consult with a qualified regulatory 
+                    expert and refer to the latest official regulations for your specific product and target market.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -548,14 +818,25 @@ export default function DocumentsPage() {
                     </span>
                   </div>
 
-                  {/* Download Button */}
-                  <button
-                    onClick={() => handleDownload(doc.id, doc.title)}
-                    className="w-full py-2.5 bg-[#339999] text-white font-medium rounded-lg hover:bg-[#2d8b8b] transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Download className="w-4 h-4" />
-                    Download
-                  </button>
+                  {/* Action Buttons */}
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => handleDownload(doc.id, doc.title)}
+                      className="w-full py-2.5 bg-[#339999] text-white font-medium rounded-lg hover:bg-[#2d8b8b] transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download
+                    </button>
+                    {doc.hasGuide && (
+                      <button
+                        onClick={() => setSelectedDoc(doc.id)}
+                        className="w-full py-2.5 border-2 border-[#339999] text-[#339999] font-medium rounded-lg hover:bg-[#339999]/5 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Eye className="w-4 h-4" />
+                        Filling Guide ({doc.guideSections} sections)
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             )
