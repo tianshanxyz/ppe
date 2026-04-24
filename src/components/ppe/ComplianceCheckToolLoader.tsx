@@ -1,19 +1,23 @@
 'use client'
 
-import dynamic from 'next/dynamic'
+import { Suspense, lazy } from 'react'
 
-const ComplianceCheckTool = dynamic(
-  () => import('@/components/ppe/ComplianceCheckTool').then(mod => mod.ComplianceCheckTool),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-96 flex items-center justify-center">
-        <div className="animate-pulse text-[#339999]">Loading compliance tool...</div>
-      </div>
-    ),
-  }
+const ComplianceCheckTool = lazy(() => 
+  import('@/components/ppe/ComplianceCheckTool').then(mod => ({ default: mod.ComplianceCheckTool }))
 )
 
+function LoadingFallback() {
+  return (
+    <div className="h-96 flex items-center justify-center">
+      <div className="animate-pulse text-[#339999]">Loading compliance tool...</div>
+    </div>
+  )
+}
+
 export function ComplianceCheckToolLoader() {
-  return <ComplianceCheckTool />
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ComplianceCheckTool />
+    </Suspense>
+  )
 }
