@@ -286,8 +286,7 @@ async function getFallbackSearchResult(request: NextRequest) {
     //   .limit(limit)
     //   .select('*', { count: 'exact' })
 
-    // 模拟本地数据
-    const mockData = Array(Math.min(limit, 5)).fill(0).map((_, index) => ({
+    const fallbackData = Array(Math.min(limit, 5)).fill(0).map((_, index) => ({
       id: `local-${Date.now()}-${index}`,
       name: `Local Device ${index + 1}`,
       type: 'Medical Device',
@@ -301,11 +300,11 @@ async function getFallbackSearchResult(request: NextRequest) {
     }))
 
     return {
-      data: mockData,
+      data: fallbackData,
       pagination: {
         total: 5,
         page: 1,
-        limit: mockData.length,
+        limit: fallbackData.length,
         totalPages: 1
       }
     }
