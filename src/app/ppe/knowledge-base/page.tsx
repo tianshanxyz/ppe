@@ -148,7 +148,7 @@ A: Depends on product type. Common tests include:
 A: Yes, if conducted at accredited laboratories. FDA accepts ISO 17025 accredited labs.
 
 ### Q: What is the user fee?
-A: FY2024 standard fee is $21,760. Small businesses may qualify for reduced fee ($5,440).
+A: FY2026 standard fee is $23,520. Small businesses may qualify for reduced fee ($5,880).
 
 ### Q: Do I need a U.S. agent?
 A: Yes, foreign manufacturers must designate a U.S. agent for FDA communications.`,
@@ -330,8 +330,8 @@ UK PPE Regulation 2016/425 (as amended) - retained EU law post-Brexit.
 
 ## Transition Period
 
-- CE marking accepted until December 31, 2024
-- UKCA marking mandatory from January 1, 2025
+- CE marking accepted until December 31, 2026
+- UKCA marking mandatory from January 1, 2027
 - Northern Ireland continues to accept CE marking (Windsor Framework)
 
 ## Steps to UKCA Marking

@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
-import { Search, Filter, Package, TrendingUp, BarChart3, Download, ExternalLink, CheckCircle2 } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { Search, Filter, Package, TrendingUp, BarChart3, Download, ExternalLink, CheckCircle2, AlertCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { getPPEProductsClient, getPPEProductStats, getPPECategories, getPPECountries } from '@/lib/ppe-database-client'
@@ -27,6 +27,7 @@ export default function ProductsPage() {
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
   
   // 筛选状态
   const [searchQuery, setSearchQuery] = useState('')
@@ -38,13 +39,33 @@ export default function ProductsPage() {
   
   const limit = 20
 
-  // 加载数据
+  // 加载筛选选项（只在组件挂载时加载一次）
   useEffect(() => {
-    loadData()
+    loadFilterOptions()
+  }, [])
+
+  // 加载产品数据（当筛选条件或分页变化时）
+  useEffect(() => {
+    loadProducts()
   }, [page, selectedCountry, selectedCategory, selectedPPECategory])
 
-  async function loadData() {
+  async function loadFilterOptions() {
+    try {
+      const [countriesList, categoriesList] = await Promise.all([
+        getPPECountries(),
+        getPPECategories()
+      ])
+      setCountries(countriesList)
+      setCategories(categoriesList)
+    } catch (err) {
+      console.error('Failed to load filter options:', err)
+      // 使用默认数据，不显示错误
+    }
+  }
+
+  async function loadProducts() {
     setLoading(true)
+    setError(null)
     
     try {
       // 加载产品列表
@@ -66,15 +87,9 @@ export default function ProductsPage() {
       // 加载统计数据
       const statsData = await getPPEProductStats()
       setStats(statsData)
-      
-      // 加载筛选选项
-      const countriesList = await getPPECountries()
-      setCountries(countriesList)
-      
-      const categoriesList = await getPPECategories()
-      setCategories(categoriesList)
-    } catch (error) {
-      console.error('加载数据失败:', error)
+    } catch (err) {
+      console.error('Failed to load products:', err)
+      setError('Failed to load products. Please try again later.')
     } finally {
       setLoading(false)
     }
@@ -83,7 +98,14 @@ export default function ProductsPage() {
   // 处理搜索
   const handleSearch = () => {
     setPage(1)
-    loadData()
+    loadProducts()
+  }
+
+  // 处理回车键搜索
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
   }
 
   // 计算分页
@@ -256,19 +278,39 @@ export default function ProductsPage() {
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                      onKeyDown={handleKeyPress}
                       placeholder="Search products by name, code, or manufacturer..."
                       className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     />
                   </div>
                   <button
                     onClick={handleSearch}
-                    className="px-8 py-3 bg-gradient-to-r from-[#339999] to-[#2d8b8b] text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+                    disabled={loading}
+                    className="px-8 py-3 bg-gradient-to-r from-[#339999] to-[#2d8b8b] text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Search
+                    {loading ? 'Searching...' : 'Search'}
                   </button>
                 </div>
               </div>
+
+              {/* Error State */}
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
+                  <div className="flex items-center gap-3">
+                    <AlertCircle className="w-6 h-6 text-red-500" />
+                    <div>
+                      <h3 className="font-semibold text-red-800">Error Loading Products</h3>
+                      <p className="text-red-600 text-sm">{error}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={loadProducts}
+                    className="mt-4 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              )}
 
               {/* Loading State */}
               {loading && (

@@ -8,6 +8,7 @@ import { Footer } from '@/components/layouts/Footer'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { Loader2 } from 'lucide-react'
 import { validateAndLog } from '@/lib/config/env-validator'
+import { LanguageProvider } from '@/lib/i18n/LanguageContext'
 
 export const metadata: Metadata = {
   title: 'MDLooker - Global PPE Compliance Platform',
@@ -70,21 +71,23 @@ export default function RootLayout({
         <meta name="theme-color" content="#2563eb" />
       </head>
       <body>
-        <MarketProvider>
-          <Header />
-          <main className="min-h-screen">
-            <ErrorBoundary>
-              <Suspense fallback={
-                <div className="flex items-center justify-center min-h-screen">
-                  <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
-                </div>
-              }>
-                {children}
-              </Suspense>
-            </ErrorBoundary>
-          </main>
-          <Footer />
-        </MarketProvider>
+        <LanguageProvider>
+          <MarketProvider>
+            <Header />
+            <main className="min-h-screen">
+              <ErrorBoundary>
+                <Suspense fallback={
+                  <div className="flex items-center justify-center min-h-screen">
+                    <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
+                  </div>
+                }>
+                  {children}
+                </Suspense>
+              </ErrorBoundary>
+            </main>
+            <Footer />
+          </MarketProvider>
+        </LanguageProvider>
       </body>
     </html>
   )

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui';
-import { Menu, X, User, ShieldCheck, Globe } from 'lucide-react';
+import { Menu, X, User, Globe } from 'lucide-react';
 
 const languages = [
   { code: 'en', label: 'EN' },
@@ -18,11 +18,6 @@ export function Header() {
   const [currentLang, setCurrentLang] = useState('en');
   const [showLangMenu, setShowLangMenu] = useState(false);
 
-  // 在 PPE 路由下不显示此 Header（PPE 有自己的 PPENavbar）
-  if (pathname?.startsWith('/ppe')) {
-    return null;
-  }
-
   useEffect(() => {
     const user = localStorage.getItem('user');
     setIsLoggedIn(!!user);
@@ -31,8 +26,13 @@ export function Header() {
   const handleLangChange = (langCode: string) => {
     setCurrentLang(langCode);
     setShowLangMenu(false);
-    // TODO: Implement actual language switching logic
   };
+
+  // 在 PPE 路由下不显示此 Header（PPE 有自己的 PPENavbar）
+  // 注意：这个条件必须在所有 hooks 之后
+  if (pathname?.startsWith('/ppe')) {
+    return null;
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white">
@@ -40,28 +40,21 @@ export function Header() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-              <ShieldCheck className="w-5 h-5 text-white" />
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="MDLooker" 
+              className="w-9 h-9 rounded-lg object-contain"
+            />
             <span className="text-lg font-bold text-gray-900">MDLooker</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            <Link href="/ppe/products" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
-              Products
+            <Link href="/ppe" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
+              PPE Platform
             </Link>
-            <Link href="/ppe/manufacturers" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
-              Manufacturers
-            </Link>
-            <Link href="/ppe/market-access" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
-              Markets
-            </Link>
-            <Link href="/ppe/certification-comparison" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
-              Compare
-            </Link>
-            <Link href="/ppe/regulations" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
-              Regulations
+            <Link href="/about" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
+              About
             </Link>
             <Link href="/ppe/pricing" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
               Pricing
@@ -138,39 +131,18 @@ export function Header() {
           <div className="md:hidden py-2 border-t border-gray-100">
             <nav className="flex flex-col gap-1 pb-2">
               <Link
-                href="/ppe/products"
+                href="/ppe"
                 className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Products
+                PPE Platform
               </Link>
               <Link
-                href="/ppe/manufacturers"
+                href="/about"
                 className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Manufacturers
-              </Link>
-              <Link
-                href="/ppe/market-access"
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Markets
-              </Link>
-              <Link
-                href="/ppe/certification-comparison"
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Compare Certifications
-              </Link>
-              <Link
-                href="/ppe/regulations"
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Regulations
+                About
               </Link>
               <Link
                 href="/ppe/pricing"

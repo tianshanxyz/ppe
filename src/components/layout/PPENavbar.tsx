@@ -29,63 +29,74 @@ import {
   Key,
   Settings
 } from 'lucide-react'
-
-// 主导航结构 - 按照优化方案设计
-const mainNavItems = [
-  {
-    href: '/ppe',
-    label: 'Home',
-    icon: Shield,
-  },
-  {
-    label: 'Compliance Tools',
-    icon: CheckCircle,
-    children: [
-      { href: '/ppe/market-access', label: 'Compliance Checker', icon: CheckCircle },
-      { href: '/ppe/certification-comparison', label: 'Market Comparison', icon: Globe },
-      { href: '/ppe/cost-calculator', label: 'Cost Calculator', icon: Calculator },
-      { href: '/ppe/timeline-estimator', label: 'Timeline Estimator', icon: Clock },
-      { href: '/ppe/compliance-tracker', label: 'Compliance Tracker', icon: ClipboardList },
-      { href: '/ppe/certificate-alerts', label: 'Certificate Alerts', icon: Bell },
-    ]
-  },
-  {
-    label: 'Data Center',
-    icon: Database,
-    children: [
-      { href: '/ppe/products', label: 'Product Database', icon: Package },
-      { href: '/ppe/manufacturers', label: 'Manufacturers', icon: Building2 },
-      { href: '/ppe/regulations-new', label: 'Regulations', icon: Gavel },
-      { href: '/ppe/market-analysis', label: 'Market Analysis', icon: Globe },
-    ]
-  },
-  {
-    label: 'Knowledge Base',
-    icon: BookOpen,
-    children: [
-      { href: '/ppe/compliance-guides', label: 'Compliance Guides', icon: BookOpen },
-      { href: '/ppe/documents', label: 'Document Templates', icon: FileText },
-      { href: '/ppe/knowledge-base', label: 'Knowledge Articles', icon: Lightbulb },
-      { href: '/ppe/case-studies', label: 'Case Studies', icon: FolderOpen },
-      { href: '/ppe/regulatory-news', label: 'Regulatory News', icon: Newspaper },
-      { href: '/ppe/regulatory-alerts', label: 'Regulatory Alerts', icon: Bell },
-    ]
-  },
-]
-
-// 用户中心导航
-const userNavItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: User },
-  { href: '/dashboard/compliance-tracker', label: 'My Compliance', icon: ClipboardList },
-  { href: '/dashboard/certificates', label: 'My Certificates', icon: FileText },
-  { href: '/dashboard/api-keys', label: 'API Keys', icon: Key },
-  { href: '/dashboard/settings', label: 'Settings', icon: Settings },
-]
+import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { navTranslations, getTranslations } from '@/lib/i18n/translations'
+import { Locale, localeLabels } from '@/lib/i18n/config'
 
 export function PPENavbar() {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const { locale, setLocale } = useLanguage()
+  const [showLangMenu, setShowLangMenu] = useState(false)
+
+  // 获取当前语言的翻译
+  const t = getTranslations(navTranslations, locale)
+
+  // 主导航结构 - 按照优化方案设计
+  const mainNavItems = [
+    {
+      href: '/ppe',
+      label: t.home,
+      icon: Shield,
+    },
+    {
+      label: t.complianceTools,
+      icon: CheckCircle,
+      children: [
+        { href: '/ppe/market-access', label: t.complianceChecker, icon: CheckCircle },
+        { href: '/ppe/certification-comparison', label: t.marketComparison, icon: Globe },
+        { href: '/ppe/cost-calculator', label: t.costCalculator, icon: Calculator },
+        { href: '/ppe/timeline-estimator', label: t.timelineEstimator, icon: Clock },
+        { href: '/ppe/compliance-tracker', label: t.complianceTracker, icon: ClipboardList },
+        { href: '/ppe/certificate-alerts', label: t.certificateAlerts, icon: Bell },
+      ]
+    },
+    {
+      label: t.dataCenter,
+      icon: Database,
+      children: [
+        { href: '/ppe/products', label: t.productDatabase, icon: Package },
+        { href: '/ppe/manufacturers', label: t.manufacturers, icon: Building2 },
+        { href: '/ppe/regulations-new', label: t.regulations, icon: Gavel },
+        { href: '/ppe/market-analysis', label: t.marketAnalysis, icon: Globe },
+      ]
+    },
+    {
+      label: t.knowledgeBase,
+      icon: BookOpen,
+      children: [
+        { href: '/ppe/compliance-guides', label: t.complianceGuides, icon: BookOpen },
+        { href: '/ppe/documents', label: t.documentTemplates, icon: FileText },
+        { href: '/ppe/knowledge-base', label: t.knowledgeArticles, icon: Lightbulb },
+        { href: '/ppe/case-studies', label: t.caseStudies, icon: FolderOpen },
+        { href: '/ppe/regulatory-news', label: t.regulatoryNews, icon: Newspaper },
+        { href: '/ppe/regulatory-alerts', label: t.regulatoryAlerts, icon: Bell },
+      ]
+    },
+  ]
+
+  // 用户中心导航 - 只包含已存在的页面
+  const userNavItems = [
+    { href: '/dashboard', label: t.dashboard, icon: User },
+    { href: '/dashboard/api-keys', label: t.apiKeys, icon: Key },
+  ]
+
+  // 处理语言切换
+  const handleLangChange = (newLocale: Locale) => {
+    setLocale(newLocale)
+    setShowLangMenu(false)
+  }
 
   const isAuthPage = pathname?.includes('/ppe/auth')
 
@@ -106,9 +117,11 @@ export function PPENavbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/ppe" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-[#339999] flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="MDLooker PPE" 
+              className="w-9 h-9 rounded-lg object-contain"
+            />
             <span className="text-lg font-bold text-gray-900">MDLooker PPE</span>
           </Link>
 
@@ -188,21 +201,51 @@ export function PPENavbar() {
             })}
           </div>
 
-          {/* Auth Buttons */}
+          {/* Auth Buttons & Language Switcher */}
           <div className="hidden lg:flex items-center gap-3">
+            {/* Language Switcher */}
+            <div className="relative">
+              <button
+                onClick={() => setShowLangMenu(!showLangMenu)}
+                className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 hover:text-[#339999] hover:bg-gray-50 rounded-lg transition-all"
+              >
+                <Globe className="w-4 h-4" />
+                <span>{localeLabels[locale]}</span>
+                <ChevronDown className={`w-3 h-3 transition-transform ${showLangMenu ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {showLangMenu && (
+                <div className="absolute top-full right-0 mt-1 w-32 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50">
+                  {(Object.keys(localeLabels) as Locale[]).map((langCode) => (
+                    <button
+                      key={langCode}
+                      onClick={() => handleLangChange(langCode)}
+                      className={`w-full px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                        locale === langCode ? 'text-[#339999] font-medium bg-[#339999]/5' : 'text-gray-600'
+                      }`}
+                    >
+                      {localeLabels[langCode]}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="w-px h-6 bg-gray-200 mx-1"></div>
+
             <Link
               href="/ppe/auth/login"
               className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#339999] transition-colors"
             >
               <LogIn className="w-4 h-4" />
-              Sign In
+              {t.signIn}
             </Link>
             <Link
               href="/ppe/auth/signup"
               className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#339999] hover:bg-[#2d8b8b] rounded-lg transition-colors shadow-sm"
             >
               <UserPlus className="w-4 h-4" />
-              Sign Up
+              {t.signUp}
             </Link>
           </div>
 

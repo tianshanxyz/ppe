@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Check, X, Star, Zap, Building2, CreditCard, Shield, Mail, ChevronDown, ChevronUp } from 'lucide-react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { getMembershipTiers } from '@/lib/ppe-data'
 
 const fadeInUp = {
@@ -126,13 +127,15 @@ export default function PricingPage() {
                   <p className="text-gray-500 text-sm mt-2">Forever free</p>
                 </div>
 
-                <motion.button 
-                  className="w-full py-3 px-6 bg-gray-100 text-gray-900 font-semibold rounded-lg hover:bg-gray-200 transition-colors mb-8"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Get Started Free
-                </motion.button>
+                <Link href="/ppe/auth/signup">
+                  <motion.button
+                    className="w-full py-3 px-6 bg-gray-100 text-gray-900 font-semibold rounded-lg hover:bg-gray-200 transition-colors mb-8"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Get Started Free
+                  </motion.button>
+                </Link>
 
                 <div className="space-y-4">
                   <h4 className="font-semibold text-gray-900">What&apos;s included:</h4>
@@ -196,13 +199,15 @@ export default function PricingPage() {
                   <p className="text-gray-500 text-sm mt-2">Billed {proTier.billing_period}</p>
                 </div>
 
-                <motion.button 
-                  className="w-full py-3 px-6 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors mb-8 shadow-md"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Start Free Trial
-                </motion.button>
+                <Link href="/ppe/auth/signup">
+                  <motion.button
+                    className="w-full py-3 px-6 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors mb-8 shadow-md"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Start Free Trial
+                  </motion.button>
+                </Link>
 
                 <div className="space-y-4">
                   <h4 className="font-semibold text-gray-900">Everything in Free, plus:</h4>
@@ -259,13 +264,15 @@ export default function PricingPage() {
                   <p className="text-gray-500 text-sm mt-2">Billed {enterpriseTier.billing_period}</p>
                 </div>
 
-                <motion.button 
-                  className="w-full py-3 px-6 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors mb-8 shadow-md"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Contact Sales
-                </motion.button>
+                <Link href="/ppe/auth/signup">
+                  <motion.button
+                    className="w-full py-3 px-6 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors mb-8 shadow-md"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Contact Sales
+                  </motion.button>
+                </Link>
 
                 <div className="space-y-4">
                   <h4 className="font-semibold text-gray-900">Everything in Pro, plus:</h4>

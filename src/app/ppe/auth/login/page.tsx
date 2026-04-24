@@ -97,8 +97,12 @@ export default function LoginPage() {
               </div>
               <div className="flex items-center justify-between mt-2">
                 <Link
-                  href="/ppe/auth/forgot-password"
+                  href="/ppe/auth/login"
                   className="text-sm text-[#339999] hover:underline"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    alert('Password reset feature coming soon!');
+                  }}
                 >
                   Forgot password?
                 </Link>

@@ -2,9 +2,18 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ShieldCheck } from 'lucide-react';
 
 export function Footer() {
+  const pathname = usePathname();
+
+  // 在 PPE 路由下不显示此 Footer（PPE 页面有自己的布局）
+  // 注意：这个条件必须在所有 hooks 之后
+  if (pathname?.startsWith('/ppe')) {
+    return null;
+  }
+
   return (
     <footer className="bg-white border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12">
@@ -27,23 +36,13 @@ export function Footer() {
             <h4 className="font-semibold text-gray-900 mb-4">Product</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/ppe/products" className="text-gray-500 hover:text-primary transition-colors">
-                  Product Database
+                <Link href="/ppe" className="text-gray-500 hover:text-primary transition-colors">
+                  PPE Platform
                 </Link>
               </li>
               <li>
-                <Link href="/ppe/manufacturers" className="text-gray-500 hover:text-primary transition-colors">
-                  Manufacturers
-                </Link>
-              </li>
-              <li>
-                <Link href="/ppe/market-access" className="text-gray-500 hover:text-primary transition-colors">
-                  Market Access
-                </Link>
-              </li>
-              <li>
-                <Link href="/ppe/certification-comparison" className="text-gray-500 hover:text-primary transition-colors">
-                  Certification Compare
+                <Link href="/ppe/pricing" className="text-gray-500 hover:text-primary transition-colors">
+                  Pricing
                 </Link>
               </li>
             </ul>
@@ -54,18 +53,13 @@ export function Footer() {
             <h4 className="font-semibold text-gray-900 mb-4">Resources</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/ppe/regulations" className="text-gray-500 hover:text-primary transition-colors">
-                  Regulations
-                </Link>
-              </li>
-              <li>
-                <Link href="/ppe/pricing" className="text-gray-500 hover:text-primary transition-colors">
-                  Pricing
-                </Link>
-              </li>
-              <li>
                 <Link href="/help" className="text-gray-500 hover:text-primary transition-colors">
                   Help Center
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-gray-500 hover:text-primary transition-colors">
+                  About Us
                 </Link>
               </li>
             </ul>
@@ -95,7 +89,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-100 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; 2024 MDLooker. All rights reserved.</p>
+          <p>&copy; 2026 MDLooker. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -435,7 +435,7 @@ export default function HomePage() {
                 </li>
               </ul>
               <Link
-                href="/auth/signup"
+                href="/ppe/auth/signup"
                 className="block w-full py-3 px-6 bg-primary text-white text-center rounded-lg font-semibold hover:bg-primary-dark transition-colors"
               >
                 Get Started

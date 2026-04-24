@@ -50,7 +50,7 @@ const COST_TEMPLATES: Record<string, Record<string, CostItem[]>> = {
     'US': [
       { name: 'NIOSH N95 Testing', description: 'Filtration, breathing resistance, fit testing', min: 5000, max: 15000, currency: 'USD', required: true, category: 'testing' },
       { name: 'FDA 510(k) Preparation', description: 'Premarket notification compilation', min: 8000, max: 25000, currency: 'USD', required: true, category: 'certification' },
-      { name: 'FDA 510(k) Submission Fee', description: 'FDA official fee (2024)', min: 2176, max: 2176, currency: 'USD', required: true, category: 'certification' },
+      { name: 'FDA 510(k) Submission Fee', description: 'FDA official fee (2026)', min: 2352, max: 2352, currency: 'USD', required: true, category: 'certification' },
       { name: 'ASTM F2100 Testing', description: 'Medical face mask performance testing', min: 3000, max: 8000, currency: 'USD', required: false, category: 'testing' },
       { name: 'FDA Establishment Registration', description: 'Annual facility registration', min: 7652, max: 7652, currency: 'USD', required: true, category: 'certification' },
       { name: 'US Agent Service', description: 'FDA-required US representative', min: 1500, max: 5000, currency: 'USD', required: true, category: 'consulting' },
