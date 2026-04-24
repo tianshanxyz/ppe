@@ -4,7 +4,7 @@
  * B-001: 会员等级系统
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 import {
   MembershipTier,
   UserMembership,
@@ -29,7 +29,7 @@ export class MembershipService {
    * 获取用户会员信息
    */
   async getUserMembership(userId: string): Promise<GetMembershipResponse> {
-    const supabase = await createClient()
+    const supabase = createClient()
 
     try {
       // 查询用户会员信息
@@ -216,7 +216,7 @@ export class MembershipService {
     limitType: keyof MembershipLimits,
     amount: number = 1
   ): Promise<boolean> {
-    const supabase = await createClient()
+    const supabase = createClient()
 
     try {
       let updateField = ''
@@ -289,7 +289,7 @@ export class MembershipService {
       return { success: false, error: '目标等级必须高于当前等级' }
     }
 
-    const supabase = await createClient()
+    const supabase = createClient()
 
     try {
       const now = new Date()
@@ -365,7 +365,7 @@ export class MembershipService {
       return { success: false, error: '目标等级必须低于当前等级' }
     }
 
-    const supabase = await createClient()
+    const supabase = createClient()
 
     try {
       const now = new Date()
@@ -434,7 +434,7 @@ export class MembershipService {
     userId: string,
     reason?: string
   ): Promise<{ success: boolean; error?: string }> {
-    const supabase = await createClient()
+    const supabase = createClient()
 
     try {
       const now = new Date()
@@ -473,7 +473,7 @@ export class MembershipService {
    * 创建免费版会员
    */
   private async createFreeMembership(userId: string): Promise<UserMembership> {
-    const supabase = await createClient()
+    const supabase = createClient()
     const now = new Date()
 
     const membership: UserMembership = {
@@ -518,7 +518,7 @@ export class MembershipService {
   private async checkAndResetUsage(userId: string, membership: any): Promise<void> {
     const lastReset = new Date(membership.usage?.last_reset_at || 0)
     const now = new Date()
-    const supabase = await createClient()
+    const supabase = createClient()
 
     let needsUpdate = false
     const updates: any = { ...membership.usage }
@@ -587,7 +587,7 @@ export class MembershipService {
    * 添加历史记录
    */
   private async addHistoryItem(userId: string, item: MembershipHistoryItem): Promise<void> {
-    const supabase = await createClient()
+    const supabase = createClient()
 
     const { data: membership } = await supabase
       .from('user_memberships')

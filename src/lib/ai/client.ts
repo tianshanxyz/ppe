@@ -1,3 +1,10 @@
+function getApiBaseUrl(): string {
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+  return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+}
+
 export interface AIContent {
   content: string
   model: string
@@ -7,7 +14,7 @@ export interface AIContent {
 
 export async function generateAIContent(prompt: string): Promise<string> {
   try {
-    const response = await fetch('http://localhost:3000/api/ai/chat', {
+    const response = await fetch(`${getApiBaseUrl()}/api/ai/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

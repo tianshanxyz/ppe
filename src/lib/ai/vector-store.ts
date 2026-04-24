@@ -8,7 +8,7 @@
  * 4. 索引管理和优化
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 import { generateEmbedding, cosineSimilarity, getEmbeddingDimension } from './embedding'
 
 export type EntityType = 'product' | 'company' | 'regulation'
@@ -61,7 +61,7 @@ const DEFAULT_KEYWORD_WEIGHT = 0.3
  * 存储向量记录
  */
 export async function storeVector(record: VectorRecord): Promise<void> {
-  const supabase = await createClient()
+  const supabase = createClient()
 
   const { error } = await supabase
     .from('vector_embeddings')
@@ -89,7 +89,7 @@ export async function storeVector(record: VectorRecord): Promise<void> {
 export async function storeVectorsBatch(records: VectorRecord[]): Promise<void> {
   if (records.length === 0) return
 
-  const supabase = await createClient()
+  const supabase = createClient()
 
   const { error } = await supabase
     .from('vector_embeddings')
@@ -125,7 +125,7 @@ export async function semanticSearch(
     entityTypes,
   } = options
 
-  const supabase = await createClient()
+  const supabase = createClient()
 
   // 生成查询向量
   const { embedding: queryEmbedding } = await generateEmbedding(query)
@@ -190,7 +190,7 @@ export async function hybridSearch(
     entityTypes,
   } = options
 
-  const supabase = await createClient()
+  const supabase = createClient()
 
   // 并行执行语义搜索和关键词搜索
   const [semanticResults, keywordResults] = await Promise.all([
@@ -251,7 +251,7 @@ async function keywordSearch(
     entityTypes,
   } = options
 
-  const supabase = await createClient()
+  const supabase = createClient()
 
   // 构建搜索查询
   let dbQuery = supabase
@@ -292,7 +292,7 @@ async function keywordSearch(
  * 删除向量记录
  */
 export async function deleteVector(id: string): Promise<void> {
-  const supabase = await createClient()
+  const supabase = createClient()
 
   const { error } = await supabase
     .from('vector_embeddings')
@@ -312,7 +312,7 @@ export async function deleteVectorsByEntity(
   entityType: EntityType,
   entityId: string
 ): Promise<void> {
-  const supabase = await createClient()
+  const supabase = createClient()
 
   const { error } = await supabase
     .from('vector_embeddings')
@@ -333,7 +333,7 @@ export async function getVectorStats(): Promise<{
   total: number
   byType: Record<EntityType, number>
 }> {
-  const supabase = await createClient()
+  const supabase = createClient()
 
   const { data, error } = await supabase
     .from('vector_embeddings')
@@ -367,7 +367,7 @@ export async function checkVectorExists(
   entityType: EntityType,
   entityId: string
 ): Promise<boolean> {
-  const supabase = await createClient()
+  const supabase = createClient()
 
   const { data, error } = await supabase
     .from('vector_embeddings')

@@ -8,7 +8,7 @@
  * 4. 错误处理和降级策略
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 
 // 火山方舟 Embedding 配置
 const ARK_API_KEY = process.env.VOLCENGINE_ARK_API_KEY

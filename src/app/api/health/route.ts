@@ -8,6 +8,7 @@
 
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { Redis } from '@upstash/redis'
 
 /**
@@ -47,7 +48,8 @@ async function checkDatabase(): Promise<ServiceStatus> {
   const startTime = Date.now()
   
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
     
     // 执行简单的查询测试连接
     const { data, error } = await supabase
@@ -179,13 +181,52 @@ function calculateOverallStatus(
 }
 
 /**
+ * 验证 Authorization header
+ * 
+ * 支持 Bearer token 和 Basic auth 两种方式
+ * Bearer token 需与环境变量 HEALTH_CHECK_TOKEN 匹配
+ * Basic auth 需与环境变量 HEALTH_CHECK_USER/HEALTH_CHECK_PASS 匹配
+ * 如果未配置环境变量，则使用硬编码的默认 token（仅限开发环境）
+ */
+function verifyAuth(request: Request): boolean {
+  const authHeader = request.headers.get('Authorization')
+  
+  if (!authHeader) {
+    return false
+  }
+  
+  // Bearer Token 验证
+  if (authHeader.startsWith('Bearer ')) {
+    const token = authHeader.substring(7)
+    const expectedToken = process.env.HEALTH_CHECK_TOKEN || 'dev-health-check-token'
+    return token === expectedToken
+  }
+  
+  // Basic Auth 验证
+  if (authHeader.startsWith('Basic ')) {
+    const credentials = authHeader.substring(6)
+    const expectedUser = process.env.HEALTH_CHECK_USER || 'admin'
+    const expectedPass = process.env.HEALTH_CHECK_PASS || 'admin'
+    const expectedCredentials = Buffer.from(`${expectedUser}:${expectedPass}`).toString('base64')
+    return credentials === expectedCredentials
+  }
+  
+  return false
+}
+
+/**
  * GET /api/health
  * 
  * 健康检查端点
  * 
  * 查询参数:
- * - detailed: 是否返回详细信息 (默认：false)
+ * - detailed: 是否返回详细信息 (默认：false) - 需要认证
  * - service: 检查特定服务 (database|redis|api)
+ * 
+ * 认证说明:
+ * - 普通健康检查（不带 detailed）公开访问
+ * - detailed=true 时需要 Authorization header
+ * - 支持 Bearer token 和 Basic auth
  * 
  * @returns 健康状态报告
  */
@@ -194,6 +235,23 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const detailed = searchParams.get('detailed') === 'true'
   const serviceFilter = searchParams.get('service')
+  
+  // detailed 模式需要认证
+  if (detailed && !verifyAuth(request)) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Unauthorized: Authorization header required for detailed health check',
+        message: 'Provide Authorization header with Bearer token or Basic auth',
+      },
+      { 
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Bearer realm="Health Check API"',
+        },
+      }
+    )
+  }
   
   try {
     // 并行执行所有检查
@@ -273,11 +331,6 @@ export async function GET(request: Request) {
           database_latency_ms: number
           redis_latency_ms?: number
         }
-        server: {
-          node_version: string
-          platform: string
-          memory_usage: NodeJS.MemoryUsage
-        }
       }
       
       detailedResponse.environment = {
@@ -286,20 +339,12 @@ export async function GET(request: Request) {
         supabase_service_role_key: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
         redis_url: !!process.env.UPSTASH_REDIS_REST_URL,
         redis_token: !!process.env.UPSTASH_REDIS_REST_TOKEN,
-        volcengine_api_key: !!process.env.VOLCENGINE_ARK_API_KEY,
-        fda_api_key: !!process.env.FDA_API_KEY,
       }
       
       detailedResponse.performance = {
         total_check_time_ms: Date.now() - startTime,
         database_latency_ms: dbStatus.latency_ms || 0,
         redis_latency_ms: redisStatus?.latency_ms,
-      }
-      
-      detailedResponse.server = {
-        node_version: process.version,
-        platform: process.platform,
-        memory_usage: process.memoryUsage(),
       }
       
       return NextResponse.json(detailedResponse)

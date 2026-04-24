@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
+import { escapeIlikeSearch } from '@/lib/security/sanitize'
 
 /**
  * PPE 数据访问服务
@@ -58,7 +59,7 @@ export async function getPPEProducts(filters?: {
   certification?: string
   search?: string
 }) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   let query = supabase
     .from('ppe_products')
@@ -78,7 +79,7 @@ export async function getPPEProducts(filters?: {
   }
   
   if (filters?.search) {
-    query = query.or(`product_name.ilike.%${filters.search}%,brand.ilike.%${filters.search}%`)
+    query = query.or(`product_name.ilike.%${escapeIlikeSearch(filters.search)}%,brand.ilike.%${escapeIlikeSearch(filters.search)}%`)
   }
   
   const { data, error } = await query.order('product_name', { ascending: true })
@@ -95,7 +96,7 @@ export async function getPPEProducts(filters?: {
  * 获取单个 PPE 产品详情
  */
 export async function getPPEProduct(id: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from('ppe_products')
@@ -128,7 +129,7 @@ export async function getPPERegulations(filters?: {
   product_category?: string
   search?: string
 }) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   let query = supabase
     .from('ppe_regulations')
@@ -144,7 +145,7 @@ export async function getPPERegulations(filters?: {
   }
   
   if (filters?.search) {
-    query = query.or(`regulation_name.ilike.%${filters.search}%,description.ilike.%${filters.search}%`)
+    query = query.or(`regulation_name.ilike.%${escapeIlikeSearch(filters.search)}%,description.ilike.%${escapeIlikeSearch(filters.search)}%`)
   }
   
   const { data, error } = await query.order('regulation_name', { ascending: true })
@@ -161,7 +162,7 @@ export async function getPPERegulations(filters?: {
  * 获取单个 PPE 法规详情
  */
 export async function getPPERegulation(id: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from('ppe_regulations')
@@ -181,7 +182,7 @@ export async function getPPERegulation(id: string) {
  * 获取 PPE 统计数据
  */
 export async function getPPEStats() {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   // 产品统计
   const { count: productsCount } = await supabase
@@ -233,7 +234,7 @@ export async function getPPEStats() {
  * 搜索 PPE 产品
  */
 export async function searchPPEProducts(query: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .rpc('search_ppe_products', { search_query: query })
@@ -250,7 +251,7 @@ export async function searchPPEProducts(query: string) {
  * 获取合规数据（用于合规自检工具）
  */
 export async function getComplianceData(categoryId: string, marketCode: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   // 查询该品类和市场的产品
   const { data: products } = await supabase

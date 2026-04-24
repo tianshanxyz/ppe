@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSearchQuery, validatePagination, validateEnum, validateArrayParam } from '@/lib/security/sanitize'
+import { validateSearchQuery, validatePagination, validateEnum, validateArrayParam, escapeIlikeSearch } from '@/lib/security/sanitize'
 import { withRateLimit } from '@/lib/middleware/rateLimit'
 import { searchMedplumDevices, searchMedplumOrganizations } from '@/lib/medplum'
 import { isMedplumEnabled } from '@/lib/medplum/client'
@@ -97,6 +98,7 @@ export async function GET(request: NextRequest) {
       const markets = validateArrayParam(marketFilter ?? undefined)
       const query = queryValidation.sanitized
 
+      
       const supabase = await createClient()
 
       const results: {
@@ -109,7 +111,7 @@ export async function GET(request: NextRequest) {
         let productQuery = supabase
           .from('all_products')
           .select('*')
-          .ilike('product_name', `%${query}%`)
+          .ilike('product_name', `%${escapeIlikeSearch(query)}%`)
           .limit(limit)
 
         // 应用市场筛选
@@ -149,7 +151,7 @@ export async function GET(request: NextRequest) {
         let companyQuery = supabase
           .from('companies')
           .select('*')
-          .ilike('name', `%${query}%`)
+          .ilike('name', `%${escapeIlikeSearch(query)}%`)
           .limit(limit)
 
         const { data: companies, error: companiesError } = await companyQuery

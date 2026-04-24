@@ -1,17 +1,25 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Download, CheckCircle, AlertTriangle, DollarSign, Clock, FileText, ExternalLink } from 'lucide-react'
 import { getPPECategories, getTargetMarkets, getComplianceData } from '@/lib/ppe-data'
 
 export function ComplianceCheckTool() {
-  const categories = getPPECategories()
-  const markets = getTargetMarkets()
+  const [categories, setCategories] = useState<any[]>([])
+  const [markets, setMarkets] = useState<any[]>([])
+  const [mounted, setMounted] = useState(false)
   
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedMarket, setSelectedMarket] = useState('')
   const [showResults, setShowResults] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  // 使用 useEffect 在客户端加载数据，避免 hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+    setCategories(getPPECategories())
+    setMarkets(getTargetMarkets())
+  }, [])
 
   const handleCheck = () => {
     if (selectedCategory && selectedMarket) {
@@ -27,6 +35,41 @@ export function ComplianceCheckTool() {
   const complianceData = showResults ? getComplianceData(selectedCategory, selectedMarket) : null
   const category = categories.find(c => c.id === selectedCategory)
   const market = markets.find(m => m.code === selectedMarket)
+
+  // 在服务器端和客户端初始渲染时显示加载状态
+  // 只有在客户端挂载后才显示实际内容
+  if (!mounted) {
+    return (
+      <div className="max-w-5xl mx-auto" suppressHydrationWarning>
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-gray-100">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-3">
+                PPE Product Category
+              </label>
+              <div className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-400">
+                Loading categories...
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-3">
+                Target Market
+              </label>
+              <div className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-400">
+                Loading markets...
+              </div>
+            </div>
+          </div>
+          <button
+            disabled
+            className="w-full py-4 px-6 bg-gray-300 text-white text-lg font-semibold rounded-lg cursor-not-allowed shadow-md"
+          >
+            Get Compliance Report
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -98,145 +141,135 @@ export function ComplianceCheckTool() {
         </button>
       </div>
 
-      {/* Results */}
+      {/* Results Section */}
       {showResults && complianceData && (
-        <div className="space-y-6">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#339999] to-[#2d8b8b] rounded-2xl p-8 text-white">
-            <h3 className="text-3xl font-bold mb-2">
-              Compliance Report: {category?.name}
-            </h3>
-            <p className="text-lg opacity-90">
-              Target Market: {market?.flag_emoji} {market?.name} ({market?.regulation_name})
+          <div className="bg-gradient-to-r from-[#339999] to-[#2d8b8b] p-6 text-white">
+            <div className="flex items-center gap-3 mb-2">
+              <CheckCircle className="w-6 h-6" />
+              <h3 className="text-xl font-bold">Compliance Report</h3>
+            </div>
+            <p className="text-white/90">
+              {category?.icon} {category?.name} → {market?.flag_emoji} {market?.name}
             </p>
           </div>
 
-          {/* Classification */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <div className="flex items-center mb-4">
-              <FileText className="w-6 h-6 text-[#339999] mr-3" />
-              <h4 className="text-xl font-bold text-gray-900">Product Classification</h4>
+          <div className="p-6 space-y-6">
+            {/* Classification */}
+            <div className="bg-gray-50 rounded-xl p-5">
+              <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-[#339999]" />
+                Risk Classification
+              </h4>
+              <p className="text-gray-700 font-medium">{complianceData.classification}</p>
             </div>
-            <p className="text-gray-700 text-lg">{complianceData.classification}</p>
-          </div>
 
-          {/* Standards */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <div className="flex items-center mb-4">
-              <CheckCircle className="w-6 h-6 text-[#339999] mr-3" />
-              <h4 className="text-xl font-bold text-gray-900">Applicable Standards</h4>
+            {/* Standards */}
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-[#339999]" />
+                Applicable Standards
+              </h4>
+              <div className="space-y-2">
+                {complianceData.standards.map((std, idx) => (
+                  <a
+                    key={idx}
+                    href={std.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
+                  >
+                    <div>
+                      <p className="font-medium text-gray-900">{std.name}</p>
+                      <p className="text-sm text-gray-600">{std.title}</p>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-[#339999]" />
+                  </a>
+                ))}
+              </div>
             </div>
-            <ul className="space-y-3">
-              {complianceData.standards.map((standard, idx) => (
-                <li key={idx} className="flex items-start">
-                  <span className="flex-shrink-0 w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">
-                    {idx + 1}
+
+            {/* Certification Requirements */}
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-[#339999]" />
+                Certification Requirements
+              </h4>
+              <ul className="space-y-2">
+                {complianceData.certification_requirements.map((req, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 bg-[#339999] rounded-full mt-2 flex-shrink-0"></span>
+                    <span className="text-gray-700">{req}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Cost & Timeline */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-green-50 rounded-xl p-5 border border-green-100">
+                <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <DollarSign className="w-5 h-5 text-green-600" />
+                  Estimated Cost
+                </h4>
+                <p className="text-2xl font-bold text-green-700">
+                  {complianceData.estimated_cost.currency} {complianceData.estimated_cost.min.toLocaleString()} - {complianceData.estimated_cost.max.toLocaleString()}
+                </p>
+                <p className="text-sm text-gray-600 mt-1">Including testing, certification, and consulting fees</p>
+              </div>
+
+              <div className="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-blue-600" />
+                  Estimated Timeline
+                </h4>
+                <p className="text-2xl font-bold text-blue-700">
+                  {complianceData.estimated_timeline.min} - {complianceData.estimated_timeline.max} {complianceData.estimated_timeline.unit}
+                </p>
+                <p className="text-sm text-gray-600 mt-1">From application to certificate issuance</p>
+              </div>
+            </div>
+
+            {/* Customs Documents */}
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-[#339999]" />
+                Required Customs Documents
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {complianceData.customs_documents.map((doc, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                  >
+                    {doc}
                   </span>
-                  <div>
-                    <a
-                      href={standard.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#339999] hover:underline font-medium"
-                    >
-                      {standard.name}
-                    </a>
-                    <ExternalLink className="inline-block w-4 h-4 ml-2 text-gray-400" />
-                    <p className="text-gray-600 text-sm mt-1">{standard.title}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Certification Requirements */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <div className="flex items-center mb-4">
-              <CheckCircle className="w-6 h-6 text-[#339999] mr-3" />
-              <h4 className="text-xl font-bold text-gray-900">Certification Requirements</h4>
-            </div>
-            <ul className="space-y-2">
-              {complianceData.certification_requirements.map((req, idx) => (
-                <li key={idx} className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{req}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Cost & Timeline */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-              <div className="flex items-center mb-4">
-                <DollarSign className="w-6 h-6 text-[#339999] mr-3" />
-                <h4 className="text-xl font-bold text-gray-900">Estimated Cost</h4>
+                ))}
               </div>
-              <div className="text-3xl font-bold text-gray-900 mb-2">
-                ${complianceData.estimated_cost.min.toLocaleString()} - ${complianceData.estimated_cost.max.toLocaleString()}
-              </div>
-              <p className="text-gray-600 text-sm">USD</p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-              <div className="flex items-center mb-4">
-                <Clock className="w-6 h-6 text-[#339999] mr-3" />
-                <h4 className="text-xl font-bold text-gray-900">Estimated Timeline</h4>
-              </div>
-              <div className="text-3xl font-bold text-gray-900 mb-2">
-                {complianceData.estimated_timeline.min} - {complianceData.estimated_timeline.max} {complianceData.estimated_timeline.unit}
-              </div>
-              <p className="text-gray-600 text-sm">From application to approval</p>
+            {/* Risk Warnings */}
+            <div className="bg-amber-50 rounded-xl p-5 border border-amber-100">
+              <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-amber-600" />
+                Risk Warnings
+              </h4>
+              <ul className="space-y-2">
+                {complianceData.risk_warnings.map((warning, idx) => (
+                  <li key={idx} className="flex items-start gap-2 text-amber-800">
+                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>{warning}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
 
-          {/* Customs Documents */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <div className="flex items-center mb-4">
-              <FileText className="w-6 h-6 text-[#339999] mr-3" />
-              <h4 className="text-xl font-bold text-gray-900">Customs Documents Required</h4>
-            </div>
-            <ul className="space-y-2">
-              {complianceData.customs_documents.map((doc, idx) => (
-                <li key={idx} className="flex items-start">
-                  <span className="flex-shrink-0 w-2 h-2 bg-[#339999] rounded-full mr-3 mt-2" />
-                  <span className="text-gray-700">{doc}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Risk Warnings */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <div className="flex items-center mb-4">
-              <AlertTriangle className="w-6 h-6 text-orange-500 mr-3" />
-              <h4 className="text-xl font-bold text-gray-900">Compliance Risk Warnings</h4>
-            </div>
-            <ul className="space-y-3">
-              {complianceData.risk_warnings.map((warning, idx) => (
-                <li key={idx} className="flex items-start bg-orange-50 p-3 rounded-lg">
-                  <AlertTriangle className="w-5 h-5 text-orange-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{warning}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* CTA */}
-          <div className="bg-gradient-to-r from-[#339999]/10 to-[#339999]/5 rounded-2xl p-8 border border-[#339999]/20 text-center">
-            <h4 className="text-2xl font-bold text-gray-900 mb-4">
-              Need the Full Report?
-            </h4>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              Download a professional PDF version of this compliance report with detailed checklists, templates, and official references.
-            </p>
-            <button className="inline-flex items-center px-8 py-4 bg-[#339999] text-white text-lg font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors shadow-md">
-              <Download className="w-5 h-5 mr-2" />
-              Download Full PDF Report
+            {/* Download Button */}
+            <button className="w-full py-3 px-6 border-2 border-[#339999] text-[#339999] font-semibold rounded-lg hover:bg-[#339999] hover:text-white transition-colors flex items-center justify-center gap-2">
+              <Download className="w-5 h-5" />
+              Download Full Report (PDF)
             </button>
-            <p className="text-sm text-gray-500 mt-4">
-              Free for Pro members • $4.99 for one-time download
-            </p>
           </div>
         </div>
       )}

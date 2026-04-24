@@ -5,6 +5,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
 import { membershipService } from './service'
 import { MembershipPermissions, MembershipLimits } from './types'
 
@@ -106,17 +107,13 @@ export function withLimit(limitType: keyof MembershipLimits, incrementBy: number
  * 从请求中获取用户ID
  */
 async function getUserIdFromRequest(request: NextRequest): Promise<string | null> {
-  // 从Authorization header获取
-  const authHeader = request.headers.get('authorization')
-  if (authHeader?.startsWith('Bearer ')) {
-    // 这里应该验证token并提取用户ID
-    // 简化处理，实际应该使用supabase auth
+  try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    return user?.id || null
+  } catch {
     return null
   }
-
-  // 从session cookie获取
-  // 这里简化处理
-  return null
 }
 
 /**

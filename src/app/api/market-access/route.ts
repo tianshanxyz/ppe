@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 
 interface MarketAccessStep {
   id?: string
@@ -46,7 +47,8 @@ export async function GET(request: NextRequest) {
     const market = searchParams.get('market') || '';
     const deviceType = searchParams.get('deviceType') || '';
 
-    const supabase = await createClient();
+    
+      const supabase = await createClient();
 
     // 查询市场准入指南数据
     let query = supabase

@@ -97,7 +97,9 @@ export class ErrorBoundary extends Component<Props, State> {
                   <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-lg">
                     <p className="text-sm text-red-700 font-medium mb-1">Error Message:</p>
                     <p className="text-sm text-red-600 font-mono break-all">
-                      {this.state.error.message}
+                      {process.env.NODE_ENV === 'production'
+                        ? 'An unexpected error occurred. Please try again.'
+                        : this.state.error.message}
                     </p>
                   </div>
                 )}
@@ -141,9 +143,13 @@ export class ErrorBoundary extends Component<Props, State> {
                 {/* Technical Details */}
                 {this.state.showDetails && this.state.errorInfo && (
                   <div className="mt-4 p-4 bg-gray-900 rounded-lg overflow-auto max-h-64">
-                    <pre className="text-xs text-gray-300 font-mono whitespace-pre-wrap">
-                      {this.state.errorInfo.componentStack}
-                    </pre>
+                    {process.env.NODE_ENV === 'production' ? (
+                      <p className="text-xs text-gray-300">Technical details are hidden in production for security.</p>
+                    ) : (
+                      <pre className="text-xs text-gray-300 font-mono whitespace-pre-wrap">
+                        {this.state.errorInfo.componentStack}
+                      </pre>
+                    )}
                   </div>
                 )}
 
@@ -204,7 +210,7 @@ export function ErrorFallback({
         <div className="flex-1">
           <h3 className="font-semibold text-red-800">{title}</h3>
           <p className="text-sm text-red-600 mt-1">{description}</p>
-          {error.message && (
+          {error.message && process.env.NODE_ENV !== 'production' && (
             <p className="text-xs text-red-500 mt-2 font-mono">{error.message}</p>
           )}
           <Button 

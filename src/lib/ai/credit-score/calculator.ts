@@ -5,7 +5,7 @@
  * A-001: 制造商信用评分算法
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 import {
   ManufacturerCreditScore,
   ComplianceHistoryDetail,
@@ -71,7 +71,7 @@ export class CreditScoreCalculator {
    * 计算制造商信用评分
    */
   async calculate(manufacturerId: string): Promise<ManufacturerCreditScore | null> {
-    const supabase = await createClient()
+    const supabase = createClient()
     const now = new Date()
 
     // 获取制造商信息

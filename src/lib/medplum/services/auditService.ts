@@ -11,7 +11,7 @@
  */
 
 import { getMedplumClient } from '../client'
-import { createClient as createSupabaseClient } from '@/lib/supabase/server'
+import { createClient as createSupabaseClient } from '@/lib/supabase/client'
 
 /**
  * 审计事件类型

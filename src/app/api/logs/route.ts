@@ -1,9 +1,11 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 // GET /api/logs - Get data update logs
 export async function GET(request: Request) {
-  const supabase = await createClient()
+  
+      const supabase = await createClient()
   const { searchParams } = new URL(request.url)
   
   const dataSourceId = searchParams.get('data_source_id')
@@ -53,7 +55,8 @@ export async function GET(request: Request) {
 
 // POST /api/logs - Create new log entry
 export async function POST(request: Request) {
-  const supabase = await createClient()
+  
+      const supabase = await createClient()
   
   try {
     const body = await request.json()
@@ -106,7 +109,8 @@ export async function POST(request: Request) {
 
 // PATCH /api/logs/:id - Update log entry (e.g., mark as completed)
 export async function PATCH(request: Request) {
-  const supabase = await createClient()
+  
+      const supabase = await createClient()
   
   try {
     const { searchParams } = new URL(request.url)

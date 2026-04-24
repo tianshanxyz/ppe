@@ -5,7 +5,8 @@
  * 创建时间: 2026-04-20
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
+import { escapeIlikeSearch } from '@/lib/security/sanitize'
 import {
   EnhancedPPEProduct,
   EnhancedPPEManufacturer,
@@ -45,7 +46,7 @@ export async function getEnhancedProducts({
   sortBy?: string
   sortOrder?: 'asc' | 'desc'
 }) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   let query = supabase
     .from(DB_TABLES.PRODUCTS_ENHANCED)
@@ -54,7 +55,7 @@ export async function getEnhancedProducts({
   // 应用筛选条件
   if (filters.search) {
     // 使用全文搜索
-    query = query.or(`search_vector.fts.${filters.search},product_name.ilike.%${filters.search}%`)
+    query = query.or(`search_vector.fts.${filters.search},product_name.ilike.%${escapeIlikeSearch(filters.search)}%`)
   }
 
   if (filters.category) {
@@ -113,7 +114,7 @@ export async function getEnhancedProducts({
  * 获取单个产品详情
  */
 export async function getEnhancedProduct(id: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from(DB_TABLES.PRODUCTS_ENHANCED)
@@ -144,7 +145,7 @@ export async function searchProductsByCertification(
   certType: CertificationType,
   certNumber: string
 ) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from(DB_TABLES.PRODUCTS_ENHANCED)
@@ -164,7 +165,7 @@ export async function searchProductsByCertification(
  * 获取产品统计数据
  */
 export async function getProductStats() {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from(DB_TABLES.PRODUCTS_ENHANCED)
@@ -218,7 +219,7 @@ export async function getEnhancedManufacturers({
   sortBy?: string
   sortOrder?: 'asc' | 'desc'
 }) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   let query = supabase
     .from(DB_TABLES.MANUFACTURERS_ENHANCED)
@@ -226,7 +227,7 @@ export async function getEnhancedManufacturers({
 
   // 应用筛选
   if (filters.search) {
-    query = query.or(`search_vector.fts.${filters.search},company_name.ilike.%${filters.search}%`)
+    query = query.or(`search_vector.fts.${filters.search},company_name.ilike.%${escapeIlikeSearch(filters.search)}%`)
   }
 
   if (filters.country) {
@@ -272,7 +273,7 @@ export async function getEnhancedManufacturers({
  * 获取制造商详情（含产品列表）
  */
 export async function getEnhancedManufacturer(id: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from(DB_TABLES.MANUFACTURERS_ENHANCED)
@@ -303,7 +304,7 @@ export async function getEnhancedManufacturer(id: string) {
 export async function calculateManufacturerCreditScore(
   manufacturerId: string
 ): Promise<ManufacturerCreditScore | null> {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   // 获取制造商信息
   const { data: manufacturer, error: mfgError } = await supabase
@@ -431,7 +432,7 @@ export async function calculateManufacturerCreditScore(
  * 获取数据同步状态
  */
 export async function getDataSyncStatus(dataSource?: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   let query = supabase
     .from(DB_TABLES.SYNC_STATUS)
@@ -459,7 +460,7 @@ export async function updateDataSyncStatus(
   dataSource: string,
   status: Partial<DataSyncStatus>
 ) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { error } = await supabase
     .from(DB_TABLES.SYNC_STATUS)
@@ -487,7 +488,7 @@ export async function logSyncError(
   errorMessage: string,
   errorCode?: string
 ) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data: current } = await supabase
     .from(DB_TABLES.SYNC_STATUS)
@@ -559,7 +560,7 @@ export function calculateDataCompleteness(product: Partial<EnhancedPPEProduct>):
  * 批量更新数据质量评分
  */
 export async function updateDataQualityScores() {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   // 获取所有产品
   const { data: products, error } = await supabase

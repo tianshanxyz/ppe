@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 export interface SearchHistoryItem {
@@ -30,7 +31,8 @@ export interface SearchHistoryResponse {
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 
     if (authError || !user) {
@@ -87,7 +89,8 @@ export async function GET(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 
     if (authError || !user) {

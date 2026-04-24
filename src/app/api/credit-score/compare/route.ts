@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { CompareScoresRequest, CompareScoresResponse } from '@/lib/ai/credit-score/types'
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 
 /**
  * POST /api/credit-score/compare
@@ -33,7 +34,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     // 获取制造商信用评分
     const { data: manufacturers, error } = await supabase

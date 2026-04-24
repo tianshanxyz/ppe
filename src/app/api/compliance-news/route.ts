@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 
 interface ComplianceNewsItem {
   id: string
@@ -27,7 +28,8 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20');
     const offset = (page - 1) * limit;
 
-    const supabase = await createClient();
+    
+      const supabase = await createClient();
 
     // 构建查询条件
     let query = supabase

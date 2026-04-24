@@ -1,9 +1,11 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 // GET /api/data-sources/health - Get data source health status
 export async function GET(request: Request) {
-  const supabase = await createClient()
+  
+      const supabase = await createClient()
   
   try {
     const { data: dataSources, error } = await supabase

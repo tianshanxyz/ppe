@@ -1,0 +1,64 @@
+[
+  {
+    "id": "free",
+    "name": "Free",
+    "name_zh": "免费版",
+    "price": 0,
+    "currency": "USD",
+    "billing_period": "month",
+    "features": [
+      "Basic compliance check",
+      "Limited document templates",
+      "5 searches per day",
+      "Basic AI assistant"
+    ],
+    "limitations": [
+      "No advanced analytics",
+      "No compliance tracking",
+      "Limited API access"
+    ],
+    "recommended_for": "Individual users and small businesses"
+  },
+  {
+    "id": "professional",
+    "name": "Professional",
+    "name_zh": "专业版",
+    "price": 99,
+    "currency": "USD",
+    "billing_period": "month",
+    "features": [
+      "Advanced compliance check",
+      "Full document template library",
+      "Unlimited searches",
+      "Advanced AI assistant",
+      "Compliance tracking (up to 10 products)",
+      "Market comparison tools",
+      "Priority support"
+    ],
+    "limitations": [
+      "Limited API calls (1000/month)",
+      "No white-label options"
+    ],
+    "recommended_for": "Compliance managers and medium businesses",
+    "popular": true
+  },
+  {
+    "id": "enterprise",
+    "name": "Enterprise",
+    "name_zh": "企业版",
+    "price": 299,
+    "currency": "USD",
+    "billing_period": "month",
+    "features": [
+      "All Professional features",
+      "Unlimited compliance tracking",
+      "Custom API integration",
+      "White-label options",
+      "Dedicated account manager",
+      "Custom reporting",
+      "Team collaboration"
+    ],
+    "limitations": [],
+    "recommended_for": "Large enterprises and compliance service providers"
+  }
+]

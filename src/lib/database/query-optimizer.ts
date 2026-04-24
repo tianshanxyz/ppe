@@ -174,7 +174,7 @@ class QueryOptimizer {
       let query = supabase
         .from(table)
         .select('*')
-        .ilike(searchColumn, `%${searchTerm}%`);
+        .ilike(searchColumn, `%${searchTerm.replace(/[%_\\]/g, '\\$&')}%`);
 
       // 应用过滤器
       if (filters) {

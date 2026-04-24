@@ -5,7 +5,8 @@
  * A-003: AI助手升级（自然语言查询）
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
+import { escapeIlikeSearch } from '@/lib/security/sanitize'
 import {
   StructuredQuery,
   QueryExecutionResult,
@@ -78,7 +79,7 @@ export class QueryBuilder {
     const { filters, sort, pagination, fields } = structuredQuery
 
     // 开始构建查询
-    const supabase = await createClient()
+    const supabase = createClient()
     const defaultFields = ENTITY_TABLE_MAP[this.entityType].fields
     const selectFields = fields || defaultFields
     let query = supabase.from(this.table).select(selectFields.join(','), { count: 'exact' })
@@ -125,7 +126,7 @@ export class QueryBuilder {
           query = query.lte(field, value)
           break
         case 'like':
-          query = query.ilike(field, `%${value}%`)
+          query = query.ilike(field, `%${escapeIlikeSearch(String(value))}%`)
           break
         case 'in':
           if (Array.isArray(value)) {
@@ -203,7 +204,12 @@ export class QueryExecutor {
     entityType: EntityType,
     aggregation: { field: string; function: 'count' | 'sum' | 'avg' | 'max' | 'min' }
   ): Promise<number> {
-    const supabase = await createClient()
+    const ALLOWED_AGG_FUNCTIONS = ['count', 'sum', 'avg', 'max', 'min'] as const
+    if (!ALLOWED_AGG_FUNCTIONS.includes(aggregation.function)) {
+      throw new Error(`Invalid aggregation function: ${aggregation.function}`)
+    }
+
+    const supabase = createClient()
     const table = ENTITY_TABLE_MAP[entityType].table
 
     const { data, error } = await supabase
@@ -228,7 +234,7 @@ export class QueryExecutor {
     entityId: string,
     relatedType: EntityType
   ): Promise<unknown[]> {
-    const supabase = await createClient()
+    const supabase = createClient()
 
     // 根据实体类型确定关联关系
     const relationMap: Record<string, Record<string, { table: string; field: string }>> = {

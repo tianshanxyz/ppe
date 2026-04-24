@@ -1,16 +1,23 @@
 'use client'
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ShieldCheck } from 'lucide-react';
 
 export function Footer() {
   const pathname = usePathname();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // 检查是否在 PPE 路由下
+  const isPPEPage = pathname?.startsWith('/ppe');
 
   // 在 PPE 路由下不显示此 Footer（PPE 页面有自己的布局）
-  // 注意：这个条件必须在所有 hooks 之后
-  if (pathname?.startsWith('/ppe')) {
+  if (isPPEPage) {
     return null;
   }
 

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 // 数据源注册表
@@ -86,7 +87,8 @@ export async function GET_DATA_SOURCES_LINKS(
       )
     }
 
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     const { data: links, error } = await supabase
       .from('data_sources')
@@ -126,7 +128,8 @@ export async function POST(request: Request) {
       )
     }
 
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     const { data: link, error } = await supabase
       .from('data_sources')
@@ -173,7 +176,8 @@ export async function DELETE(
       )
     }
 
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     const { error } = await supabase
       .from('data_sources')

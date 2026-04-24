@@ -13,9 +13,11 @@ export default function PPELayout({
   children: React.ReactNode
 }) {
   return (
-    <>
+    <div className="ppe-layout">
       <PPENavbar />
-      {children}
-    </>
+      <div className="pt-16">
+        {children}
+      </div>
+    </div>
   )
 }

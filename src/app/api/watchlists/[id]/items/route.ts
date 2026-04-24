@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 // GET /api/watchlists/:id/items - 获取监控列表项
@@ -7,7 +8,8 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
     const { id } = await params
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -62,7 +64,8 @@ export async function POST(
   { params }: { params: Promise<any> }
 ) {
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 
@@ -131,7 +134,8 @@ export async function DELETE(
   { params }: { params: Promise<any> }
 ) {
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 

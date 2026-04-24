@@ -20,14 +20,23 @@ export function sanitizeInput(input: string): string {
 
   let sanitized = input.trim()
 
-  // 移除危险字符
   sanitized = sanitized
-    .replace(/[;'"\\]/g, '') // 移除引号和分号
-    .replace(/<script[^>]*>.*?<\/script>/gi, '') // 移除 script 标签
-    .replace(/javascript:/gi, '') // 移除 javascript: 协议
-    .replace(/on\w+\s*=/gi, '') // 移除 onclick= 等事件处理器
+    .replace(/<script[^>]*>.*?<\/script>/gi, '')
+    .replace(/javascript:/gi, '')
+    .replace(/on\w+\s*=/gi, '')
 
   return sanitized
+}
+
+/**
+ * 转义 ILIKE 搜索词中的通配符
+ * 防止用户利用 % 和 _ 进行通配符注入
+ */
+export function escapeIlikeSearch(input: string): string {
+  if (!isString(input)) {
+    return ''
+  }
+  return input.replace(/[%_\\]/g, '\\$&')
 }
 
 /**

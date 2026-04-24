@@ -6,6 +6,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { apiKeyService } from '@/lib/api-keys'
 
 /**
@@ -20,7 +21,8 @@ export async function GET(
   const { id } = await params
 
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     // 获取当前用户
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -71,7 +73,8 @@ export async function PATCH(
   const { id } = await params
 
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     // 获取当前用户
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -125,7 +128,8 @@ export async function DELETE(
   const { id } = await params
 
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     // 获取当前用户
     const { data: { user }, error: authError } = await supabase.auth.getUser()

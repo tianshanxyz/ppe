@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { getPPECategories, getTargetMarkets, getPPEStats, getComplianceData } from '@/lib/ppe-data'
 import { Package, FileText, Building, TrendingUp, Globe, Shield } from 'lucide-react'
@@ -11,9 +11,16 @@ export default function StatisticsPage() {
   const categories = getPPECategories()
   const markets = getTargetMarkets()
   
-  // 获取统计数据
-  const stats = useMemo(() => {
-    return getPPEStats()
+  const [stats, setStats] = useState<Awaited<ReturnType<typeof getPPEStats>>>({
+    totalProducts: 0,
+    totalRegulations: 0,
+    totalManufacturers: 0,
+    categoryCount: {},
+    marketCount: {},
+  })
+
+  useEffect(() => {
+    getPPEStats().then(setStats)
   }, [])
 
   // 品类分布数据

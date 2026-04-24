@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import { calculateTrustScore } from '@/lib/trust/scoring'
 
@@ -8,7 +9,8 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     // 获取企业基本信息
     const { data: company, error: companyError } = await supabase

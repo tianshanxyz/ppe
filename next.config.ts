@@ -54,13 +54,28 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // HTTP 头配置 - 最简化版本
+  // HTTP 头配置 - 安全头与缓存策略
   async headers() {
     return [
       {
-        // 全局安全头 - 最简化
+        // 全局安全头
         source: '/:path*',
         headers: [
+          // 内容安全策略
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://xtqhjyiyjhxfdzyypfqq.supabase.co https://api.medplum.com; frame-ancestors 'none';",
+          },
+          // HSTS - 强制 HTTPS
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          // 防止点击劫持
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
           // 防止 MIME 类型嗅探
           {
             key: 'X-Content-Type-Options',
@@ -70,6 +85,11 @@ const nextConfig: NextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
+          },
+          // 权限策略 - 禁用摄像头、麦克风、地理位置
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
           },
         ],
       },

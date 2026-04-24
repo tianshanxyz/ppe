@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 export interface ProductComparisonData {
@@ -48,7 +49,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     // 从 all_products 视图获取产品数据
     const { data: products, error } = await supabase

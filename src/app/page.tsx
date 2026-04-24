@@ -1,10 +1,7 @@
-'use client'
-
-import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, CheckCircle, Shield, Globe, Zap, Users, DollarSign, Package, Building } from 'lucide-react'
 import { getPPECategories, getTargetMarkets } from '@/lib/ppe-data'
-import { ComplianceCheckTool } from '@/components/ppe/ComplianceCheckTool'
+import { ComplianceCheckToolLoader } from '@/components/ppe/ComplianceCheckToolLoader'
 
 export default function HomePage() {
   const categories = getPPECategories()
@@ -73,7 +70,7 @@ export default function HomePage() {
               Select your product category and target market to get instant compliance guidance
             </p>
           </div>
-          <ComplianceCheckTool />
+          <ComplianceCheckToolLoader />
         </div>
       </section>
 

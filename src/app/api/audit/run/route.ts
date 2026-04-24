@@ -1,9 +1,11 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 // POST /api/audit/run - Run a data audit
 export async function POST(request: Request) {
-  const supabase = await createClient()
+  
+      const supabase = await createClient()
   
   try {
     const auditResults: Record<string, any> = {

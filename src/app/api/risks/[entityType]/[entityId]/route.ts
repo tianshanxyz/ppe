@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 interface EntityData {
@@ -21,7 +22,8 @@ export async function GET(
       )
     }
 
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
     let data: EntityData | null = null
 
     if (entityType === 'company') {
@@ -120,7 +122,8 @@ export async function POST(request: Request) {
       )
     }
 
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     // 这里可以添加风险检测逻辑
     // 目前返回空的结果

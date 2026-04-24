@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { generateAIContent } from '@/lib/ai/client'
 
 export async function POST(request: Request) {
@@ -14,7 +15,8 @@ export async function POST(request: Request) {
       )
     }
 
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     // 获取公司数据
     const { data: company, error: companyError } = await supabase

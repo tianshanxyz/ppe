@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { NextRequest } from 'next/server'
 import { validateEnum, validatePagination } from '@/lib/security/sanitize'
@@ -7,7 +8,8 @@ import { withRateLimit } from '@/lib/middleware/rateLimit'
 // GET /api/audit - Get audit reports
 export async function GET(request: NextRequest) {
   return withRateLimit(async (request: NextRequest) => {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
     const { searchParams } = new URL(request.url)
     
     const reportTypeParam = searchParams.get('report_type')

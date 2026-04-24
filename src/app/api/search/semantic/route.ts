@@ -10,10 +10,11 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { withRateLimit } from '@/lib/middleware/rateLimit'
 import { semanticSearch, hybridSearch, EntityType } from '@/lib/ai/vector-store'
 import { generateEmbedding } from '@/lib/ai/embedding'
-import { validateSearchQuery, validatePagination } from '@/lib/security/sanitize'
+import { validateSearchQuery, validatePagination, escapeIlikeSearch } from '@/lib/security/sanitize'
 
 export interface SemanticSearchRequest {
   query: string
@@ -262,13 +263,14 @@ async function keywordSearchOnly(
   similarity: number
   metadata?: Record<string, unknown>
 }>> {
-  const supabase = await createClient()
+  
+      const supabase = await createClient()
 
   // 构建关键词搜索查询
   let dbQuery = supabase
     .from('vector_embeddings')
     .select('*')
-    .ilike('content', `%${query}%`)
+    .ilike('content', `%${escapeIlikeSearch(query)}%`)
     .limit(options.limit)
 
   if (options.entityTypes && options.entityTypes.length > 0) {
@@ -327,7 +329,8 @@ async function enrichResults(
 }>> {
   if (results.length === 0) return []
 
-  const supabase = await createClient()
+  
+      const supabase = await createClient()
 
   // 按实体类型分组
   const groupedByType = results.reduce((acc, result) => {
@@ -409,7 +412,8 @@ async function logSearch(
   responseTimeMs: number
 ): Promise<void> {
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     await supabase
       .from('semantic_search_logs')

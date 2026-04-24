@@ -11,7 +11,7 @@
  */
 
 import { getMedplumClient, withMedplumAuth } from '../client'
-import { createClient as createSupabaseClient } from '@/lib/supabase/server'
+import { createClient as createSupabaseClient } from '@/lib/supabase/client'
 
 /**
  * 预警类型

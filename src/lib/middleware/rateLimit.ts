@@ -25,13 +25,15 @@ const DEFAULT_CONFIG: RateLimitConfig = {
 // Redis 客户端（单例）
 let redisClient: Redis | null = null
 
+const memoryStore = new Map<string, { count: number; resetAt: number }>()
+const MEMORY_STORE_MAX_SIZE = 10000
+
 function getRedisClient(): Redis | null {
   if (!redisClient) {
     const url = process.env.UPSTASH_REDIS_REST_URL
     const token = process.env.UPSTASH_REDIS_REST_TOKEN
 
     if (!url || !token) {
-      console.warn('Upstash Redis 环境变量未配置，速率限制功能将不可用')
       return null
     }
 
@@ -42,6 +44,47 @@ function getRedisClient(): Redis | null {
   }
 
   return redisClient
+}
+
+function checkMemoryRateLimit(identifier: string, config: RateLimitConfig): RateLimitResult {
+  const now = Date.now()
+  const windowMs = config.windowInSeconds * 1000
+  const key = generateRateLimitKey(identifier)
+
+  if (memoryStore.size >= MEMORY_STORE_MAX_SIZE) {
+    const oldestKey = memoryStore.keys().next().value
+    if (oldestKey) memoryStore.delete(oldestKey)
+  }
+
+  const entry = memoryStore.get(key)
+
+  if (!entry || now >= entry.resetAt) {
+    memoryStore.set(key, { count: 1, resetAt: now + windowMs })
+    return {
+      success: true,
+      limit: config.maxRequests,
+      remaining: config.maxRequests - 1,
+      reset: now + windowMs,
+    }
+  }
+
+  if (entry.count >= config.maxRequests) {
+    return {
+      success: false,
+      limit: config.maxRequests,
+      remaining: 0,
+      reset: entry.resetAt,
+      retryAfter: Math.ceil((entry.resetAt - now) / 1000),
+    }
+  }
+
+  entry.count++
+  return {
+    success: true,
+    limit: config.maxRequests,
+    remaining: config.maxRequests - entry.count,
+    reset: entry.resetAt,
+  }
 }
 
 /**
@@ -89,14 +132,9 @@ export async function checkRateLimit(
 ): Promise<RateLimitResult> {
   const redis = getRedisClient()
 
-  // 如果 Redis 未配置，跳过速率限制
   if (!redis) {
-    return {
-      success: true,
-      limit: config.maxRequests,
-      remaining: config.maxRequests,
-      reset: Date.now() + config.windowInSeconds * 1000,
-    }
+    const identifier = getClientIdentifier(request)
+    return checkMemoryRateLimit(identifier, config)
   }
 
   try {

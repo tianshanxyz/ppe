@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers';
+import { escapeIlikeSearch } from '@/lib/security/sanitize';
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,7 +15,8 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20');
     const offset = (page - 1) * limit;
 
-    const supabase = await createClient();
+    
+      const supabase = await createClient();
 
     // 构建查询条件 - 简化版本
     let queryBuilder = supabase
@@ -22,7 +25,7 @@ export async function GET(request: NextRequest) {
 
     // 只添加基本的搜索条件
     if (query) {
-      queryBuilder = queryBuilder.ilike('title', `%${query}%`);
+      queryBuilder = queryBuilder.ilike('title', `%${escapeIlikeSearch(query)}%`);
     }
 
     // 分页

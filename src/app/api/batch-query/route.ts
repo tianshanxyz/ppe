@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import { SafeExcelParser, ExcelRow } from '@/lib/excel-safe'
+import { escapeIlikeSearch } from '@/lib/security/sanitize'
 
 export interface BatchQueryRequest {
   type: 'company' | 'product'
@@ -42,7 +44,8 @@ setInterval(() => {
 
 export async function POST(request: Request) {
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 
     if (authError || !user) {
@@ -108,7 +111,7 @@ async function processSingleQuery(
       const { data: company, error } = await supabaseClient
         .from('companies')
         .select('*')
-        .ilike('name', `%${query}%`)
+        .ilike('name', `%${escapeIlikeSearch(query)}%`)
         .limit(1)
         .single()
 
@@ -116,7 +119,7 @@ async function processSingleQuery(
         const { data: companies, error: searchError } = await supabaseClient
           .from('companies')
           .select('*')
-          .ilike('name', `%${query}%`)
+          .ilike('name', `%${escapeIlikeSearch(query)}%`)
           .limit(5)
 
         if (!searchError && companies && companies.length > 0) {
@@ -129,7 +132,7 @@ async function processSingleQuery(
       const { data: product, error } = await supabaseClient
         .from('products')
         .select('*')
-        .ilike('name', `%${query}%`)
+        .ilike('name', `%${escapeIlikeSearch(query)}%`)
         .limit(1)
         .single()
 
@@ -137,7 +140,7 @@ async function processSingleQuery(
         const { data: products, error: searchError } = await supabaseClient
           .from('products')
           .select('*')
-          .ilike('name', `%${query}%`)
+          .ilike('name', `%${escapeIlikeSearch(query)}%`)
           .limit(5)
 
         if (!searchError && products && products.length > 0) {
@@ -181,6 +184,7 @@ async function processBatchQuery(jobId: string, file: File, type: 'company' | 'p
     jobStore[jobId].status = 'processing'
     jobStore[jobId].total = data.length
 
+    const cookieStore2 = cookies()
     const supabaseClient = await createClient()
     const results: BatchQueryResultItem[] = []
     const errors: Array<{ query: string; error: string; row: number }> = []
@@ -242,7 +246,8 @@ export async function GET(
   { params }: { params: Promise<any> }
 ) {
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 
     if (authError || !user) {
@@ -278,7 +283,8 @@ export async function DOWNLOAD(
   { params }: { params: Promise<any> }
 ) {
   try {
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 
     if (authError || !user) {

@@ -5,7 +5,7 @@
  * 监控产品认证过期、召回、法规变更等风险
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 import { EnhancedPPEProduct, EnhancedPPEManufacturer } from '@/lib/database/enhanced-types'
 
 // ============================================
@@ -76,7 +76,7 @@ export class ComplianceRiskMonitor {
    * 检查即将过期的认证
    */
   async checkExpiringCertifications(): Promise<RiskAlert[]> {
-    const supabase = await createClient()
+    const supabase = createClient()
     const alerts: RiskAlert[] = []
     const expiryDate = new Date()
     expiryDate.setDate(expiryDate.getDate() + this.config.certificationExpiryDays)
@@ -130,7 +130,7 @@ export class ComplianceRiskMonitor {
    * 检查已过期的认证
    */
   async checkExpiredCertifications(): Promise<RiskAlert[]> {
-    const supabase = await createClient()
+    const supabase = createClient()
     const alerts: RiskAlert[] = []
 
     const { data: products, error } = await supabase
@@ -180,7 +180,7 @@ export class ComplianceRiskMonitor {
    * 检查制造商风险事件
    */
   async checkManufacturerRisks(): Promise<RiskAlert[]> {
-    const supabase = await createClient()
+    const supabase = createClient()
     const alerts: RiskAlert[] = []
 
     // 查询有召回记录的制造商
@@ -249,7 +249,7 @@ export class ComplianceRiskMonitor {
    * 检查法规变更
    */
   async checkRegulationChanges(): Promise<RiskAlert[]> {
-    const supabase = await createClient()
+    const supabase = createClient()
     const alerts: RiskAlert[] = []
 
     // 查询最近更新的法规
@@ -360,7 +360,7 @@ export interface UserAlertConfig {
 export async function createUserAlertConfig(
   config: Omit<UserAlertConfig, 'id' | 'createdAt' | 'triggerCount'>
 ): Promise<UserAlertConfig | null> {
-  const supabase = await createClient()
+  const supabase = createClient()
 
   const { data, error } = await supabase
     .from('user_alerts')
@@ -384,7 +384,7 @@ export async function createUserAlertConfig(
  * 获取用户预警配置
  */
 export async function getUserAlertConfigs(userId: string): Promise<UserAlertConfig[]> {
-  const supabase = await createClient()
+  const supabase = createClient()
 
   const { data, error } = await supabase
     .from('user_alerts')
@@ -407,7 +407,7 @@ export async function updateUserAlertConfig(
   alertId: string,
   updates: Partial<UserAlertConfig>
 ): Promise<boolean> {
-  const supabase = await createClient()
+  const supabase = createClient()
 
   const { error } = await supabase
     .from('user_alerts')
@@ -429,7 +429,7 @@ export async function updateUserAlertConfig(
  * 删除预警配置
  */
 export async function deleteUserAlertConfig(alertId: string): Promise<boolean> {
-  const supabase = await createClient()
+  const supabase = createClient()
 
   const { error } = await supabase
     .from('user_alerts')
@@ -453,7 +453,7 @@ export class AlertNotificationService {
    * 发送应用内通知
    */
   async sendInAppNotification(userId: string, alert: RiskAlert): Promise<void> {
-    const supabase = await createClient()
+    const supabase = createClient()
 
     await supabase.from('notifications').insert({
       user_id: userId,

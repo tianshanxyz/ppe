@@ -13,12 +13,14 @@ const languages = [
 
 export function Header() {
   const pathname = usePathname();
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentLang, setCurrentLang] = useState('en');
   const [showLangMenu, setShowLangMenu] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const user = localStorage.getItem('user');
     setIsLoggedIn(!!user);
   }, []);
@@ -28,9 +30,11 @@ export function Header() {
     setShowLangMenu(false);
   };
 
+  // 检查是否在 PPE 路由下
+  const isPPEPage = pathname?.startsWith('/ppe');
+
   // 在 PPE 路由下不显示此 Header（PPE 有自己的 PPENavbar）
-  // 注意：这个条件必须在所有 hooks 之后
-  if (pathname?.startsWith('/ppe')) {
+  if (isPPEPage) {
     return null;
   }
 
@@ -50,14 +54,8 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            <Link href="/ppe" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
-              PPE Platform
-            </Link>
             <Link href="/about" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
               About
-            </Link>
-            <Link href="/ppe/pricing" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all">
-              Pricing
             </Link>
           </nav>
 
@@ -131,72 +129,36 @@ export function Header() {
           <div className="md:hidden py-2 border-t border-gray-100">
             <nav className="flex flex-col gap-1 pb-2">
               <Link
-                href="/ppe"
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                PPE Platform
-              </Link>
-              <Link
                 href="/about"
                 className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 About
               </Link>
-              <Link
-                href="/ppe/pricing"
-                className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Pricing
-              </Link>
-              
-              {/* Mobile Language Switcher */}
-              <div className="px-4 py-2.5 border-t border-gray-100 mt-2">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Globe className="w-4 h-4" />
-                  <span>Language:</span>
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => handleLangChange(lang.code)}
-                      className={`px-2 py-1 rounded ${
-                        currentLang === lang.code 
-                          ? 'text-primary font-medium bg-primary/5' 
-                          : 'text-gray-500 hover:text-primary'
-                      }`}
-                    >
-                      {lang.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="pt-2 mt-2 border-t border-gray-100 space-y-2">
-                {isLoggedIn ? (
-                  <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+            </nav>
+            <div className="flex flex-col gap-2 px-4 pt-2 border-t border-gray-100">
+              {isLoggedIn ? (
+                <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="outline" className="w-full border-gray-200">
+                    <User className="w-4 h-4 mr-2" />
+                    Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" className="w-full border-gray-200">
-                      <User className="w-4 h-4 mr-2" />
-                      Dashboard
+                      Login
                     </Button>
                   </Link>
-                ) : (
-                  <>
-                    <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
-                      <Button variant="outline" className="w-full border-gray-200">
-                        Login
-                      </Button>
-                    </Link>
-                    <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
-                      <Button className="w-full bg-primary hover:bg-primary-dark text-white">
-                        Get Started
-                      </Button>
-                    </Link>
-                  </>
-                )}
-              </div>
-            </nav>
+                  <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
+                    <Button className="w-full bg-primary hover:bg-primary-dark text-white">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         )}
       </div>

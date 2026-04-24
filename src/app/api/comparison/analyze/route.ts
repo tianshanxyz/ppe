@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import { generateComparisonAnalysis } from '@/lib/ai/client'
 
@@ -14,7 +15,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     let items = []
     let comparisonData = null

@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
+import { escapeIlikeSearch } from '@/lib/security/sanitize'
 
 /**
  * PPE 产品数据访问服务（基于真实数据库结构）
@@ -109,7 +110,7 @@ export async function getPPEProducts({
     search?: string
   }
 }) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   let query = supabase
     .from('ppe_products')
@@ -133,7 +134,7 @@ export async function getPPEProducts({
   }
   
   if (filters.search) {
-    query = query.or(`product_name.ilike.%${filters.search}%,product_code.ilike.%${filters.search}%,manufacturer_name.ilike.%${filters.search}%`)
+    query = query.or(`product_name.ilike.%${escapeIlikeSearch(filters.search)}%,product_code.ilike.%${escapeIlikeSearch(filters.search)}%,manufacturer_name.ilike.%${escapeIlikeSearch(filters.search)}%`)
   }
   
   // 分页
@@ -161,7 +162,7 @@ export async function getPPEProducts({
  * 获取单个 PPE 产品详情
  */
 export async function getPPEProduct(id: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from('ppe_products')
@@ -186,12 +187,12 @@ export async function getPPEProduct(id: string) {
  * 搜索 PPE 产品
  */
 export async function searchPPEProducts(query: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from('ppe_products')
     .select('*')
-    .or(`product_name.ilike.%${query}%,product_code.ilike.%${query}%,description.ilike.%${query}%`)
+    .or(`product_name.ilike.%${escapeIlikeSearch(query)}%,product_code.ilike.%${escapeIlikeSearch(query)}%,description.ilike.%${escapeIlikeSearch(query)}%`)
     .limit(20)
   
   if (error) {
@@ -206,56 +207,34 @@ export async function searchPPEProducts(query: string) {
  * 获取 PPE 产品统计数据
  */
 export async function getPPEProductStats() {
-  const supabase = await createClient()
+  const supabase = createClient()
   
-  // 总产品数
   const { count: totalCount } = await supabase
     .from('ppe_products')
     .select('*', { count: 'exact', head: true })
   
-  // 按国家统计
-  const { data: countryStats } = await supabase
+  const { data: allStats } = await supabase
     .from('ppe_products')
-    .select('manufacturer_country')
+    .select('manufacturer_country, product_category, ppe_category, registration_status')
   
-  const countryCount = countryStats?.reduce((acc, product) => {
+  const countryCount: Record<string, number> = {}
+  const categoryCount: Record<string, number> = {}
+  const ppeCategoryCount: Record<string, number> = {}
+  const statusCount: Record<string, number> = {}
+
+  allStats?.forEach((product) => {
     const country = product.manufacturer_country || 'Unknown'
-    acc[country] = (acc[country] || 0) + 1
-    return acc
-  }, {} as Record<string, number>) || {}
-  
-  // 按分类统计
-  const { data: categoryStats } = await supabase
-    .from('ppe_products')
-    .select('product_category')
-  
-  const categoryCount = categoryStats?.reduce((acc, product) => {
+    countryCount[country] = (countryCount[country] || 0) + 1
+
     const category = product.product_category || 'Unknown'
-    acc[category] = (acc[category] || 0) + 1
-    return acc
-  }, {} as Record<string, number>) || {}
-  
-  // 按 PPE 等级统计
-  const { data: ppeCategoryStats } = await supabase
-    .from('ppe_products')
-    .select('ppe_category')
-  
-  const ppeCategoryCount = ppeCategoryStats?.reduce((acc, product) => {
-    const category = product.ppe_category || 'Unknown'
-    acc[category] = (acc[category] || 0) + 1
-    return acc
-  }, {} as Record<string, number>) || {}
-  
-  // 按注册状态统计
-  const { data: statusStats } = await supabase
-    .from('ppe_products')
-    .select('registration_status')
-  
-  const statusCount = statusStats?.reduce((acc, product) => {
+    categoryCount[category] = (categoryCount[category] || 0) + 1
+
+    const ppeCat = product.ppe_category || 'Unknown'
+    ppeCategoryCount[ppeCat] = (ppeCategoryCount[ppeCat] || 0) + 1
+
     const status = product.registration_status || 'Unknown'
-    acc[status] = (acc[status] || 0) + 1
-    return acc
-  }, {} as Record<string, number>) || {}
+    statusCount[status] = (statusCount[status] || 0) + 1
+  })
   
   return {
     totalProducts: totalCount || 0,
@@ -278,7 +257,7 @@ export async function getPPEManufacturers({
   limit?: number
   country?: string
 }) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   let query = supabase
     .from('ppe_manufacturers')
@@ -312,7 +291,7 @@ export async function getPPEManufacturers({
  * 获取制造商详情
  */
 export async function getPPEManufacturer(id: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from('ppe_manufacturers')
@@ -347,7 +326,7 @@ export async function getPPERegulations({
   jurisdiction?: string
   category?: string
 }) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   let query = supabase
     .from('ppe_regulations')
@@ -385,7 +364,7 @@ export async function getPPERegulations({
  * 获取法规详情
  */
 export async function getPPERegulation(id: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from('ppe_regulations')
@@ -405,7 +384,7 @@ export async function getPPERegulation(id: string) {
  * 获取所有国家列表
  */
 export async function getPPECountries() {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from('ppe_products')
@@ -424,7 +403,7 @@ export async function getPPECountries() {
  * 获取所有产品分类列表
  */
 export async function getPPECategories() {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from('ppe_products')
@@ -450,7 +429,7 @@ export async function getPPERiskCategories() {
  * 获取认证机构列表
  */
 export async function getPECertificationBodies() {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from('ppe_certification_bodies')
@@ -469,7 +448,7 @@ export async function getPECertificationBodies() {
  * 获取市场统计数据
  */
 export async function getMarketStats() {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   // 获取所有市场数据
   const { data: marketData } = await supabase
@@ -502,7 +481,7 @@ export async function getMarketStats() {
  * 获取竞争对手列表
  */
 export async function getCompetitors() {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   const { data, error } = await supabase
     .from('ppe_competitors')

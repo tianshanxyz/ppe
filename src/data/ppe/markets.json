@@ -1,0 +1,42 @@
+[
+  {
+    "code": "EU",
+    "name": "European Union",
+    "name_zh": "欧盟",
+    "flag_emoji": "🇪🇺",
+    "regulation_name": "EU 2016/425 (PPE Regulation)",
+    "authority": "European Commission"
+  },
+  {
+    "code": "US",
+    "name": "United States",
+    "name_zh": "美国",
+    "flag_emoji": "🇺🇸",
+    "regulation_name": "FDA 21 CFR / OSHA 29 CFR",
+    "authority": "FDA / OSHA"
+  },
+  {
+    "code": "UK",
+    "name": "United Kingdom",
+    "name_zh": "英国",
+    "flag_emoji": "🇬🇧",
+    "regulation_name": "UKCA Marking / UK PPE Regulations",
+    "authority": "HSE / UKAS"
+  },
+  {
+    "code": "CN",
+    "name": "China",
+    "name_zh": "中国",
+    "flag_emoji": "🇨🇳",
+    "regulation_name": "GB 2626 / GB 19083 / NMPA",
+    "authority": "SAMR / NMPA"
+  },
+  {
+    "code": "GCC",
+    "name": "Gulf Cooperation Council",
+    "name_zh": "海湾六国",
+    "flag_emoji": "🌍",
+    "regulation_name": "GSO Standards / GCC Technical Regulations",
+    "authority": "GCC Standardization Organization"
+  }
+]

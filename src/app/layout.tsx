@@ -3,8 +3,7 @@ import { Suspense } from 'react'
 import './globals.css'
 import { StructuredData } from '@/components/seo/StructuredData'
 import { MarketProvider } from '@/components/market/MarketSwitcher'
-import { Header } from '@/components/layouts/Header'
-import { Footer } from '@/components/layouts/Footer'
+import { ClientLayout } from '@/components/layouts/ClientLayout'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { Loader2 } from 'lucide-react'
 import { validateAndLog } from '@/lib/config/env-validator'
@@ -73,19 +72,19 @@ export default function RootLayout({
       <body>
         <LanguageProvider>
           <MarketProvider>
-            <Header />
-            <main className="min-h-screen">
-              <ErrorBoundary>
-                <Suspense fallback={
-                  <div className="flex items-center justify-center min-h-screen">
-                    <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
-                  </div>
-                }>
-                  {children}
-                </Suspense>
-              </ErrorBoundary>
-            </main>
-            <Footer />
+            <ClientLayout>
+              <main className="min-h-screen">
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <div className="flex items-center justify-center min-h-screen">
+                      <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
+                    </div>
+                  }>
+                    {children}
+                  </Suspense>
+                </ErrorBoundary>
+              </main>
+            </ClientLayout>
           </MarketProvider>
         </LanguageProvider>
       </body>

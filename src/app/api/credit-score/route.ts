@@ -16,6 +16,7 @@ import {
   CompareScoresResponse,
 } from '@/lib/ai/credit-score/types'
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 
 // ============================================
 // 辅助函数
@@ -83,6 +84,7 @@ export async function POST(request: NextRequest) {
 
     // 检查是否需要强制重新计算
     if (!body.force_recalculate) {
+      
       const supabase = await createClient()
       const { data: existingScore } = await supabase
         .from('manufacturer_credit_scores')
@@ -179,7 +181,8 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     // 获取制造商信息和信用评分
     const { data: manufacturer, error } = await supabase
@@ -260,7 +263,8 @@ export async function PATCH(request: NextRequest) {
 
   try {
     const body: BatchCalculateRequest = await request.json()
-    const supabase = await createClient()
+    
+      const supabase = await createClient()
 
     let manufacturerIds: string[] = []
 
