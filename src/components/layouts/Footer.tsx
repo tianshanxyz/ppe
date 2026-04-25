@@ -41,32 +41,42 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-gray-900 mb-4">{t.product}</h4>
+            <h4 className="font-semibold text-gray-900 mb-4">{t.complianceTools}</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/ppe" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.ppePlatform}
+                <Link href="/ppe/market-access" className="text-gray-500 hover:text-primary transition-colors">
+                  {t.complianceChecker}
                 </Link>
               </li>
               <li>
-                <Link href="/ppe/pricing" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.pricing}
+                <Link href="/ppe/certification-comparison" className="text-gray-500 hover:text-primary transition-colors">
+                  {t.marketComparison}
+                </Link>
+              </li>
+              <li>
+                <Link href="/ppe/cost-calculator" className="text-gray-500 hover:text-primary transition-colors">
+                  {t.costCalculator}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold text-gray-900 mb-4">{t.resources}</h4>
+            <h4 className="font-semibold text-gray-900 mb-4">{t.dataCenter}</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/help" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.helpCenter}
+                <Link href="/ppe/products" className="text-gray-500 hover:text-primary transition-colors">
+                  {t.productDatabase}
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.aboutUs}
+                <Link href="/ppe/manufacturers" className="text-gray-500 hover:text-primary transition-colors">
+                  {t.manufacturers}
+                </Link>
+              </li>
+              <li>
+                <Link href="/ppe/regulations-new" className="text-gray-500 hover:text-primary transition-colors">
+                  {t.regulations}
                 </Link>
               </li>
             </ul>
@@ -78,6 +88,11 @@ export function Footer() {
               <li>
                 <Link href="/about" className="text-gray-500 hover:text-primary transition-colors">
                   {t.aboutUs}
+                </Link>
+              </li>
+              <li>
+                <Link href="/help" className="text-gray-500 hover:text-primary transition-colors">
+                  {t.helpCenter}
                 </Link>
               </li>
               <li>

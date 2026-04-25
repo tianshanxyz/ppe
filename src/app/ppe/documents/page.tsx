@@ -537,8 +537,34 @@ export default function DocumentsPage() {
     return matchCategory && matchSearch && matchMarket
   })
 
-  const handleDownload = (docId: string, docTitle: string) => {
-    alert(`Downloading: ${docTitle}\n\nNote: This is a demo. In production, this would download the actual document.`)
+  const handleDownload = async (docId: string, docTitle: string) => {
+    try {
+      // 调用下载API
+      const response = await fetch(`/api/documents/download?id=${encodeURIComponent(docId)}`)
+      
+      if (!response.ok) {
+        throw new Error('Download failed')
+      }
+      
+      // 获取文件名
+      const contentDisposition = response.headers.get('content-disposition')
+      const filename = contentDisposition?.match(/filename="(.+)"/)?.[1] || `${docId}.txt`
+      
+      // 创建下载链接
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+      
+    } catch (error) {
+      console.error('Download error:', error)
+      alert(`Failed to download: ${docTitle}\n\nPlease try again later.`)
+    }
   }
 
   const toggleGuideSection = (index: number) => {

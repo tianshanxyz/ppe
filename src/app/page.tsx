@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ArrowRight, CheckCircle, Shield, Globe, Zap, Users, DollarSign, Package, Building } from 'lucide-react'
 import { getPPECategories, getTargetMarkets } from '@/lib/ppe-data'
 import { ComplianceCheckToolLoader } from '@/components/ppe/ComplianceCheckToolLoader'
+import { GlobalSearch } from '@/components/search/GlobalSearch'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 import { homeTranslations, getTranslations } from '@/lib/i18n/translations'
 
@@ -25,6 +26,12 @@ export default function HomePage() {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               {t.heroSubtitle}
             </p>
+            
+            {/* 全局搜索框 */}
+            <div className="mb-12">
+              <GlobalSearch />
+            </div>
+            
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
               <Link
                 href="#compliance-check"

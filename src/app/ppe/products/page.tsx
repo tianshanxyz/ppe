@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Search, Filter, Package, TrendingUp, BarChart3, Download, ExternalLink, CheckCircle2, AlertCircle } from 'lucide-react'
+import { Search, Filter, Package, TrendingUp, BarChart3, Download, ExternalLink, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { getPPEProductsClient, getPPEProductStats, getPPECategories, getPPECountries } from '@/lib/ppe-database-client'
+import { intelligentSearch, SearchResult } from '@/lib/search-service'
 import { PPEIcon } from '@/components/ppe/PPEIcons'
 
 const fadeInUp = {
@@ -68,21 +69,43 @@ export default function ProductsPage() {
     setError(null)
     
     try {
-      // 加载产品列表
-      const filters: any = {}
-      if (selectedCountry !== 'all') filters.country = selectedCountry
-      if (selectedCategory !== 'all') filters.category = selectedCategory
-      if (selectedPPECategory !== 'all') filters.ppe_category = selectedPPECategory
-      if (searchQuery) filters.search = searchQuery
-      
-      const result = await getPPEProductsClient({
-        page,
-        limit,
-        filters,
-      })
-      
-      setProducts(result.data)
-      setTotal(result.total)
+      // 如果有搜索关键词，使用智能搜索
+      if (searchQuery.trim()) {
+        const searchResult = await intelligentSearch(searchQuery, {
+          category: selectedCategory !== 'all' ? selectedCategory : undefined,
+          country: selectedCountry !== 'all' ? selectedCountry : undefined,
+          limit: limit
+        })
+        
+        // 只显示产品类型的结果
+        const productResults = searchResult.results.filter(r => r.type === 'product')
+        setProducts(productResults.map(r => ({
+          id: r.id,
+          product_name: r.title,
+          product_category: r.subtitle,
+          description: r.description,
+          manufacturer_country: r.metadata?.manufacturerCountry,
+          manufacturer_name: r.metadata?.manufacturerName,
+          risk_level: r.metadata?.riskLevel,
+          similarity: r.similarity
+        })))
+        setTotal(searchResult.total)
+      } else {
+        // 加载产品列表
+        const filters: any = {}
+        if (selectedCountry !== 'all') filters.country = selectedCountry
+        if (selectedCategory !== 'all') filters.category = selectedCategory
+        if (selectedPPECategory !== 'all') filters.ppe_category = selectedPPECategory
+        
+        const result = await getPPEProductsClient({
+          page,
+          limit,
+          filters,
+        })
+        
+        setProducts(result.data)
+        setTotal(result.total)
+      }
       
       // 加载统计数据
       const statsData = await getPPEProductStats()
