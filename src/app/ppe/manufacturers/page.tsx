@@ -26,12 +26,13 @@ export default function ManufacturersPage() {
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const [selectedCountry, setSelectedCountry] = useState<string>('all')
+  const [searchQuery, setSearchQuery] = useState('')
 
   const limit = 20
 
   useEffect(() => {
     loadManufacturers()
-  }, [page, selectedCountry])
+  }, [page, selectedCountry, searchQuery])
 
   async function loadManufacturers() {
     setLoading(true)
@@ -40,11 +41,12 @@ export default function ManufacturersPage() {
         page,
         limit,
         country: selectedCountry !== 'all' ? selectedCountry : undefined,
+        search: searchQuery || undefined,
       })
       setManufacturers(result.data)
       setTotal(result.total)
     } catch (error) {
-      console.error('加载制造商列表失败:', error)
+      console.error('Failed to load manufacturers:', error)
     } finally {
       setLoading(false)
     }
@@ -88,9 +90,19 @@ export default function ManufacturersPage() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div className="flex flex-col sm:flex-row items-center justify-between gap-4" variants={fadeInUp}>
+            <div className="relative w-full sm:w-80">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => { setSearchQuery(e.target.value); setPage(1) }}
+                placeholder="Search manufacturers..."
+                className="w-full pl-12 pr-4 py-2.5 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
+              />
+            </div>
             <div className="flex items-center gap-4">
               <label className="text-sm font-semibold text-gray-700">
-                Filter by Country:
+                Country:
               </label>
               <select
                 value={selectedCountry}

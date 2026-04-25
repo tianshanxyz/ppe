@@ -522,10 +522,12 @@ export async function getPPEManufacturersClient({
   page = 1,
   limit = 20,
   country,
+  search,
 }: {
   page?: number
   limit?: number
   country?: string
+  search?: string
 }) {
   const supabase = createClient()
   
@@ -537,6 +539,11 @@ export async function getPPEManufacturersClient({
     if (country) {
       query = query.eq('country', country)
     }
+
+    if (search) {
+      const term = search.trim()
+      query = query.or(`company_name.ilike.%${term}%,country.ilike.%${term}%,city.ilike.%${term}%`)
+    }
     
     const from = (page - 1) * limit
     const to = from + limit - 1
@@ -546,11 +553,16 @@ export async function getPPEManufacturersClient({
     const { data, error, count } = await query
     
     if (error) {
-      console.error('获取制造商列表失败:', error)
-      // 返回默认数据
+      console.error('Failed to load manufacturers:', error)
       let filteredData = DEFAULT_MANUFACTURERS
       if (country) {
-        filteredData = DEFAULT_MANUFACTURERS.filter(m => m.country === country)
+        filteredData = filteredData.filter(m => m.country === country)
+      }
+      if (search) {
+        filteredData = filteredData.filter(m => 
+          m.company_name.toLowerCase().includes(search.toLowerCase()) ||
+          m.country.toLowerCase().includes(search.toLowerCase())
+        )
       }
       return { 
         data: filteredData, 
@@ -560,11 +572,16 @@ export async function getPPEManufacturersClient({
       }
     }
     
-    // 如果数据库中没有数据，返回默认数据
     if (!data || data.length === 0) {
       let filteredData = DEFAULT_MANUFACTURERS
       if (country) {
-        filteredData = DEFAULT_MANUFACTURERS.filter(m => m.country === country)
+        filteredData = filteredData.filter(m => m.country === country)
+      }
+      if (search) {
+        filteredData = filteredData.filter(m => 
+          m.company_name.toLowerCase().includes(search.toLowerCase()) ||
+          m.country.toLowerCase().includes(search.toLowerCase())
+        )
       }
       return { 
         data: filteredData, 
