@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import '../globals.css'
 import { PPENavbar } from '@/components/layout/PPENavbar'
+import { LanguageProvider } from '@/lib/i18n/LanguageContext'
 
 export const metadata: Metadata = {
   title: 'MDLooker PPE - Free PPE Compliance Check',
@@ -13,11 +14,11 @@ export default function PPELayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="ppe-layout">
-      <PPENavbar />
-      <div className="pt-16">
+    <LanguageProvider>
+      <div className="ppe-layout">
+        <PPENavbar />
         {children}
       </div>
-    </div>
+    </LanguageProvider>
   )
 }

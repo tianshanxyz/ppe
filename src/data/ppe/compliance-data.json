@@ -23,16 +23,8 @@
       "Technical documentation",
       "User instructions and labeling"
     ],
-    "estimated_cost": {
-      "min": 15000,
-      "max": 50000,
-      "currency": "EUR"
-    },
-    "estimated_timeline": {
-      "min": 6,
-      "max": 12,
-      "unit": "months"
-    },
+    "estimated_cost": { "min": 15000, "max": 50000, "currency": "EUR" },
+    "estimated_timeline": { "min": 6, "max": 12, "unit": "months" },
     "customs_documents": [
       "CE Certificate of Conformity",
       "EU Declaration of Conformity",
@@ -71,16 +63,8 @@
       "Medical Device Listing",
       "Quality System Regulation (21 CFR Part 820)"
     ],
-    "estimated_cost": {
-      "min": 12000,
-      "max": 100000,
-      "currency": "USD"
-    },
-    "estimated_timeline": {
-      "min": 4,
-      "max": 12,
-      "unit": "months"
-    },
+    "estimated_cost": { "min": 12000, "max": 100000, "currency": "USD" },
+    "estimated_timeline": { "min": 4, "max": 12, "unit": "months" },
     "customs_documents": [
       "FDA 510(k) Clearance Letter",
       "NIOSH Approval Letter",
@@ -93,6 +77,123 @@
       "State-specific distribution requirements may apply",
       "FDA inspection possible for foreign manufacturers",
       "Adverse event reporting mandatory (MDR)"
+    ]
+  },
+  {
+    "category_id": "respiratory-protection",
+    "market_code": "UK",
+    "classification": "Category II / Category III",
+    "standards": [
+      {
+        "name": "BS EN 149:2001+A1:2009",
+        "title": "Respiratory protective devices - Filtering half masks",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030265073"
+      },
+      {
+        "name": "BS EN 14683:2019+AC:2019",
+        "title": "Medical face masks - Requirements and test methods",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030354945"
+      }
+    ],
+    "certification_requirements": [
+      "UKCA Marking under UK PPE Regulations",
+      "UK Approved Body assessment",
+      "UK Type Examination",
+      "Technical documentation",
+      "Quality assurance system"
+    ],
+    "estimated_cost": { "min": 12000, "max": 45000, "currency": "GBP" },
+    "estimated_timeline": { "min": 5, "max": 10, "unit": "months" },
+    "customs_documents": [
+      "UKCA Certificate",
+      "UK Declaration of Conformity",
+      "Technical File",
+      "Test Reports",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "UKCA marking required for Great Britain",
+      "CE marking still valid for Northern Ireland (with conditions)",
+      "UK Approved Body list differs from EU Notified Bodies",
+      "Post-market surveillance requirements apply"
+    ]
+  },
+  {
+    "category_id": "respiratory-protection",
+    "market_code": "CN",
+    "classification": "Class II / Class III",
+    "standards": [
+      {
+        "name": "GB 2626-2019",
+        "title": "Respiratory protective equipment - Non-powered air-purifying particle respirators",
+        "url": "https://www.gov.cn/fuwu/zt/2020-03/09/content_5488589.htm"
+      },
+      {
+        "name": "GB 19083-2010",
+        "title": "Technical requirements for protective face mask for medical use",
+        "url": "https://www.nmpa.gov.cn"
+      }
+    ],
+    "certification_requirements": [
+      "NMPA Registration",
+      "Product technical requirements review",
+      "Clinical evaluation (for some products)",
+      "Quality Management System (QMS) certification",
+      "Factory inspection"
+    ],
+    "estimated_cost": { "min": 50000, "max": 150000, "currency": "CNY" },
+    "estimated_timeline": { "min": 8, "max": 18, "unit": "months" },
+    "customs_documents": [
+      "NMPA Registration Certificate",
+      "Product Technical Requirements",
+      "Test Reports (CNCA approved labs)",
+      "Quality System Certificate",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "NMPA registration mandatory for domestic sale",
+      "Only CNCA-approved laboratories valid for testing",
+      "Product categories determine registration pathway",
+      "Labeling in Chinese required"
+    ]
+  },
+  {
+    "category_id": "respiratory-protection",
+    "market_code": "GCC",
+    "classification": "Category III",
+    "standards": [
+      {
+        "name": "GSO ISO 16900-3",
+        "title": "Respiratory protective devices - Air-purifying particle respirators",
+        "url": "https://www.gso.org.sa"
+      },
+      {
+        "name": "BS EN 149:2001+A1:2009",
+        "title": "Respiratory protective devices - Filtering half masks",
+        "url": "https://standards.globalspec.com/std/9885385/en-149"
+      }
+    ],
+    "certification_requirements": [
+      "GCC Conformity Marking (G-mark)",
+      "Product certification by GSO-approved body",
+      "Type examination",
+      "Factory production control assessment",
+      "Technical documentation"
+    ],
+    "estimated_cost": { "min": 20000, "max": 60000, "currency": "USD" },
+    "estimated_timeline": { "min": 4, "max": 8, "unit": "months" },
+    "customs_documents": [
+      "GCC Certificate of Conformity",
+      "G-Mark Certificate",
+      "Test Reports",
+      "Technical File",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "G-marking mandatory for products listed in GCC technical regulations",
+      "Products must comply with relevant GSO standards",
+      "Local representative required in GCC countries",
+      "Annual renewal of certificates required"
     ]
   },
   {
@@ -118,16 +219,8 @@
       "Quality assurance system",
       "User instructions and labeling"
     ],
-    "estimated_cost": {
-      "min": 8000,
-      "max": 30000,
-      "currency": "EUR"
-    },
-    "estimated_timeline": {
-      "min": 3,
-      "max": 6,
-      "unit": "months"
-    },
+    "estimated_cost": { "min": 8000, "max": 30000, "currency": "EUR" },
+    "estimated_timeline": { "min": 3, "max": 6, "unit": "months" },
     "customs_documents": [
       "CE Certificate",
       "EU Declaration of Conformity",
@@ -140,6 +233,1111 @@
       "Notified Body assessment mandatory",
       "Regular quality control testing required",
       "Marking must include CE symbol and Notified Body number"
+    ]
+  },
+  {
+    "category_id": "safety-footwear",
+    "market_code": "US",
+    "classification": "Class I / Class II",
+    "standards": [
+      {
+        "name": "ASTM F2413-18",
+        "title": "Standard Specification for Performance Requirements for Protective (Safety) Toe Cap Footwear",
+        "url": "https://www.astm.org/f2413-18.html"
+      },
+      {
+        "name": "ASTM F2892-18",
+        "title": "Standard Specification for Performance Requirements for Soft Toe Protective Footwear",
+        "url": "https://www.astm.org/f2892-18.html"
+      }
+    ],
+    "certification_requirements": [
+      "ASTM certification",
+      "OSHA compliance (29 CFR 1910.136)",
+      "ANSI/ISEA Z41 standard compliance",
+      "Product testing by accredited laboratory",
+      "Labeling requirements"
+    ],
+    "estimated_cost": { "min": 5000, "max": 20000, "currency": "USD" },
+    "estimated_timeline": { "min": 2, "max": 5, "unit": "months" },
+    "customs_documents": [
+      "ASTM Test Report",
+      "Certificate of Compliance",
+      "OSHA Compliance Documentation",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "OSHA compliance mandatory for workplace use",
+      "Electrical hazard protection may require additional testing",
+      "Slip resistance testing recommended",
+      "Proper labeling with size, manufacturer info required"
+    ]
+  },
+  {
+    "category_id": "safety-footwear",
+    "market_code": "UK",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "BS EN ISO 20345:2022",
+        "title": "Personal protective equipment - Safety footwear",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030366077"
+      },
+      {
+        "name": "BS EN ISO 20347:2022",
+        "title": "Personal protective equipment - Occupational footwear",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030366078"
+      }
+    ],
+    "certification_requirements": [
+      "UKCA Marking",
+      "UK Type Examination",
+      "Technical documentation",
+      "Quality assurance system",
+      "BSI or equivalent UK Approved Body assessment"
+    ],
+    "estimated_cost": { "min": 6000, "max": 25000, "currency": "GBP" },
+    "estimated_timeline": { "min": 3, "max": 6, "unit": "months" },
+    "customs_documents": [
+      "UKCA Certificate",
+      "UK Declaration of Conformity",
+      "Technical File",
+      "Test Reports",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "UKCA marking required for UK market",
+      "Footwear must meet latest BS EN standards",
+      "Heat resistance and waterproof properties require specific testing",
+      "Marking must include size, manufacturing date, and protection level"
+    ]
+  },
+  {
+    "category_id": "safety-footwear",
+    "market_code": "CN",
+    "classification": "Class II",
+    "standards": [
+      {
+        "name": "GB 21148-2020",
+        "title": "Safety footwear",
+        "url": "https://www.gov.cn/fuwu/zt/2020-03/09/content_5488589.htm"
+      },
+      {
+        "name": "GB 21147-2020",
+        "title": "Protective occupational footwear",
+        "url": "https://www.nmpa.gov.cn"
+      }
+    ],
+    "certification_requirements": [
+      "CCC Certification (mandatory for certain products)",
+      "Product testing by CNCA-approved laboratory",
+      "Factory inspection",
+      "Quality Management System certification",
+      "Chinese labeling requirements"
+    ],
+    "estimated_cost": { "min": 30000, "max": 80000, "currency": "CNY" },
+    "estimated_timeline": { "min": 5, "max": 10, "unit": "months" },
+    "customs_documents": [
+      "CCC Certificate (if applicable)",
+      "Test Reports",
+      "Quality System Certificate",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "CCC certification mandatory for products under mandatory list",
+      "Only CNCA-approved laboratories accepted",
+      "Annual factory inspections required",
+      "Chinese language labeling mandatory"
+    ]
+  },
+  {
+    "category_id": "safety-footwear",
+    "market_code": "GCC",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "GSO ISO 20345:2016",
+        "title": "Personal protective equipment - Safety footwear",
+        "url": "https://www.gso.org.sa"
+      },
+      {
+        "name": "EN ISO 20345:2022",
+        "title": "Personal protective equipment - Safety footwear",
+        "url": "https://www.iso.org/standard/72505.html"
+      }
+    ],
+    "certification_requirements": [
+      "GCC Conformity Marking (G-mark)",
+      "Type examination by GSO-approved body",
+      "Factory assessment",
+      "Technical documentation",
+      "Arabic and English labeling"
+    ],
+    "estimated_cost": { "min": 15000, "max": 40000, "currency": "USD" },
+    "estimated_timeline": { "min": 3, "max": 6, "unit": "months" },
+    "customs_documents": [
+      "G-Mark Certificate",
+      "Test Reports",
+      "Technical File",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "G-marking required for market access",
+      "Products must meet specified GSO standards",
+      "Local representative required in GCC",
+      "Arabic labeling mandatory"
+    ]
+  },
+  {
+    "category_id": "protective-gloves",
+    "market_code": "EU",
+    "classification": "Category II / Category III",
+    "standards": [
+      {
+        "name": "EN ISO 374-1:2016+A1:2018",
+        "title": "Protective gloves against dangerous chemicals and microorganisms",
+        "url": "https://standards.globalspec.com/STD-12770221/EN-ISO-374-1"
+      },
+      {
+        "name": "EN 388:2016+A1:2018",
+        "title": "Protective gloves against mechanical risks",
+        "url": "https://standards.globalspec.com/STD-12770222/EN-388"
+      }
+    ],
+    "certification_requirements": [
+      "CE Marking under EU 2016/425",
+      "EU Type Examination (Module B)",
+      "Product verification or quality assurance (Module D/F/C2)",
+      "Technical documentation",
+      "User instructions in all EU languages"
+    ],
+    "estimated_cost": { "min": 10000, "max": 40000, "currency": "EUR" },
+    "estimated_timeline": { "min": 4, "max": 8, "unit": "months" },
+    "customs_documents": [
+      "CE Certificate",
+      "EU Declaration of Conformity",
+      "Test Reports",
+      "Technical File",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "Chemical resistance testing mandatory for Type A/B/C gloves",
+      "Microbiological resistance required for medical gloves",
+      "Cut resistance testing per EN ISO 374-3",
+      "Proper glove marking with pictograms required"
+    ]
+  },
+  {
+    "category_id": "protective-gloves",
+    "market_code": "US",
+    "classification": "Class I / Class II",
+    "standards": [
+      {
+        "name": "ASTM D3578-19",
+        "title": "Standard Specification for Rubber Examination Gloves",
+        "url": "https://www.astm.org/d3578-19.html"
+      },
+      {
+        "name": "ASTM D4679-02",
+        "title": "Standard Specification for Rubber General Purpose, Household or Decorative Gloves",
+        "url": "https://www.astm.org/d4679-02.html"
+      }
+    ],
+    "certification_requirements": [
+      "FDA registration (for medical gloves)",
+      "ASTM certification",
+      "Biocompatibility testing (for medical gloves)",
+      "510(k) clearance (for medical gloves)",
+      "Labeling requirements"
+    ],
+    "estimated_cost": { "min": 8000, "max": 50000, "currency": "USD" },
+    "estimated_timeline": { "min": 3, "max": 10, "unit": "months" },
+    "customs_documents": [
+      "FDA Registration Certificate",
+      "510(k) Clearance (if applicable)",
+      "ASTM Test Reports",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "Medical gloves require FDA 510(k) clearance",
+      "Biocompatibility testing mandatory for medical gloves",
+      "Powder-free gloves recommended for medical use",
+      "Size labeling and manufacturing date required"
+    ]
+  },
+  {
+    "category_id": "protective-gloves",
+    "market_code": "UK",
+    "classification": "Category II / Category III",
+    "standards": [
+      {
+        "name": "BS EN ISO 374-1:2016+A1:2018",
+        "title": "Protective gloves against dangerous chemicals and microorganisms",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030283901"
+      },
+      {
+        "name": "BS EN 388:2016+A1:2018",
+        "title": "Protective gloves against mechanical risks",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030283902"
+      }
+    ],
+    "certification_requirements": [
+      "UKCA Marking",
+      "UK Type Examination",
+      "Technical documentation",
+      "Quality assurance system",
+      "UK Approved Body assessment"
+    ],
+    "estimated_cost": { "min": 8000, "max": 35000, "currency": "GBP" },
+    "estimated_timeline": { "min": 3, "max": 7, "unit": "months" },
+    "customs_documents": [
+      "UKCA Certificate",
+      "UK Declaration of Conformity",
+      "Test Reports",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "UKCA marking required for UK market",
+      "Chemical protective gloves require Type A/B/C classification",
+      "Mechanical risk testing mandatory",
+      "UKCA marking with protection level pictograms required"
+    ]
+  },
+  {
+    "category_id": "protective-gloves",
+    "market_code": "CN",
+    "classification": "Class II",
+    "standards": [
+      {
+        "name": "GB 10213-2006",
+        "title": "Medical rubber examination gloves",
+        "url": "https://www.nmpa.gov.cn"
+      },
+      {
+        "name": "GB/T 17619-2022",
+        "title": "Protective gloves against dangerous chemicals",
+        "url": "https://www.gov.cn/fuwu/zt/2020-03/09/content_5488589.htm"
+      }
+    ],
+    "certification_requirements": [
+      "NMPA registration (for medical gloves)",
+      "Product testing by CNCA-approved laboratory",
+      "Quality Management System certification",
+      "Factory inspection",
+      "Chinese labeling"
+    ],
+    "estimated_cost": { "min": 40000, "max": 100000, "currency": "CNY" },
+    "estimated_timeline": { "min": 6, "max": 12, "unit": "months" },
+    "customs_documents": [
+      "NMPA Registration Certificate",
+      "Test Reports",
+      "Quality System Certificate",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "Medical gloves require NMPA registration",
+      "Only CNCA-approved labs accepted for testing",
+      "Annual factory inspection required",
+      "Chinese labeling mandatory"
+    ]
+  },
+  {
+    "category_id": "protective-gloves",
+    "market_code": "GCC",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "GSO ISO 374-1:2016",
+        "title": "Protective gloves against dangerous chemicals",
+        "url": "https://www.gso.org.sa"
+      },
+      {
+        "name": "EN 388:2016",
+        "title": "Protective gloves against mechanical risks",
+        "url": "https://standards.globalspec.com/STD-12770222/EN-388"
+      }
+    ],
+    "certification_requirements": [
+      "GCC Conformity Marking (G-mark)",
+      "Type examination",
+      "Factory assessment",
+      "Technical documentation",
+      "Arabic labeling"
+    ],
+    "estimated_cost": { "min": 12000, "max": 35000, "currency": "USD" },
+    "estimated_timeline": { "min": 3, "max": 6, "unit": "months" },
+    "customs_documents": [
+      "G-Mark Certificate",
+      "Test Reports",
+      "Technical File",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "G-marking mandatory for market access",
+      "Chemical protective gloves require type classification",
+      "Arabic labeling mandatory",
+      "Local representative required"
+    ]
+  },
+  {
+    "category_id": "head-protection",
+    "market_code": "EU",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "EN 397:2012+A1:2012",
+        "title": "Industrial safety helmets",
+        "url": "https://standards.globalspec.com/STD-1031300/EN-397"
+      },
+      {
+        "name": "EN 14052:2012+A1:2013",
+        "title": "High performance industrial safety helmets",
+        "url": "https://standards.globalspec.com/STD-1031299/EN-14052"
+      }
+    ],
+    "certification_requirements": [
+      "CE Marking under EU 2016/425",
+      "EU Type Examination by Notified Body",
+      "Technical documentation",
+      "Quality assurance system",
+      "User instructions and marking"
+    ],
+    "estimated_cost": { "min": 8000, "max": 25000, "currency": "EUR" },
+    "estimated_timeline": { "min": 3, "max": 6, "unit": "months" },
+    "customs_documents": [
+      "CE Certificate",
+      "EU Declaration of Conformity",
+      "Test Reports",
+      "Technical File",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "Impact testing mandatory at different temperatures",
+      "Electrical insulation properties require specific testing",
+      "Chin strap strength testing required",
+      "Marking must include size range and expiration date"
+    ]
+  },
+  {
+    "category_id": "head-protection",
+    "market_code": "US",
+    "classification": "Class E (Electrical)",
+    "standards": [
+      {
+        "name": "ANSI/ISEA Z89.1-2014",
+        "title": "American National Standard for Industrial Head Protection",
+        "url": "https://webstore.ansi.org/standards/isfa/ansiz892014"
+      },
+      {
+        "name": "ANSI/ISEA Z89.1-2014 Type I",
+        "title": "Top impact protection",
+        "url": "https://webstore.ansi.org/standards/isfa/ansiz892014"
+      }
+    ],
+    "certification_requirements": [
+      "ANSI/ISEA Z89.1 compliance",
+      "OSHA compliance (29 CFR 1910.135)",
+      "Testing by accredited laboratory",
+      "Third-party certification recommended",
+      "Labeling requirements"
+    ],
+    "estimated_cost": { "min": 5000, "max": 20000, "currency": "USD" },
+    "estimated_timeline": { "min": 2, "max": 5, "unit": "months" },
+    "customs_documents": [
+      "ANSI Test Report",
+      "Certificate of Compliance",
+      "OSHA Compliance Documentation",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "Type I helmets protect from top impacts only",
+      "Type II helmets include side impact protection",
+      "Class G/E for electrical insulation (up to 20,000V)",
+      "OSHA compliance mandatory for workplace use"
+    ]
+  },
+  {
+    "category_id": "head-protection",
+    "market_code": "UK",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "BS EN 397:2012+A1:2012",
+        "title": "Industrial safety helmets",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030186648"
+      },
+      {
+        "name": "BS EN 14052:2012+A1:2013",
+        "title": "High performance industrial safety helmets",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030186650"
+      }
+    ],
+    "certification_requirements": [
+      "UKCA Marking",
+      "UK Type Examination",
+      "Technical documentation",
+      "Quality assurance system",
+      "BSI or equivalent UK Approved Body assessment"
+    ],
+    "estimated_cost": { "min": 6000, "max": 22000, "currency": "GBP" },
+    "estimated_timeline": { "min": 3, "max": 5, "unit": "months" },
+    "customs_documents": [
+      "UKCA Certificate",
+      "UK Declaration of Conformity",
+      "Test Reports",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "UKCA marking required for UK market",
+      "Temperature range testing (-30°C to +50°C) mandatory",
+      "Electrical insulation testing required for Class E helmets",
+      "Chin strap attachment point testing"
+    ]
+  },
+  {
+    "category_id": "head-protection",
+    "market_code": "CN",
+    "classification": "Class II",
+    "standards": [
+      {
+        "name": "GB 2811-2019",
+        "title": "Helmets for construction workers",
+        "url": "https://www.gov.cn/fuwu/zt/2020-03/09/content_5488589.htm"
+      },
+      {
+        "name": "GB/T 32610-2016",
+        "title": "Daily protective mask",
+        "url": "https://www.nmpa.gov.cn"
+      }
+    ],
+    "certification_requirements": [
+      "CCC Certification (mandatory for certain helmets)",
+      "Product testing by CNCA-approved laboratory",
+      "Factory inspection",
+      "Quality Management System certification",
+      "Chinese labeling"
+    ],
+    "estimated_cost": { "min": 25000, "max": 60000, "currency": "CNY" },
+    "estimated_timeline": { "min": 4, "max": 8, "unit": "months" },
+    "customs_documents": [
+      "CCC Certificate (if applicable)",
+      "Test Reports",
+      "Quality System Certificate",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "Construction helmets require CCC for certain applications",
+      "Impact absorption, puncture resistance testing mandatory",
+      "Only CNCA-approved labs accepted",
+      "Chinese labeling with clear instructions required"
+    ]
+  },
+  {
+    "category_id": "head-protection",
+    "market_code": "GCC",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "GSO ISO 3873:2014",
+        "title": "Industrial safety helmets",
+        "url": "https://www.gso.org.sa"
+      },
+      {
+        "name": "EN 397:2012",
+        "title": "Industrial safety helmets",
+        "url": "https://standards.globalspec.com/STD-1031300/EN-397"
+      }
+    ],
+    "certification_requirements": [
+      "GCC Conformity Marking (G-mark)",
+      "Type examination by GSO-approved body",
+      "Factory assessment",
+      "Technical documentation",
+      "Arabic labeling"
+    ],
+    "estimated_cost": { "min": 10000, "max": 30000, "currency": "USD" },
+    "estimated_timeline": { "min": 3, "max": 5, "unit": "months" },
+    "customs_documents": [
+      "G-Mark Certificate",
+      "Test Reports",
+      "Technical File",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "G-marking mandatory for GCC market",
+      "GCC-approved testing laboratory required",
+      "Arabic labeling mandatory",
+      "Local representative required"
+    ]
+  },
+  {
+    "category_id": "eye-face-protection",
+    "market_code": "EU",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "EN 166:2001",
+        "title": "Personal eye-protection - Specifications",
+        "url": "https://standards.globalspec.com/STD-1064402/EN-166"
+      },
+      {
+        "name": "EN 170:2002",
+        "title": "Personal eye-protection - Ultraviolet filters",
+        "url": "https://standards.globalspec.com/STD-1064403/EN-170"
+      }
+    ],
+    "certification_requirements": [
+      "CE Marking under EU 2016/425",
+      "EU Type Examination by Notified Body",
+      "Technical documentation",
+      "Quality assurance system",
+      "User instructions"
+    ],
+    "estimated_cost": { "min": 6000, "max": 20000, "currency": "EUR" },
+    "estimated_timeline": { "min": 2, "max": 5, "unit": "months" },
+    "customs_documents": [
+      "CE Certificate",
+      "EU Declaration of Conformity",
+      "Test Reports",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "Optical quality testing mandatory (Class 1 for prolonged use)",
+      "Luminosity filter requirements for specific applications",
+      "Robustness testing for increased robustness frames",
+      "Marking must include optical class and protection level"
+    ]
+  },
+  {
+    "category_id": "eye-face-protection",
+    "market_code": "US",
+    "classification": "Class I / Class II",
+    "standards": [
+      {
+        "name": "ANSI Z87.1-2020",
+        "title": "American National Standard for Occupational and Educational Personal Eye and Face Protection Devices",
+        "url": "https://webstore.ansi.org/standard/vest/?activeid=1254"
+      },
+      {
+        "name": "ANSI Z87.1-2020 Table 1",
+        "title": "High Impact Requirements",
+        "url": "https://webstore.ansi.org/standard/vest/?activeid=1254"
+      }
+    ],
+    "certification_requirements": [
+      "ANSI Z87.1 compliance",
+      "OSHA compliance (29 CFR 1910.133)",
+      "Testing by accredited laboratory",
+      "Third-party certification",
+      "Labeling requirements"
+    ],
+    "estimated_cost": { "min": 4000, "max": 15000, "currency": "USD" },
+    "estimated_timeline": { "min": 2, "max": 4, "unit": "months" },
+    "customs_documents": [
+      "ANSI Test Report",
+      "Certificate of Compliance",
+      "OSHA Compliance Documentation",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "High impact (Z87+) marking required for impact-rated spectacles",
+      "Prism and refractive power limits must be met",
+      "OSHA compliance mandatory for workplace use",
+      "永久标记 required on frame and lenses"
+    ]
+  },
+  {
+    "category_id": "eye-face-protection",
+    "market_code": "UK",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "BS EN 166:2001",
+        "title": "Personal eye-protection - Specifications",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030162545"
+      },
+      {
+        "name": "BS EN 170:2002",
+        "title": "Personal eye-protection - Ultraviolet filters",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030162546"
+      }
+    ],
+    "certification_requirements": [
+      "UKCA Marking",
+      "UK Type Examination",
+      "Technical documentation",
+      "Quality assurance system",
+      "BSI or equivalent UK Approved Body assessment"
+    ],
+    "estimated_cost": { "min": 5000, "max": 18000, "currency": "GBP" },
+    "estimated_timeline": { "min": 2, "max": 4, "unit": "months" },
+    "customs_documents": [
+      "UKCA Certificate",
+      "UK Declaration of Conformity",
+      "Test Reports",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "UKCA marking required for UK market",
+      "Optical quality Class 1 mandatory for extended wear",
+      " UV protection filtering requirements",
+      "UKCA marking with protection level required"
+    ]
+  },
+  {
+    "category_id": "eye-face-protection",
+    "market_code": "CN",
+    "classification": "Class II",
+    "standards": [
+      {
+        "name": "GB 14866-2023",
+        "title": "Personal eye protectors for occupational use",
+        "url": "https://www.gov.cn/fuwu/zt/2020-03/09/content_5488589.htm"
+      },
+      {
+        "name": "GB 10810.1-2022",
+        "title": "Uncut finished spectacle lenses - Part 1",
+        "url": "https://www.nmpa.gov.cn"
+      }
+    ],
+    "certification_requirements": [
+      "CCC Certification (for certain eye protectors)",
+      "Product testing by CNCA-approved laboratory",
+      "Factory inspection",
+      "Quality Management System certification",
+      "Chinese labeling"
+    ],
+    "estimated_cost": { "min": 20000, "max": 50000, "currency": "CNY" },
+    "estimated_timeline": { "min": 4, "max": 8, "unit": "months" },
+    "customs_documents": [
+      "CCC Certificate (if applicable)",
+      "Test Reports",
+      "Quality System Certificate",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "CCC certification mandatory for occupational eye protectors",
+      "Optical performance, robustness testing mandatory",
+      "Only CNCA-approved laboratories accepted",
+      "Chinese labeling with usage instructions required"
+    ]
+  },
+  {
+    "category_id": "eye-face-protection",
+    "market_code": "GCC",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "GSO ISO 4832:2015",
+        "title": "Personal eye protectors - Industrial safety glasses",
+        "url": "https://www.gso.org.sa"
+      },
+      {
+        "name": "EN 166:2001",
+        "title": "Personal eye-protection - Specifications",
+        "url": "https://standards.globalspec.com/STD-1064402/EN-166"
+      }
+    ],
+    "certification_requirements": [
+      "GCC Conformity Marking (G-mark)",
+      "Type examination by GSO-approved body",
+      "Factory assessment",
+      "Technical documentation",
+      "Arabic labeling"
+    ],
+    "estimated_cost": { "min": 8000, "max": 25000, "currency": "USD" },
+    "estimated_timeline": { "min": 2, "max": 5, "unit": "months" },
+    "customs_documents": [
+      "G-Mark Certificate",
+      "Test Reports",
+      "Technical File",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "G-marking mandatory for GCC market access",
+      "GCC-approved testing required",
+      "Arabic labeling mandatory",
+      "Local representative required"
+    ]
+  },
+  {
+    "category_id": "hearing-protection",
+    "market_code": "EU",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "EN 352-1:2020",
+        "title": "Hearing protectors - General requirements",
+        "url": "https://standards.globalspec.com/STD-1393919/EN-352-1"
+      },
+      {
+        "name": "EN 352-2:2020",
+        "title": "Hearing protectors - Earmuffs",
+        "url": "https://standards.globalspec.com/STD-1393920/EN-352-2"
+      }
+    ],
+    "certification_requirements": [
+      "CE Marking under EU 2016/425",
+      "EU Type Examination by Notified Body",
+      "Technical documentation",
+      "Quality assurance system",
+      "User instructions"
+    ],
+    "estimated_cost": { "min": 5000, "max": 18000, "currency": "EUR" },
+    "estimated_timeline": { "min": 2, "max": 4, "unit": "months" },
+    "customs_documents": [
+      "CE Certificate",
+      "EU Declaration of Conformity",
+      "Test Reports (SNR values)",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "Sound attenuation (SNR/HML values) testing mandatory",
+      "Physical construction testing required",
+      "Ear muff cushion pressure testing",
+      "Hearing protector must provide adequate attenuation"
+    ]
+  },
+  {
+    "category_id": "hearing-protection",
+    "market_code": "US",
+    "classification": "Class I",
+    "standards": [
+      {
+        "name": "ANSI S3.19-1974",
+        "title": "Method for the Measurement of Real-Ear Protection of Hearing Protectors",
+        "url": "https://webstore.ansi.org/standard/acs/ansis3191974"
+      },
+      {
+        "name": "OSHA 29 CFR 1910.95",
+        "title": "Occupational Noise Exposure",
+        "url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.95"
+      }
+    ],
+    "certification_requirements": [
+      "NRR (Noise Reduction Rating) testing",
+      "OSHA compliance",
+      "EPA labeling requirements",
+      "Testing by accredited laboratory",
+      "Product labeling"
+    ],
+    "estimated_cost": { "min": 4000, "max": 12000, "currency": "USD" },
+    "estimated_timeline": { "min": 2, "max": 3, "unit": "months" },
+    "customs_documents": [
+      "NRR Test Report",
+      "EPA Labeling Documentation",
+      "OSHA Compliance Documentation",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "NRR rating must be measured per ANSI S3.19",
+      "OSHA requires hearing conservation program when noise exceeds 85 dB",
+      "EPA labeling requirements for NRR value",
+      "Derating formula may apply for OSHA compliance"
+    ]
+  },
+  {
+    "category_id": "hearing-protection",
+    "market_code": "UK",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "BS EN 352-1:2020",
+        "title": "Hearing protectors - General requirements",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030311234"
+      },
+      {
+        "name": "BS EN 352-2:2020",
+        "title": "Hearing protectors - Earmuffs",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030311235"
+      }
+    ],
+    "certification_requirements": [
+      "UKCA Marking",
+      "UK Type Examination",
+      "Technical documentation",
+      "Quality assurance system",
+      "SNR testing and documentation"
+    ],
+    "estimated_cost": { "min": 4000, "max": 15000, "currency": "GBP" },
+    "estimated_timeline": { "min": 2, "max": 4, "unit": "months" },
+    "customs_documents": [
+      "UKCA Certificate",
+      "UK Declaration of Conformity",
+      "SNR Test Reports",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "UKCA marking required for UK market",
+      "SNR/HML values must be measured",
+      "Physical strength testing mandatory",
+      "UKCA marking with SNR value required"
+    ]
+  },
+  {
+    "category_id": "hearing-protection",
+    "market_code": "CN",
+    "classification": "Class II",
+    "standards": [
+      {
+        "name": "GB/T 31401-2015",
+        "title": "Hearing protector - Earmuffs",
+        "url": "https://www.gov.cn/fuwu/zt/2020-03/09/content_5488589.htm"
+      },
+      {
+        "name": "GB/T 23816-2021",
+        "title": "Hearing protector - Ear plugs",
+        "url": "https://www.nmpa.gov.cn"
+      }
+    ],
+    "certification_requirements": [
+      "Product testing by CNCA-approved laboratory",
+      "Factory inspection",
+      "Quality Management System certification",
+      "Chinese labeling",
+      "NRR or SNR testing"
+    ],
+    "estimated_cost": { "min": 15000, "max": 40000, "currency": "CNY" },
+    "estimated_timeline": { "min": 3, "max": 6, "unit": "months" },
+    "customs_documents": [
+      "Test Reports",
+      "Quality System Certificate",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "NRR/SNR testing by CNCA-approved lab required",
+      "Physical properties testing mandatory",
+      "Only CNCA-approved laboratories accepted",
+      "Chinese labeling with usage instructions"
+    ]
+  },
+  {
+    "category_id": "hearing-protection",
+    "market_code": "GCC",
+    "classification": "Category II",
+    "standards": [
+      {
+        "name": "GSO ISO 4869-1:2018",
+        "title": "Acoustic - Hearing protectors",
+        "url": "https://www.gso.org.sa"
+      },
+      {
+        "name": "EN 352-1:2020",
+        "title": "Hearing protectors - General requirements",
+        "url": "https://standards.globalspec.com/STD-1393919/EN-352-1"
+      }
+    ],
+    "certification_requirements": [
+      "GCC Conformity Marking (G-mark)",
+      "Type examination",
+      "Factory assessment",
+      "SNR testing documentation",
+      "Arabic labeling"
+    ],
+    "estimated_cost": { "min": 8000, "max": 20000, "currency": "USD" },
+    "estimated_timeline": { "min": 2, "max": 4, "unit": "months" },
+    "customs_documents": [
+      "G-Mark Certificate",
+      "Test Reports",
+      "Technical File",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "G-marking mandatory for GCC market",
+      "GCC-approved testing required",
+      "Arabic labeling mandatory",
+      "Local representative required"
+    ]
+  },
+  {
+    "category_id": "protective-clothing",
+    "market_code": "EU",
+    "classification": "Category II / Category III",
+    "standards": [
+      {
+        "name": "EN ISO 13688:2013+A1:2021",
+        "title": "Protective clothing - General requirements",
+        "url": "https://standards.globalspec.com/STD-13281442/EN-ISO-13688"
+      },
+      {
+        "name": "EN 14325:2018",
+        "title": "Protective clothing against chemicals - Test methods",
+        "url": "https://standards.globalspec.com/STD-13281443/EN-14325"
+      }
+    ],
+    "certification_requirements": [
+      "CE Marking under EU 2016/425",
+      "EU Type Examination (Module B or B+C2)",
+      "Quality assurance (Module D or Module F)",
+      "Technical documentation",
+      "User instructions in all EU languages"
+    ],
+    "estimated_cost": { "min": 12000, "max": 50000, "currency": "EUR" },
+    "estimated_timeline": { "min": 4, "max": 10, "unit": "months" },
+    "customs_documents": [
+      "CE Certificate",
+      "EU Declaration of Conformity",
+      "Test Reports",
+      "Technical File",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "Chemical protective clothing requires Type testing",
+      "Seam strength testing mandatory",
+      "Material barrier performance testing required",
+      "Intended use classification (Type 1-6) must be determined"
+    ]
+  },
+  {
+    "category_id": "protective-clothing",
+    "market_code": "US",
+    "classification": "Class I / Class II / Class III",
+    "standards": [
+      {
+        "name": "ASTM F1670-2017",
+        "title": "Standard Test Method for Resistance of Materials Used in Protective Clothing to Penetration by Synthetic Blood",
+        "url": "https://www.astm.org/f1670-17.html"
+      },
+      {
+        "name": "ASTM F1671/F1671M-2013",
+        "title": "Standard Test Method for Resistance of Materials Used in Protective Clothing to Penetration by Blood-Borne Pathogens",
+        "url": "https://www.astm.org/f1671f1671m-13.html"
+      }
+    ],
+    "certification_requirements": [
+      "ASTM testing for medical/procedural gowns",
+      "FDA 510(k) clearance (for medical gowns)",
+      "OSHA compliance (29 CFR 1910.1030 for biohazard)",
+      "ANSI/ISEA 125 (high visibility)",
+      "Labeling requirements"
+    ],
+    "estimated_cost": { "min": 10000, "max": 80000, "currency": "USD" },
+    "estimated_timeline": { "min": 3, "max": 12, "unit": "months" },
+    "customs_documents": [
+      "FDA 510(k) Clearance (if applicable)",
+      "ASTM Test Reports",
+      "OSHA Compliance Documentation",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "Level A-D classification for chemical suits",
+      "Medical gowns require FDA 510(k) clearance",
+      "ASTM testing for liquid barrier performance",
+      "OSHA compliance for workplace biohazard protection"
+    ]
+  },
+  {
+    "category_id": "protective-clothing",
+    "market_code": "UK",
+    "classification": "Category II / Category III",
+    "standards": [
+      {
+        "name": "BS EN ISO 13688:2013+A1:2021",
+        "title": "Protective clothing - General requirements",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030289901"
+      },
+      {
+        "name": "BS EN 14325:2018",
+        "title": "Protective clothing against chemicals - Test methods",
+        "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030289902"
+      }
+    ],
+    "certification_requirements": [
+      "UKCA Marking",
+      "UK Type Examination",
+      "Technical documentation",
+      "Quality assurance system",
+      "UK Approved Body assessment"
+    ],
+    "estimated_cost": { "min": 10000, "max": 45000, "currency": "GBP" },
+    "estimated_timeline": { "min": 4, "max": 9, "unit": "months" },
+    "customs_documents": [
+      "UKCA Certificate",
+      "UK Declaration of Conformity",
+      "Test Reports",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "UKCA marking required for UK market",
+      "Chemical protective clothing requires Type classification",
+      "Seam strength and material barrier testing",
+      "UKCA marking with Type classification required"
+    ]
+  },
+  {
+    "category_id": "protective-clothing",
+    "market_code": "CN",
+    "classification": "Class II",
+    "standards": [
+      {
+        "name": "GB 19082-2009",
+        "title": "Technical requirements for medical protective clothing",
+        "url": "https://www.nmpa.gov.cn"
+      },
+      {
+        "name": "GB/T 39264-2020",
+        "title": "Protective clothing - Chemical protective clothing",
+        "url": "https://www.gov.cn/fuwu/zt/2020-03/09/content_5488589.htm"
+      }
+    ],
+    "certification_requirements": [
+      "NMPA Registration (for medical protective clothing)",
+      "Product testing by CNCA-approved laboratory",
+      "Factory inspection",
+      "Quality Management System certification",
+      "Chinese labeling"
+    ],
+    "estimated_cost": { "min": 50000, "max": 120000, "currency": "CNY" },
+    "estimated_timeline": { "min": 6, "max": 14, "unit": "months" },
+    "customs_documents": [
+      "NMPA Registration Certificate",
+      "Test Reports",
+      "Quality System Certificate",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "Medical protective clothing requires NMPA registration",
+      "Only CNCA-approved laboratories accepted",
+      "Liquid barrier, breathability testing mandatory",
+      "Chinese labeling with clear instructions required"
+    ]
+  },
+  {
+    "category_id": "protective-clothing",
+    "market_code": "GCC",
+    "classification": "Category III",
+    "standards": [
+      {
+        "name": "GSO ISO 16602:2016",
+        "title": "Protective clothing for use in healthcare settings",
+        "url": "https://www.gso.org.sa"
+      },
+      {
+        "name": "GSO ISO 13688:2013",
+        "title": "Protective clothing - General requirements",
+        "url": "https://www.gso.org.sa"
+      }
+    ],
+    "certification_requirements": [
+      "GCC Conformity Marking (G-mark)",
+      "Type examination by GSO-approved body",
+      "Factory assessment",
+      "Technical documentation",
+      "Arabic labeling"
+    ],
+    "estimated_cost": { "min": 18000, "max": 55000, "currency": "USD" },
+    "estimated_timeline": { "min": 4, "max": 9, "unit": "months" },
+    "customs_documents": [
+      "G-Mark Certificate",
+      "Test Reports",
+      "Technical File",
+      "Commercial Invoice"
+    ],
+    "risk_warnings": [
+      "G-marking mandatory for GCC market",
+      "Type classification required for chemical protective clothing",
+      "GCC-approved testing laboratory required",
+      "Arabic labeling mandatory"
     ]
   }
 ]

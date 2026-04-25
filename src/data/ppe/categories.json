@@ -353,5 +353,64 @@
         "Food processing"
       ]
     }
+  },
+  {
+    "id": "hearing-protection",
+    "name": "Hearing Protection",
+    "name_zh": "听力防护",
+    "description": "Earplugs, earmuffs, and other hearing protection devices",
+    "icon": "🎧",
+    "sort_order": 7,
+    "subcategories": [
+      {
+        "id": "disposable-earplugs",
+        "name": "Disposable Earplugs",
+        "name_zh": "一次性耳塞",
+        "description": "Single-use foam or silicone earplugs",
+        "parent_id": "hearing-protection"
+      },
+      {
+        "id": "reusable-earplugs",
+        "name": "Reusable Earplugs",
+        "name_zh": "可重复使用耳塞",
+        "description": "Washable and reusable earplugs",
+        "parent_id": "hearing-protection"
+      },
+      {
+        "id": "earmuffs",
+        "name": "Earmuffs",
+        "name_zh": "耳罩",
+        "description": "Over-ear hearing protection",
+        "parent_id": "hearing-protection"
+      },
+      {
+        "id": "electronic-hearing",
+        "name": "Electronic Hearing Protectors",
+        "name_zh": "电子听力保护器",
+        "description": "Amplification and noise cancellation devices",
+        "parent_id": "hearing-protection"
+      }
+    ],
+    "product_features": {
+      "materials": [
+        "Foam",
+        "Silicone",
+        "PVC",
+        "ABS",
+        "Steel"
+      ],
+      "protection_levels": [
+        "SNR 15-20 dB",
+        "SNR 20-25 dB",
+        "SNR 25-30 dB",
+        "SNR 30+ dB"
+      ],
+      "intended_uses": [
+        "Industrial manufacturing",
+        "Construction",
+        "Military",
+        "Music and entertainment"
+      ]
+    }
   }
 ]

@@ -19,13 +19,18 @@ export default function StatisticsPage() {
     marketCount: {},
   })
 
+  // 筛选选项
+  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [selectedMarket, setSelectedMarket] = useState('all')
+  const [selectedTimeframe, setSelectedTimeframe] = useState('2026')
+
   useEffect(() => {
     getPPEStats().then(setStats)
   }, [])
 
-  // 品类分布数据
-  const categoryData = useMemo(() => {
-    return Object.entries(stats.categoryCount || {}).map(([category, count]) => {
+  // 筛选后的数据
+  const filteredCategoryData = useMemo(() => {
+    let data = Object.entries(stats.categoryCount || {}).map(([category, count]) => {
       const catInfo = categories.find(c => c.id === category)
       return {
         name: catInfo?.name || category,
@@ -33,12 +38,18 @@ export default function StatisticsPage() {
         value: count,
         icon: catInfo?.icon || '',
       }
-    }).sort((a, b) => b.value - a.value)
-  }, [stats.categoryCount, categories])
+    })
+    
+    if (selectedCategory !== 'all') {
+      data = data.filter(item => item.name === selectedCategory)
+    }
+    
+    return data.sort((a, b) => b.value - a.value)
+  }, [stats.categoryCount, categories, selectedCategory])
 
   // 市场分布数据
-  const marketData = useMemo(() => {
-    return Object.entries(stats.marketCount || {}).map(([market, count]) => {
+  const filteredMarketData = useMemo(() => {
+    let data = Object.entries(stats.marketCount || {}).map(([market, count]) => {
       const marketInfo = markets.find(m => m.code === market)
       return {
         name: marketInfo?.name || market,
@@ -46,8 +57,14 @@ export default function StatisticsPage() {
         value: count,
         flag: marketInfo?.flag_emoji || '',
       }
-    }).sort((a, b) => b.value - a.value)
-  }, [stats.marketCount, markets])
+    })
+    
+    if (selectedMarket !== 'all') {
+      data = data.filter(item => item.name === selectedMarket)
+    }
+    
+    return data.sort((a, b) => b.value - a.value)
+  }, [stats.marketCount, markets, selectedMarket])
 
   // 合规要求复杂度数据
   const complianceComplexityData = useMemo(() => {
@@ -123,6 +140,55 @@ export default function StatisticsPage() {
         </div>
       </section>
 
+      {/* Filters */}
+      <section className="py-8 bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap gap-4 items-center justify-center">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700">Product Category:</label>
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-[#339999]"
+              >
+                <option value="all">All Categories</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.name}>{cat.name}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700">Market:</label>
+              <select
+                value={selectedMarket}
+                onChange={(e) => setSelectedMarket(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-[#339999]"
+              >
+                <option value="all">All Markets</option>
+                {markets.map(market => (
+                  <option key={market.code} value={market.name}>{market.flag_emoji} {market.name}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700">Timeframe:</label>
+              <select
+                value={selectedTimeframe}
+                onChange={(e) => setSelectedTimeframe(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-[#339999]"
+              >
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Overview Stats */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -182,7 +248,7 @@ export default function StatisticsPage() {
               <ResponsiveContainer width="100%" height={400}>
                 <PieChart>
                   <Pie
-                    data={categoryData}
+                    data={filteredCategoryData}
                     cx="50%"
                     cy="50%"
                     labelLine={false}
@@ -191,7 +257,7 @@ export default function StatisticsPage() {
                     fill="#8884d8"
                     dataKey="value"
                   >
-                    {categoryData.map((entry, index) => (
+                    {filteredCategoryData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
@@ -207,7 +273,7 @@ export default function StatisticsPage() {
                 Target Market Distribution
               </h3>
               <ResponsiveContainer width="100%" height={400}>
-                <BarChart data={marketData}>
+                <BarChart data={filteredMarketData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -312,7 +378,7 @@ export default function StatisticsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {categoryData.map((cat, index) => {
+                  {filteredCategoryData.map((cat, index) => {
                     const euCompliance = getComplianceData(cat.name.toLowerCase().replace(' ', '-'), 'EU')
                     const usCompliance = getComplianceData(cat.name.toLowerCase().replace(' ', '-'), 'US')
                     
@@ -383,7 +449,7 @@ export default function StatisticsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {marketData.map((market, index) => (
+                  {filteredMarketData.map((market, index) => (
                     <tr
                       key={index}
                       className="border-b border-gray-100 hover:bg-gray-50"

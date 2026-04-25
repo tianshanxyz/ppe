@@ -73,8 +73,9 @@ export async function getPPEProductsClient({
     }
     
     if (filters.search) {
-      query = query.or(`product_name.ilike.%${escapeIlikeSearch(filters.search)}%,product_code.ilike.%${escapeIlikeSearch(filters.search)}%,manufacturer_name.ilike.%${escapeIlikeSearch(filters.search)}%`)
-    }
+    const searchTerm = escapeIlikeSearch(filters.search)
+    query = query.or(`name.ilike.%${searchTerm}%,product_name.ilike.%${searchTerm}%,product_code.ilike.%${searchTerm}%,manufacturer_name.ilike.%${searchTerm}%`)
+  }
     
     const from = (page - 1) * limit
     const to = from + limit - 1
@@ -252,11 +253,14 @@ export async function getPPEProductStatsClient() {
     // 获取分类分布
     const { data: categories } = await supabase
       .from('ppe_products')
-      .select('product_category')
+      .select('category,product_category')
     
     const categoryCount: Record<string, number> = {}
     categories?.forEach(p => {
-      categoryCount[p.product_category] = (categoryCount[p.product_category] || 0) + 1
+      const category = p.product_category || p.category
+      if (category) {
+        categoryCount[category] = (categoryCount[category] || 0) + 1
+      }
     })
     
     // 获取 PPE 分类分布
@@ -266,7 +270,9 @@ export async function getPPEProductStatsClient() {
     
     const ppeCategoryCount: Record<string, number> = {}
     ppeCategories?.forEach(p => {
-      ppeCategoryCount[p.ppe_category] = (ppeCategoryCount[p.ppe_category] || 0) + 1
+      if (p.ppe_category) {
+        ppeCategoryCount[p.ppe_category] = (ppeCategoryCount[p.ppe_category] || 0) + 1
+      }
     })
     
     // 如果没有数据，返回默认统计数据
@@ -323,7 +329,7 @@ export async function getPPECategoriesClient() {
     
     const { data, error } = await supabase
       .from('ppe_products')
-      .select('product_category')
+      .select('category,product_category')
     
     if (error) {
       console.error('Failed to fetch category list:', error)
@@ -334,6 +340,9 @@ export async function getPPECategoriesClient() {
     data?.forEach(p => {
       if (p.product_category) {
         categories.add(p.product_category)
+      }
+      if (p.category && p.category !== p.product_category) {
+        categories.add(p.category)
       }
     })
     

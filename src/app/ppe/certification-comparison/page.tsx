@@ -112,6 +112,100 @@ export default function CertificationComparisonPage() {
     return certifications
   }, [selectedCategory])
 
+  // 获取特定市场的文档模板
+  const getMarketTemplates = (marketCode: string) => {
+    const templateMap: Record<string, Array<{id: string, title: string, desc: string}>> = {
+      'EU': [
+        { id: 'ce-technical-file', title: 'CE Technical File Template', desc: 'Complete technical documentation package' },
+        { id: 'ce-doc', title: 'EU Declaration of Conformity', desc: 'Official DoC template for PPE' },
+        { id: 'ce-test-report', title: 'Test Report Template', desc: 'Standardized test documentation' },
+      ],
+      'US': [
+        { id: 'fda-510k-cover', title: 'FDA 510(k) Cover Letter', desc: 'Professional submission cover letter' },
+        { id: 'fda-substantial-equiv', title: 'Substantial Equivalence Table', desc: 'Comparison with predicate device' },
+        { id: 'fda-labeling', title: 'FDA Labeling Template', desc: 'Compliant labeling and IFU' },
+      ],
+      'UK': [
+        { id: 'ukca-technical-file', title: 'UKCA Technical File', desc: 'UK-specific technical documentation' },
+        { id: 'ukca-doc', title: 'UK Declaration of Conformity', desc: 'UKCA DoC template' },
+        { id: 'ukca-test-report', title: 'UKCA Test Report', desc: 'UK Approved Body accepted tests' },
+      ],
+      'CN': [
+        { id: 'nmpa-registration', title: 'NMPA Registration Application', desc: 'China registration template' },
+        { id: 'nmpa-technical', title: 'NMPA Technical Requirements', desc: 'Product technical documentation' },
+        { id: 'nmpa-clinical', title: 'Clinical Evaluation Report', desc: 'NMPA-compliant CER template' },
+      ],
+    }
+    return templateMap[marketCode] || []
+  }
+
+  // 获取特定市场的专业解读
+  const getMarketProfessionalGuidance = (marketCode: string) => {
+    const guidanceMap: Record<string, { title: string, content: string[], keyPoints: string[] }> = {
+      'EU': {
+        title: 'EU CE Marking Professional Interpretation',
+        content: [
+          'The CE marking indicates conformity with health, safety, and environmental protection requirements',
+          'For PPE, Regulation (EU) 2016/425 sets the framework for market access',
+          'Category III products require mandatory third-party testing by a Notified Body',
+          'Technical documentation must be maintained for 10 years after last product placement',
+        ],
+        keyPoints: [
+          'Classification determines the conformity assessment route',
+          'Notified Body involvement scales with risk level',
+          'Post-market surveillance is mandatory',
+          'Labeling must include manufacturer, product ID, and CE mark',
+        ],
+      },
+      'US': {
+        title: 'FDA 510(k) Professional Interpretation',
+        content: [
+          '510(k) is a pre-market submission demonstrating substantial equivalence to a predicate device',
+          'FDA reviews device classification, intended use, and technological characteristics',
+          'Class II devices typically require 510(k); Class III may require PMA',
+          'FDA may issue Additional Information (AI) requests during review',
+        ],
+        keyPoints: [
+          'Predicate device must be legally marketed in the US',
+          'Indications for use must match or not exceed predicate scope',
+          'Performance data requirements depend on device classification',
+          'User fees apply; review timeline is typically 90 days',
+        ],
+      },
+      'UK': {
+        title: 'UKCA Marking Professional Interpretation',
+        content: [
+          'UKCA marking is required for products placed on the Great Britain market',
+          'UKCA does not automatically replace CE marking for existing certificates',
+          'UK Approved Bodies are separate from EU Notified Bodies',
+          'Northern Ireland follows different rules under the Windsor Framework',
+        ],
+        keyPoints: [
+          'BSI or other UKAS-accredited bodies can issue UKCA certificates',
+          'Technical documentation requirements mirror EU requirements',
+          'UKCA marking is not accepted in EU member states',
+          'Transition period has ended; full UKCA requirements now apply',
+        ],
+      },
+      'CN': {
+        title: 'NMPA Registration Professional Interpretation',
+        content: [
+          'NMPA (National Medical Products Administration) regulates medical devices in China',
+          'Registration certificates are valid for 5 years with annual self-inspection reports',
+          'CNCA-approved testing laboratories must conduct product testing',
+          'Factory inspections may be required for certain product categories',
+        ],
+        keyPoints: [
+          'Product classification follows the National Medical Device Catalog',
+          'Chinese language documentation is mandatory',
+          'Local representative or importer is required for foreign manufacturers',
+          'Quality Management System certification is typically required',
+        ],
+      },
+    }
+    return guidanceMap[marketCode] || { title: '', content: [], keyPoints: [] }
+  }
+
   const category = categories.find(c => c.id === selectedCategory)
 
   const handleExport = (format: 'pdf' | 'excel') => {
@@ -556,7 +650,7 @@ export default function CertificationComparisonPage() {
                 </div>
 
                 {/* Risk Warnings */}
-                <div>
+                <div className="mb-8">
                   <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                     <AlertCircle className="w-5 h-5 text-orange-500 mr-2" />
                     Important Warnings
@@ -575,6 +669,76 @@ export default function CertificationComparisonPage() {
                       </motion.li>
                     ))}
                   </ul>
+                </div>
+
+                {/* Professional Guidance */}
+                {(() => {
+                  const guidance = getMarketProfessionalGuidance(cert.market)
+                  if (!guidance.title) return null
+                  return (
+                    <div className="mb-8">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <FileText className="w-5 h-5 text-[#339999] mr-2" />
+                        Professional Interpretation
+                      </h4>
+                      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+                        <h5 className="font-semibold text-gray-900 mb-3">{guidance.title}</h5>
+                        <ul className="space-y-2 mb-4">
+                          {guidance.content.map((item, idx) => (
+                            <li key={idx} className="flex items-start text-sm text-gray-700">
+                              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2 mt-1.5 flex-shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="bg-white/60 rounded-lg p-4">
+                          <h6 className="font-semibold text-gray-900 mb-2 text-sm">Key Points:</h6>
+                          <div className="flex flex-wrap gap-2">
+                            {guidance.keyPoints.map((point, idx) => (
+                              <span key={idx} className="px-3 py-1 bg-[#339999]/10 text-[#339999] text-xs rounded-full">
+                                {point}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })()}
+
+                {/* Document Templates */}
+                <div className="mb-8">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <Download className="w-5 h-5 text-[#339999] mr-2" />
+                    Standardized Document Templates
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {getMarketTemplates(cert.market).map((template, idx) => (
+                      <motion.a
+                        key={template.id}
+                        href="/ppe/documents"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="flex flex-col p-4 bg-white border border-gray-200 rounded-xl hover:border-[#339999] hover:shadow-lg transition-all group"
+                      >
+                        <div className="flex items-center mb-2">
+                          <FileText className="w-5 h-5 text-[#339999] mr-2" />
+                          <span className="text-xs px-2 py-0.5 bg-[#339999]/10 text-[#339999] rounded">
+                            {cert.market}
+                          </span>
+                        </div>
+                        <h5 className="font-semibold text-gray-900 mb-1 group-hover:text-[#339999] transition-colors">
+                          {template.title}
+                        </h5>
+                        <p className="text-xs text-gray-500">{template.desc}</p>
+                        <div className="mt-auto pt-2 flex items-center text-xs text-[#339999] opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Download className="w-3 h-3 mr-1" />
+                          Access Template
+                        </div>
+                      </motion.a>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             ))}
