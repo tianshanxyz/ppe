@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { cookies } from 'next/headers'
 
 export async function GET(
   request: Request,
@@ -9,13 +8,21 @@ export async function GET(
   try {
     const { reportId } = await params
 
-    
-      const supabase = await createClient()
+    const supabase = await createClient()
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
 
     const { data: report, error } = await supabase
       .from('reports')
       .select('*')
       .eq('id', reportId)
+      .eq('user_id', user.id)
       .single()
 
     if (error || !report) {

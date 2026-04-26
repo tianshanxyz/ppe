@@ -9,6 +9,15 @@ if (RESEND_API_KEY) {
   resend = new Resend(RESEND_API_KEY)
 }
 
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+}
+
 export interface EmailOptions {
   to: string | string[]
   subject: string
@@ -50,7 +59,7 @@ export async function sendWelcomeEmail(email: string, name: string): Promise<{ s
         <h1 style="color: white; margin: 0; font-size: 28px;">Welcome to MDLooker!</h1>
       </div>
       <div style="padding: 40px 20px; background: #ffffff;">
-        <h2 style="color: #333; margin-top: 0;">Hi ${name},</h2>
+        <h2 style="color: #333; margin-top: 0;">Hi ${escapeHtml(name)},</h2>
         <p style="color: #666; font-size: 16px; line-height: 1.6;">
           Thank you for joining MDLooker - your trusted partner for PPE compliance.
         </p>
@@ -101,13 +110,13 @@ export async function sendCertificateExpiryReminder(
       <div style="padding: 40px 20px; background: #ffffff;">
         <h2 style="color: #333; margin-top: 0;">Certificate Expiring Soon</h2>
         <p style="color: #666; font-size: 16px; line-height: 1.6;">
-          Your certificate for <strong>${productName}</strong> is expiring in <strong>${daysUntilExpiry} days</strong>.
+          Your certificate for <strong>${escapeHtml(productName)}</strong> is expiring in <strong>${escapeHtml(String(daysUntilExpiry))} days</strong>.
         </p>
         <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 6px; padding: 20px; margin: 20px 0;">
           <p style="margin: 0; color: #856404;">
-            <strong>Certificate Number:</strong> ${certificateNumber}<br>
-            <strong>Product:</strong> ${productName}<br>
-            <strong>Days Remaining:</strong> ${daysUntilExpiry}
+            <strong>Certificate Number:</strong> ${escapeHtml(certificateNumber)}<br>
+            <strong>Product:</strong> ${escapeHtml(productName)}<br>
+            <strong>Days Remaining:</strong> ${escapeHtml(String(daysUntilExpiry))}
           </p>
         </div>
         <p style="color: #666; font-size: 16px; line-height: 1.6;">
@@ -147,12 +156,12 @@ export async function sendComplianceCheckReport(
       <div style="padding: 40px 20px; background: #ffffff;">
         <h2 style="color: #333; margin-top: 0;">Your Compliance Report is Ready</h2>
         <p style="color: #666; font-size: 16px; line-height: 1.6;">
-          We've completed the compliance check for <strong>${productName}</strong> targeting the <strong>${targetMarket}</strong> market.
+          We've completed the compliance check for <strong>${escapeHtml(productName)}</strong> targeting the <strong>${escapeHtml(targetMarket)}</strong> market.
         </p>
         <div style="background: #d4edda; border: 1px solid #c3e6cb; border-radius: 6px; padding: 20px; margin: 20px 0;">
           <p style="margin: 0; color: #155724;">
-            <strong>Product:</strong> ${productName}<br>
-            <strong>Target Market:</strong> ${targetMarket}<br>
+            <strong>Product:</strong> ${escapeHtml(productName)}<br>
+            <strong>Target Market:</strong> ${escapeHtml(targetMarket)}<br>
             <strong>Check Date:</strong> ${new Date().toLocaleDateString()}
           </p>
         </div>

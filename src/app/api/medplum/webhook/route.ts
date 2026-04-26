@@ -9,27 +9,36 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { handleMedplumWebhook } from '@/lib/medplum/services/alertService'
+import { createHmac } from 'crypto'
 
-/**
- * POST /api/medplum/webhook
- * 
- * 接收 Medplum webhook 通知
- * 
- * @param request Webhook 请求
- * @returns 处理结果
- */
 export async function POST(request: NextRequest) {
   try {
-    // 验证 webhook 签名（可选）
+    const body = await request.text()
+    
     const signature = request.headers.get('x-medplum-signature')
-    if (signature) {
-      // 这里可以添加签名验证逻辑
-      console.log('Webhook signature:', signature)
+    const webhookSecret = process.env.MEDPLUM_WEBHOOK_SECRET
+    
+    if (webhookSecret) {
+      if (!signature) {
+        return NextResponse.json(
+          { error: 'Missing webhook signature' },
+          { status: 401 }
+        )
+      }
+      
+      const expectedSignature = createHmac('sha256', webhookSecret)
+        .update(body)
+        .digest('hex')
+      
+      if (signature !== expectedSignature) {
+        return NextResponse.json(
+          { error: 'Invalid webhook signature' },
+          { status: 401 }
+        )
+      }
     }
 
-    // 解析请求体
-    const payload = await request.json()
-    console.log('Received Medplum webhook:', payload)
+    const payload = JSON.parse(body)
 
     // 处理 webhook
     const result = await handleMedplumWebhook(payload)

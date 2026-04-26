@@ -196,12 +196,23 @@ export const DEFAULT_PERMISSIONS: ApiKeyPermission[] = [
 // ============================================
 
 export function generateApiKey(): string {
-  // 生成格式: pk_live_xxxxxxxxxxxxxxxxxxxxxxxx (32位随机字符)
   const prefix = 'pk_live_'
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  const randomValues = new Uint8Array(32)
+  
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    crypto.getRandomValues(randomValues)
+  } else {
+    const { randomBytes } = require('crypto')
+    const bytes = randomBytes(32)
+    for (let i = 0; i < 32; i++) {
+      randomValues[i] = bytes[i]
+    }
+  }
+  
   let key = prefix
   for (let i = 0; i < 32; i++) {
-    key += chars.charAt(Math.floor(Math.random() * chars.length))
+    key += chars[randomValues[i] % chars.length]
   }
   return key
 }

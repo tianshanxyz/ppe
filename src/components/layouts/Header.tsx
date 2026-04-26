@@ -70,6 +70,8 @@ export function Header() {
         { href: '/ppe/timeline-estimator', label: t.timelineEstimator, icon: Clock },
         { href: '/ppe/compliance-tracker', label: t.complianceTracker, icon: FileText },
         { href: '/ppe/certificate-alerts', label: t.certificateAlerts, icon: Clock },
+        { href: '/ppe/document-generator', label: 'Document Generator', icon: FileText },
+        { href: '/ppe/supply-chain-tracker', label: 'Supply Chain Tracker', icon: FolderOpen },
       ]
     },
     {
@@ -86,6 +88,7 @@ export function Header() {
       label: t.knowledgeBase,
       icon: BookOpen,
       children: [
+        { href: '/ppe/ai-advisor', label: 'AI Compliance Advisor', icon: Lightbulb },
         { href: '/ppe/compliance-guides', label: t.complianceGuides, icon: BookOpen },
         { href: '/ppe/documents', label: t.documentTemplates, icon: FileText },
         { href: '/ppe/knowledge-base', label: t.knowledgeArticles, icon: Lightbulb },

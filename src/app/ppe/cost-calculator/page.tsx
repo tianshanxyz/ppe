@@ -81,6 +81,42 @@ const COST_TEMPLATES: Record<string, Record<string, CostItem[]>> = {
       { name: 'OSHA Compliance Review', description: '29 CFR 1910.136 compliance assessment', min: 2000, max: 5000, currency: 'USD', required: true, category: 'consulting' },
     ],
   },
+  'safety-gloves': {
+    'EU': [
+      { name: 'EN 388 Testing', description: 'Mechanical risks: abrasion, cut, tear, puncture', min: 2500, max: 6000, currency: 'EUR', required: true, category: 'testing' },
+      { name: 'EN 374 Testing', description: 'Chemical and micro-organism risks', min: 3000, max: 8000, currency: 'EUR', required: false, category: 'testing' },
+      { name: 'EU Type Examination', description: 'Notified Body assessment', min: 4000, max: 10000, currency: 'EUR', required: true, category: 'certification' },
+      { name: 'Technical Documentation', description: 'Technical file preparation', min: 1500, max: 4000, currency: 'EUR', required: true, category: 'consulting' },
+    ],
+    'US': [
+      { name: 'ANSI/ISEA 105 Testing', description: 'Hand protection classification', min: 2000, max: 5000, currency: 'USD', required: true, category: 'testing' },
+      { name: 'FDA 510(k) (Medical)', description: 'If classified as medical device', min: 8000, max: 25000, currency: 'USD', required: false, category: 'certification' },
+      { name: 'Technical Documentation', description: 'Compliance documentation', min: 1500, max: 4000, currency: 'USD', required: true, category: 'consulting' },
+    ],
+    'CN': [
+      { name: 'GB/T 12624 Testing', description: 'Protective glove testing', min: 15000, max: 40000, currency: 'CNY', required: true, category: 'testing' },
+      { name: 'NMPA Registration (Class II)', description: 'Medical device registration', min: 50000, max: 150000, currency: 'CNY', required: false, category: 'certification' },
+      { name: 'Type Testing', description: 'NMPA-accredited lab testing', min: 30000, max: 80000, currency: 'CNY', required: true, category: 'testing' },
+      { name: 'Registration Agent', description: 'Local representative service', min: 20000, max: 50000, currency: 'CNY', required: true, category: 'consulting' },
+    ],
+  },
+  'head-protection': {
+    'EU': [
+      { name: 'EN 397 Testing', description: 'Industrial safety helmet testing', min: 3000, max: 7000, currency: 'EUR', required: true, category: 'testing' },
+      { name: 'EU Type Examination', description: 'Notified Body assessment', min: 4000, max: 10000, currency: 'EUR', required: true, category: 'certification' },
+      { name: 'Production QA', description: 'Factory quality system audit', min: 3000, max: 8000, currency: 'EUR', required: true, category: 'certification' },
+      { name: 'Technical Documentation', description: 'Technical file preparation', min: 1500, max: 4000, currency: 'EUR', required: true, category: 'consulting' },
+    ],
+    'US': [
+      { name: 'ANSI Z89.1 Testing', description: 'Industrial head protection testing', min: 2500, max: 6000, currency: 'USD', required: true, category: 'testing' },
+      { name: 'OSHA Compliance Review', description: '29 CFR 1910.135 compliance', min: 2000, max: 5000, currency: 'USD', required: true, category: 'consulting' },
+    ],
+    'CN': [
+      { name: 'GB 2811 Testing', description: 'Safety helmet testing', min: 15000, max: 35000, currency: 'CNY', required: true, category: 'testing' },
+      { name: 'LA Safety Certification', description: 'China safety certification', min: 30000, max: 80000, currency: 'CNY', required: true, category: 'certification' },
+      { name: 'Technical Documentation', description: 'Chinese documentation', min: 10000, max: 30000, currency: 'CNY', required: true, category: 'consulting' },
+    ],
+  },
 }
 
 const DEFAULT_COSTS: CostItem[] = [

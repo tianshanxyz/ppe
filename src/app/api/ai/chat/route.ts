@@ -102,6 +102,27 @@ export async function POST(request: NextRequest) {
         stream = false,
       } = body
 
+      if (!message || typeof message !== 'string' || message.length > 4000) {
+        return NextResponse.json(
+          { error: 'Message must be between 1 and 4000 characters' },
+          { status: 400 }
+        )
+      }
+
+      if (conversationHistory.length > 20) {
+        return NextResponse.json(
+          { error: 'Conversation history cannot exceed 20 messages' },
+          { status: 400 }
+        )
+      }
+
+      if (context && context.length > 2000) {
+        return NextResponse.json(
+          { error: 'Context cannot exceed 2000 characters' },
+          { status: 400 }
+        )
+      }
+
       // 选择系统提示词和模型
       const systemPrompt = SYSTEM_PROMPTS[mode] || SYSTEM_PROMPTS.default
       const model = AI_MODELS[mode as keyof typeof AI_MODELS] || AI_MODELS.chat

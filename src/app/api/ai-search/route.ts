@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const ARK_API_KEY = process.env.ARK_API_KEY || '8a502ccf-39d4-4c52-bcdf-942c82e66f37'
 const ARK_API_URL = 'https://ark.cn-beijing.volces.com/api/v3/chat/completions'
 
-/**
- * AI 搜索 API - 集成火山方舟大模型
- * 支持自然语言查询，返回结构化的搜索结果
- */
 export async function POST(request: NextRequest) {
   try {
+    const ARK_API_KEY = process.env.ARK_API_KEY
+    if (!ARK_API_KEY) {
+      return NextResponse.json(
+        { error: 'AI service is not configured. Please set ARK_API_KEY environment variable.' },
+        { status: 503 }
+      )
+    }
+
     const { query, context } = await request.json()
 
     if (!query || typeof query !== 'string') {

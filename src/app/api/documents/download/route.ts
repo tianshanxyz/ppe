@@ -1,9 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-/**
- * 文档下载 API
- * 根据文档ID返回对应的文档文件
- */
+const DOCUMENT_TEMPLATES: Record<string, { filename: string; contentType: string; content: string }> = {
+  'ce-technical-file': {
+    filename: 'CE_Technical_File_Template.md',
+    contentType: 'text/markdown',
+    content: `# CE Technical File Template\n\n## 1. Product Description\n- Product name: [Enter product name]\n- Model/type: [Enter model]\n- Intended use: [Describe intended use]\n- Classification: Category II/III per EU 2016/425\n\n## 2. Risk Assessment\n- Hazard identification per EN ISO 12100\n- Risk estimation and evaluation\n- Risk control measures\n- Residual risk assessment\n\n## 3. Applicable Standards\n- [List applicable EN standards]\n\n## 4. Test Reports\n- [Attach test reports from accredited labs]\n\n## 5. Manufacturing Process\n- Production flow chart\n- Quality control points\n- Material specifications\n\n## 6. Quality Control\n- Incoming inspection\n- In-process inspection\n- Final inspection\n\n## 7. Labeling & Instructions\n- CE marking requirements\n- User instructions per Annex II\n- Multi-language requirements\n`
+  },
+  'ce-doc': {
+    filename: 'EU_Declaration_of_Conformity_Template.md',
+    contentType: 'text/markdown',
+    content: `# EU Declaration of Conformity\n\n## Manufacturer\n- Company name: [Enter company name]\n- Address: [Enter address]\n\n## Product\n- Product name: [Enter product name]\n- Model/type: [Enter model]\n- Serial/batch number: [Enter number]\n\n## Conformity Assessment\n- The product is in conformity with EU Regulation 2016/425\n- Conformity assessment procedure: [Module B + D/C2/F2]\n- Notified Body: [Enter NB name and number]\n\n## Applicable Standards\n- [List applicable EN standards]\n\n## Declaration\nI declare that the above product is in conformity with the applicable EU legislation.\n\nSignature: _______________\nName: [Enter name]\nTitle: [Enter title]\nDate: [Enter date]\n`
+  },
+  'fda-510k-cover': {
+    filename: 'FDA_510k_Cover_Letter_Template.md',
+    contentType: 'text/markdown',
+    content: `# 510(k) Cover Letter Template\n\n## Submitter Information\n- Company name: [Enter company name]\n- Address: [Enter address]\n- Contact person: [Enter name]\n- Phone: [Enter phone]\n- Email: [Enter email]\n\n## Device Information\n- Trade name: [Enter device name]\n- Classification name: [Enter classification]\n- Product code: [Enter product code]\n- Review panel: [Enter panel]\n\n## Predicate Device\n- Predicate device name: [Enter predicate name]\n- 510(k) number: [Enter K number]\n- Manufacturer: [Enter manufacturer]\n\n## Statement\nI certify that the information provided is true and accurate.\n\nSignature: _______________\nDate: [Enter date]\n`
+  },
+  'risk-assessment': {
+    filename: 'Risk_Assessment_Template.md',
+    contentType: 'text/markdown',
+    content: `# Risk Assessment Report Template\n\n## 1. Scope\n- Product: [Enter product name]\n- Assessment date: [Enter date]\n- Assessor: [Enter name]\n\n## 2. Hazard Identification\n| Hazard ID | Hazard Description | Affected Users | Phase |\n|-----------|-------------------|----------------|-------|\n| H-001 | [Describe hazard] | [Users] | [Phase] |\n\n## 3. Risk Estimation\n| Hazard ID | Severity | Probability | Risk Level |\n|-----------|----------|-------------|------------|\n| H-001 | [1-4] | [1-4] | [Low/Medium/High] |\n\n## 4. Risk Control Measures\n| Hazard ID | Control Measure | Residual Risk |\n|-----------|----------------|---------------|\n| H-001 | [Describe measure] | [Level] |\n\n## 5. Overall Risk Assessment\n- Conclusion: [Acceptable/Not acceptable]\n- Date: [Enter date]\n- Signature: _______________\n`
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
@@ -16,57 +35,22 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // 文档文件映射表
-    const documentFiles: Record<string, { filename: string; contentType: string }> = {
-      'ce-technical-file': { filename: 'CE_Technical_File_Template.docx', contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
-      'ce-risk-assessment': { filename: 'Risk_Assessment_Template.xlsx', contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
-      'ce-doc': { filename: 'EU_Declaration_of_Conformity_Template.docx', contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
-      'ce-test-report': { filename: 'Test_Report_Template.docx', contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
-      'fda-510k-cover': { filename: 'FDA_510k_Cover_Letter_Template.docx', contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
-      'fda-substantial-equiv': { filename: 'Substantial_Equivalence_Template.docx', contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
-      'fda-device-desc': { filename: 'Device_Description_Template.docx', contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
-      'fda-labeling': { filename: 'FDA_Labeling_Template.docx', contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
-      'nmpa-registration': { filename: 'NMPA_Registration_Template.docx', contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
-      'nmpa-technical': { filename: 'NMPA_Technical_Requirements_Template.docx', contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
-      'nmpa-clinical': { filename: 'Clinical_Evaluation_Report_Template.docx', contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
-      'ce-checklist': { filename: 'CE_Marking_Checklist.pdf', contentType: 'application/pdf' },
-      'fda-510k-checklist': { filename: 'FDA_510k_Checklist.pdf', contentType: 'application/pdf' },
-      'iso-13485-checklist': { filename: 'ISO_13485_Audit_Checklist.xlsx', contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
-      'ce-guide-pdf': { filename: 'CE_Marking_Guide.pdf', contentType: 'application/pdf' },
-      'fda-guide-pdf': { filename: 'FDA_510k_Guide.pdf', contentType: 'application/pdf' },
-      'biocompatibility-guide': { filename: 'Biocompatibility_Testing_Guide.pdf', contentType: 'application/pdf' },
-      'eu-2016-425': { filename: 'EU_Regulation_2016_425.pdf', contentType: 'application/pdf' },
-      'fda-act': { filename: 'FD_C_Act.pdf', contentType: 'application/pdf' },
-      'china-regulation': { filename: 'China_Medical_Device_Regulation.pdf', contentType: 'application/pdf' },
-      'en-149': { filename: 'EN_149_2001_A1_2009.pdf', contentType: 'application/pdf' },
-      'en-14683': { filename: 'EN_14683_2019_AC_2019.pdf', contentType: 'application/pdf' },
-      'astm-f2100': { filename: 'ASTM_F2100.pdf', contentType: 'application/pdf' },
-    }
-
-    const docInfo = documentFiles[docId]
+    const template = DOCUMENT_TEMPLATES[docId]
     
-    if (!docInfo) {
+    if (!template) {
       return NextResponse.json(
-        { error: 'Document not found' },
+        { error: 'Document template not found' },
         { status: 404 }
       )
     }
 
-    // 生成文档内容（在实际生产环境中，这里应该从存储服务获取真实文件）
-    // 目前返回一个模拟的文档内容
-    const mockContent = generateMockDocument(docId)
-    
-    // 创建响应
-    const response = new NextResponse(mockContent.toString(), {
+    return new NextResponse(template.content, {
       status: 200,
       headers: {
-        'Content-Type': docInfo.contentType,
-        'Content-Disposition': `attachment; filename="${docInfo.filename}"`,
-        'Content-Length': mockContent.length.toString(),
+        'Content-Type': template.contentType,
+        'Content-Disposition': `attachment; filename="${template.filename}"`,
       },
     })
-
-    return response
 
   } catch (error) {
     console.error('Document download error:', error)
@@ -75,25 +59,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     )
   }
-}
-
-/**
- * 生成模拟文档内容
- * 在实际生产环境中，应该从云存储获取真实文件
- */
-function generateMockDocument(docId: string): Buffer {
-  // 返回一个简单的文本内容作为模拟
-  const content = `This is a template document for ${docId}.
-
-In a production environment, this would be a real document file downloaded from cloud storage (AWS S3, Azure Blob, etc.).
-
-Document contents would include:
-- Professional templates
-- Regulatory compliance guides
-- Standard operating procedures
-- Checklists and forms
-
-For now, this is a placeholder to demonstrate the download functionality.`
-
-  return Buffer.from(content, 'utf-8')
 }
