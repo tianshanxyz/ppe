@@ -1,4 +1,5 @@
 import { createClient } from './supabase/client'
+import { escapeIlikeSearch } from './security/sanitize'
 
 export interface SearchResult {
   id: string
@@ -39,19 +40,36 @@ export async function intelligentSearch(
   try {
     const results: SearchResult[] = []
 
+    const escapedSearchTerm = escapeIlikeSearch(searchTerm)
+
+    let productQuery = supabase
+      .from('ppe_products')
+      .select('id, name, product_name, category, product_category, description, manufacturer_country, manufacturer_name, risk_level')
+      .or(`name.ilike.%${escapedSearchTerm}%,product_name.ilike.%${escapedSearchTerm}%,product_category.ilike.%${escapedSearchTerm}%,manufacturer_name.ilike.%${escapedSearchTerm}%,description.ilike.%${escapedSearchTerm}%,product_code.ilike.%${escapedSearchTerm}%`)
+      .eq('status', 'active')
+
+    if (category) {
+      productQuery = productQuery.eq('product_category', category)
+    }
+    if (country) {
+      productQuery = productQuery.eq('manufacturer_country', country)
+    }
+    productQuery = productQuery.limit(limit)
+
+    let manufacturerQuery = supabase
+      .from('ppe_manufacturers')
+      .select('id, company_name, country, product_categories, credit_score, risk_level, verified, business_type')
+      .or(`company_name.ilike.%${escapedSearchTerm}%,country.ilike.%${escapedSearchTerm}%`)
+      .eq('status', 'active')
+
+    if (country) {
+      manufacturerQuery = manufacturerQuery.eq('country', country)
+    }
+    manufacturerQuery = manufacturerQuery.limit(limit)
+
     const [productsResult, manufacturersResult] = await Promise.all([
-      supabase
-        .from('ppe_products')
-        .select('id, name, product_name, category, product_category, description, manufacturer_country, manufacturer_name, risk_level')
-        .or(`name.ilike.%${searchTerm}%,product_name.ilike.%${searchTerm}%,product_category.ilike.%${searchTerm}%,manufacturer_name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
-        .eq('status', 'active')
-        .limit(limit),
-      supabase
-        .from('ppe_manufacturers')
-        .select('id, company_name, country, product_categories, credit_score, risk_level, verified, business_type')
-        .or(`company_name.ilike.%${searchTerm}%,country.ilike.%${searchTerm}%`)
-        .eq('status', 'active')
-        .limit(limit)
+      productQuery,
+      manufacturerQuery
     ])
 
     if (productsResult.data && !productsResult.error) {

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Search, Building, Globe, Mail, Phone, MapPin, ExternalLink, CheckCircle2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { getPPEManufacturers } from '@/lib/ppe-database-client'
+import { getPPEManufacturersClient } from '@/lib/ppe-database-client'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -37,7 +37,7 @@ export default function ManufacturersPage() {
   async function loadManufacturers() {
     setLoading(true)
     try {
-      const result = await getPPEManufacturers({
+      const result = await getPPEManufacturersClient({
         page,
         limit,
         country: selectedCountry !== 'all' ? selectedCountry : undefined,

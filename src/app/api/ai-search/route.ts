@@ -4,12 +4,22 @@ const ARK_API_URL = 'https://ark.cn-beijing.volces.com/api/v3/chat/completions'
 
 export async function POST(request: NextRequest) {
   try {
-    const ARK_API_KEY = process.env.ARK_API_KEY
+    // 优先使用 VOLCENGINE_ARK_API_KEY（与项目其他模块一致），兼容 ARK_API_KEY
+    const ARK_API_KEY = process.env.VOLCENGINE_ARK_API_KEY || process.env.ARK_API_KEY
     if (!ARK_API_KEY) {
-      return NextResponse.json(
-        { error: 'AI service is not configured. Please set ARK_API_KEY environment variable.' },
-        { status: 503 }
-      )
+      console.warn('VOLCENGINE_ARK_API_KEY not configured, using fallback response')
+      const { query } = await request.json()
+      return NextResponse.json({
+        query,
+        answer: generateFallbackResponse(),
+        suggestions: [
+          'Visit our Regulations Database for detailed information',
+          'Check our Document Templates for compliance requirements',
+          'Use the Market Access Wizard for step-by-step guidance',
+        ],
+        relatedTopics: ['CE Marking', 'FDA 510(k)', 'UKCA Marking', 'NMPA Registration'],
+        confidence: 'low',
+      })
     }
 
     const { query, context } = await request.json()
@@ -22,7 +32,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 构建系统提示词
-    const systemPrompt = `You are an expert PPE (Personal Protective Equipment) compliance assistant. 
+    const systemPrompt = `You are an expert PPE (Personal Protective Equipment) compliance assistant.
 Your task is to help users find information about PPE products, compliance requirements, and market access.
 
 Available information categories:
@@ -45,7 +55,7 @@ Response format:
         'Authorization': `Bearer ${ARK_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'deepseek-r1-250120',
+        model: 'doubao-pro-32k-241215',
         messages: [
           {
             role: 'system',
@@ -56,18 +66,27 @@ Response format:
             content: query,
           },
         ],
-        temperature: 0.7,
-        max_tokens: 2000,
+        parameters: {
+          temperature: 0.7,
+          max_tokens: 2000,
+          top_p: 0.8,
+        },
       }),
     })
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
       console.error('ARK API error:', errorData)
-      return NextResponse.json(
-        { error: 'AI service temporarily unavailable' },
-        { status: 503 }
-      )
+      return NextResponse.json({
+        query,
+        answer: generateFallbackResponse(),
+        suggestions: [
+          'Visit our Regulations Database for detailed information',
+          'Check our Document Templates for compliance requirements',
+        ],
+        relatedTopics: ['CE Marking', 'FDA 510(k)', 'UKCA Marking'],
+        confidence: 'low',
+      })
     }
 
     const data = await response.json()
@@ -91,6 +110,28 @@ Response format:
       { status: 500 }
     )
   }
+}
+
+/**
+ * 备用回复（当 AI 服务不可用时）
+ */
+function generateFallbackResponse(): string {
+  return `The AI service is currently unavailable, but here is some general guidance on your question:
+
+**Common PPE Compliance Topics:**
+1. CE Marking (EU Regulation 2016/425) - Required for PPE sold in the EU market
+2. FDA Registration & 510(k) - Required for most PPE sold in the US market
+3. UKCA Marking - Required for PPE sold in the UK post-Brexit
+4. China NMPA Registration - Required for PPE sold in the Chinese market
+5. ISO Standards (ISO 9001, ISO 13485) - Quality management system standards
+
+**Recommended Actions:**
+- Visit our Regulations Database for detailed information
+- Check our Document Templates for compliance requirements
+- Use the Market Access Wizard for step-by-step guidance
+- Contact professional compliance consultants for personalized advice
+
+Please try again later. The AI service will be restored shortly.`
 }
 
 /**

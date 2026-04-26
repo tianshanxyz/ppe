@@ -379,3 +379,137 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm;
 -- Create trigram indexes for fuzzy search
 CREATE INDEX IF NOT EXISTS idx_ppe_products_name_trgm ON ppe_products USING gin(product_name gin_trgm_ops);
 CREATE INDEX IF NOT EXISTS idx_ppe_manufacturers_name_trgm ON ppe_manufacturers USING gin(company_name gin_trgm_ops);
+
+-- ============================================
+-- INSERT 3M AND OTHER WELL-KNOWN BRAND DATA
+-- ============================================
+
+-- Insert 3M as a manufacturer
+INSERT INTO ppe_manufacturers (
+    id, company_name, company_name_zh, country, city,
+    business_type, product_categories, certifications,
+    credit_score, risk_level, year_established, employee_count,
+    main_markets, description, status, verified
+) VALUES
+(
+    gen_random_uuid(),
+    '3M Company',
+    '3M公司',
+    'USA',
+    'Saint Paul',
+    ARRAY['manufacturer', 'distributor'],
+    ARRAY['Respiratory Protection', 'Eye Protection', 'Hearing Protection', 'Face Protection'],
+    ARRAY['ISO9001', 'ISO13485', 'CE', 'NIOSH', 'FDA'],
+    95,
+    'low',
+    1902,
+    '500+',
+    ARRAY['US', 'EU', 'Asia'],
+    'Global diversified technology company, leading manufacturer of PPE including respirators, safety glasses, and hearing protection.',
+    'active',
+    true
+),
+(
+    gen_random_uuid(),
+    'Honeywell International',
+    '霍尼韦尔国际',
+    'USA',
+    'Charlotte',
+    ARRAY['manufacturer', 'distributor'],
+    ARRAY['Safety Gloves', 'Safety Footwear', 'Respiratory Protection', 'Eye Protection'],
+    ARRAY['ISO9001', 'CE', 'ANSI'],
+    92,
+    'low',
+    1885,
+    '500+',
+    ARRAY['US', 'EU', 'Asia'],
+    'Multinational conglomerate producing safety equipment and PPE.',
+    'active',
+    true
+)
+ON CONFLICT DO NOTHING;
+
+-- Insert 3M and Honeywell products
+INSERT INTO ppe_products (
+    id, name, product_name, category, product_category, description,
+    manufacturer_country, product_code, manufacturer_name, risk_level, status
+) VALUES
+(
+    gen_random_uuid(),
+    '3M 8210 N95 Particulate Respirator',
+    '3M 8210 N95 Particulate Respirator',
+    'Respiratory Protection',
+    'Respiratory Protection',
+    '3M N95 disposable particulate respirator, filters at least 95% of airborne particles. NIOSH approved.',
+    'USA',
+    '3M-8210',
+    '3M Company',
+    'high',
+    'active'
+),
+(
+    gen_random_uuid(),
+    '3M 1860 N95 Health Care Particulate Respirator and Surgical Mask',
+    '3M 1860 N95 Health Care Particulate Respirator and Surgical Mask',
+    'Respiratory Protection',
+    'Respiratory Protection',
+    '3M N95 healthcare respirator designed to help provide respiratory protection for the wearer. FDA cleared for use as a surgical mask.',
+    'USA',
+    '3M-1860',
+    '3M Company',
+    'high',
+    'active'
+),
+(
+    gen_random_uuid(),
+    '3M SecureFit Safety Glasses SF400',
+    '3M SecureFit Safety Glasses SF400',
+    'Eye Protection',
+    'Eye Protection',
+    '3M secure fit safety glasses with anti-fog lens and adjustable temples. ANSI Z87.1+ certified.',
+    'USA',
+    '3M-SF400',
+    '3M Company',
+    'medium',
+    'active'
+),
+(
+    gen_random_uuid(),
+    '3M Peltor X5A Over-the-Head Earmuff',
+    '3M Peltor X5A Over-the-Head Earmuff',
+    'Hearing Protection',
+    'Hearing Protection',
+    '3M Peltor X Series over-the-head earmuff with NRR 31 dB noise reduction rating.',
+    'USA',
+    '3M-X5A',
+    '3M Company',
+    'medium',
+    'active'
+),
+(
+    gen_random_uuid(),
+    'Honeywell North 7700 Half-Mask Respirator',
+    'Honeywell North 7700 Half-Mask Respirator',
+    'Respiratory Protection',
+    'Respiratory Protection',
+    'Honeywell North half-mask respirator made of soft, non-allergenic silicone. NIOSH approved.',
+    'USA',
+    'HN-7700',
+    'Honeywell International',
+    'high',
+    'active'
+),
+(
+    gen_random_uuid(),
+    'Honeywell Maxiflex Comfort Gloves',
+    'Honeywell Maxiflex Comfort Gloves',
+    'Safety Gloves',
+    'Safety Gloves',
+    'Honeywell Maxiflex nitrile coated work gloves for general purpose and light manufacturing.',
+    'USA',
+    'HN-MF',
+    'Honeywell International',
+    'low',
+    'active'
+)
+ON CONFLICT DO NOTHING;
