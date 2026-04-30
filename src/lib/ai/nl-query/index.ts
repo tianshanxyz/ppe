@@ -139,7 +139,11 @@ export class NLQueryEngine {
 
     // 调用AI API
     try {
-      const response = await fetch('http://localhost:3000/api/ai/chat', {
+      // 使用环境变量或默认当前域名
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 
+        (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000')
+      
+      const response = await fetch(`${baseUrl}/api/ai/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

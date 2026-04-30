@@ -124,7 +124,7 @@ export class Classifier {
     this.config = {
       model: 'doubao-pro-32k',
       apiEndpoint: 'https://ark.cn-beijing.volces.com/api/v3/chat/completions',
-      apiKey: process.env.VOLCENGINE_API_KEY || '',
+      apiKey: process.env.VOLCENGINE_ARK_API_KEY || '',
       minConfidence: 0.7,
       enableCache: true,
       cacheTtl: 3600000, // 1 hour

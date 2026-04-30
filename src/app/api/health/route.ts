@@ -53,7 +53,7 @@ async function checkDatabase(): Promise<ServiceStatus> {
     
     // 执行简单的查询测试连接
     const { data, error } = await supabase
-      .from('companies')
+      .from('ppe_manufacturers')
       .select('id')
       .limit(1)
     
@@ -186,7 +186,7 @@ function calculateOverallStatus(
  * 支持 Bearer token 和 Basic auth 两种方式
  * Bearer token 需与环境变量 HEALTH_CHECK_TOKEN 匹配
  * Basic auth 需与环境变量 HEALTH_CHECK_USER/HEALTH_CHECK_PASS 匹配
- * 如果未配置环境变量，则使用硬编码的默认 token（仅限开发环境）
+ * 生产环境必须配置环境变量，否则拒绝访问
  */
 function verifyAuth(request: Request): boolean {
   const authHeader = request.headers.get('Authorization')
@@ -195,18 +195,28 @@ function verifyAuth(request: Request): boolean {
     return false
   }
   
+  // 生产环境必须配置环境变量
+  const expectedToken = process.env.HEALTH_CHECK_TOKEN
+  const expectedUser = process.env.HEALTH_CHECK_USER
+  const expectedPass = process.env.HEALTH_CHECK_PASS
+  
+  // 如果没有配置任何环境变量，拒绝访问（生产安全）
+  if (!expectedToken && !expectedUser && !expectedPass) {
+    console.warn('Health check authentication not configured - access denied')
+    return false
+  }
+  
   // Bearer Token 验证
   if (authHeader.startsWith('Bearer ')) {
     const token = authHeader.substring(7)
-    const expectedToken = process.env.HEALTH_CHECK_TOKEN || 'dev-health-check-token'
+    if (!expectedToken) return false
     return token === expectedToken
   }
   
   // Basic Auth 验证
   if (authHeader.startsWith('Basic ')) {
     const credentials = authHeader.substring(6)
-    const expectedUser = process.env.HEALTH_CHECK_USER || 'admin'
-    const expectedPass = process.env.HEALTH_CHECK_PASS || 'admin'
+    if (!expectedUser || !expectedPass) return false
     const expectedCredentials = Buffer.from(`${expectedUser}:${expectedPass}`).toString('base64')
     return credentials === expectedCredentials
   }
