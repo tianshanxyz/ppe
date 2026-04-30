@@ -2,11 +2,11 @@
 
 import { Metadata } from 'next'
 import { Database, Shield, Globe, Zap, Users, Lock, LucideIcon } from 'lucide-react'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { homeTranslations, getTranslations } from '@/lib/i18n/translations'
 
 export default function AboutPage() {
-  const { locale } = useLanguage()
+  const locale = useLocale()
   const t = getTranslations(homeTranslations, locale)
 
   return (

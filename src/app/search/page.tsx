@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { Filter, Building2, Package, X, Sparkles, TrendingUp } from 'lucide-react'
+import { Filter, Building2, Package, X, Sparkles, TrendingUp, Scale } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { SearchBar } from '@/components/search/SearchBar'
 import { SearchResults } from '@/components/search/SearchResults'
@@ -14,7 +14,7 @@ function SearchContent() {
   const searchParams = useSearchParams()
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState<any[]>([])
-  const [searchType, setSearchType] = useState<'all' | 'product' | 'company'>('all')
+  const [searchType, setSearchType] = useState<'all' | 'product' | 'company' | 'regulation'>('all')
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([])
   const [deviceClass, setDeviceClass] = useState('')
   const [showFilters, setShowFilters] = useState(false)
@@ -22,7 +22,7 @@ function SearchContent() {
 
   useEffect(() => {
     const query = searchParams.get('q') || ''
-    const type = (searchParams.get('type') as 'all' | 'product' | 'company') || 'all'
+    const type = (searchParams.get('type') as 'all' | 'product' | 'company' | 'regulation') || 'all'
     
     setSearchType(type)
     
@@ -35,29 +35,64 @@ function SearchContent() {
     }
   }, [searchParams])
 
-  const performSearch = async (query: string, type: 'all' | 'product' | 'company') => {
+  const performSearch = async (query: string, type: 'all' | 'product' | 'company' | 'regulation') => {
     setLoading(true)
     try {
-      const params = new URLSearchParams({
-        q: query,
-        type,
-        limit: '50'
-      })
+      const allResults: any[] = []
 
-      if (selectedMarkets.length > 0) {
-        params.append('market', selectedMarkets.join(','))
+      // Fetch products and companies from the main search API
+      if (type === 'all' || type === 'product' || type === 'company') {
+        const params = new URLSearchParams({
+          q: query,
+          type,
+          limit: '50'
+        })
+
+        if (selectedMarkets.length > 0) {
+          params.append('market', selectedMarkets.join(','))
+        }
+
+        if (deviceClass) {
+          params.append('deviceClass', deviceClass)
+        }
+
+        const response = await fetch(`/api/search?${params}`)
+        const data = await response.json()
+        
+        if (data.data) {
+          if (data.data.products) {
+            allResults.push(...data.data.products.map((p: any) => ({ ...p, _resultType: 'product' })))
+          }
+          if (data.data.companies) {
+            allResults.push(...data.data.companies.map((c: any) => ({ ...c, _resultType: 'company' })))
+          }
+        }
       }
 
-      if (deviceClass) {
-        params.append('deviceClass', deviceClass)
+      // Fetch regulations from the regulations search API
+      if (type === 'all' || type === 'regulation') {
+        try {
+          const regParams = new URLSearchParams({
+            q: query,
+            limit: '50'
+          })
+
+          if (selectedMarkets.length > 0) {
+            regParams.append('market', selectedMarkets.join(','))
+          }
+
+          const regResponse = await fetch(`/api/regulations/search?${regParams}`)
+          const regData = await regResponse.json()
+          
+          if (regData.success && regData.data) {
+            allResults.push(...regData.data.map((r: any) => ({ ...r, _resultType: 'regulation' })))
+          }
+        } catch (regError) {
+          console.error('Regulation search error:', regError)
+        }
       }
 
-      const response = await fetch(`/api/search?${params}`)
-      const data = await response.json()
-      
-      if (data.data) {
-        setResults(data.data.products || data.data.companies || [])
-      }
+      setResults(allResults)
     } catch (error) {
       console.error('Search error:', error)
       setResults([])
@@ -132,6 +167,15 @@ function SearchContent() {
               <Button
                 variant="outline"
                 size="sm"
+                onClick={() => router.push('/search?type=regulation')}
+                className="border-gray-200"
+              >
+                <Scale className="w-4 h-4 mr-1" />
+                Regulations
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => router.push('/search?q=CE+FDA')}
                 className="border-gray-200"
               >
@@ -184,7 +228,7 @@ function SearchContent() {
           <div className="mt-4">
             <SearchBar 
               initialQuery={searchParams.get('q') || ''}
-              placeholder="Search products, companies..."
+              placeholder="Search products, companies, regulations..."
             />
           </div>
 
@@ -224,6 +268,18 @@ function SearchContent() {
             >
               <Building2 className="w-4 h-4 mr-1" />
               Companies
+            </Button>
+            <Button
+              variant={searchType === 'regulation' ? 'outline' : 'ghost'}
+              size="sm"
+              onClick={() => {
+                const query = searchParams.get('q') || ''
+                router.push(`/search?q=${query}&type=regulation`)
+              }}
+              className={searchType === 'regulation' ? 'border-[#339999] text-[#339999]' : ''}
+            >
+              <Scale className="w-4 h-4 mr-1" />
+              Regulations
             </Button>
           </div>
         </div>

@@ -46,3 +46,6 @@ Thumbs.db
 
 # Do not push
 .do-not-push/
+
+# Archive folder - development artifacts, not for production
+_archive/

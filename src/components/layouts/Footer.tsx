@@ -4,13 +4,13 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ShieldCheck } from 'lucide-react';
-import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { useLocale } from '@/lib/i18n/LocaleProvider';
 import { navTranslations, getTranslations } from '@/lib/i18n/translations';
 
 export function Footer() {
   const pathname = usePathname();
   const [isClient, setIsClient] = useState(false);
-  const { locale } = useLanguage();
+  const locale = useLocale();
 
   useEffect(() => {
     setIsClient(true);
@@ -44,18 +44,18 @@ export function Footer() {
             <h4 className="font-semibold text-gray-900 mb-4">{t.complianceTools}</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/ppe/market-access" className="text-gray-500 hover:text-primary transition-colors">
+                <Link href="/market-access" className="text-gray-500 hover:text-primary transition-colors">
                   {t.complianceChecker}
                 </Link>
               </li>
               <li>
-                <Link href="/ppe/certification-comparison" className="text-gray-500 hover:text-primary transition-colors">
+                <Link href="/certification-comparison" className="text-gray-500 hover:text-primary transition-colors">
                   {t.marketComparison}
                 </Link>
               </li>
               <li>
-                <Link href="/ppe/cost-calculator" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.costCalculator}
+                <Link href="/compliance-guides" className="text-gray-500 hover:text-primary transition-colors">
+                  Compliance Guides
                 </Link>
               </li>
             </ul>
@@ -65,17 +65,17 @@ export function Footer() {
             <h4 className="font-semibold text-gray-900 mb-4">{t.dataCenter}</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/ppe/products" className="text-gray-500 hover:text-primary transition-colors">
+                <Link href="/products" className="text-gray-500 hover:text-primary transition-colors">
                   {t.productDatabase}
                 </Link>
               </li>
               <li>
-                <Link href="/ppe/manufacturers" className="text-gray-500 hover:text-primary transition-colors">
+                <Link href="/manufacturers" className="text-gray-500 hover:text-primary transition-colors">
                   {t.manufacturers}
                 </Link>
               </li>
               <li>
-                <Link href="/ppe/regulations-new" className="text-gray-500 hover:text-primary transition-colors">
+                <Link href="/regulations-new" className="text-gray-500 hover:text-primary transition-colors">
                   {t.regulations}
                 </Link>
               </li>

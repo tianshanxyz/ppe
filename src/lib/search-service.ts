@@ -44,23 +44,21 @@ export async function intelligentSearch(
 
     let productQuery = supabase
       .from('ppe_products')
-      .select('id, name, product_name, category, product_category, description, manufacturer_country, manufacturer_name, risk_level')
-      .or(`name.ilike.%${escapedSearchTerm}%,product_name.ilike.%${escapedSearchTerm}%,product_category.ilike.%${escapedSearchTerm}%,manufacturer_name.ilike.%${escapedSearchTerm}%,description.ilike.%${escapedSearchTerm}%,product_code.ilike.%${escapedSearchTerm}%`)
-      .eq('status', 'active')
+      .select('id, name, product_name, category, product_category, description, country_of_origin, manufacturer_name, risk_level, product_code')
+      .or(`name.ilike.%${escapedSearchTerm}%,product_name.ilike.%${escapedSearchTerm}%,product_category.ilike.%${escapedSearchTerm}%,manufacturer_name.ilike.%${escapedSearchTerm}%,product_code.ilike.%${escapedSearchTerm}%`)
 
     if (category) {
       productQuery = productQuery.eq('product_category', category)
     }
     if (country) {
-      productQuery = productQuery.eq('manufacturer_country', country)
+      productQuery = productQuery.eq('country_of_origin', country)
     }
     productQuery = productQuery.limit(limit)
 
     let manufacturerQuery = supabase
       .from('ppe_manufacturers')
-      .select('id, company_name, country, product_categories, credit_score, risk_level, verified, business_type')
-      .or(`company_name.ilike.%${escapedSearchTerm}%,country.ilike.%${escapedSearchTerm}%`)
-      .eq('status', 'active')
+      .select('id, name, country, website')
+      .or(`name.ilike.%${escapedSearchTerm}%,country.ilike.%${escapedSearchTerm}%`)
 
     if (country) {
       manufacturerQuery = manufacturerQuery.eq('country', country)
@@ -81,11 +79,12 @@ export async function intelligentSearch(
           subtitle: product.product_category || product.category,
           description: product.description,
           metadata: {
-            manufacturerCountry: product.manufacturer_country,
+            manufacturerCountry: product.country_of_origin,
             manufacturerName: product.manufacturer_name,
-            riskLevel: product.risk_level
+            riskLevel: product.risk_level,
+            productCode: product.product_code
           },
-          similarity: calculateSimilarity(searchTerm, [product.product_name, product.name, product.product_category, product.manufacturer_name])
+          similarity: calculateSimilarity(searchTerm, [product.product_name, product.name, product.product_category, product.manufacturer_name, product.product_code])
         })
       })
     }
@@ -95,16 +94,14 @@ export async function intelligentSearch(
         results.push({
           id: mfg.id,
           type: 'manufacturer',
-          title: mfg.company_name,
+          title: mfg.name,
           subtitle: mfg.country,
-          description: mfg.product_categories?.join(', '),
+          description: mfg.website,
           metadata: {
-            creditScore: mfg.credit_score,
-            riskLevel: mfg.risk_level,
-            verified: mfg.verified,
-            businessType: mfg.business_type
+            country: mfg.country,
+            website: mfg.website
           },
-          similarity: calculateSimilarity(searchTerm, [mfg.company_name, mfg.country])
+          similarity: calculateSimilarity(searchTerm, [mfg.name, mfg.country])
         })
       })
     }

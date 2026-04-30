@@ -28,6 +28,7 @@ interface CompanyData {
       lastUpdated: string
     }
     productCount?: number
+    metadata?: Record<string, any>
   }
   products: Array<{
     id: string

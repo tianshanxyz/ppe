@@ -15,8 +15,6 @@ import {
   Database,
   BookOpen,
   FileText,
-  Calculator,
-  Clock,
   Building2,
   Package,
   Gavel,
@@ -29,7 +27,7 @@ import {
   Key,
   Settings
 } from 'lucide-react'
-import { useLanguage } from '@/lib/i18n/LanguageContext'
+import { useLocale, useSetLocale } from '@/lib/i18n/LocaleProvider'
 import { navTranslations, getTranslations } from '@/lib/i18n/translations'
 import { Locale, localeLabels } from '@/lib/i18n/config'
 
@@ -37,10 +35,10 @@ export function PPENavbar() {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
-  const { locale, setLocale } = useLanguage()
+  const locale = useLocale()
+  const setLocale = useSetLocale()
   const [showLangMenu, setShowLangMenu] = useState(false)
 
-  // 获取当前语言的翻译
   const t = getTranslations(navTranslations, locale)
 
   // 主导航结构 - 按照优化方案设计
@@ -54,34 +52,32 @@ export function PPENavbar() {
       label: t.complianceTools,
       icon: CheckCircle,
       children: [
-        { href: '/ppe/market-access', label: t.complianceChecker, icon: CheckCircle },
-        { href: '/ppe/certification-comparison', label: t.marketComparison, icon: Globe },
-        { href: '/ppe/cost-calculator', label: t.costCalculator, icon: Calculator },
-        { href: '/ppe/timeline-estimator', label: t.timelineEstimator, icon: Clock },
-        { href: '/ppe/compliance-tracker', label: t.complianceTracker, icon: ClipboardList },
-        { href: '/ppe/certificate-alerts', label: t.certificateAlerts, icon: Bell },
+        { href: '/market-access', label: t.complianceChecker, icon: CheckCircle },
+        { href: '/certification-comparison', label: t.marketComparison, icon: Globe },
+        { href: '/compliance-tracker', label: t.complianceTracker, icon: ClipboardList },
+        { href: '/certificate-alerts', label: t.certificateAlerts, icon: Bell },
       ]
     },
     {
       label: t.dataCenter,
       icon: Database,
       children: [
-        { href: '/ppe/products', label: t.productDatabase, icon: Package },
-        { href: '/ppe/manufacturers', label: t.manufacturers, icon: Building2 },
-        { href: '/ppe/regulations-new', label: t.regulations, icon: Gavel },
-        { href: '/ppe/market-analysis', label: t.marketAnalysis, icon: Globe },
+        { href: '/products', label: t.productDatabase, icon: Package },
+        { href: '/manufacturers', label: t.manufacturers, icon: Building2 },
+        { href: '/regulations-new', label: t.regulations, icon: Gavel },
+        { href: '/market-analysis', label: t.marketAnalysis, icon: Globe },
       ]
     },
     {
       label: t.knowledgeBase,
       icon: BookOpen,
       children: [
-        { href: '/ppe/compliance-guides', label: t.complianceGuides, icon: BookOpen },
-        { href: '/ppe/documents', label: t.documentTemplates, icon: FileText },
-        { href: '/ppe/knowledge-base', label: t.knowledgeArticles, icon: Lightbulb },
-        { href: '/ppe/case-studies', label: t.caseStudies, icon: FolderOpen },
-        { href: '/ppe/regulatory-news', label: t.regulatoryNews, icon: Newspaper },
-        { href: '/ppe/regulatory-alerts', label: t.regulatoryAlerts, icon: Bell },
+        { href: '/compliance-guides', label: t.complianceGuides, icon: BookOpen },
+        { href: '/documents', label: t.documentTemplates, icon: FileText },
+        { href: '/knowledge-base', label: t.knowledgeArticles, icon: Lightbulb },
+        { href: '/case-studies', label: t.caseStudies, icon: FolderOpen },
+        { href: '/regulatory-news', label: t.regulatoryNews, icon: Newspaper },
+        { href: '/regulatory-alerts', label: t.regulatoryAlerts, icon: Bell },
       ]
     },
   ]
@@ -98,7 +94,7 @@ export function PPENavbar() {
     setShowLangMenu(false)
   }
 
-  const isAuthPage = pathname?.includes('/ppe/auth')
+  const isAuthPage = pathname?.includes('/auth')
 
   if (isAuthPage) {
     return null
@@ -234,14 +230,14 @@ export function PPENavbar() {
             <div className="w-px h-6 bg-gray-200 mx-1"></div>
 
             <Link
-              href="/ppe/auth/login"
+              href="/auth/login"
               className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#339999] transition-colors"
             >
               <LogIn className="w-4 h-4" />
               {t.signIn}
             </Link>
             <Link
-              href="/ppe/auth/signup"
+              href="/auth/signup"
               className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#339999] hover:bg-[#2d8b8b] rounded-lg transition-colors shadow-sm"
             >
               <UserPlus className="w-4 h-4" />
@@ -371,7 +367,7 @@ export function PPENavbar() {
               {/* 登录/注册 */}
               <div className="flex flex-col gap-2 px-4 pt-2">
                 <Link
-                  href="/ppe/auth/login"
+                  href="/auth/login"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 border border-gray-200 rounded-lg hover:text-[#339999] hover:border-[#339999] transition-colors"
                 >
@@ -379,7 +375,7 @@ export function PPENavbar() {
                   Sign In
                 </Link>
                 <Link
-                  href="/ppe/auth/signup"
+                  href="/auth/signup"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#339999] hover:bg-[#2d8b8b] rounded-lg transition-colors"
                 >

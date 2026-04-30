@@ -25,8 +25,8 @@ import {
   UserPlus,
   User,
 } from 'lucide-react';
-import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { navTranslations, getTranslations } from '@/lib/i18n/translations';
+import { useLocale, useSetLocale } from '@/lib/i18n/useLocale';
+import { navTranslations, headerTranslations, getTranslations } from '@/lib/i18n/translations';
 import { Locale, localeLabels } from '@/lib/i18n/config';
 
 const languages = [
@@ -38,7 +38,8 @@ export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const { locale, setLocale } = useLanguage();
+  const locale = useLocale();
+  const setLocale = useSetLocale();
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -48,8 +49,10 @@ export function Header() {
   }, []);
 
   const t = getTranslations(navTranslations, locale);
+  const ht = getTranslations(headerTranslations, locale);
 
   const handleLangChange = (newLocale: Locale) => {
+    console.log('Header handleLangChange called with:', newLocale);
     setLocale(newLocale);
     setShowLangMenu(false);
   };
@@ -64,37 +67,36 @@ export function Header() {
       label: t.complianceTools,
       icon: CheckCircle,
       children: [
-        { href: '/ppe/market-access', label: t.complianceChecker, icon: CheckCircle },
-        { href: '/ppe/certification-comparison', label: t.marketComparison, icon: Globe },
-        { href: '/ppe/cost-calculator', label: t.costCalculator, icon: Calculator },
-        { href: '/ppe/timeline-estimator', label: t.timelineEstimator, icon: Clock },
-        { href: '/ppe/compliance-tracker', label: t.complianceTracker, icon: FileText },
-        { href: '/ppe/certificate-alerts', label: t.certificateAlerts, icon: Clock },
-        { href: '/ppe/document-generator', label: 'Document Generator', icon: FileText },
-        { href: '/ppe/supply-chain-tracker', label: 'Supply Chain Tracker', icon: FolderOpen },
+        { href: '/market-access', label: t.complianceChecker, icon: CheckCircle },
+        { href: '/certification-comparison', label: t.marketComparison, icon: Globe },
+        { href: '/compliance-guides', label: t.complianceGuides, icon: BookOpen },
+        { href: '/documents', label: t.documentTemplates, icon: FileText },
+        { href: '/compliance-tracker', label: t.complianceTracker, icon: FileText },
+        { href: '/certificate-alerts', label: t.certificateAlerts, icon: Clock },
+        { href: '/document-generator', label: ht.documentGenerator, icon: FileText },
+        { href: '/supply-chain-tracker', label: ht.supplyChainTracker, icon: FolderOpen },
       ]
     },
     {
       label: t.dataCenter,
       icon: Database,
       children: [
-        { href: '/ppe/products', label: t.productDatabase, icon: Package },
-        { href: '/ppe/manufacturers', label: t.manufacturers, icon: Building2 },
-        { href: '/ppe/regulations-new', label: t.regulations, icon: Gavel },
-        { href: '/ppe/market-analysis', label: t.marketAnalysis, icon: Globe },
+        { href: '/products', label: t.productDatabase, icon: Package },
+        { href: '/manufacturers', label: t.manufacturers, icon: Building2 },
+        { href: '/regulations-new', label: t.regulations, icon: Gavel },
+        { href: '/market-analysis', label: t.marketAnalysis, icon: Globe },
       ]
     },
     {
       label: t.knowledgeBase,
       icon: BookOpen,
       children: [
-        { href: '/ppe/ai-advisor', label: 'AI Compliance Advisor', icon: Lightbulb },
-        { href: '/ppe/compliance-guides', label: t.complianceGuides, icon: BookOpen },
-        { href: '/ppe/documents', label: t.documentTemplates, icon: FileText },
-        { href: '/ppe/knowledge-base', label: t.knowledgeArticles, icon: Lightbulb },
-        { href: '/ppe/case-studies', label: t.caseStudies, icon: FolderOpen },
-        { href: '/ppe/regulatory-news', label: t.regulatoryNews, icon: Newspaper },
-        { href: '/ppe/regulatory-alerts', label: t.regulatoryAlerts, icon: Clock },
+        { href: '/compliance-guides', label: t.complianceGuides, icon: BookOpen },
+        { href: '/documents', label: t.documentTemplates, icon: FileText },
+        { href: '/knowledge-base', label: t.knowledgeArticles, icon: Lightbulb },
+        { href: '/case-studies', label: t.caseStudies, icon: FolderOpen },
+        { href: '/regulatory-news', label: t.regulatoryNews, icon: Newspaper },
+        { href: '/regulatory-alerts', label: t.regulatoryAlerts, icon: Clock },
       ]
     },
     {
@@ -111,7 +113,7 @@ export function Header() {
     return pathname?.startsWith(href);
   };
 
-  const isAuthPage = pathname?.includes('/auth') || pathname?.includes('/ppe/auth');
+  const isAuthPage = pathname?.includes('/auth') || pathname?.includes('/auth');
 
   if (isAuthPage) {
     return null;
@@ -141,7 +143,7 @@ export function Header() {
                 return (
                   <div
                     key={item.label}
-                    className="relative"
+                    className="relative group"
                     onMouseEnter={() => setOpenDropdown(item.label)}
                     onMouseLeave={() => setOpenDropdown(null)}
                   >
@@ -158,26 +160,32 @@ export function Header() {
                     </button>
 
                     {isOpen && (
-                      <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
-                        {item.children.map((child) => {
-                          const ChildIcon = child.icon;
-                          const childActive = isActive(child.href);
+                      <div 
+                        className="absolute top-full left-0 pt-2 z-50"
+                        onMouseEnter={() => setOpenDropdown(item.label)}
+                        onMouseLeave={() => setOpenDropdown(null)}
+                      >
+                        <div className="w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2">
+                          {item.children.map((child) => {
+                            const ChildIcon = child.icon;
+                            const childActive = isActive(child.href);
 
-                          return (
-                            <Link
-                              key={child.href}
-                              href={child.href}
-                              className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
-                                childActive
-                                  ? 'text-primary bg-primary/5'
-                                  : 'text-gray-600 hover:text-primary hover:bg-gray-50'
-                              }`}
-                            >
-                              <ChildIcon className="w-4 h-4" />
-                              {child.label}
-                            </Link>
-                          );
-                        })}
+                            return (
+                              <Link
+                                key={child.href}
+                                href={child.href}
+                                className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
+                                  childActive
+                                    ? 'text-primary bg-primary/5'
+                                    : 'text-gray-600 hover:text-primary hover:bg-gray-50'
+                                }`}
+                              >
+                                <ChildIcon className="w-4 h-4" />
+                                {child.label}
+                              </Link>
+                            );
+                          })}
+                        </div>
                       </div>
                     )}
                   </div>

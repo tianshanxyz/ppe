@@ -86,13 +86,13 @@ export function IntelligentSearch({
     // 根据类型导航
     switch (result.type) {
       case 'product':
-        window.location.href = `/ppe/products/${result.id}`
+        window.location.href = `/products/${result.id}`
         break
       case 'manufacturer':
-        window.location.href = `/ppe/manufacturers/${result.id}`
+        window.location.href = `/manufacturers/${result.id}`
         break
       case 'regulation':
-        window.location.href = `/ppe/regulations/${result.id}`
+        window.location.href = `/regulations/${result.id}`
         break
     }
   }

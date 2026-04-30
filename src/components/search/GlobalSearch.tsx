@@ -187,21 +187,21 @@ export function GlobalSearch() {
                 <h4 className="font-medium text-gray-900 mb-3">Quick Navigation</h4>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   <button
-                    onClick={() => handleQuickAction('/ppe/market-access')}
+                    onClick={() => handleQuickAction('/market-access')}
                     className="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
                   >
                     <ArrowRight className="h-4 w-4 text-[#339999]" />
                     <span className="text-sm text-gray-700">Compliance Check</span>
                   </button>
                   <button
-                    onClick={() => handleQuickAction('/ppe/products')}
+                    onClick={() => handleQuickAction('/products')}
                     className="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
                   >
                     <ArrowRight className="h-4 w-4 text-[#339999]" />
                     <span className="text-sm text-gray-700">Product Database</span>
                   </button>
                   <button
-                    onClick={() => handleQuickAction('/ppe/certification-comparison')}
+                    onClick={() => handleQuickAction('/certification-comparison')}
                     className="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
                   >
                     <ArrowRight className="h-4 w-4 text-[#339999]" />

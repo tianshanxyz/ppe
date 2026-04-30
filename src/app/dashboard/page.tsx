@@ -124,6 +124,21 @@ export default function DashboardPage() {
     }
   ];
 
+  const complianceTools = [
+    {
+      icon: Clock,
+      title: 'Compliance Guides',
+      description: 'Step-by-step certification guides with timelines',
+      href: '/compliance-guides'
+    },
+    {
+      icon: CheckCircle,
+      title: 'Compliance Tracker',
+      description: 'Track compliance tasks and milestones',
+      href: '/compliance-tracker'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="py-8">
@@ -216,7 +231,7 @@ export default function DashboardPage() {
               Quick Actions
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Link href="/ppe/market-access">
+              <Link href="/market-access">
                 <Card className="p-4 bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-[#339999]/10 rounded-xl flex items-center justify-center mx-auto mb-2">
@@ -226,7 +241,7 @@ export default function DashboardPage() {
                   </div>
                 </Card>
               </Link>
-              <Link href="/ppe/products">
+              <Link href="/products">
                 <Card className="p-4 bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-2">
@@ -236,7 +251,7 @@ export default function DashboardPage() {
                   </div>
                 </Card>
               </Link>
-              <Link href="/ppe/certification-comparison">
+              <Link href="/certification-comparison">
                 <Card className="p-4 bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-2">
@@ -246,7 +261,7 @@ export default function DashboardPage() {
                   </div>
                 </Card>
               </Link>
-              <Link href="/ppe/documents">
+              <Link href="/documents">
                 <Card className="p-4 bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-2">
@@ -256,6 +271,36 @@ export default function DashboardPage() {
                   </div>
                 </Card>
               </Link>
+            </div>
+          </div>
+
+          {/* Compliance Tools */}
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <Shield className="w-5 h-5 text-[#339999]" />
+              My Compliance Tools
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {complianceTools.map((item, index) => (
+                <Link
+                  key={index}
+                  href={item.href}
+                  className="block"
+                >
+                  <Card className="p-4 bg-white shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-[#339999]/10 rounded-xl flex items-center justify-center">
+                        <item.icon className="w-6 h-6 text-[#339999]" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-800">{item.title}</h3>
+                        <p className="text-gray-500 text-sm">{item.description}</p>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-gray-400" />
+                    </div>
+                  </Card>
+                </Link>
+              ))}
             </div>
           </div>
 

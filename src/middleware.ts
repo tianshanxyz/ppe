@@ -33,8 +33,27 @@ const PROTECTED_API_ROUTES = [
   '/api/market-recommendation',
 ]
 
+const LOCALES = ['en', 'zh']
+
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
+
+  const { pathname, searchParams } = request.nextUrl
+  
+  const langParam = searchParams.get('lang')
+  const existingCookie = request.cookies.get('mdlooker-locale')?.value
+  
+  if (langParam && LOCALES.includes(langParam)) {
+    supabaseResponse.cookies.set('mdlooker-locale', langParam, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: 'lax',
+    })
+  } else if (existingCookie && LOCALES.includes(existingCookie) && !langParam) {
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.searchParams.set('lang', existingCookie)
+    return NextResponse.redirect(redirectUrl)
+  }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -61,7 +80,6 @@ export async function middleware(request: NextRequest) {
   })
 
   const { data: { user } } = await supabase.auth.getUser()
-  const pathname = request.nextUrl.pathname
 
   const isProtectedRoute = PROTECTED_ROUTES.some(route => pathname.startsWith(route))
   const isProtectedApiRoute = PROTECTED_API_ROUTES.some(route => pathname.startsWith(route))

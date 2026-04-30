@@ -2,7 +2,7 @@ export { Button } from './Button';
 export { Card, CardHeader, CardTitle, CardContent, CardFooter } from './Card';
 export { Input } from './Input';
 export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select';
-export { Badge } from './Badge';
+export { Badge, StatusBadge } from './Badge';
 export { Skeleton } from './Skeleton';
 export { LanguageSwitcher } from './LanguageSwitcher';
 export { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from './Tooltip';

@@ -73,7 +73,7 @@ export async function sendWelcomeEmail(email: string, name: string): Promise<{ s
           <li>Track your certification status</li>
         </ul>
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${process.env.NEXT_PUBLIC_APP_URL}/ppe/market-access" 
+          <a href="${process.env.NEXT_PUBLIC_APP_URL}/market-access" 
              style="background: #339999; color: white; padding: 14px 32px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">
             Start Your First Check
           </a>

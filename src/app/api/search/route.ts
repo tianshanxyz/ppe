@@ -109,19 +109,19 @@ export async function GET(request: NextRequest) {
       // 搜索产品
       if (type === 'all' || type === 'product') {
         let productQuery = supabase
-          .from('all_products')
-          .select('*')
-          .ilike('product_name', `%${escapeIlikeSearch(query)}%`)
+          .from('ppe_products')
+          .select('id, name, manufacturer_name, country_of_origin, category, registration_number, created_at, updated_at, data_source, model')
+          .ilike('name', `%${escapeIlikeSearch(query)}%`)
           .limit(limit)
 
-        // 应用市场筛选
+        // 应用市场筛选（使用 country_of_origin 作为市场）
         if (markets.length > 0) {
-          productQuery = productQuery.in('market', markets)
+          productQuery = productQuery.in('country_of_origin', markets)
         }
 
-        // 应用器械类别筛选
+        // 应用类别筛选
         if (deviceClass) {
-          productQuery = productQuery.eq('device_class', deviceClass)
+          productQuery = productQuery.eq('category', deviceClass)
         }
 
         const { data: products, error: productsError } = await productQuery
@@ -132,25 +132,25 @@ export async function GET(request: NextRequest) {
         } else {
           results.products = (products || []).map(p => ({
             id: p.id,
-            name: p.product_name,
-            company_name: p.company_name,
-            market: p.market,
-            device_class: p.device_class,
-            product_code: p.product_code || '',
-            status: p.status || 'active',
+            name: p.name,
+            company_name: p.manufacturer_name || 'Unknown',
+            market: p.country_of_origin || 'Unknown',
+            device_class: p.category || 'Unknown',
+            product_code: p.model || '',
+            status: 'active',
             registration_number: p.registration_number || '',
             created_at: p.created_at,
-            updated_at: p.last_updated || p.updated_at,
-            data_source: 'local'
+            updated_at: p.updated_at,
+            data_source: p.data_source || 'local'
           }))
         }
       }
 
-      // 搜索公司
+      // 搜索公司/制造商
       if (type === 'all' || type === 'company') {
         let companyQuery = supabase
-          .from('companies')
-          .select('*')
+          .from('ppe_manufacturers')
+          .select('id, name, country, created_at, updated_at, data_source')
           .ilike('name', `%${escapeIlikeSearch(query)}%`)
           .limit(limit)
 
@@ -163,12 +163,12 @@ export async function GET(request: NextRequest) {
           results.companies = (companies || []).map(c => ({
             id: c.id,
             name: c.name,
-            legal_name: c.legal_name,
-            registration_number: c.registration_number,
+            legal_name: c.name,
+            registration_number: '',
             country: c.country,
             created_at: c.created_at,
             updated_at: c.updated_at,
-            data_source: 'local'
+            data_source: c.data_source || 'local'
           }))
         }
       }

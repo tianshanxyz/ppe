@@ -32,6 +32,38 @@
     "authority": "SAMR / NMPA"
   },
   {
+    "code": "JP",
+    "name": "Japan",
+    "name_zh": "日本",
+    "flag_emoji": "🇯🇵",
+    "regulation_name": "PMDA / MHLW Ministerial Ordinance",
+    "authority": "PMDA / MHLW"
+  },
+  {
+    "code": "KR",
+    "name": "South Korea",
+    "name_zh": "韩国",
+    "flag_emoji": "🇰🇷",
+    "regulation_name": "MFDS Notification / KOSHA Standards",
+    "authority": "MFDS / KOSHA"
+  },
+  {
+    "code": "IN",
+    "name": "India",
+    "name_zh": "印度",
+    "flag_emoji": "🇮🇳",
+    "regulation_name": "BIS Certification / CDSCO Medical Device Rules",
+    "authority": "BIS / CDSCO"
+  },
+  {
+    "code": "BR",
+    "name": "Brazil",
+    "name_zh": "巴西",
+    "flag_emoji": "🇧🇷",
+    "regulation_name": "ANVISA Resolution / INMETRO Certification",
+    "authority": "ANVISA / INMETRO"
+  },
+  {
     "code": "GCC",
     "name": "Gulf Cooperation Council",
     "name_zh": "海湾六国",

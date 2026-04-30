@@ -30,7 +30,7 @@ export async function signUp(email: string, password: string, userData: {
         full_name: userData.full_name,
         company: userData.company,
       },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/ppe/auth/callback`,
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
     },
   })
 
@@ -62,7 +62,7 @@ export async function signInWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/ppe/auth/callback`,
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
     },
   })
 

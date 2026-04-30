@@ -17,13 +17,26 @@ import {
   CheckCircle,
   AlertCircle,
   Info,
-  Link as LinkIcon
+  Link as LinkIcon,
+  Mail,
+  Phone,
+  Award,
+  FileText,
+  Users,
+  BookOpen,
+  Scale,
+  Building,
+  CreditCard,
+  Briefcase,
+  MapPinned,
+  Package
 } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DataSourceBadge } from '@/components/data/DataSourceBadge'
 import { LastUpdateTime } from '@/components/data/LastUpdateTime'
 import { Button, Badge, Card } from '@/components/ui'
+import { createClient } from '@/lib/supabase/client'
 
 interface Company {
   id: string
@@ -47,6 +60,7 @@ interface Company {
     lastUpdated: string
   }
   productCount?: number
+  metadata?: Record<string, any>
 }
 
 interface Product {
@@ -133,9 +147,35 @@ const trustLevelConfig = {
 export function CompanyDetail({ company, products, alerts, history, sources }: CompanyDetailProps) {
   const [activeTab, setActiveTab] = useState<'products' | 'alerts' | 'history'>('products')
   const [isFavorite, setIsFavorite] = useState(false)
+  const [relatedCompanies, setRelatedCompanies] = useState<any[]>([])
 
   const totalProducts = products.length
-  
+
+  // Load related companies in same country
+  useEffect(() => {
+    if (company.country) {
+      loadRelatedCompanies()
+    }
+  }, [company.country, company.id])
+
+  async function loadRelatedCompanies() {
+    try {
+      const supabase = createClient()
+      const { data } = await supabase
+        .from('ppe_manufacturers')
+        .select('*')
+        .eq('country', company.country!)
+        .neq('id', company.id)
+        .limit(6)
+
+      if (data) {
+        setRelatedCompanies(data)
+      }
+    } catch (error) {
+      console.error('Failed to load related companies:', error)
+    }
+  }
+
   // Calculate risk class distribution
   const riskClassDistribution: Record<string, number> = {}
   for (const p of products) {
@@ -149,6 +189,14 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
     high: alerts.filter(a => a.risk_level === 'high').length,
     medium: alerts.filter(a => a.risk_level === 'medium').length,
     low: alerts.filter(a => a.risk_level === 'low').length,
+  }
+
+  // Generate unified social credit code
+  function getUnifiedSocialCreditCode(): string {
+    if (company.source) return company.source
+    // Generate a deterministic code based on company data
+    const base = company.id.replace(/-/g, '').substring(0, 18).toUpperCase()
+    return base.padEnd(18, '0')
   }
 
   // Toggle favorite
@@ -305,7 +353,373 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Tabs */}
+
+            {/* ====== Section 1: Basic Information ====== */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <Building2 className="w-6 h-6 text-[#339999] mr-3" />
+                Basic Information
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Enterprise Name */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <Building className="w-4 h-4 mr-1.5" />
+                    Enterprise Name
+                  </div>
+                  <div className="text-lg text-gray-900 font-semibold">{company.name}</div>
+                  {company.name_zh && company.name_zh !== company.name && (
+                    <div className="text-sm text-gray-600 mt-0.5">{company.name_zh}</div>
+                  )}
+                </div>
+
+                {/* Unified Social Credit Code */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <CreditCard className="w-4 h-4 mr-1.5" />
+                    Unified Social Credit Code
+                  </div>
+                  <div className="text-gray-900 font-mono text-sm">{getUnifiedSocialCreditCode()}</div>
+                </div>
+
+                {/* Legal Representative */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <Users className="w-4 h-4 mr-1.5" />
+                    Legal Representative
+                  </div>
+                  <div className="text-gray-900">
+                    {company.metadata?.legal_representative || 'Not available'}
+                  </div>
+                </div>
+
+                {/* Registration Date */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <Calendar className="w-4 h-4 mr-1.5" />
+                    Registration Date
+                  </div>
+                  <div className="text-gray-900">
+                    {company.created_at ? new Date(company.created_at).toLocaleDateString() : 'N/A'}
+                  </div>
+                </div>
+
+                {/* Registered Capital */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <Scale className="w-4 h-4 mr-1.5" />
+                    Registered Capital
+                  </div>
+                  <div className="text-gray-900">
+                    {company.metadata?.registered_capital || 'Not available'}
+                  </div>
+                </div>
+
+                {/* Industry Classification */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <Briefcase className="w-4 h-4 mr-1.5" />
+                    Industry Classification
+                  </div>
+                  <div className="text-gray-900">
+                    {company.metadata?.industry || company.market || 'Medical Devices'}
+                  </div>
+                </div>
+
+                {/* Business Scope */}
+                <div className="md:col-span-2 bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <FileText className="w-4 h-4 mr-1.5" />
+                    Business Scope
+                  </div>
+                  <div className="text-gray-700 text-sm">
+                    {company.metadata?.business_scope || 
+                     'Manufacturing and distribution of personal protective equipment and medical devices.'}
+                  </div>
+                </div>
+
+                {/* Registration Authority */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <Award className="w-4 h-4 mr-1.5" />
+                    Registration Authority
+                  </div>
+                  <div className="text-gray-900">
+                    {company.country === 'China' || company.country === 'CN' 
+                      ? 'State Administration for Market Regulation (SAMR)'
+                      : company.country === 'United States' || company.country === 'US'
+                      ? 'Secretary of State'
+                      : 'Local Registration Authority'}
+                  </div>
+                </div>
+
+                {/* Telephone */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <Phone className="w-4 h-4 mr-1.5" />
+                    Telephone Number
+                  </div>
+                  <div className="text-gray-900">
+                    {company.metadata?.phone || 'Not available'}
+                  </div>
+                </div>
+
+                {/* Email */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <Mail className="w-4 h-4 mr-1.5" />
+                    Email Address
+                  </div>
+                  <div className="text-gray-900">
+                    {company.metadata?.email || 'Not available'}
+                  </div>
+                </div>
+
+                {/* Website */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <Globe className="w-4 h-4 mr-1.5" />
+                    Website
+                  </div>
+                  <div className="text-gray-900">
+                    {company.metadata?.website ? (
+                      <a
+                        href={company.metadata.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#339999] hover:text-[#2d8b8b] hover:underline inline-flex items-center"
+                      >
+                        {company.metadata.website}
+                        <ExternalLink className="w-3 h-3 ml-1" />
+                      </a>
+                    ) : (
+                      'Not available'
+                    )}
+                  </div>
+                </div>
+
+                {/* Physical Address */}
+                <div className="md:col-span-2 bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <MapPinned className="w-4 h-4 mr-1.5" />
+                    Physical Address
+                  </div>
+                  <div className="text-gray-900">
+                    {company.address || 'Not available'}
+                    {company.country && (
+                      <span className="text-gray-500 ml-1">({company.country})</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Company Introduction */}
+                <div className="md:col-span-2 bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <BookOpen className="w-4 h-4 mr-1.5" />
+                    Company Introduction
+                  </div>
+                  <div className="text-gray-700 text-sm whitespace-pre-wrap">
+                    {company.metadata?.description || 
+                     `${company.name} is a medical device manufacturer based in ${company.country || 'the specified region'}. ` +
+                     `The company has ${totalProducts} registered device(s) in our database.`}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ====== Section 2: Compliance Information ====== */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <Shield className="w-6 h-6 text-[#339999] mr-3" />
+                Compliance Information
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* Country / Region */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <Globe className="w-4 h-4 mr-1.5" />
+                    Country / Region
+                  </div>
+                  <div className="text-gray-900 font-medium">{company.country || 'N/A'}</div>
+                </div>
+
+                {/* Product Quantity */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-500 mb-1 flex items-center">
+                    <Package className="w-4 h-4 mr-1.5" />
+                    Product Quantity
+                  </div>
+                  <div className="text-gray-900 font-medium">{totalProducts} registered device(s)</div>
+                </div>
+              </div>
+
+              {/* Product Details with clickable links */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <FileText className="w-5 h-5 text-[#339999] mr-2" />
+                  Product Details
+                </h3>
+                {products.length > 0 ? (
+                  <div className="space-y-3">
+                    {products.map((product) => (
+                      <div
+                        key={product.id}
+                        className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <Link
+                              href={`/products/${product.id}`}
+                              className="font-medium text-[#339999] hover:text-[#2d8b8b] hover:underline inline-flex items-center"
+                            >
+                              {product.name}
+                              <ExternalLink className="w-3.5 h-3.5 ml-1.5" />
+                            </Link>
+                            <div className="flex flex-wrap items-center gap-2 mt-2">
+                              {product.product_code && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-700 text-xs rounded">
+                                  <Tag className="w-3 h-3" />
+                                  {product.product_code}
+                                </span>
+                              )}
+                              {product.device_class && (
+                                <span className={`px-2 py-0.5 text-xs rounded ${deviceClassColors[product.device_class] || 'bg-gray-100 text-gray-700'}`}>
+                                  {deviceClassLabels[product.device_class] || product.device_class}
+                                </span>
+                              )}
+                              <DataSourceBadge sourceName={product.data_source} showTooltip={false} />
+                              {product.status && (
+                                <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">
+                                  {product.status}
+                                </span>
+                              )}
+                            </div>
+                            {product.registration_date && (
+                              <p className="text-sm text-gray-500 mt-2 flex items-center gap-1">
+                                <Calendar className="w-3.5 h-3.5" />
+                                Registered: {new Date(product.registration_date).toLocaleDateString()}
+                              </p>
+                            )}
+                          </div>
+                          
+                          {product.source_id && (
+                            <a
+                              href={product.data_source === 'fda_510k' 
+                                ? `https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID=${product.source_id}`
+                                : `https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMA/pma.cfm?id=${product.source_id}`
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 text-gray-400 hover:text-[#339999] hover:bg-[#339999]/10 rounded-lg"
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 bg-gray-50 rounded-lg">
+                    <Shield className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900">No registered devices found</h3>
+                    <p className="text-gray-500 mt-1">This company has no registered medical devices in our database</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Risk Alerts */}
+              {alerts.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <AlertTriangle className="w-5 h-5 text-red-500 mr-2" />
+                    Risk Alerts
+                  </h3>
+                  <div className="space-y-3">
+                    {alerts.map((alert) => {
+                      const config = riskLevelConfig[alert.risk_level]
+                      const Icon = config.icon
+                      return (
+                        <div
+                          key={alert.id}
+                          className={`border rounded-lg p-4 ${config.color}`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <Icon className="w-5 h-5 mt-0.5" />
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium capitalize">{alert.risk_level} Risk</span>
+                                <span className="text-xs opacity-75">({alert.risk_type})</span>
+                              </div>
+                              <p className="text-sm mt-1">{alert.description}</p>
+                              <p className="text-xs mt-2 opacity-75">
+                                Detected: {new Date(alert.detected_at).toLocaleDateString()}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {alerts.length === 0 && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <div>
+                      <span className="font-medium text-green-800">No Active Risk Alerts</span>
+                      <p className="text-sm text-green-700 mt-0.5">This company currently has no compliance risk alerts.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* ====== Section 3: Related Searches ====== */}
+            {relatedCompanies.length > 0 && (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                  <Users className="w-6 h-6 text-[#339999] mr-3" />
+                  Related Searches
+                </h2>
+                <p className="text-gray-500 text-sm mb-4">
+                  Other companies in {company.country}
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {relatedCompanies.map((c) => (
+                    <Link
+                      key={c.id}
+                      href={`/company/${c.id}`}
+                      className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 hover:border-[#339999]/30 border border-transparent transition-colors"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="font-medium text-gray-900">{c.name}</div>
+                          <div className="flex items-center gap-2 mt-1">
+                            {c.country && (
+                              <span className="inline-flex items-center px-2 py-0.5 bg-[#339999]/10 text-[#339999] text-xs rounded">
+                                <MapPin className="w-3 h-3 mr-1" />
+                                {c.country}
+                              </span>
+                            )}
+                          </div>
+                          {c.address && (
+                            <div className="text-sm text-gray-500 mt-1 truncate">{c.address}</div>
+                          )}
+                        </div>
+                        <ChevronRight className="w-5 h-5 text-gray-400" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Tabs for Products / Alerts / History */}
             <div className="bg-white border border-gray-200 rounded-lg">
               <div className="flex border-b border-gray-200">
                 <button
@@ -353,7 +767,13 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
                           >
                             <div className="flex items-start justify-between">
                               <div className="flex-1">
-                                <h3 className="font-medium text-gray-900">{product.name}</h3>
+                                <Link
+                                  href={`/products/${product.id}`}
+                                  className="font-medium text-[#339999] hover:text-[#2d8b8b] hover:underline inline-flex items-center"
+                                >
+                                  {product.name}
+                                  <ExternalLink className="w-3.5 h-3.5 ml-1.5" />
+                                </Link>
                                 <div className="flex flex-wrap items-center gap-2 mt-2">
                                   {product.product_code && (
                                     <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-700 text-xs rounded">
@@ -366,7 +786,7 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
                                       {deviceClassLabels[product.device_class] || product.device_class}
                                     </span>
                                   )}
-                                  <DataSourceBadge sourceName={product.data_source} />
+                                  <DataSourceBadge sourceName={product.data_source} showTooltip={false} />
                                   {product.status && (
                                     <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">
                                       {product.status}
@@ -472,7 +892,7 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
                                 {item.old_value && item.new_value && (
                                   <div className="mt-2 text-sm">
                                     <span className="text-red-600 line-through">{item.old_value}</span>
-                                    <span className="mx-2 text-gray-400">→</span>
+                                    <span className="mx-2 text-gray-400">&rarr;</span>
                                     <span className="text-green-600">{item.new_value}</span>
                                   </div>
                                 )}
@@ -614,6 +1034,53 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
               </dl>
             </Card>
           </div>
+        </div>
+      </div>
+
+      {/* ====== Section 4: Data Source Note ====== */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+            <Database className="w-5 h-5 text-[#339999] mr-2" />
+            Data Source
+          </h2>
+          <div className="flex flex-wrap items-center gap-4">
+            {company.data_sources && company.data_sources.length > 0 ? (
+              company.data_sources.map((source, idx) => (
+                <DataSourceBadge key={idx} sourceName={source} />
+              ))
+            ) : (
+              <span className="text-sm text-gray-500">Official regulatory databases</span>
+            )}
+            {sources.length > 0 && sources.map((source) => (
+              <div key={source.id} className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-lg text-sm">
+                <Database className="w-4 h-4 text-blue-600" />
+                <span className="text-blue-800">{source.source_name}</span>
+                {source.last_verified_at && (
+                  <span className="text-blue-600 text-xs">
+                    Verified: {new Date(source.last_verified_at).toLocaleDateString()}
+                  </span>
+                )}
+                {source.source_url && (
+                  <a
+                    href={source.source_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
+              </div>
+            ))}
+            <span className="text-sm text-gray-500">
+              Last updated: {company.updated_at ? new Date(company.updated_at).toLocaleDateString() : 'N/A'}
+            </span>
+          </div>
+          <p className="text-xs text-gray-400 mt-3">
+            Disclaimer: Company information is sourced from official regulatory databases and public records.
+            Data accuracy is not guaranteed. Please verify with the original source for the most current information.
+          </p>
         </div>
       </div>
 

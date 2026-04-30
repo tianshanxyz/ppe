@@ -1,7 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server'
-import { cookies } from 'next/headers';
-import { escapeIlikeSearch } from '@/lib/security/sanitize';
+import regulationsData from '@/data/ppe/regulations-fulltext.json';
+
+export interface RegulationFulltext {
+  id: string;
+  category_id: string;
+  market_code: string;
+  title: string;
+  title_zh?: string;
+  regulation_number: string;
+  document_type: string;
+  issuing_authority: string;
+  effective_date: string;
+  status: string;
+  summary: string;
+  summary_zh?: string;
+  full_text: string;
+}
+
+const REGULATIONS = regulationsData as RegulationFulltext[];
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,39 +29,49 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status') || 'active';
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
+    const searchInFulltext = searchParams.get('fulltext') === 'true';
     const offset = (page - 1) * limit;
 
-    
-      const supabase = await createClient();
+    // Filter regulations
+    let filtered = REGULATIONS.filter((reg) => {
+      if (status && reg.status !== status) return false;
+      if (market && reg.market_code !== market) return false;
+      if (category && reg.category_id !== category) return false;
+      if (type && reg.document_type !== type) return false;
+      return true;
+    });
 
-    // 构建查询条件 - 简化版本
-    let queryBuilder = supabase
-      .from('regulations')
-      .select('*', { count: 'exact' });
-
-    // 只添加基本的搜索条件
+    // Search in title, summary, and optionally full text
     if (query) {
-      queryBuilder = queryBuilder.ilike('title', `%${escapeIlikeSearch(query)}%`);
+      const lowerQuery = query.toLowerCase();
+      filtered = filtered.filter((reg) => {
+        const inTitle = reg.title.toLowerCase().includes(lowerQuery) ||
+          (reg.title_zh && reg.title_zh.toLowerCase().includes(lowerQuery));
+        const inSummary = reg.summary.toLowerCase().includes(lowerQuery) ||
+          (reg.summary_zh && reg.summary_zh.toLowerCase().includes(lowerQuery));
+        const inRegNumber = reg.regulation_number.toLowerCase().includes(lowerQuery);
+        const inAuthority = reg.issuing_authority.toLowerCase().includes(lowerQuery);
+        
+        let inFulltext = false;
+        if (searchInFulltext && reg.full_text) {
+          inFulltext = reg.full_text.toLowerCase().includes(lowerQuery);
+        }
+        
+        return inTitle || inSummary || inRegNumber || inAuthority || inFulltext;
+      });
     }
 
-    // 分页
-    queryBuilder = queryBuilder.range(offset, offset + limit - 1).order('created_at', { ascending: false });
-
-    const { data, error, count } = await queryBuilder;
-
-    if (error) {
-      console.error('Database query error:', error);
-      throw error;
-    }
+    const total = filtered.length;
+    const paginated = filtered.slice(offset, offset + limit);
 
     return NextResponse.json({
       success: true,
-      data: data || [],
+      data: paginated,
       pagination: {
         page,
         limit,
-        total: count || 0,
-        totalPages: Math.ceil((count || 0) / limit),
+        total,
+        totalPages: Math.ceil(total / limit),
       },
     });
   } catch (error) {
