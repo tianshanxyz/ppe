@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { Newspaper, Calendar, Tag, Search, ExternalLink, ChevronDown, ChevronRight } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { Newspaper, Calendar, Tag, Search, ExternalLink, ChevronDown, ChevronRight, ChevronLeft } from 'lucide-react'
 
 const REGULATORY_NEWS = [
   {
@@ -322,22 +322,41 @@ export default function RegulatoryNewsPage() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [expandedArticle, setExpandedArticle] = useState<string | null>(null)
   const [activeSearch, setActiveSearch] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 5
 
   const categories = ['all', 'EU', 'US', 'UK', 'China', 'Standards', 'Australia']
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     setActiveSearch(searchQuery)
+    setCurrentPage(1)
   }
 
-  const filteredNews = REGULATORY_NEWS.filter(news => {
+  const filteredNews = useMemo(() => REGULATORY_NEWS.filter(news => {
     const matchesCategory = selectedCategory === 'all' || news.category === selectedCategory
     const matchesSearch = !activeSearch ||
       news.title.toLowerCase().includes(activeSearch.toLowerCase()) ||
       news.summary.toLowerCase().includes(activeSearch.toLowerCase()) ||
       news.tags.some(tag => tag.toLowerCase().includes(activeSearch.toLowerCase()))
     return matchesCategory && matchesSearch
-  })
+  }), [activeSearch, selectedCategory])
+
+  const totalPages = Math.ceil(filteredNews.length / itemsPerPage)
+  const paginatedNews = filteredNews.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category)
+    setCurrentPage(1)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -380,7 +399,7 @@ export default function RegulatoryNewsPage() {
               {categories.map(cat => (
                 <button
                   key={cat}
-                  onClick={() => setSelectedCategory(cat)}
+                  onClick={() => handleCategoryChange(cat)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     selectedCategory === cat
                       ? 'bg-[#339999] text-white'
@@ -397,9 +416,9 @@ export default function RegulatoryNewsPage() {
 
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {filteredNews.length > 0 ? (
+          {paginatedNews.length > 0 ? (
             <div className="space-y-6">
-              {filteredNews.map(news => (
+              {paginatedNews.map(news => (
                 <article key={news.id} className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-3">
@@ -475,6 +494,48 @@ export default function RegulatoryNewsPage() {
             <div className="text-center py-12">
               <Newspaper className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500">No news found matching your criteria</p>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-12 flex flex-col items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">
+                  Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredNews.length)} of {filteredNews.length}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="inline-flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#339999] hover:text-[#339999]"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Previous
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`min-w-[40px] h-10 rounded-lg text-sm font-medium transition-all ${
+                      currentPage === page
+                        ? 'bg-[#339999] text-white'
+                        : 'border border-gray-200 text-gray-600 hover:border-[#339999] hover:text-[#339999]'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="inline-flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#339999] hover:text-[#339999]"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           )}
         </div>

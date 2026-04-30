@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { Bell, Search, AlertTriangle, Clock, ArrowRight, Tag, Filter } from 'lucide-react'
-import Link from 'next/link'
+import { useState, useMemo } from 'react'
+import { Bell, Search, AlertTriangle, Clock, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const REGULATORY_ALERTS = [
   {
@@ -71,21 +70,40 @@ export default function RegulatoryAlertsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedSeverity, setSelectedSeverity] = useState('all')
   const [activeSearch, setActiveSearch] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 5
 
   const severities = ['all', 'critical', 'high', 'medium', 'low']
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     setActiveSearch(searchQuery)
+    setCurrentPage(1)
   }
 
-  const filteredAlerts = REGULATORY_ALERTS.filter(alert => {
+  const filteredAlerts = useMemo(() => REGULATORY_ALERTS.filter(alert => {
     const matchesSeverity = selectedSeverity === 'all' || alert.severity === selectedSeverity
     const matchesSearch = !activeSearch ||
       alert.title.toLowerCase().includes(activeSearch.toLowerCase()) ||
       alert.summary.toLowerCase().includes(activeSearch.toLowerCase())
     return matchesSeverity && matchesSearch
-  })
+  }), [activeSearch, selectedSeverity])
+
+  const totalPages = Math.ceil(filteredAlerts.length / itemsPerPage)
+  const paginatedAlerts = filteredAlerts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleSeverityChange = (severity: string) => {
+    setSelectedSeverity(severity)
+    setCurrentPage(1)
+  }
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -138,7 +156,7 @@ export default function RegulatoryAlertsPage() {
               {severities.map(sev => (
                 <button
                   key={sev}
-                  onClick={() => setSelectedSeverity(sev)}
+                  onClick={() => handleSeverityChange(sev)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize ${
                     selectedSeverity === sev
                       ? 'bg-[#339999] text-white'
@@ -155,9 +173,9 @@ export default function RegulatoryAlertsPage() {
 
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {filteredAlerts.length > 0 ? (
+          {paginatedAlerts.length > 0 ? (
             <div className="space-y-4">
-              {filteredAlerts.map(alert => (
+              {paginatedAlerts.map(alert => (
                 <div key={alert.id} className={`bg-white rounded-2xl shadow-lg border-l-4 p-6 ${getSeverityColor(alert.severity)}`}>
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
@@ -184,6 +202,48 @@ export default function RegulatoryAlertsPage() {
             <div className="text-center py-12">
               <Bell className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500">No alerts found</p>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-12 flex flex-col items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">
+                  Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredAlerts.length)} of {filteredAlerts.length}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="inline-flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#339999] hover:text-[#339999]"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Previous
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`min-w-[40px] h-10 rounded-lg text-sm font-medium transition-all ${
+                      currentPage === page
+                        ? 'bg-[#339999] text-white'
+                        : 'border border-gray-200 text-gray-600 hover:border-[#339999] hover:text-[#339999]'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="inline-flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#339999] hover:text-[#339999]"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           )}
         </div>

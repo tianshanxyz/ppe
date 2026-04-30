@@ -180,7 +180,7 @@ export default function PricingPage() {
                 <div className="mb-6">
                   <div className="flex items-baseline">
                     <span className="text-5xl font-bold text-gray-900">
-                      ${billingPeriod === 'yearly' ? Math.round(proTier.price / 12) : proTier.price}
+                      ${proTier.price}
                     </span>
                     <span className="text-gray-600 ml-2">
                       /month
@@ -189,14 +189,18 @@ export default function PricingPage() {
                   {billingPeriod === 'yearly' && (
                     <div className="mt-2">
                       <span className="text-gray-500 line-through mr-2">
-                        ${Math.round(proTier.price / 12 * 1.2)}
+                        ${proTier.price * 12}/yr
                       </span>
                       <span className="text-green-600 font-semibold text-sm">
-                        Billed ${proTier.price} yearly (save 20%)
+                        ${Math.round(proTier.price * 12 * 0.8)} billed yearly (save 20%)
                       </span>
                     </div>
                   )}
-                  <p className="text-gray-500 text-sm mt-2">Billed {proTier.billing_period}</p>
+                  <p className="text-gray-500 text-sm mt-2">
+                    {billingPeriod === 'yearly'
+                      ? `Billed annually ($${Math.round(proTier.price * 12 * 0.8)})`
+                      : 'Billed monthly'}
+                  </p>
                 </div>
 
                 <Link href="/auth/signup">
@@ -245,7 +249,7 @@ export default function PricingPage() {
                 <div className="mb-6">
                   <div className="flex items-baseline">
                     <span className="text-5xl font-bold text-gray-900">
-                      ${billingPeriod === 'yearly' ? Math.round(enterpriseTier.price / 12) : enterpriseTier.price}
+                      ${enterpriseTier.price}
                     </span>
                     <span className="text-gray-600 ml-2">
                       /month
@@ -254,14 +258,18 @@ export default function PricingPage() {
                   {billingPeriod === 'yearly' && (
                     <div className="mt-2">
                       <span className="text-gray-500 line-through mr-2">
-                        ${Math.round(enterpriseTier.price / 12 * 1.2)}
+                        ${enterpriseTier.price * 12}/yr
                       </span>
                       <span className="text-green-600 font-semibold text-sm">
-                        Billed ${enterpriseTier.price} yearly (save 20%)
+                        ${Math.round(enterpriseTier.price * 12 * 0.8)} billed yearly (save 20%)
                       </span>
                     </div>
                   )}
-                  <p className="text-gray-500 text-sm mt-2">Billed {enterpriseTier.billing_period}</p>
+                  <p className="text-gray-500 text-sm mt-2">
+                    {billingPeriod === 'yearly'
+                      ? `Billed annually ($${Math.round(enterpriseTier.price * 12 * 0.8)})`
+                      : 'Billed monthly'}
+                  </p>
                 </div>
 
                 <Link href="/auth/signup">

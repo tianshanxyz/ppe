@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { FolderOpen, Search, ArrowRight, Tag, MapPin, Building, CheckCircle2, ExternalLink } from 'lucide-react'
-import Link from 'next/link'
+import { useState, useMemo } from 'react'
+import { FolderOpen, Search, Tag, MapPin, Building, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const CASE_STUDIES = [
   {
@@ -99,17 +98,41 @@ export default function CaseStudiesPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedMarket, setSelectedMarket] = useState('all')
   const [expandedStudy, setExpandedStudy] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 5
 
   const markets = ['all', 'EU', 'US', 'China', 'UK']
 
-  const filteredStudies = CASE_STUDIES.filter(study => {
+  const filteredStudies = useMemo(() => CASE_STUDIES.filter(study => {
     const matchesMarket = selectedMarket === 'all' || study.market === selectedMarket
     const matchesSearch = !searchQuery ||
       study.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       study.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
       study.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
     return matchesMarket && matchesSearch
-  })
+  }), [searchQuery, selectedMarket])
+
+  const totalPages = Math.ceil(filteredStudies.length / itemsPerPage)
+  const paginatedStudies = filteredStudies.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  // Reset to page 1 when filters change
+  const handleMarketChange = (market: string) => {
+    setSelectedMarket(market)
+    setCurrentPage(1)
+  }
+
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value)
+    setCurrentPage(1)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -140,7 +163,7 @@ export default function CaseStudiesPage() {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 placeholder="Search case studies..."
                 className="w-full pl-12 pr-24 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
               />
@@ -155,7 +178,7 @@ export default function CaseStudiesPage() {
               {markets.map(market => (
                 <button
                   key={market}
-                  onClick={() => setSelectedMarket(market)}
+                  onClick={() => handleMarketChange(market)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     selectedMarket === market
                       ? 'bg-[#339999] text-white'
@@ -172,9 +195,9 @@ export default function CaseStudiesPage() {
 
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {filteredStudies.length > 0 ? (
+          {paginatedStudies.length > 0 ? (
             <div className="space-y-8">
-              {filteredStudies.map(study => (
+              {paginatedStudies.map(study => (
                 <div key={study.id} className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                   <div className="p-8">
                     <div className="flex items-center gap-3 mb-4">
@@ -241,6 +264,48 @@ export default function CaseStudiesPage() {
             <div className="text-center py-12">
               <FolderOpen className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500">No case studies found</p>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-12 flex flex-col items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">
+                  Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredStudies.length)} of {filteredStudies.length}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="inline-flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#339999] hover:text-[#339999]"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Previous
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`min-w-[40px] h-10 rounded-lg text-sm font-medium transition-all ${
+                      currentPage === page
+                        ? 'bg-[#339999] text-white'
+                        : 'border border-gray-200 text-gray-600 hover:border-[#339999] hover:text-[#339999]'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="inline-flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#339999] hover:text-[#339999]"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           )}
         </div>

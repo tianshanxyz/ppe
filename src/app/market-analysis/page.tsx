@@ -4,11 +4,84 @@ import { useState, useEffect, useMemo } from 'react'
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { TrendingUp, BarChart3, Globe, Package, Building, ArrowUpRight, FileText, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
-import { getPPEProductStats, getMarketStats } from '@/lib/ppe-database-client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { marketAnalysisTranslations, getTranslations } from '@/lib/i18n/translations'
 
 const COLORS = ['#339999', '#2d8b8b', '#267a7a', '#1f6969', '#185858', '#114747', '#0a3636', '#032525']
+
+// 静态模拟数据 - 替代API调用
+const MOCK_PRODUCT_STATS = {
+  totalProducts: 52847,
+  totalRegulations: 342,
+  totalManufacturers: 8936,
+  countryCount: {
+    'China': 24563,
+    'USA': 8721,
+    'Germany': 5432,
+    'South Korea': 3891,
+    'Japan': 3215,
+    'India': 2876,
+    'Italy': 1987,
+    'France': 1456,
+    'UK': 706,
+  },
+  categoryCount: {
+    'Hand Protection': 12453,
+    'Respiratory Protection': 9876,
+    'Eye Protection': 8234,
+    'Head Protection': 7654,
+    'Foot Protection': 6543,
+    'Body Protection': 4321,
+    'Hearing Protection': 2567,
+    'Fall Protection': 1199,
+  },
+  ppeCategoryCount: {
+    'I': 15234,
+    'II': 22456,
+    'III': 15157,
+  },
+  statusCount: {
+    'active': 45231,
+    'pending': 3456,
+    'expired': 3210,
+    'suspended': 950,
+  },
+}
+
+const MOCK_MARKET_STATS = [
+  {
+    market: 'EU',
+    market_name: 'European Union',
+    total: 18765,
+    approved: 16234,
+    expired: 1876,
+    suspended: 655,
+  },
+  {
+    market: 'US',
+    market_name: 'United States',
+    total: 14532,
+    approved: 12876,
+    expired: 1234,
+    suspended: 422,
+  },
+  {
+    market: 'CN',
+    market_name: 'China',
+    total: 12345,
+    approved: 10987,
+    expired: 1023,
+    suspended: 335,
+  },
+  {
+    market: 'UK',
+    market_name: 'United Kingdom',
+    total: 7205,
+    approved: 6134,
+    expired: 834,
+    suspended: 237,
+  },
+]
 
 export default function MarketAnalysisPage() {
   const [stats, setStats] = useState<any>(null)
@@ -22,18 +95,11 @@ export default function MarketAnalysisPage() {
   }, [])
 
   async function loadStats() {
-    try {
-      const [productStats, marketData] = await Promise.all([
-        getPPEProductStats(),
-        getMarketStats(),
-      ])
-      setStats(productStats)
-      setMarketStats(marketData)
-    } catch (error) {
-      console.error('加载统计数据失败:', error)
-    } finally {
-      setLoading(false)
-    }
+    // 使用静态数据替代API调用
+    await new Promise(resolve => setTimeout(resolve, 800)) // 模拟加载延迟
+    setStats(MOCK_PRODUCT_STATS)
+    setMarketStats(MOCK_MARKET_STATS)
+    setLoading(false)
   }
 
   // 准备图表数据

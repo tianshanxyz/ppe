@@ -71,10 +71,7 @@ export function Header() {
         { href: '/certification-comparison', label: t.marketComparison, icon: Globe },
         { href: '/compliance-guides', label: t.complianceGuides, icon: BookOpen },
         { href: '/documents', label: t.documentTemplates, icon: FileText },
-        { href: '/compliance-tracker', label: t.complianceTracker, icon: FileText },
-        { href: '/certificate-alerts', label: t.certificateAlerts, icon: Clock },
         { href: '/document-generator', label: ht.documentGenerator, icon: FileText },
-        { href: '/supply-chain-tracker', label: ht.supplyChainTracker, icon: FolderOpen },
       ]
     },
     {
@@ -82,7 +79,6 @@ export function Header() {
       icon: Database,
       children: [
         { href: '/products', label: t.productDatabase, icon: Package },
-        { href: '/manufacturers', label: t.manufacturers, icon: Building2 },
         { href: '/regulations-new', label: t.regulations, icon: Gavel },
         { href: '/market-analysis', label: t.marketAnalysis, icon: Globe },
       ]
@@ -91,8 +87,6 @@ export function Header() {
       label: t.knowledgeBase,
       icon: BookOpen,
       children: [
-        { href: '/compliance-guides', label: t.complianceGuides, icon: BookOpen },
-        { href: '/documents', label: t.documentTemplates, icon: FileText },
         { href: '/knowledge-base', label: t.knowledgeArticles, icon: Lightbulb },
         { href: '/case-studies', label: t.caseStudies, icon: FolderOpen },
         { href: '/regulatory-news', label: t.regulatoryNews, icon: Newspaper },

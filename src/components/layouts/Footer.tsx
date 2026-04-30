@@ -70,11 +70,6 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/manufacturers" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.manufacturers}
-                </Link>
-              </li>
-              <li>
                 <Link href="/regulations-new" className="text-gray-500 hover:text-primary transition-colors">
                   {t.regulations}
                 </Link>
@@ -91,18 +86,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/help" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.helpCenter}
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.privacyPolicy}
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.termsOfService}
+                <Link href="/contact" className="text-gray-500 hover:text-primary transition-colors">
+                  {t.contactUs || 'Contact Us'}
                 </Link>
               </li>
             </ul>

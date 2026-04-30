@@ -653,8 +653,8 @@ export default function PPEHomePage() {
               <h3 className="text-2xl font-bold text-gray-900 mb-2">{t.pro}</h3>
               <p className="text-gray-600 mb-6">{t.forSMEsFrequentExporters}</p>
               <div className="text-4xl font-bold text-gray-900 mb-6">
-                $199
-                <span className="text-lg text-gray-600 font-normal">{t.perYear}</span>
+                $99
+                <span className="text-lg text-gray-600 font-normal">/mo</span>
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start">
@@ -691,8 +691,8 @@ export default function PPEHomePage() {
               <h3 className="text-2xl font-bold text-gray-900 mb-2">{t.enterprise}</h3>
               <p className="text-gray-600 mb-6">{t.forLargeEnterprises}</p>
               <div className="text-4xl font-bold text-gray-900 mb-6">
-                $499
-                <span className="text-lg text-gray-600 font-normal">{t.perYear}</span>
+                $299
+                <span className="text-lg text-gray-600 font-normal">/mo</span>
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start">
