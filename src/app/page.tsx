@@ -87,7 +87,7 @@ export default function PPEHomePage() {
           >
             <motion.div variants={fadeInUp}>
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 tracking-tight mb-6">
-                <span className="text-[#339999]">Free</span> {t.freePPEComplianceCheck}
+                <span className="text-[#339999]">Global</span> PPE Compliance Information Platform
               </h1>
             </motion.div>
 
@@ -638,7 +638,7 @@ export default function PPEHomePage() {
                 </li>
               </ul>
               <Link
-                href="/auth/signup"
+                href="/auth/register"
                 className="block w-full py-3 px-6 bg-[#339999] text-white text-center rounded-lg font-semibold hover:bg-[#2d8b8b] transition-colors"
               >
                 {t.getStarted}

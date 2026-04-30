@@ -139,8 +139,8 @@ export function IntelligentSearch({
 
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
-      <form onSubmit={handleSubmit} className="relative">
-        <div className="relative">
+      <form onSubmit={handleSubmit} className="relative flex gap-2">
+        <div className="relative flex-1">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             ref={inputRef}
@@ -166,6 +166,13 @@ export function IntelligentSearch({
             </button>
           )}
         </div>
+        <button
+          type="submit"
+          className="px-5 py-3 bg-[#339999] text-white font-medium rounded-xl hover:bg-[#2d8b8b] transition-colors flex items-center gap-2 flex-shrink-0"
+        >
+          <Search className="w-5 h-5" />
+          <span className="hidden sm:inline">Search</span>
+        </button>
       </form>
 
       {/* 下拉框 */}

@@ -44,7 +44,7 @@ export function PPENavbar() {
   // 主导航结构 - 按照优化方案设计
   const mainNavItems = [
     {
-      href: '/ppe',
+      href: '/',
       label: t.home,
       icon: Shield,
     },
@@ -101,8 +101,8 @@ export function PPENavbar() {
   }
 
   const isActive = (href: string) => {
-    if (href === '/ppe') {
-      return pathname === '/ppe'
+    if (href === '/') {
+      return pathname === '/'
     }
     return pathname?.startsWith(href)
   }
@@ -112,7 +112,7 @@ export function PPENavbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/ppe" className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-2.5">
             <img 
               src="/logo.png" 
               alt="MDLooker PPE" 
@@ -237,7 +237,7 @@ export function PPENavbar() {
               {t.signIn}
             </Link>
             <Link
-              href="/auth/signup"
+              href="/auth/register"
               className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#339999] hover:bg-[#2d8b8b] rounded-lg transition-colors shadow-sm"
             >
               <UserPlus className="w-4 h-4" />
@@ -375,7 +375,7 @@ export function PPENavbar() {
                   Sign In
                 </Link>
                 <Link
-                  href="/auth/signup"
+                  href="/auth/register"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#339999] hover:bg-[#2d8b8b] rounded-lg transition-colors"
                 >

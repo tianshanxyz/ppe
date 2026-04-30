@@ -1188,6 +1188,1552 @@ I hereby certify that the information provided in this document is accurate and 
   return header + body
 }
 
+function generateDocumentContent(docId: string, docTitle: string, docDescription: string, date: string): string {
+  switch (docId) {
+    case 'ce-technical-file': {
+      return `
+<h1>CE Technical File Template</h1>
+<p><strong>Regulatory Basis:</strong> Regulation (EU) 2016/425 on Personal Protective Equipment</p>
+<p><strong>Applicable Annexes:</strong> Annex III (Technical Documentation), Annex IV (EU Type Examination)</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. General Product Description</h2>
+<p>Provide a complete description of the PPE product including intended use, target user groups, and product variants.</p>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Product Name</td><td>[Enter product commercial name]</td></tr>
+<tr><td>Model / Type</td><td>[Enter model number(s)]</td></tr>
+<tr><td>PPE Category</td><td>[Category I / II / III per Regulation (EU) 2016/425]</td></tr>
+<tr><td>Intended Use</td><td>[Describe intended use and protection provided]</td></tr>
+<tr><td>Target User Group</td><td>[Describe intended user population]</td></tr>
+<tr><td>Use Environment</td><td>[Describe conditions of use]</td></tr>
+</table>
+
+<h2>2. Design and Manufacturing Data (Annex III, Section 1)</h2>
+<h3>2.1 Design Specifications</h3>
+<p>Provide comprehensive design documentation including:</p>
+<ul>
+<li>General description of product design and operating principle</li>
+<li>Technical drawings, schematics, and diagrams</li>
+<li>Materials specification (all materials in contact with user)</li>
+<li>Dimensions, tolerances, and weight specifications</li>
+<li>Colour coding and sizing information</li>
+</ul>
+
+<h3>2.2 Manufacturing Process</h3>
+<table>
+<tr><th>Stage</th><th>Process</th><th>Key Control Parameters</th></tr>
+<tr><td>Raw Material Receipt</td><td>[Process description]</td><td>[Parameters]</td></tr>
+<tr><td>Component Fabrication</td><td>[Process description]</td><td>[Parameters]</td></tr>
+<tr><td>Assembly</td><td>[Process description]</td><td>[Parameters]</td></tr>
+<tr><td>Finishing</td><td>[Process description]</td><td>[Parameters]</td></tr>
+<tr><td>Final Inspection</td><td>[Process description]</td><td>[Parameters]</td></tr>
+<tr><td>Packaging</td><td>[Process description]</td><td>[Parameters]</td></tr>
+</table>
+
+<h2>3. Risk Assessment (Annex III, Section 2)</h2>
+<p>Conduct risk assessment in accordance with EN ISO 12100:2010 and ISO 14971:2019.</p>
+
+<h3>3.1 Hazard Identification</h3>
+<table>
+<tr><th>Hazard ID</th><th>Hazard Description</th><th>Hazard Origin</th><th>Potential Harm</th></tr>
+<tr><td>H-001</td><td>[Mechanical hazard - e.g., sharp edges]</td><td>[Design / Material]</td><td>[Laceration, puncture]</td></tr>
+<tr><td>H-002</td><td>[Chemical hazard - e.g., material off-gassing]</td><td>[Material / Environment]</td><td>[Respiratory irritation]</td></tr>
+<tr><td>H-003</td><td>[Biological hazard - e.g., insufficient filtration]</td><td>[Design / Performance]</td><td>[Infection, contamination]</td></tr>
+<tr><td>H-004</td><td>[Thermal hazard - e.g., heat buildup]</td><td>[Material / Design]</td><td>[Burn, heat stress]</td></tr>
+<tr><td>H-005</td><td>[Ergonomic hazard - e.g., poor fit]</td><td>[Design]</td><td>[Discomfort, reduced protection]</td></tr>
+</table>
+
+<h3>3.2 Risk Estimation and Evaluation</h3>
+<table>
+<tr><th>Hazard ID</th><th>Severity (1-5)</th><th>Probability (1-5)</th><th>Risk Level</th><th>Acceptable?</th></tr>
+<tr><td>H-001</td><td>[1-5]</td><td>[1-5]</td><td>[Low/Med/High]</td><td>[Yes/No]</td></tr>
+<tr><td>H-002</td><td>[1-5]</td><td>[1-5]</td><td>[Low/Med/High]</td><td>[Yes/No]</td></tr>
+<tr><td>H-003</td><td>[1-5]</td><td>[1-5]</td><td>[Low/Med/High]</td><td>[Yes/No]</td></tr>
+<tr><td>H-004</td><td>[1-5]</td><td>[1-5]</td><td>[Low/Med/High]</td><td>[Yes/No]</td></tr>
+<tr><td>H-005</td><td>[1-5]</td><td>[1-5]</td><td>[Low/Med/High]</td><td>[Yes/No]</td></tr>
+</table>
+
+<h3>3.3 Risk Control Measures</h3>
+<table>
+<tr><th>Hazard ID</th><th>Control Measure</th><th>Control Type</th><th>Residual Risk</th></tr>
+<tr><td>H-001</td><td>[Describe control measure]</td><td>[Design / Guard / Warning / PPE]</td><td>[Low/Med/High]</td></tr>
+<tr><td>H-002</td><td>[Describe control measure]</td><td>[Design / Guard / Warning / PPE]</td><td>[Low/Med/High]</td></tr>
+<tr><td>H-003</td><td>[Describe control measure]</td><td>[Design / Guard / Warning / PPE]</td><td>[Low/Med/High]</td></tr>
+</table>
+
+<h2>4. Essential Health and Safety Requirements (Annex II)</h2>
+<p>Demonstrate compliance with each applicable EHSR from Annex II of Regulation (EU) 2016/425.</p>
+<table>
+<tr><th>EHSR Ref.</th><th>Requirement</th><th>Compliance Method</th><th>Evidence</th></tr>
+<tr><td>1.1</td><td>Design principles - ergonomics</td><td>[Method]</td><td>[Reference]</td></tr>
+<tr><td>1.2</td><td>Innocuousness of PPE</td><td>[Method]</td><td>[Reference]</td></tr>
+<tr><td>1.3</td><td>Comfort and efficiency</td><td>[Method]</td><td>[Reference]</td></tr>
+<tr><td>2.1</td><td>Adjustment and fitting</td><td>[Method]</td><td>[Reference]</td></tr>
+<tr><td>2.2</td><td>Field of vision</td><td>[Method]</td><td>[Reference]</td></tr>
+<tr><td>2.12</td><td>Protection against harmful biological agents</td><td>[Method]</td><td>[Reference]</td></tr>
+</table>
+
+<h2>5. Test Reports and Verification</h2>
+<h3>5.1 Summary of Tests Conducted</h3>
+<table>
+<tr><th>Test Parameter</th><th>Standard Clause</th><th>Test Result</th><th>Acceptance Criteria</th><th>Pass/Fail</th></tr>
+<tr><td>[Parameter]</td><td>[Clause]</td><td>[Result]</td><td>[Criteria]</td><td>[P/F]</td></tr>
+</table>
+
+<h3>5.2 Testing Laboratory Information</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Laboratory Name</td><td>[ISO 17025 accredited lab]</td></tr>
+<tr><td>Accreditation Body</td><td>[e.g., UKAS, DAkkS]</td></tr>
+<tr><td>Accreditation Number</td><td>[Number]</td></tr>
+<tr><td>Test Report Number</td><td>[Reference]</td></tr>
+<tr><td>Date of Testing</td><td>[Date]</td></tr>
+</table>
+
+<h2>6. Quality Assurance and Production Control</h2>
+<h3>6.1 Quality Management System</h3>
+<p>[Describe QMS - reference ISO 9001 or ISO 13485 certification if applicable]</p>
+
+<h3>6.2 Production Quality Control Points</h3>
+<table>
+<tr><th>Stage</th><th>Inspection Item</th><th>Method</th><th>Frequency</th><th>Acceptance Criteria</th></tr>
+<tr><td>Incoming</td><td>Raw materials</td><td>Visual/Chemical</td><td>Per batch</td><td>Per material spec</td></tr>
+<tr><td>In-process</td><td>Dimensions</td><td>Measurement</td><td>Continuous</td><td>Per drawing tolerance</td></tr>
+<tr><td>Final</td><td>Performance</td><td>Functional test</td><td>Per sampling plan</td><td>Per applicable standard</td></tr>
+</table>
+
+<h2>7. Labeling and User Information</h2>
+<h3>7.1 CE Marking Requirements</h3>
+<ul>
+<li>CE marking must be visible, legible, and indelible</li>
+<li>Minimum height: 5 mm</li>
+<li>Must include Notified Body identification number (Category II/III)</li>
+<li>Must be affixed to product and/or packaging and accompanying documents</li>
+</ul>
+
+<h3>7.2 User Instructions Content</h3>
+<ul>
+<li>Intended use and limitations</li>
+<li>Fitting and donning/doffing instructions</li>
+<li>Maintenance and cleaning procedures</li>
+<li>Storage conditions and shelf life</li>
+<li>Disposal instructions</li>
+<li>Warnings and precautions</li>
+</ul>
+
+<h2>8. Declarations and Signatures</h2>
+<table>
+<tr><th>Role</th><th>Name</th><th>Signature</th><th>Date</th></tr>
+<tr><td>Technical File Compiler</td><td>[Name]</td><td></td><td></td></tr>
+<tr><td>Quality Manager</td><td>[Name]</td><td></td><td></td></tr>
+<tr><td>Authorized Representative</td><td>[Name]</td><td></td><td></td></tr>
+</table>
+`
+    }
+
+    case 'ce-risk-assessment': {
+      return `
+<h1>Risk Assessment Template</h1>
+<p><strong>Standard:</strong> ISO 14971:2019 - Application of risk management to medical devices</p>
+<p><strong>Methodology:</strong> EN ISO 12100:2010 - Safety of machinery, general principles for design</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. Risk Management Plan</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Product Name</td><td>[Enter product name]</td></tr>
+<tr><td>Model / Type</td><td>[Enter model/type]</td></tr>
+<tr><td>Risk Management File No.</td><td>[RM-YYYY-XXX]</td></tr>
+<tr><td>Prepared By</td><td>[Name, Title]</td></tr>
+<tr><td>Approved By</td><td>[Name, Title]</td></tr>
+<tr><td>Date</td><td>${date}</td></tr>
+<tr><td>Review Date</td><td>[Next review date]</td></tr>
+</table>
+
+<h2>2. Hazard Identification (ISO 14971, Clause 5)</h2>
+<p>Identify all known and foreseeable hazards in both normal and fault conditions throughout the product lifecycle.</p>
+
+<h3>2.1 Hazard Categories</h3>
+<table>
+<tr><th>Category</th><th>Examples for PPE</th></tr>
+<tr><td>Energy Hazards</td><td>Electrical, thermal, mechanical, vibration, radiation</td></tr>
+<tr><td>Biological and Chemical Hazards</td><td>Biological contamination, chemical exposure, toxicity, infection</td></tr>
+<tr><td>Performance Hazards</td><td>Inadequate filtration, loss of integrity, degradation over time</td></tr>
+<tr><td>Usability Hazards</td><td>Poor fit, incorrect donning, limited field of vision, breathing resistance</td></tr>
+<tr><td>Information Hazards</td><td>Inadequate labeling, missing warnings, unclear instructions</td></tr>
+</table>
+
+<h3>2.2 Hazard Identification Table</h3>
+<table>
+<tr><th>Hazard ID</th><th>Hazard Description</th><th>Hazardous Situation</th><th>Potential Harm</th><th>Lifecycle Phase</th></tr>
+<tr><td>H-001</td><td>[Description]</td><td>[Situation]</td><td>[Harm]</td><td>[Phase]</td></tr>
+<tr><td>H-002</td><td>[Description]</td><td>[Situation]</td><td>[Harm]</td><td>[Phase]</td></tr>
+<tr><td>H-003</td><td>[Description]</td><td>[Situation]</td><td>[Harm]</td><td>[Phase]</td></tr>
+</table>
+
+<h2>3. Risk Estimation and Evaluation (ISO 14971, Clause 6-7)</h2>
+
+<h3>3.1 Severity Scale</h3>
+<table>
+<tr><th>Level</th><th>Severity</th><th>Description</th></tr>
+<tr><td>1</td><td>Negligible</td><td>No injury or minor discomfort, no medical intervention required</td></tr>
+<tr><td>2</td><td>Minor</td><td>Temporary discomfort, first aid treatment may be required</td></tr>
+<tr><td>3</td><td>Serious</td><td>Injury requiring medical intervention, temporary impairment</td></tr>
+<tr><td>4</td><td>Critical</td><td>Major injury, hospitalization, permanent impairment possible</td></tr>
+<tr><td>5</td><td>Catastrophic</td><td>Death or permanent life-threatening injury</td></tr>
+</table>
+
+<h3>3.2 Probability Scale</h3>
+<table>
+<tr><th>Level</th><th>Probability</th><th>Description</th></tr>
+<tr><td>1</td><td>Remote</td><td>Unlikely to occur; &lt;1 in 100,000 uses</td></tr>
+<tr><td>2</td><td>Rare</td><td>Could occur but not expected; 1 in 10,000 to 1 in 100,000</td></tr>
+<tr><td>3</td><td>Occasional</td><td>Might occur sometimes; 1 in 1,000 to 1 in 10,000</td></tr>
+<tr><td>4</td><td>Probable</td><td>Will probably occur; 1 in 100 to 1 in 1,000</td></tr>
+<tr><td>5</td><td>Frequent</td><td>Likely to occur often; &gt;1 in 100</td></tr>
+</table>
+
+<h3>3.3 Risk Matrix (ISO 14971)</h3>
+<table>
+<tr><th></th><th colspan="5" style="text-align:center;">Probability</th></tr>
+<tr><th>Severity</th><th>1 - Remote</th><th>2 - Rare</th><th>3 - Occasional</th><th>4 - Probable</th><th>5 - Frequent</th></tr>
+<tr><td>5 - Catastrophic</td><td style="background-color:#ffcc00;">Medium</td><td style="background-color:#ff9900;">High</td><td style="background-color:#ff0000;color:white;">High</td><td style="background-color:#ff0000;color:white;">High</td><td style="background-color:#ff0000;color:white;">High</td></tr>
+<tr><td>4 - Critical</td><td style="background-color:#00cc00;">Low</td><td style="background-color:#ffcc00;">Medium</td><td style="background-color:#ff9900;">High</td><td style="background-color:#ff0000;color:white;">High</td><td style="background-color:#ff0000;color:white;">High</td></tr>
+<tr><td>3 - Serious</td><td style="background-color:#00cc00;">Low</td><td style="background-color:#ffcc00;">Medium</td><td style="background-color:#ffcc00;">Medium</td><td style="background-color:#ff9900;">High</td><td style="background-color:#ff9900;">High</td></tr>
+<tr><td>2 - Minor</td><td style="background-color:#00cc00;">Low</td><td style="background-color:#00cc00;">Low</td><td style="background-color:#ffcc00;">Medium</td><td style="background-color:#ffcc00;">Medium</td><td style="background-color:#ff9900;">High</td></tr>
+<tr><td>1 - Negligible</td><td style="background-color:#00cc00;">Low</td><td style="background-color:#00cc00;">Low</td><td style="background-color:#00cc00;">Low</td><td style="background-color:#ffcc00;">Medium</td><td style="background-color:#ffcc00;">Medium</td></tr>
+</table>
+
+<h3>3.4 Risk Evaluation Table</h3>
+<table>
+<tr><th>Hazard ID</th><th>Severity</th><th>Probability</th><th>Risk Level</th><th>Acceptable?</th></tr>
+<tr><td>H-001</td><td>[1-5]</td><td>[1-5]</td><td>[Low/Med/High]</td><td>[Yes/No]</td></tr>
+<tr><td>H-002</td><td>[1-5]</td><td>[1-5]</td><td>[Low/Med/High]</td><td>[Yes/No]</td></tr>
+<tr><td>H-003</td><td>[1-5]</td><td>[1-5]</td><td>[Low/Med/High]</td><td>[Yes/No]</td></tr>
+</table>
+
+<h2>4. Risk Control (ISO 14971, Clause 8)</h2>
+<h3>4.1 Hierarchy of Controls</h3>
+<ol>
+<li><strong>Inherent safety by design</strong> - Eliminate or reduce risks through design</li>
+<li><strong>Protective measures</strong> - Physical guards, barriers, or safety features</li>
+<li><strong>Information for safety</strong> - Warnings, instructions, training requirements</li>
+</ol>
+
+<h3>4.2 Risk Control Measures</h3>
+<table>
+<tr><th>Hazard ID</th><th>Control Measure</th><th>Control Type</th><th>Implementation</th><th>Verification</th></tr>
+<tr><td>H-001</td><td>[Measure]</td><td>[Design/Protective/Info]</td><td>[How implemented]</td><td>[Verification method]</td></tr>
+<tr><td>H-002</td><td>[Measure]</td><td>[Design/Protective/Info]</td><td>[How implemented]</td><td>[Verification method]</td></tr>
+<tr><td>H-003</td><td>[Measure]</td><td>[Design/Protective/Info]</td><td>[How implemented]</td><td>[Verification method]</td></tr>
+</table>
+
+<h2>5. Residual Risk Evaluation (ISO 14971, Clause 9)</h2>
+<table>
+<tr><th>Hazard ID</th><th>Residual Risk</th><th>Severity After Control</th><th>Probability After Control</th><th>Residual Risk Level</th><th>Acceptable?</th></tr>
+<tr><td>H-001</td><td>[Description]</td><td>[1-5]</td><td>[1-5]</td><td>[Low/Med/High]</td><td>[Yes/No]</td></tr>
+<tr><td>H-002</td><td>[Description]</td><td>[1-5]</td><td>[1-5]</td><td>[Low/Med/High]</td><td>[Yes/No]</td></tr>
+</table>
+
+<h2>6. Benefit-Risk Analysis (ISO 14971, Clause 10)</h2>
+<p>For residual risks that are not broadly acceptable, conduct a benefit-risk analysis considering:</p>
+<ul>
+<li>The intended use and clinical benefits of the device</li>
+<li>The severity and probability of residual risks</li>
+<li>Whether alternative designs or technologies exist</li>
+<li>The opinions of relevant stakeholders and experts</li>
+</ul>
+
+<h2>7. Overall Residual Risk Evaluability (ISO 14971, Clause 11)</h2>
+<p>Evaluate the overall residual risk after all individual risk control measures have been implemented.</p>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Overall Residual Risk Level</td><td>[Low / Medium / High]</td></tr>
+<tr><td>Overall Acceptability</td><td>[Acceptable / Not Acceptable]</td></tr>
+<tr><td>Justification</td><td>[Provide justification]</td></tr>
+</table>
+
+<h2>8. Risk Management Review and Approval</h2>
+<table>
+<tr><th>Role</th><th>Name</th><th>Signature</th><th>Date</th></tr>
+<tr><td>Risk Manager</td><td>[Name]</td><td></td><td></td></tr>
+<tr><td>Quality Manager</td><td>[Name]</td><td></td><td></td></tr>
+<tr><td>Regulatory Affairs</td><td>[Name]</td><td></td><td></td></tr>
+</table>
+`
+    }
+
+    case 'ce-doc': {
+      return `
+<h1>EU Declaration of Conformity</h1>
+<p><strong>Regulatory Basis:</strong> Regulation (EU) 2016/425 of the European Parliament and of the Council</p>
+<p><strong>Annex Reference:</strong> Annex VI - EU Declaration of Conformity</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>EU DECLARATION OF CONFORMITY</h2>
+
+<h3>1. Manufacturer</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Manufacturer Name</td><td>[Full legal entity name]</td></tr>
+<tr><td>Registered Address</td><td>[Full registered address]</td></tr>
+<tr><td>Country</td><td>[EU Member State]</td></tr>
+<tr><td>Telephone</td><td>[Phone number]</td></tr>
+<tr><td>Email</td><td>[Email address]</td></tr>
+</table>
+
+<h3>2. Authorized Representative (if manufacturer is outside EU)</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Representative Name</td><td>[Full legal entity name]</td></tr>
+<tr><td>Address</td><td>[Full address within EU]</td></tr>
+<tr><td>Mandate Reference</td><td>[Mandate document reference]</td></tr>
+</table>
+
+<h3>3. Product Identification</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Product Name</td><td>[Product commercial name]</td></tr>
+<tr><td>Product Code / Model</td><td>[Model/type reference]</td></tr>
+<tr><td>Serial / Batch Number</td><td>[As marked on product]</td></tr>
+<tr><td>PPE Category</td><td>[Category I / II / III]</td></tr>
+<tr><td>Product Description</td><td>[Brief description of product and intended protection]</td></tr>
+</table>
+
+<h3>4. Conformity Declaration</h3>
+<p>The undersigned manufacturer hereby declares under sole responsibility that the above-described product is in conformity with the applicable Union harmonisation legislation:</p>
+<p><strong>Regulation (EU) 2016/425</strong> of the European Parliament and of the Council of 9 March 2016 on personal protective equipment and repealing Council Directive 89/686/EEC.</p>
+
+<h3>5. Applied Conformity Assessment Procedure</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Assessment Module(s)</td><td>[e.g., Module B + Module D, or Module B + Module C2]</td></tr>
+<tr><td>Notified Body Name</td><td>[Full name of Notified Body]</td></tr>
+<tr><td>Notified Body Number</td><td>[4-digit identification number]</td></tr>
+<tr><td>EU Type Examination Certificate No.</td><td>[Certificate reference]</td></tr>
+<tr><td>Certificate Date</td><td>[Date of issue]</td></tr>
+<tr><td>Quality System Certificate No.</td><td>[If applicable - Module D/C2]</td></tr>
+</table>
+
+<h3>6. Harmonized Standards Applied</h3>
+<table>
+<tr><th>Standard Reference</th><th>Title</th><th>Date of Standard</th></tr>
+<tr><td>EN 149:2001+A1:2009</td><td>Respiratory protective devices - Filtering half masks to protect against particles</td><td>2009</td></tr>
+<tr><td>EN ISO 12100:2010</td><td>Safety of machinery - General principles for design - Risk assessment and risk reduction</td><td>2010</td></tr>
+<tr><td>[Other standards]</td><td>[Title]</td><td>[Date]</td></tr>
+</table>
+
+<h3>7. Other Technical Specifications Applied</h3>
+<p>[List any other technical specifications, common specifications, or national standards applied for which no harmonized standards exist]</p>
+
+<h3>8. Declaration</h3>
+<p>This declaration is issued under the sole responsibility of the manufacturer. The object of the declaration described above is in conformity with the relevant Union harmonisation legislation.</p>
+<p>This declaration relates only to the product in the state in which it was placed on the market, and excludes components which are added to, modified or replaced after the product has been placed on the market.</p>
+
+<h3>9. Signatory</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Place of Issue</td><td>[City, Country]</td></tr>
+<tr><td>Date of Issue</td><td>${date}</td></tr>
+<tr><td>Authorized Signatory</td><td>[Name and Title]</td></tr>
+<tr><td>Signature</td><td>_________________________</td></tr>
+</table>
+`
+    }
+
+    case 'ce-test-report': {
+      return `
+<h1>Test Report Template</h1>
+<p><strong>Purpose:</strong> Standardized test report for PPE product testing documentation</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. Test Report Information</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Report Number</td><td>[TR-YYYY-XXX]</td></tr>
+<tr><td>Product Name</td><td>[Product commercial name]</td></tr>
+<tr><td>Model / Type</td><td>[Model/type reference]</td></tr>
+<tr><td>Manufacturer</td><td>[Manufacturer name]</td></tr>
+<tr><td>Test Standard(s)</td><td>[List applicable standards]</td></tr>
+<tr><td>Test Start Date</td><td>[Date]</td></tr>
+<tr><td>Test End Date</td><td>[Date]</td></tr>
+<tr><td>Report Date</td><td>${date}</td></tr>
+</table>
+
+<h2>2. Testing Laboratory</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Laboratory Name</td><td>[ISO 17025 accredited lab]</td></tr>
+<tr><td>Accreditation Body</td><td>[e.g., UKAS, DAkkS, CNAS]</td></tr>
+<tr><td>Accreditation Number</td><td>[Lab accreditation number]</td></tr>
+<tr><td>Laboratory Address</td><td>[Full address]</td></tr>
+<tr><td>Technical Contact</td><td>[Name, phone, email]</td></tr>
+</table>
+
+<h2>3. Sample Information</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Sample Description</td><td>[Description]</td></tr>
+<tr><td>Sample Quantity</td><td>[Number of samples]</td></tr>
+<tr><td>Batch / Lot Number</td><td>[Reference]</td></tr>
+<tr><td>Date of Receipt</td><td>[Date]</td></tr>
+<tr><td>Sample Condition on Receipt</td><td>[Condition description]</td></tr>
+<tr><td>Storage Conditions</td><td>[Temperature, humidity, etc.]</td></tr>
+</table>
+
+<h2>4. Test Results Summary</h2>
+<table>
+<tr><th>Test Parameter</th><th>Standard Clause</th><th>Test Method</th><th>Result</th><th>Specification</th><th>Pass/Fail</th></tr>
+<tr><td>[Parameter]</td><td>[Clause]</td><td>[Method]</td><td>[Value]</td><td>[Limit]</td><td>[P/F]</td></tr>
+</table>
+
+<h2>5. Detailed Test Results</h2>
+<p>[Provide detailed test data, graphs, photographs, and calculations for each test parameter]</p>
+
+<h2>6. Test Equipment</h2>
+<table>
+<tr><th>Equipment</th><th>Model</th><th>Serial Number</th><th>Calibration Date</th><th>Calibration Due</th></tr>
+<tr><td>[Equipment name]</td><td>[Model]</td><td>[S/N]</td><td>[Date]</td><td>[Date]</td></tr>
+</table>
+
+<h2>7. Conclusions</h2>
+<p>[State whether the product meets the requirements of the applicable standard(s)]</p>
+
+<h2>8. Signatures</h2>
+<table>
+<tr><th>Role</th><th>Name</th><th>Signature</th><th>Date</th></tr>
+<tr><td>Test Engineer</td><td>[Name]</td><td></td><td></td></tr>
+<tr><td>Reviewed By</td><td>[Name]</td><td></td><td></td></tr>
+<tr><td>Approved By</td><td>[Name]</td><td></td><td></td></tr>
+</table>
+`
+    }
+
+    case 'fda-510k-cover': {
+      return `
+<h1>FDA 510(k) Premarket Notification - Cover Letter</h1>
+<p><strong>Regulatory Basis:</strong> Section 510(k) of the Federal Food, Drug, and Cosmetic Act (21 USC 360(k))</p>
+<p><strong>Regulation:</strong> 21 CFR Part 807, Subpart E - Premarket Notification</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>COVER LETTER</h2>
+
+<h3>1. Submitter Information</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Submitter Company</td><td>[Legal company name]</td></tr>
+<tr><td>Address</td><td>[Complete address]</td></tr>
+<tr><td>Contact Person</td><td>[Name, Title]</td></tr>
+<tr><td>Telephone</td><td>[Phone number]</td></tr>
+<tr><td>Email</td><td>[Email address]</td></tr>
+<tr><td>Fax (if applicable)</td><td>[Fax number]</td></tr>
+<tr><td>Date Prepared</td><td>${date}</td></tr>
+</table>
+
+<h3>2. Device Information</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Device Trade Name</td><td>[Commercial name]</td></tr>
+<tr><td>Common/Usual Name</td><td>[Classification name per 21 CFR]</td></tr>
+<tr><td>Classification Regulation</td><td>[e.g., 21 CFR 878.4040]</td></tr>
+<tr><td>Product Code</td><td>[e.g., MSH, LYU, NZJ]</td></tr>
+<tr><td>Panel</td><td>[e.g., Surgical Devices - Panel 78]</td></tr>
+<tr><td>Device Class</td><td>[Class I / II / III]</td></tr>
+</table>
+
+<h3>3. Predicate Device</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Predicate Device Trade Name</td><td>[Predicate commercial name]</td></tr>
+<tr><td>Predicate 510(k) Number</td><td>[K-number]</td></tr>
+<tr><td>Predicate Manufacturer</td><td>[Manufacturer name]</td></tr>
+<tr><td>Date Cleared</td><td>[Clearance date]</td></tr>
+</table>
+
+<h3>4. 510(k) Summary or Statement</h3>
+<p>[Indicate whether a 510(k) Summary or 510(k) Statement is provided, per 21 CFR 807.92 or 807.93]</p>
+
+<h3>5. Substantial Equivalence</h3>
+<p>This submission demonstrates that the subject device is substantially equivalent to the predicate device identified above. The subject device has the same intended use and similar technological characteristics as the predicate device. Any differences in technological characteristics do not raise different questions of safety and effectiveness.</p>
+
+<h3>6. Required 510(k) Content Checklist (per 21 CFR 807.87)</h3>
+<table>
+<tr><th>Item</th><th>Requirement</th><th>Included?</th></tr>
+<tr><td>807.87(a)</td><td>Device name - trade and common</td><td>[Yes]</td></tr>
+<tr><td>807.87(b)</td><td>Establishment registration number</td><td>[Yes]</td></tr>
+<tr><td>807.87(c)</td><td>Classification - class, panel, product code</td><td>[Yes]</td></tr>
+<tr><td>807.87(d)</td><td>Action taken - new device or modification</td><td>[Yes]</td></tr>
+<tr><td>807.87(e)</td><td>Proposed labeling, advertisements</td><td>[Yes]</td></tr>
+<tr><td>807.87(f)</td><td>510(k) summary or statement</td><td>[Yes]</td></tr>
+<tr><td>807.87(g)</td><td>Statement of compliance with design controls</td><td>[Yes]</td></tr>
+<tr><td>807.87(h)</td><td>Indications for use statement</td><td>[Yes]</td></tr>
+<tr><td>807.87(i)</td><td>Photographs of device (if applicable)</td><td>[Yes/N/A]</td></tr>
+<tr><td>807.87(j)</td><td>Additional information - engineering drawings, performance data</td><td>[Yes]</td></tr>
+</table>
+
+<h3>7. Confidentiality Statement</h3>
+<p>[Indicate whether any information in this submission should be treated as confidential, per 21 CFR 807.95]</p>
+
+<h3>8. Signature</h3>
+<p><strong>Signature:</strong> _________________________</p>
+<p><strong>Name:</strong> [Authorized representative]</p>
+<p><strong>Title:</strong> [Title]</p>
+<p><strong>Date:</strong> ${date}</p>
+`
+    }
+
+    case 'fda-substantial-equiv': {
+      return `
+<h1>Substantial Equivalence Template</h1>
+<p><strong>Regulatory Basis:</strong> 21 CFR 807.87 - Information required in a 510(k)</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. Device Identification</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Subject Device Name</td><td>[Trade name]</td></tr>
+<tr><td>Common Name</td><td>[Classification name]</td></tr>
+<tr><td>Product Code</td><td>[FDA product code]</td></tr>
+<tr><td>Regulation Number</td><td>[21 CFR section]</td></tr>
+<tr><td>Device Class</td><td>[Class II]</td></tr>
+</table>
+
+<h2>2. Predicate Device Identification</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Predicate Device Name</td><td>[Trade name]</td></tr>
+<tr><td>Predicate 510(k) Number</td><td>[K-number]</td></tr>
+<tr><td>Predicate Manufacturer</td><td>[Company name]</td></tr>
+<tr><td>Product Code</td><td>[FDA product code]</td></tr>
+</table>
+
+<h2>3. Intended Use Comparison</h2>
+<table>
+<tr><th style="width:200px;">Aspect</th><th>Subject Device</th><th>Predicate Device</th><th>Same/Different</th></tr>
+<tr><td>General Intended Use</td><td>[Description]</td><td>[Description]</td><td>[Same/Different]</td></tr>
+<tr><td>Target Population</td><td>[Description]</td><td>[Description]</td><td>[Same/Different]</td></tr>
+<tr><td>Use Environment</td><td>[Description]</td><td>[Description]</td><td>[Same/Different]</td></tr>
+<tr><td>Indications for Use</td><td>[Description]</td><td>[Description]</td><td>[Same/Different]</td></tr>
+</table>
+
+<h2>4. Technological Characteristics Comparison</h2>
+<table>
+<tr><th style="width:200px;">Characteristic</th><th>Subject Device</th><th>Predicate Device</th><th>Same/Different</th></tr>
+<tr><td>Design</td><td>[Description]</td><td>[Description]</td><td>[Same/Different]</td></tr>
+<tr><td>Materials</td><td>[Description]</td><td>[Description]</td><td>[Same/Different]</td></tr>
+<tr><td>Operating Principle</td><td>[Description]</td><td>[Description]</td><td>[Same/Different]</td></tr>
+<tr><td>Energy Source</td><td>[Description]</td><td>[Description]</td><td>[Same/Different]</td></tr>
+<tr><td>Performance Specifications</td><td>[Description]</td><td>[Description]</td><td>[Same/Different]</td></tr>
+</table>
+
+<h2>5. Performance Data Summary</h2>
+<h3>5.1 Bench Testing</h3>
+<table>
+<tr><th>Test</th><th>Standard/Method</th><th>Subject Device Result</th><th>Predicate Device Result</th><th>Equivalent?</th></tr>
+<tr><td>[Test name]</td><td>[Method]</td><td>[Result]</td><td>[Result]</td><td>[Yes/No]</td></tr>
+</table>
+
+<h3>5.2 Biocompatibility (ISO 10993)</h3>
+<table>
+<tr><th>Test</th><th>Standard</th><th>Result</th><th>Acceptance</th></tr>
+<tr><td>Cytotoxicity</td><td>ISO 10993-5</td><td>[Pass/Fail]</td><td>Non-cytotoxic</td></tr>
+<tr><td>Sensitization</td><td>ISO 10993-10</td><td>[Pass/Fail]</td><td>Non-sensitizing</td></tr>
+<tr><td>Irritation</td><td>ISO 10993-10</td><td>[Pass/Fail]</td><td>Non-irritating</td></tr>
+</table>
+
+<h2>6. Conclusion of Substantial Equivalence</h2>
+<p>Based on the comparison above, the subject device has:</p>
+<ol>
+<li>The same intended use as the predicate device</li>
+<li>[Same / Different] technological characteristics</li>
+<li>[If different] The differences do not raise different questions of safety and effectiveness</li>
+<li>[If different] The data demonstrates the subject device is as safe and effective as the predicate</li>
+</ol>
+`
+    }
+
+    case 'fda-device-desc': {
+      return `
+<h1>Device Description Template</h1>
+<p><strong>Regulatory Basis:</strong> 21 CFR 807.87(j) - Additional information for 510(k)</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. Device Overview</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Device Trade Name</td><td>[Commercial name]</td></tr>
+<tr><td>Common Name</td><td>[Classification name]</td></tr>
+<tr><td>Product Code</td><td>[FDA product code]</td></tr>
+<tr><td>Regulation Number</td><td>[21 CFR section]</td></tr>
+</table>
+
+<h2>2. Physical Description</h2>
+<h3>2.1 General Description</h3>
+<p>[Provide a comprehensive description of the device including its physical characteristics, dimensions, weight, and configuration]</p>
+
+<h3>2.2 Components and Accessories</h3>
+<table>
+<tr><th>Component</th><th>Description</th><th>Material</th><th>Function</th></tr>
+<tr><td>[Component name]</td><td>[Description]</td><td>[Material]</td><td>[Function]</td></tr>
+</table>
+
+<h3>2.3 Materials of Construction</h3>
+<table>
+<tr><th>Material</th><th>Supplier</th><th>Grade/Specification</th><th>Biocompatibility Status</th></tr>
+<tr><td>[Material name]</td><td>[Supplier]</td><td>[Grade]</td><td>[Evaluated / Pending]</td></tr>
+</table>
+
+<h2>3. Principles of Operation</h2>
+<p>[Describe how the device works, including the mechanism by which it achieves its intended protective function]</p>
+
+<h2>4. Model / Variant Information</h2>
+<table>
+<tr><th>Model</th><th>Description</th><th>Differences from Base Model</th></tr>
+<tr><td>[Model number]</td><td>[Description]</td><td>[Differences]</td></tr>
+</table>
+
+<h2>5. Packaging Information</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Packaging Type</td><td>[Description]</td></tr>
+<tr><td>Unit Packaging</td><td>[Description]</td></tr>
+<tr><td>Shipping Packaging</td><td>[Description]</td></tr>
+<tr><td>Sterile Packaging (if applicable)</td><td>[Description]</td></tr>
+<tr><td>Shelf Life</td><td>[Duration]</td></tr>
+</table>
+
+<h2>6. Labeling Summary</h2>
+<p>[Describe the labeling, including labels, instructions for use, and any patient labeling]</p>
+`
+    }
+
+    case 'fda-labeling': {
+      return `
+<h1>FDA Labeling Template</h1>
+<p><strong>Regulatory Basis:</strong> 21 CFR 801 - Labeling, 21 CFR 807.87(e)</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. Device Labeling</h2>
+<h3>1.1 Device Label (per 21 CFR 801)</h3>
+<table>
+<tr><th style="width:200px;">Required Element</th><th>Content</th></tr>
+<tr><td>Device Name</td><td>[Trade name and common name]</td></tr>
+<tr><td>Manufacturer Name and Address</td><td>[Full name and address]</td></tr>
+<tr><td>Intended Use</td><td>[Brief statement]</td></tr>
+<tr><td>Directions for Use</td><td>[Key instructions]</td></tr>
+<tr><td>Warnings and Precautions</td><td>[List of warnings]</td></tr>
+<tr><td>Contraindications</td><td>[List of contraindications]</td></tr>
+<tr><td>Lot/Batch Number</td><td>[Location on label]</td></tr>
+<tr><td>Expiration Date</td><td>[Format and location]</td></tr>
+<tr><td>Storage Instructions</td><td>[Conditions]</td></tr>
+<tr><td>UDI</td><td>[Unique Device Identifier]</td></tr>
+</table>
+
+<h2>2. Instructions for Use (IFU)</h2>
+<h3>2.1 Device Description</h3>
+<p>[Provide a clear description of the device for the end user]</p>
+
+<h3>2.2 Intended Use / Indications for Use</h3>
+<p>[Clear statement of what the device is intended to do and when it should be used]</p>
+
+<h3>2.3 Contraindications</h3>
+<p>[List conditions under which the device should not be used]</p>
+
+<h3>2.4 Warnings and Precautions</h3>
+<table>
+<tr><th>Type</th><th>Warning</th><th>Consequence</th></tr>
+<tr><td>[Warning/Caution]</td><td>[Description]</td><td>[Potential harm]</td></tr>
+</table>
+
+<h3>2.5 Donning and Doffing Instructions</h3>
+<ol>
+<li>[Step 1 - Preparation]</li>
+<li>[Step 2 - Inspection before use]</li>
+<li>[Step 3 - Donning procedure]</li>
+<li>[Step 4 - Fit check]</li>
+<li>[Step 5 - During use]</li>
+<li>[Step 6 - Doffing procedure]</li>
+<li>[Step 7 - Disposal]</li>
+</ol>
+
+<h3>2.6 Maintenance and Storage</h3>
+<p>[Instructions for care, cleaning (if reusable), and storage]</p>
+
+<h3>2.7 Disposal Instructions</h3>
+<p>[Proper disposal methods per applicable regulations]</p>
+
+<h2>3. Patient Labeling (if applicable)</h2>
+<p>[Provide any labeling intended for the patient/end user in lay terms]</p>
+`
+    }
+
+    case 'nmpa-registration': {
+      return `
+<h1>NMPA Registration Application Template</h1>
+<p><strong>Regulatory Basis:</strong> Regulations for Supervision and Administration of Medical Devices (State Council Decree No. 739)</p>
+<p><strong>Procedural Order:</strong> Measures for the Administration of Medical Device Registration and Filing (Order No. 47, 2021)</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>一、注册申请表 (Registration Application Form)</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>产品名称（中文）</td><td>[Product Chinese name]</td></tr>
+<tr><td>产品名称（英文）</td><td>[Product English name]</td></tr>
+<tr><td>型号/规格</td><td>[Model/Specification]</td></tr>
+<tr><td>分类编码</td><td>[Classification code per NMPA catalogue]</td></tr>
+<tr><td>管理类别</td><td>[Class II / Class III]</td></tr>
+<tr><td>注册申请人名称</td><td>[Applicant name]</td></tr>
+<tr><td>注册申请人住所</td><td>[Applicant address]</td></tr>
+<tr><td>生产地址</td><td>[Manufacturing address]</td></tr>
+</table>
+
+<h2>二、证明性文件 (Supporting Documents)</h2>
+<h3>2.1 企业资质文件</h3>
+<ul>
+<li>企业营业执照副本复印件</li>
+<li>组织机构代码证复印件（如适用）</li>
+<li>生产许可证复印件（境内生产企业）</li>
+</ul>
+
+<h3>2.2 境外申请人资质（如适用）</h3>
+<ul>
+<li>境外申请人注册地所在国家（地区）医疗器械主管部门出具的允许产品上市销售的证明文件</li>
+<li>境外申请人在中国境内指定代理人的委托书</li>
+<li>代理人承诺书</li>
+<li>代理人营业执照副本或机构登记证明复印件</li>
+</ul>
+
+<h2>三、医疗器械安全有效基本要求清单</h2>
+<p>[Per NMPA Announcement No. 121, 2021]</p>
+
+<h2>四、综述资料 (Summary Documentation)</h2>
+<h3>4.1 产品描述</h3>
+<p>[Product description: working principle, structure, main functions, intended use]</p>
+
+<h3>4.2 型号规格</h3>
+<p>[Model specifications and differences between models]</p>
+
+<h3>4.3 包装说明</h3>
+<p>[Packaging information including inner, middle, and outer packaging]</p>
+
+<h3>4.4 适用范围</h3>
+<p>[Intended use / scope of application]</p>
+
+<h3>4.5 禁忌症</h3>
+<p>[Contraindications]</p>
+
+<h2>五、研究资料 (Research Documentation)</h2>
+<h3>5.1 产品性能研究</h3>
+<p>[Product performance research and technical requirements justification]</p>
+
+<h3>5.2 生物相容性评价研究</h3>
+<table>
+<tr><th>试验项目</th><th>试验方法</th><th>结果</th><th>评价</th></tr>
+<tr><td>细胞毒性</td><td>GB/T 16886.5</td><td>[Result]</td><td>[Evaluation]</td></tr>
+<tr><td>皮肤致敏</td><td>GB/T 16886.10</td><td>[Result]</td><td>[Evaluation]</td></tr>
+<tr><td>皮肤刺激</td><td>GB/T 16886.10</td><td>[Result]</td><td>[Evaluation]</td></tr>
+</table>
+
+<h3>5.3 灭菌/消毒工艺研究</h3>
+<p>[Sterilization/disinfection process validation, if applicable]</p>
+
+<h3>5.4 有效期和包装研究</h3>
+<p>[Shelf life validation and packaging validation]</p>
+
+<h2>六、生产制造信息 (Manufacturing Information)</h2>
+<h3>6.1 生产过程描述</h3>
+<p>[Manufacturing process description and flow chart]</p>
+
+<h3>6.2 生产场地</h3>
+<p>[Production site details, area, environmental controls]</p>
+
+<h2>七、临床评价资料 (Clinical Evaluation)</h2>
+<p>[Per NMPA Technical Guidelines for Clinical Evaluation of Medical Devices]</p>
+
+<h2>八、产品风险分析资料 (Risk Analysis)</h2>
+<p>[Per YY/T 0316 - Application of risk management to medical devices]</p>
+
+<h2>九、产品技术要求 (Product Technical Requirements)</h2>
+<p>[Product technical requirements document number and content]</p>
+
+<h2>十、产品注册检验报告 (Type Testing Report)</h2>
+<p>[Test report from NMPA-accredited testing institute]</p>
+
+<h2>十一、说明书和标签样稿 (IFU and Label Drafts)</h2>
+<p>[Product instructions for use and minimum sales unit label drafts]</p>
+
+<h2>十二、符合性声明 (Declaration of Conformity)</h2>
+<p>本申请人声明：</p>
+<ol>
+<li>本申请人对所提交资料的真实性负责；</li>
+<li>本申请人已建立与产品研制、生产有关的质量管理体系，并保持有效运行；</li>
+<li>本申请产品符合现行国家标准、行业标准；</li>
+<li>本申请产品符合《医疗器械注册与备案管理办法》要求。</li>
+</ol>
+<p><strong>申请人：</strong>[Name] &nbsp;&nbsp; <strong>法定代表人（签字）：</strong>_______________ &nbsp;&nbsp; <strong>日期：</strong>${date}</p>
+`
+    }
+
+    case 'nmpa-technical': {
+      return `
+<h1>NMPA Technical Requirements Template</h1>
+<p><strong>Regulatory Basis:</strong> Measures for the Administration of Medical Device Registration and Filing (Order No. 47)</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. 产品技术要求编号 (Product Technical Requirements Number)</h2>
+<p>[Enter technical requirements document number]</p>
+
+<h2>2. 产品名称 (Product Name)</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>中文名称</td><td>[Chinese product name]</td></tr>
+<tr><td>英文名称</td><td>[English product name]</td></tr>
+<tr><td>型号/规格</td><td>[Model/Specification]</td></tr>
+</table>
+
+<h2>3. 性能指标 (Performance Requirements)</h2>
+<table>
+<tr><th>序号</th><th>性能指标名称</th><th>要求</th><th>检验方法</th></tr>
+<tr><td>1</td><td>[Performance parameter]</td><td>[Specification]</td><td>[Test method]</td></tr>
+<tr><td>2</td><td>[Performance parameter]</td><td>[Specification]</td><td>[Test method]</td></tr>
+</table>
+
+<h2>4. 检验方法 (Test Methods)</h2>
+<p>[Detailed test methods for each performance requirement]</p>
+
+<h2>5. 附录 (Appendices)</h2>
+<p>[Product appearance drawings, structural diagrams, material specifications, etc.]</p>
+`
+    }
+
+    case 'nmpa-clinical': {
+      return `
+<h1>Clinical Evaluation Report Template</h1>
+<p><strong>Regulatory Basis:</strong> NMPA Technical Guidelines for Clinical Evaluation of Medical Devices</p>
+<p><strong>Standard:</strong> YY/T 0297 / ISO 14155 - Clinical investigation of medical devices</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. Clinical Evaluation Plan</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Product Name</td><td>[Product name]</td></tr>
+<tr><td>Model/Specification</td><td>[Model]</td></tr>
+<tr><td>Classification</td><td>[Class II / III]</td></tr>
+<tr><td>Evaluator</td><td>[Name, qualifications]</td></tr>
+<tr><td>Date</td><td>${date}</td></tr>
+</table>
+
+<h2>2. Literature Review</h2>
+<h3>2.1 Search Strategy</h3>
+<p>[Describe literature search methodology, databases used, search terms, inclusion/exclusion criteria]</p>
+
+<h3>2.2 Literature Summary</h3>
+<table>
+<tr><th>Reference</th><th>Study Type</th><th>Population</th><th>Key Findings</th><th>Relevance</th></tr>
+<tr><td>[Reference]</td><td>[Type]</td><td>[N, demographics]</td><td>[Findings]</td><td>[High/Med/Low]</td></tr>
+</table>
+
+<h2>3. Clinical Data Analysis</h2>
+<p>[Analysis of clinical data from literature, clinical experience, and/or clinical investigations]</p>
+
+<h2>4. Safety and Performance Conclusions</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Safety Conclusion</td><td>[Summary of safety evidence]</td></tr>
+<tr><td>Performance Conclusion</td><td>[Summary of performance evidence]</td></tr>
+<tr><td>Overall Conclusion</td><td>[Acceptable / Not acceptable]</td></tr>
+</table>
+
+<h2>5. Approval</h2>
+<table>
+<tr><th>Role</th><th>Name</th><th>Signature</th><th>Date</th></tr>
+<tr><td>Clinical Evaluator</td><td>[Name]</td><td></td><td></td></tr>
+<tr><td>Medical Director</td><td>[Name]</td><td></td><td></td></tr>
+</table>
+`
+    }
+
+    case 'ce-checklist': {
+      return `
+<h1>CE Marking Complete Checklist</h1>
+<p><strong>Regulation:</strong> Regulation (EU) 2016/425 on Personal Protective Equipment</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. Product Classification</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>1.1</td><td>PPE category determined (I, II, or III)</td><td>[ ]</td><td></td></tr>
+<tr><td>1.2</td><td>Intended use documented</td><td>[ ]</td><td></td></tr>
+<tr><td>1.3</td><td>Risk level assessed per Annex I</td><td>[ ]</td><td></td></tr>
+<tr><td>1.4</td><td>Classification justified and documented</td><td>[ ]</td><td></td></tr>
+</table>
+
+<h2>2. Technical Documentation (Annex III)</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>2.1</td><td>General product description prepared</td><td>[ ]</td><td></td></tr>
+<tr><td>2.2</td><td>Design and manufacturing data compiled</td><td>[ ]</td><td></td></tr>
+<tr><td>2.3</td><td>Risk assessment completed (EN ISO 12100)</td><td>[ ]</td><td></td></tr>
+<tr><td>2.4</td><td>EHSR checklist completed (Annex II)</td><td>[ ]</td><td></td></tr>
+<tr><td>2.5</td><td>Test reports obtained from accredited lab</td><td>[ ]</td><td></td></tr>
+<tr><td>2.6</td><td>Quality assurance documentation prepared</td><td>[ ]</td><td></td></tr>
+<tr><td>2.7</td><td>Labeling and user instructions prepared</td><td>[ ]</td><td></td></tr>
+</table>
+
+<h2>3. Conformity Assessment</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>3.1</td><td>Notified Body selected (Cat II/III)</td><td>[ ]</td><td></td></tr>
+<tr><td>3.2</td><td>EU Type Examination application submitted</td><td>[ ]</td><td></td></tr>
+<tr><td>3.3</td><td>EU Type Examination certificate obtained</td><td>[ ]</td><td></td></tr>
+<tr><td>3.4</td><td>Quality system assessment completed (Cat III)</td><td>[ ]</td><td></td></tr>
+<tr><td>3.5</td><td>Conformity assessment module selected</td><td>[ ]</td><td></td></tr>
+</table>
+
+<h2>4. EU Declaration of Conformity</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>4.1</td><td>DoC prepared per Annex VI</td><td>[ ]</td><td></td></tr>
+<tr><td>4.2</td><td>All applicable standards listed</td><td>[ ]</td><td></td></tr>
+<tr><td>4.3</td><td>Notified Body details included</td><td>[ ]</td><td></td></tr>
+<tr><td>4.4</td><td>DoC signed by authorized person</td><td>[ ]</td><td></td></tr>
+</table>
+
+<h2>5. CE Marking and Market Entry</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>5.1</td><td>CE marking affixed (min 5mm height)</td><td>[ ]</td><td></td></tr>
+<tr><td>5.2</td><td>Notified Body number included (Cat II/III)</td><td>[ ]</td><td></td></tr>
+<tr><td>5.3</td><td>Product labeling complete</td><td>[ ]</td><td></td></tr>
+<tr><td>5.4</td><td>User instructions provided with product</td><td>[ ]</td><td></td></tr>
+<tr><td>5.5</td><td>EU Representative appointed (non-EU)</td><td>[ ]</td><td></td></tr>
+<tr><td>5.6</td><td>Technical file retained for 10 years</td><td>[ ]</td><td></td></tr>
+</table>
+`
+    }
+
+    case 'fda-510k-checklist': {
+      return `
+<h1>FDA 510(k) Submission Checklist</h1>
+<p><strong>Regulatory Basis:</strong> 21 CFR Part 807, Subpart E</p>
+<p><strong>Reference:</strong> FDA Refuse to Accept (RTA) Checklist for 510(k)</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. Administrative Requirements (21 CFR 807.87)</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>1.1</td><td>Submitter name and address</td><td>[ ]</td><td></td></tr>
+<tr><td>1.2</td><td>Contact person and phone number</td><td>[ ]</td><td></td></tr>
+<tr><td>1.3</td><td>Device trade name and common name</td><td>[ ]</td><td></td></tr>
+<tr><td>1.4</td><td>Classification (class, panel, product code)</td><td>[ ]</td><td></td></tr>
+<tr><td>1.5</td><td>Establishment registration number</td><td>[ ]</td><td></td></tr>
+<tr><td>1.6</td><td>Action taken (new device or modification)</td><td>[ ]</td><td></td></tr>
+<tr><td>1.7</td><td>User fee payment confirmation</td><td>[ ]</td><td></td></tr>
+</table>
+
+<h2>2. Device Description</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>2.1</td><td>Device description with physical characteristics</td><td>[ ]</td><td></td></tr>
+<tr><td>2.2</td><td>Intended use statement</td><td>[ ]</td><td></td></tr>
+<tr><td>2.3</td><td>Indications for use statement</td><td>[ ]</td><td></td></tr>
+<tr><td>2.4</td><td>Technological characteristics comparison</td><td>[ ]</td><td></td></tr>
+</table>
+
+<h2>3. Predicate Device</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>3.1</td><td>Predicate device identified</td><td>[ ]</td><td></td></tr>
+<tr><td>3.2</td><td>Predicate 510(k) number provided</td><td>[ ]</td><td></td></tr>
+<tr><td>3.3</td><td>Substantial equivalence discussion</td><td>[ ]</td><td></td></tr>
+</table>
+
+<h2>4. Performance Data</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>4.1</td><td>Bench performance testing completed</td><td>[ ]</td><td></td></tr>
+<tr><td>4.2</td><td>Biocompatibility testing (ISO 10993)</td><td>[ ]</td><td></td></tr>
+<tr><td>4.3</td><td>Software documentation (if applicable)</td><td>[ ]</td><td></td></tr>
+<tr><td>4.4</td><td>Performance testing summary</td><td>[ ]</td><td></td></tr>
+<tr><td>4.5</td><td>NIOSH approval (for respirators)</td><td>[ ]</td><td></td></tr>
+</table>
+
+<h2>5. Labeling</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>5.1</td><td>Proposed labeling provided</td><td>[ ]</td><td></td></tr>
+<tr><td>5.2</td><td>Instructions for use</td><td>[ ]</td><td></td></tr>
+<tr><td>5.3</td><td>Indications for use form (separate)</td><td>[ ]</td><td></td></tr>
+<tr><td>5.4</td><td>Labeling comparison with predicate</td><td>[ ]</td><td></td></tr>
+</table>
+
+<h2>6. 510(k) Summary or Statement</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>6.1</td><td>510(k) Summary OR Statement included</td><td>[ ]</td><td></td></tr>
+<tr><td>6.2</td><td>Design controls compliance statement</td><td>[ ]</td><td></td></tr>
+</table>
+
+<h2>7. Submission Format</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Item</th><th>Completed</th><th>Notes</th></tr>
+<tr><td>7.1</td><td>eCopy prepared per FDA guidance</td><td>[ ]</td><td></td></tr>
+<tr><td>7.2</td><td>Table of contents included</td><td>[ ]</td><td></td></tr>
+<tr><td>7.3</td><td>All sections clearly tabbed/labeled</td><td>[ ]</td><td></td></tr>
+<tr><td>7.4</td><td>Submission via FDA ESG or mail</td><td>[ ]</td><td></td></tr>
+</table>
+`
+    }
+
+    case 'iso-13485-checklist': {
+      return `
+<h1>ISO 13485:2016 Audit Checklist</h1>
+<p><strong>Standard:</strong> ISO 13485:2016 - Medical devices - Quality management systems</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>Clause 4 - Quality Management System</h2>
+<table>
+<tr><th style="width:60px;">Clause</th><th>Requirement</th><th>Compliant</th><th>Evidence</th><th>Notes</th></tr>
+<tr><td>4.1</td><td>General requirements - QMS established, documented, implemented</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>4.1.1</td><td>Outsourced processes identified and controlled</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>4.1.2</td><td>QMS documented per 4.2</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>4.2.1</td><td>Documentation requirements - quality manual</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>4.2.2</td><td>Quality manual established and maintained</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>4.2.3</td><td>Medical device file maintained for each type</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>4.2.4</td><td>Document control procedures established</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>4.2.5</td><td>Record control procedures established</td><td>[ ]</td><td></td><td></td></tr>
+</table>
+
+<h2>Clause 5 - Management Responsibility</h2>
+<table>
+<tr><th style="width:60px;">Clause</th><th>Requirement</th><th>Compliant</th><th>Evidence</th><th>Notes</th></tr>
+<tr><td>5.1</td><td>Management commitment</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>5.2</td><td>Customer focus</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>5.3</td><td>Quality policy established</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>5.4</td><td>Planning - quality objectives</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>5.5</td><td>Responsibility, authority, communication</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>5.6</td><td>Management review conducted</td><td>[ ]</td><td></td><td></td></tr>
+</table>
+
+<h2>Clause 6 - Resource Management</h2>
+<table>
+<tr><th style="width:60px;">Clause</th><th>Requirement</th><th>Compliant</th><th>Evidence</th><th>Notes</th></tr>
+<tr><td>6.1</td><td>Provision of resources</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>6.2</td><td>Human resources - competence</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>6.3</td><td>Infrastructure</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>6.4</td><td>Work environment and contamination control</td><td>[ ]</td><td></td><td></td></tr>
+</table>
+
+<h2>Clause 7 - Product Realization</h2>
+<table>
+<tr><th style="width:60px;">Clause</th><th>Requirement</th><th>Compliant</th><th>Evidence</th><th>Notes</th></tr>
+<tr><td>7.1</td><td>Planning of product realization</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.2</td><td>Customer requirements determined</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.3</td><td>Design and development</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.3.2</td><td>Design inputs</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.3.3</td><td>Design outputs</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.3.5</td><td>Design verification</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.3.6</td><td>Design validation</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.3.7</td><td>Design transfer</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.3.8</td><td>Design changes controlled</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.3.9</td><td>Design history file maintained</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.4</td><td>Purchasing - supplier evaluation</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.5</td><td>Production and service provision</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.5.1</td><td>Production control</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.5.2</td><td>Cleanliness of product</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.5.3</td><td>Installation activities</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.5.5</td><td>Sterilization process validation</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.5.6</td><td>Validation of processes</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.5.7</td><td>Traceability requirements</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.5.9</td><td>Labeling and packaging</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>7.6</td><td>Control of monitoring and measuring equipment</td><td>[ ]</td><td></td><td></td></tr>
+</table>
+
+<h2>Clause 8 - Measurement, Analysis, Improvement</h2>
+<table>
+<tr><th style="width:60px;">Clause</th><th>Requirement</th><th>Compliant</th><th>Evidence</th><th>Notes</th></tr>
+<tr><td>8.1</td><td>General - monitoring, measurement, analysis</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>8.2.1</td><td>Feedback - post-market surveillance</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>8.2.3</td><td>Reporting to regulatory authorities</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>8.2.4</td><td>Internal audit conducted</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>8.2.5</td><td>Monitoring and measurement of processes</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>8.2.6</td><td>Monitoring and measurement of product</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>8.3</td><td>Control of nonconforming product</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>8.4</td><td>Analysis of data</td><td>[ ]</td><td></td><td></td></tr>
+<tr><td>8.5</td><td>Improvement - corrective and preventive action</td><td>[ ]</td><td></td><td></td></tr>
+</table>
+`
+    }
+
+    case 'ce-guide-pdf': {
+      return `
+<h1>CE Marking Step-by-Step Guide</h1>
+<p><strong>Regulation:</strong> Regulation (EU) 2016/425 on Personal Protective Equipment</p>
+<p><strong>Scope:</strong> Complete guide for PPE products entering the EU market</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>Introduction</h2>
+<p>CE marking is mandatory for all PPE products sold in the European Economic Area (EEA). This guide provides a comprehensive overview of the CE marking process for PPE products.</p>
+
+<h2>Step 1: Product Classification</h2>
+<p>Determine the PPE category based on risk level:</p>
+<table>
+<tr><th>Category</th><th>Risk Level</th><th>Examples</th><th>Conformity Assessment</th></tr>
+<tr><td>Category I</td><td>Minimal risks</td><td>Gardening gloves, sunglasses</td><td>Self-declaration (Module A)</td></tr>
+<tr><td>Category II</td><td>Intermediate risks</td><td>Safety glasses, hard hats</td><td>EU Type Examination (Module B)</td></tr>
+<tr><td>Category III</td><td>Very serious risks</td><td>Respirators, fall protection</td><td>Module B + Module C2 or D</td></tr>
+</table>
+
+<h2>Step 2: Identify Applicable Standards</h2>
+<p>Check the EU Official Journal for the latest list of harmonized standards applicable to your product.</p>
+<table>
+<tr><th>Product Type</th><th>Harmonized Standard</th></tr>
+<tr><td>Filtering half masks</td><td>EN 149:2001+A1:2009</td></tr>
+<tr><td>Medical face masks</td><td>EN 14683:2019+AC:2019</td></tr>
+<tr><td>Protective gloves</td><td>EN ISO 21420:2020</td></tr>
+<tr><td>Safety footwear</td><td>EN ISO 20345:2022</td></tr>
+<tr><td>Eye protection</td><td>EN ISO 16321 series</td></tr>
+</table>
+
+<h2>Step 3: Technical Documentation</h2>
+<p>Prepare comprehensive technical documentation per Annex III including product description, risk assessment, test reports, and quality control procedures.</p>
+
+<h2>Step 4: Testing and Evaluation</h2>
+<p>Conduct product testing according to applicable harmonized standards at an accredited laboratory.</p>
+
+<h2>Step 5: Notified Body Assessment</h2>
+<p>For Category II and III PPE, engage a Notified Body for EU Type Examination.</p>
+
+<h2>Step 6: EU Declaration of Conformity</h2>
+<p>Prepare and sign the EU Declaration of Conformity per Annex VI.</p>
+
+<h2>Step 7: CE Marking and Market Entry</h2>
+<p>Affix the CE marking and place the product on the EU market.</p>
+`
+    }
+
+    case 'fda-guide-pdf': {
+      return `
+<h1>FDA 510(k) Submission Guide</h1>
+<p><strong>Regulatory Basis:</strong> Section 510(k), Federal Food, Drug, and Cosmetic Act</p>
+<p><strong>Regulation:</strong> 21 CFR Part 807, Subpart E</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>Introduction</h2>
+<p>The 510(k) premarket notification is the most common pathway for medical devices to enter the US market. This guide covers the complete submission process.</p>
+
+<h2>Step 1: Determine Device Classification</h2>
+<table>
+<tr><th>Classification</th><th>Requirements</th><th>Typical PPE Examples</th></tr>
+<tr><td>Class I</td><td>General controls, most exempt from 510(k)</td><td>Examination gloves (some)</td></tr>
+<tr><td>Class II</td><td>General + special controls, 510(k) required</td><td>Surgical masks, N95 respirators</td></tr>
+<tr><td>Class III</td><td>Premarket approval (PMA)</td><td>Rare for PPE</td></tr>
+</table>
+
+<h2>Step 2: Identify Predicate Device</h2>
+<p>Find a legally marketed device that is substantially equivalent to your product. Search the FDA 510(k) database and Product Classification Database.</p>
+
+<h2>Step 3: Prepare Performance Testing</h2>
+<p>Conduct testing per FDA-recognized consensus standards:</p>
+<table>
+<tr><th>Product Type</th><th>FDA-Recognized Standard</th></tr>
+<tr><td>Surgical masks</td><td>ASTM F2100</td></tr>
+<tr><td>N95 respirators</td><td>42 CFR Part 84, NIOSH TEB-APR methods</td></tr>
+<tr><td>Surgical gowns</td><td>AAMI PB70, ASTM F2407</td></tr>
+</table>
+
+<h2>Step 4: Prepare 510(k) Submission</h2>
+<p>Compile all required sections per 21 CFR 807.87.</p>
+
+<h2>Step 5: Submit to FDA</h2>
+<p>Submit via the FDA Electronic Submissions Gateway (ESG) or by mail with user fee payment.</p>
+
+<h2>Step 6: FDA Review Process</h2>
+<p>Standard review timeline: 90 days. FDA may issue Additional Information (AI) requests.</p>
+
+<h2>Step 7: Post-Market Requirements</h2>
+<p>Establishment registration, device listing, adverse event reporting (MDR), and compliance with QSR (21 CFR Part 820).</p>
+`
+    }
+
+    case 'biocompatibility-guide': {
+      return `
+<h1>Biocompatibility Testing Guide</h1>
+<p><strong>Standard:</strong> ISO 10993 series - Biological evaluation of medical devices</p>
+<p><strong>FDA Guidance:</strong> Use of International Standard ISO 10993-1</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. Biological Evaluation Framework</h2>
+<p>The ISO 10993 series provides a framework for the biological evaluation of medical devices within a risk management process.</p>
+
+<h2>2. Categorization by Nature of Body Contact</h2>
+<table>
+<tr><th>Category</th><th>Contact Type</th><th>Examples for PPE</th></tr>
+<tr><td>Surface device</td><td>Skin</td><td>Gloves, masks, gowns</td></tr>
+<tr><td>Surface device</td><td>Mucosal membrane</td><td>Medical masks (inner surface)</td></tr>
+<tr><td>External communicating</td><td>Breathing gas pathway</td><td>Respirators, ventilator circuits</td></tr>
+</table>
+
+<h2>3. Required Testing by Contact Duration</h2>
+<table>
+<tr><th>Test</th><th>Standard</th><th>Limited (&lt;24h)</th><th>Prolonged (24h-30d)</th><th>Permanent (&gt;30d)</th></tr>
+<tr><td>Cytotoxicity</td><td>ISO 10993-5</td><td>Required</td><td>Required</td><td>Required</td></tr>
+<tr><td>Sensitization</td><td>ISO 10993-10</td><td>Required</td><td>Required</td><td>Required</td></tr>
+<tr><td>Irritation</td><td>ISO 10993-10</td><td>Required</td><td>Required</td><td>Required</td></tr>
+<tr><td>Acute systemic toxicity</td><td>ISO 10993-11</td><td>Consider</td><td>Required</td><td>Required</td></tr>
+<tr><td>Subacute toxicity</td><td>ISO 10993-11</td><td>-</td><td>Consider</td><td>Required</td></tr>
+<tr><td>Genotoxicity</td><td>ISO 10993-3</td><td>-</td><td>Consider</td><td>Required</td></tr>
+<tr><td>Implantation</td><td>ISO 10993-6</td><td>-</td><td>-</td><td>Required</td></tr>
+</table>
+
+<h2>4. Chemical Characterization (ISO 10993-18/19)</h2>
+<p>Conduct chemical characterization of device materials as part of the biological evaluation:</p>
+<ul>
+<li>Identify all materials of construction</li>
+<li>Perform extractables and leachables analysis</li>
+<li>Compare with clinically established materials</li>
+<li>Conduct toxicological risk assessment</li>
+</ul>
+
+<h2>5. Testing Laboratory Requirements</h2>
+<ul>
+<li>ISO 17025 accredited laboratory</li>
+<li>GLP-compliant study conduct</li>
+<li>Validated test methods</li>
+</ul>
+`
+    }
+
+    case 'eu-2016-425': {
+      return `
+<h1>EU Regulation 2016/425 - Personal Protective Equipment</h1>
+<p><strong>Full Title:</strong> Regulation (EU) 2016/425 of the European Parliament and of the Council of 9 March 2016 on personal protective equipment and repealing Council Directive 89/686/EEC</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>Key Provisions Summary</h2>
+
+<h2>Article 1 - Scope and Definitions</h2>
+<p>This Regulation applies to PPE designed and manufactured to be worn or held by a person for protection against one or more risks to health and safety.</p>
+
+<h2>Article 2 - Definitions</h2>
+<p>Key definitions including "personal protective equipment", "placing on the market", "making available on the market", "manufacturer", "authorised representative", "importer", "distributor".</p>
+
+<h2>Article 3 - Obligations of Manufacturers</h2>
+<p>Manufacturers shall ensure that PPE has been designed and manufactured in accordance with the essential health and safety requirements set out in Annex II.</p>
+
+<h2>Annex I - Risk Categories</h2>
+<table>
+<tr><th>Category</th><th>Risk Type</th><th>Examples</th></tr>
+<tr><td>Category I</td><td>Minimal risks only</td><td>Superficial mechanical injury, contact with cleaning materials, etc.</td></tr>
+<tr><td>Category II</td><td>Risks other than those in Cat I and III</td><td>Mechanical injury, harmful noise, heat/fire, etc.</td></tr>
+<tr><td>Category III</td><td>Very serious / life-threatening risks</td><td>Harmful biological agents, ionising radiation, high-temperature environments, etc.</td></tr>
+</table>
+
+<h2>Annex II - Essential Health and Safety Requirements</h2>
+<p>Section 1: General requirements applicable to all PPE (ergonomics, innocuousness, comfort)</p>
+<p>Section 2: Additional requirements common to several classes (adjustment, field of vision, etc.)</p>
+<p>Section 3: Additional requirements specific to particular risks</p>
+
+<h2>Annex III - Technical Documentation</h2>
+<p>Requirements for technical documentation including general description, design and manufacturing data, risk assessment, and test reports.</p>
+
+<h2>Annex IV - EU Type Examination</h2>
+<p>Procedure for Notified Body assessment of PPE design and manufacture.</p>
+
+<h2>Annex V - Conformity Assessment Modules</h2>
+<p>Module A: Internal production control (Category I)</p>
+<p>Module B: EU type examination (Category II/III)</p>
+<p>Module C2: Conformity to type based on internal production control plus supervised checks (Category III)</p>
+<p>Module D: Quality assurance of the production process (Category III)</p>
+
+<h2>Annex VI - EU Declaration of Conformity</h2>
+<p>Required content and format for the EU Declaration of Conformity.</p>
+`
+    }
+
+    case 'fda-act': {
+      return `
+<h1>Federal Food, Drug, and Cosmetic Act - Medical Device Provisions</h1>
+<p><strong>Reference:</strong> Chapter V - Drugs and Devices, Section 510-520</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>Section 510 - Registration of Producers of Drugs or Devices</h2>
+<p>Requires device establishments to register with FDA and list their devices.</p>
+
+<h2>Section 510(k) - Premarket Notification</h2>
+<p>Requires 90-day premarket notification before introducing a device into commercial distribution. Must demonstrate substantial equivalence to a legally marketed predicate device.</p>
+
+<h2>Section 513 - Device Classification</h2>
+<table>
+<tr><th>Class</th><th>Controls</th><th>Regulatory Pathway</th></tr>
+<tr><td>Class I</td><td>General controls</td><td>Most exempt from 510(k)</td></tr>
+<tr><td>Class II</td><td>General + special controls</td><td>510(k) premarket notification</td></tr>
+<tr><td>Class III</td><td>General + premarket approval</td><td>PMA application</td></tr>
+</table>
+
+<h2>Section 514 - Device Standards</h2>
+<p>FDA authority to establish performance standards for devices.</p>
+
+<h2>Section 515 - Premarket Approval</h2>
+<p>Requirements for Class III devices requiring PMA.</p>
+
+<h2>Section 518 - Notification and Other Remedies</h2>
+<p>FDA authority to require notification, repair, replacement, or refund for devices that present unreasonable risk.</p>
+
+<h2>Section 519 - Records and Reports on Devices</h2>
+<p>Requirements for device tracking, post-market surveillance, and Medical Device Reporting (MDR).</p>
+
+<h2>Section 520 - General Provisions Respecting Devices</h2>
+<p>Includes provisions for investigational device exemptions (IDE), custom devices, and other special categories.</p>
+`
+    }
+
+    case 'china-regulation': {
+      return `
+<h1>China Medical Device Regulation</h1>
+<p><strong>Full Title:</strong> Regulations for the Supervision and Administration of Medical Devices (State Council Decree No. 739, revised 2021)</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>Chapter 1 - General Provisions</h2>
+<p>Medical devices are classified into three categories based on risk level. All devices require registration or filing before marketing in China.</p>
+
+<h2>Classification</h2>
+<table>
+<tr><th>Class</th><th>Risk Level</th><th>Registration Authority</th></tr>
+<tr><td>Class I (一类)</td><td>Low risk</td><td>Filing with municipal FDA</td></tr>
+<tr><td>Class II (二类)</td><td>Moderate risk</td><td>Registration with provincial FDA</td></tr>
+<tr><td>Class III (三类)</td><td>High risk</td><td>Registration with NMPA</td></tr>
+</table>
+
+<h2>Chapter 2 - Registration and Filing</h2>
+<p>Key requirements for registration applications including safety, effectiveness, and quality documentation.</p>
+
+<h2>Chapter 3 - Production</h2>
+<p>Production licensing and GMP compliance requirements.</p>
+
+<h2>Chapter 4 - Distribution and Use</h2>
+<p>Distribution licensing and record-keeping requirements.</p>
+
+<h2>Chapter 5 - Adverse Event Reporting and Recall</h2>
+<p>Mandatory adverse event reporting and device recall procedures.</p>
+
+<h2>Chapter 6 - Supervision and Inspection</h2>
+<p>NMPA and provincial FDA inspection authority and procedures.</p>
+`
+    }
+
+    case 'en-149': {
+      return `
+<h1>EN 149:2001+A1:2009 - Respiratory Protective Devices</h1>
+<p><strong>Full Title:</strong> Respiratory protective devices - Filtering half masks to protect against particles - Requirements, testing, marking</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>Scope</h2>
+<p>This standard specifies minimum requirements for filtering half masks used as respiratory protective devices against particles.</p>
+
+<h2>Classification</h2>
+<table>
+<tr><th>Type</th><th>Filtration Efficiency</th><th>Maximum Total Inward Leakage</th></tr>
+<tr><td>FFP1</td><td>&ge; 78%</td><td>&le; 22%</td></tr>
+<tr><td>FFP2</td><td>&ge; 92%</td><td>&le; 8%</td></tr>
+<tr><td>FFP3</td><td>&ge; 98%</td><td>&le; 2%</td></tr>
+</table>
+
+<h2>Key Test Requirements</h2>
+<table>
+<tr><th>Test</th><th>Clause</th><th>Requirement</th></tr>
+<tr><td>Filtration efficiency</td><td>7.9</td><td>Per FFP class above</td></tr>
+<tr><td>Breathing resistance - inhalation</td><td>7.16</td><td>FFP1: &le;0.6 mbar; FFP2: &le;0.7 mbar; FFP3: &le;1.0 mbar</td></tr>
+<tr><td>Breathing resistance - exhalation</td><td>7.16</td><td>&le;3.0 mbar (all classes)</td></tr>
+<tr><td>Total inward leakage</td><td>7.11</td><td>Per FFP class above</td></tr>
+<tr><td>Valve leakage</td><td>7.14</td><td>&le;30 mL/min</td></tr>
+<tr><td>CO2 content of inhalation air</td><td>7.13</td><td>&le;1.0% (dead space)</td></tr>
+<tr><td>Flammability</td><td>7.18</td><td>Material shall not burn for &gt;5s after flame removal</td></tr>
+</table>
+
+<h2>Marking Requirements</h2>
+<ul>
+<li>CE marking + Notified Body number</li>
+<li>FFP class (FFP1, FFP2, or FFP3)</li>
+<li>Manufacturer identification</li>
+<li>Product identification</li>
+<li>NR (non-reusable) or R (reusable)</li>
+<li>Year and month of manufacture</li>
+<li>Size (if applicable)</li>
+<li>"Use by" date or shelf life</li>
+</ul>
+`
+    }
+
+    case 'en-14683': {
+      return `
+<h1>EN 14683:2019+AC:2019 - Medical Face Masks</h1>
+<p><strong>Full Title:</strong> Medical face masks - Requirements and test methods</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>Scope</h2>
+<p>This standard specifies construction, design, performance requirements, and test methods for medical face masks intended to limit the transmission of infective agents from staff to patients during surgical procedures and other medical settings.</p>
+
+<h2>Classification</h2>
+<table>
+<tr><th>Type</th><th>Bacterial Filtration Efficiency (BFE)</th><th>Breathing Resistance (Delta P)</th><td>Splash Resistance</td></tr>
+<tr><td>Type I</td><td>&ge; 95%</td><td>&lt; 40 Pa/cm2</td><td>Not required</td></tr>
+<tr><td>Type II</td><td>&ge; 98%</td><td>&lt; 40 Pa/cm2</td><td>Not required</td></tr>
+<tr><td>Type IIR</td><td>&ge; 98%</td><td>&lt; 60 Pa/cm2</td><td>&ge; 16.0 kPa</td></tr>
+</table>
+
+<h2>Key Test Requirements</h2>
+<table>
+<tr><th>Test</th><th>Method</th><th>Requirement</th></tr>
+<tr><td>Bacterial Filtration Efficiency</td><td>Annex B (Staphylococcus aureus)</td><td>Per type above</td></tr>
+<tr><td>Breathing Resistance (Delta P)</td><td>Annex C</td><td>Per type above</td></tr>
+<tr><td>Splash Resistance</td><td>ISO 22609</td><td>&ge; 16.0 kPa (Type IIR only)</td></tr>
+<tr><td>Microbial Cleanliness</td><td>Annex D</td><td>&le; 30 CFU/g</td></tr>
+<tr><td>Biocompatibility</td><td>ISO 10993 series</td><td>Non-cytotoxic, non-irritating, non-sensitizing</td></tr>
+</table>
+
+<h2>Marking Requirements</h2>
+<ul>
+<li>CE marking + Notified Body number</li>
+<li>Type designation (Type I, Type II, Type IIR)</li>
+<li>Manufacturer name and address</li>
+<li>Lot number</li>
+<li>Date of manufacture</li>
+<li>Expiry date</li>
+<li>Storage conditions</li>
+<li>Size (if applicable)</li>
+<li>"Single use" or equivalent</li>
+</ul>
+`
+    }
+
+    case 'astm-f2100': {
+      return `
+<h1>ASTM F2100 - Medical Face Masks</h1>
+<p><strong>Full Title:</strong> Standard Specification for Performance of Materials Used in Medical Face Masks</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>Scope</h2>
+<p>This specification covers the classification, performance requirements, and test methods for materials used in the construction of medical face masks.</p>
+
+<h2>Classification</h2>
+<table>
+<tr><th>Level</th><th>Bacterial Filtration Efficiency</th><th>Particulate Filtration Efficiency</th><th>Delta P</th><th>Fluid Resistance</th></tr>
+<tr><td>Level 1</td><td>&ge; 95%</td><td>&ge; 95% @ 0.1 micron</td><td>&lt; 5.0 mm H2O/cm2</td><td>80 mm Hg</td></tr>
+<tr><td>Level 2</td><td>&ge; 98%</td><td>&ge; 98% @ 0.1 micron</td><td>&lt; 6.0 mm H2O/cm2</td><td>120 mm Hg</td></tr>
+<tr><td>Level 3</td><td>&ge; 98%</td><td>&ge; 98% @ 0.1 micron</td><td>&lt; 6.0 mm H2O/cm2</td><td>160 mm Hg</td></tr>
+</table>
+
+<h2>Required Tests</h2>
+<table>
+<tr><th>Test</th><th>Method Reference</th></tr>
+<tr><td>Bacterial Filtration Efficiency (BFE)</td><td>ASTM F2101</td></tr>
+<tr><td>Particulate Filtration Efficiency (PFE)</td><td>ASTM F2299</td></tr>
+<tr><td>Differential Pressure (Delta P)</td><td>MIL-M-36954C or EN 14683 Annex C</td></tr>
+<tr><td>Fluid Resistance</td><td>ASTM F1862</td></tr>
+<tr><td>Flammability</td><td>16 CFR Part 1610</td></tr>
+<tr><td>Biocompatibility</td><td>ISO 10993 series</td></tr>
+</table>
+`
+    }
+
+    case 'iso-13485': {
+      return `
+<h1>ISO 13485:2016 - Medical Devices Quality Management Systems</h1>
+<p><strong>Full Title:</strong> Medical devices - Quality management systems - Requirements for regulatory purposes</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>Scope</h2>
+<p>ISO 13485 specifies requirements for a quality management system where an organization needs to demonstrate its ability to provide medical devices and related services that consistently meet customer and applicable regulatory requirements.</p>
+
+<h2>Clause Structure</h2>
+<table>
+<tr><th>Clause</th><th>Title</th><th>Key Requirements</th></tr>
+<tr><td>4</td><td>Quality Management System</td><td>QMS documentation, quality manual, medical device file, document and record control</td></tr>
+<tr><td>5</td><td>Management Responsibility</td><td>Management commitment, quality policy, planning, responsibility and authority, management review</td></tr>
+<tr><td>6</td><td>Resource Management</td><td>Provision of resources, human resources, infrastructure, work environment, contamination control</td></tr>
+<tr><td>7</td><td>Product Realization</td><td>Planning, customer requirements, design and development, purchasing, production, traceability, labeling</td></tr>
+<tr><td>8</td><td>Measurement, Analysis, Improvement</td><td>Feedback, internal audit, monitoring, nonconforming product, CAPA, data analysis</td></tr>
+</table>
+
+<h2>Key Differences from ISO 9001</h2>
+<ul>
+<li>Focus on regulatory compliance rather than customer satisfaction</li>
+<li>Excludes continuous improvement emphasis in favor of maintaining effectiveness</li>
+<li>Requires documented procedures for most processes</li>
+<li>Specific requirements for medical device files, design controls, and traceability</li>
+<li>Requires risk management throughout QMS</li>
+<li>Specific requirements for cleanliness, sterilization validation, and installation</li>
+</ul>
+
+<h2>Design Control Requirements (Clause 7.3)</h2>
+<table>
+<tr><th>Sub-clause</th><th>Requirement</th></tr>
+<tr><td>7.3.2</td><td>Design inputs - functional, performance, and regulatory requirements</td></tr>
+<tr><td>7.3.3</td><td>Design outputs - meet input requirements, include acceptance criteria</td></tr>
+<tr><td>7.3.4</td><td>Design review - at suitable stages, include qualified reviewers</td></tr>
+<tr><td>7.3.5</td><td>Design verification - outputs meet input requirements</td></tr>
+<tr><td>7.3.6</td><td>Design validation - device meets user needs and intended uses</td></tr>
+<tr><td>7.3.7</td><td>Design transfer - verified and validated designs transferred to production</td></tr>
+<tr><td>7.3.8</td><td>Design changes - controlled and documented</td></tr>
+<tr><td>7.3.9</td><td>Design history file (DHF) - compilation of records</td></tr>
+</table>
+`
+    }
+
+    default: {
+      return `
+<h1>${docTitle}</h1>
+<p>${docDescription}</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+<h2>Document Content</h2>
+<p>This document template provides a structured framework for your compliance documentation. Please customize the content according to your specific product and regulatory requirements.</p>
+<h2>General Information</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Product Name</td><td>[Enter product name]</td></tr>
+<tr><td>Model/Type</td><td>[Enter model number]</td></tr>
+<tr><td>Manufacturer</td><td>[Enter manufacturer name]</td></tr>
+<tr><td>Regulation</td><td>[Enter applicable regulation]</td></tr>
+</table>
+<h2>Instructions</h2>
+<ul>
+<li>Review all sections and complete the required information</li>
+<li>Attach supporting documentation where indicated</li>
+<li>Have document reviewed by qualified regulatory personnel</li>
+<li>Submit to appropriate regulatory authority</li>
+</ul>
+`
+    }
+  }
+}
+
 export default function DocumentsPage() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -1250,6 +2796,13 @@ export default function DocumentsPage() {
         throw new Error('Document not found')
       }
 
+      const date = new Date().toISOString().split('T')[0]
+      const year = new Date().getFullYear()
+      const docIdRef = `${docId.toUpperCase()}-${year}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`
+
+      // Generate document-specific content
+      const bodyContent = generateDocumentContent(docId, docTitle, doc.description, date)
+
       // Generate Word-compatible HTML content
       const htmlContent = `<!DOCTYPE html>
 <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -1257,46 +2810,32 @@ export default function DocumentsPage() {
 <meta charset='utf-8'>
 <title>${doc.title}</title>
 <style>
-  body { font-family: 'Calibri', 'Arial', sans-serif; font-size: 11pt; line-height: 1.6; color: #333; }
-  h1 { color: #339999; font-size: 24pt; border-bottom: 2px solid #339999; padding-bottom: 8px; }
-  h2 { color: #339999; font-size: 18pt; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
-  h3 { color: #555; font-size: 14pt; }
+  body { font-family: 'Calibri', 'Arial', sans-serif; font-size: 11pt; line-height: 1.6; color: #333; margin: 40px; }
+  h1 { color: #339999; font-size: 22pt; border-bottom: 2px solid #339999; padding-bottom: 8px; margin-top: 24px; }
+  h2 { color: #339999; font-size: 16pt; border-bottom: 1px solid #ddd; padding-bottom: 4px; margin-top: 20px; }
+  h3 { color: #555; font-size: 13pt; margin-top: 16px; }
   table { border-collapse: collapse; width: 100%; margin: 12px 0; }
   th { background-color: #339999; color: white; padding: 8px; text-align: left; border: 1px solid #2d8b8b; }
   td { padding: 8px; border: 1px solid #ddd; }
   tr:nth-child(even) { background-color: #f9f9f9; }
-  .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #ddd; color: #888; font-size: 9pt; }
-  ul { margin: 8px 0; padding-left: 24px; }
+  .header { text-align: center; border-bottom: 3px solid #339999; padding-bottom: 16px; margin-bottom: 24px; }
+  .header h1 { border: none; font-size: 28pt; margin-bottom: 4px; color: #339999; }
+  .header p { color: #666; font-size: 10pt; }
+  .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #ddd; color: #888; font-size: 9pt; text-align: center; }
+  ul, ol { margin: 8px 0; padding-left: 24px; }
   li { margin: 4px 0; }
+  hr { border: none; border-top: 1px solid #ddd; margin: 20px 0; }
 </style>
 </head>
 <body>
-<h1>${doc.title}</h1>
-<p><strong>Description:</strong> ${doc.description}</p>
-<p><strong>Market:</strong> ${doc.market} | <strong>Format:</strong> ${doc.format} | <strong>Size:</strong> ${doc.size}</p>
-<p><strong>Last Updated:</strong> ${doc.updatedAt}</p>
-<hr>
-<h2>Document Tags</h2>
-<p>${doc.tags.map(tag => `<span style="background-color: #f0f0f0; padding: 4px 8px; margin: 4px; display: inline-block; border-radius: 4px;">${tag}</span>`).join('')}</p>
-<hr>
-<h2>Document Content Template</h2>
-<p>This is a template document from MDLooker PPE Compliance Platform. Please customize this content according to your specific product and regulatory requirements.</p>
-<table>
-<tr><th>Field</th><th>Value</th></tr>
-<tr><td>Product Name</td><td>[Enter product name]</td></tr>
-<tr><td>Model/Type</td><td>[Enter model number]</td></tr>
-<tr><td>Manufacturer</td><td>[Enter manufacturer name]</td></tr>
-<tr><td>Regulation</td><td>[Enter applicable regulation]</td></tr>
-</table>
-<h2>Instructions</h2>
-<ul>
-<li>Review all sections and complete the required information</li>
-<li>Attach supporting documentation where indicated</li>
-<li>Have document reviewed by qualified regulatory personnel</li>
-<li>Submit to appropriate regulatory authority</li>
-</ul>
+<div class="header">
+  <h1>MDLooker</h1>
+  <p>PPE Compliance Platform</p>
+</div>
+${bodyContent}
 <div class="footer">
-<p>Generated by MDLooker PPE Compliance Platform | ${new Date().toISOString().split('T')[0]}</p>
+<p>Generated by MDLooker PPE Compliance Platform | ${date}</p>
+<p><em>Document: ${doc.title} | ID: ${docIdRef} | Market: ${doc.market} | Format: ${doc.format}</em></p>
 <p><em>This document is confidential and proprietary. Unauthorized distribution is prohibited.</em></p>
 </div>
 </body>
@@ -1307,7 +2846,7 @@ export default function DocumentsPage() {
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `${docTitle.replace(/[^a-zA-Z0-9\s-]/g, '')}_${new Date().toISOString().split('T')[0]}.doc`
+      link.download = `${docTitle.replace(/[^a-zA-Z0-9\s-]/g, '')}_${date}.doc`
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)

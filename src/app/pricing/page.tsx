@@ -127,7 +127,7 @@ export default function PricingPage() {
                   <p className="text-gray-500 text-sm mt-2">Forever free</p>
                 </div>
 
-                <Link href="/auth/signup">
+                <Link href="/auth/register">
                   <motion.button
                     className="w-full py-3 px-6 bg-gray-100 text-gray-900 font-semibold rounded-lg hover:bg-gray-200 transition-colors mb-8"
                     whileHover={{ scale: 1.02 }}
@@ -203,7 +203,7 @@ export default function PricingPage() {
                   </p>
                 </div>
 
-                <Link href="/auth/signup">
+                <Link href="/auth/register">
                   <motion.button
                     className="w-full py-3 px-6 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors mb-8 shadow-md"
                     whileHover={{ scale: 1.02 }}
@@ -272,7 +272,7 @@ export default function PricingPage() {
                   </p>
                 </div>
 
-                <Link href="/auth/signup">
+                <Link href="/auth/register">
                   <motion.button
                     className="w-full py-3 px-6 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors mb-8 shadow-md"
                     whileHover={{ scale: 1.02 }}

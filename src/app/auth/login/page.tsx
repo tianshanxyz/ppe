@@ -6,6 +6,20 @@ import { useRouter } from 'next/navigation'
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react'
 import { signIn, signInWithGoogle } from '@/lib/auth/supabase-auth'
 
+// Test account credentials for demo/testing purposes
+const TEST_ACCOUNT = {
+  email: 'example@mdlooker.com',
+  password: 'example',
+  userData: {
+    id: 'test-user-001',
+    email: 'example@mdlooker.com',
+    name: 'Demo User',
+    role: 'user',
+    membership: 'professional',
+    created_at: '2026-01-01',
+  },
+}
+
 export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
@@ -20,6 +34,17 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
+      // Check for test account bypass
+      if (email === TEST_ACCOUNT.email && password === TEST_ACCOUNT.password) {
+        // Store mock user session in localStorage
+        localStorage.setItem('user', JSON.stringify(TEST_ACCOUNT.userData))
+        // Redirect to dashboard
+        router.push('/dashboard')
+        router.refresh()
+        return
+      }
+
+      // Normal Supabase auth flow
       const { user, error: authError } = await signIn(email, password)
       
       if (authError) {
@@ -29,7 +54,7 @@ export default function LoginPage() {
       }
 
       if (user) {
-        // 登录成功，跳转到仪表盘
+        // Login successful, redirect to dashboard
         router.push('/dashboard')
         router.refresh()
       }
@@ -53,13 +78,18 @@ export default function LoginPage() {
       }
 
       if (url) {
-        // 重定向到 Google 登录页面
+        // Redirect to Google login page
         window.location.href = url
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.')
       setIsLoading(false)
     }
+  }
+
+  const handleTestAccountFill = () => {
+    setEmail(TEST_ACCOUNT.email)
+    setPassword(TEST_ACCOUNT.password)
   }
 
   return (
@@ -195,6 +225,37 @@ export default function LoginPage() {
               Sign up for free
             </Link>
           </p>
+        </div>
+
+        {/* Test Account Quick Access */}
+        <div className="mt-6 bg-[#339999]/5 border border-[#339999]/20 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 bg-[#339999]/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Mail className="w-4 h-4 text-[#339999]" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-gray-700">Demo Account Available</p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Use the test account to explore the dashboard with Professional plan features.
+              </p>
+              <div className="mt-2 flex items-center gap-2">
+                <code className="text-xs bg-white px-2 py-1 rounded border border-gray-200 text-gray-600">
+                  example@mdlooker.com
+                </code>
+                <span className="text-gray-300">/</span>
+                <code className="text-xs bg-white px-2 py-1 rounded border border-gray-200 text-gray-600">
+                  example
+                </code>
+              </div>
+              <button
+                type="button"
+                onClick={handleTestAccountFill}
+                className="mt-2 text-xs text-[#339999] font-medium hover:underline"
+              >
+                Auto-fill test credentials
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
