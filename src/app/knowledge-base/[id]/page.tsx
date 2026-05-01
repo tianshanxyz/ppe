@@ -1334,7 +1334,124 @@ export default function KnowledgeArticlePage() {
   
   const displayTitle = locale === 'zh' && article.title_zh ? article.title_zh : article.title
   const displayContent = locale === 'zh' && article.content_zh ? article.content_zh : article.content
-  
+
+  interface ContentBlock {
+    type: 'heading1' | 'heading2' | 'heading3' | 'bold' | 'bullet-list' | 'numbered-list' | 'paragraph' | 'spacer'
+    content: string | string[]
+  }
+
+  function parseContent(text: string): ContentBlock[] {
+    const lines = text.split('\n')
+    const blocks: ContentBlock[] = []
+    let i = 0
+
+    while (i < lines.length) {
+      const line = lines[i]
+
+      // Empty line
+      if (line.trim() === '') {
+        blocks.push({ type: 'spacer', content: '' })
+        i++
+        continue
+      }
+
+      // Headings
+      if (line.startsWith('# ')) {
+        blocks.push({ type: 'heading1', content: line.replace('# ', '') })
+        i++
+        continue
+      }
+      if (line.startsWith('## ')) {
+        blocks.push({ type: 'heading2', content: line.replace('## ', '') })
+        i++
+        continue
+      }
+      if (line.startsWith('### ')) {
+        blocks.push({ type: 'heading3', content: line.replace('### ', '') })
+        i++
+        continue
+      }
+
+      // Bold paragraph
+      if (line.startsWith('**') && line.endsWith('**')) {
+        blocks.push({ type: 'bold', content: line.replace(/\*\*/g, '') })
+        i++
+        continue
+      }
+
+      // Bullet list - collect consecutive bullet lines
+      if (line.startsWith('- ')) {
+        const items: string[] = []
+        while (i < lines.length && lines[i].startsWith('- ')) {
+          items.push(lines[i].replace('- ', ''))
+          i++
+        }
+        blocks.push({ type: 'bullet-list', content: items })
+        continue
+      }
+
+      // Numbered list - collect consecutive numbered lines
+      const numberedMatch = line.match(/^(\d+)\.\s/)
+      if (numberedMatch) {
+        const items: string[] = []
+        while (i < lines.length) {
+          const numMatch = lines[i].match(/^(\d+)\.\s(.*)$/)
+          if (numMatch) {
+            items.push(numMatch[2])
+            i++
+          } else {
+            break
+          }
+        }
+        blocks.push({ type: 'numbered-list', content: items })
+        continue
+      }
+
+      // Regular paragraph
+      blocks.push({ type: 'paragraph', content: line })
+      i++
+    }
+
+    return blocks
+  }
+
+  function renderContent(text: string) {
+    const blocks = parseContent(text)
+    return blocks.map((block, idx) => {
+      switch (block.type) {
+        case 'heading1':
+          return <h1 key={idx} className="text-3xl font-bold text-gray-900 mt-8 mb-4">{block.content as string}</h1>
+        case 'heading2':
+          return <h2 key={idx} className="text-2xl font-bold text-gray-900 mt-6 mb-3">{block.content as string}</h2>
+        case 'heading3':
+          return <h3 key={idx} className="text-xl font-bold text-gray-900 mt-4 mb-2">{block.content as string}</h3>
+        case 'bold':
+          return <p key={idx} className="font-bold text-gray-900 mt-2">{block.content as string}</p>
+        case 'bullet-list':
+          return (
+            <ul key={idx} className="list-disc ml-6 space-y-1 mb-2">
+              {(block.content as string[]).map((item, itemIdx) => (
+                <li key={itemIdx} className="text-gray-700">{item}</li>
+              ))}
+            </ul>
+          )
+        case 'numbered-list':
+          return (
+            <ol key={idx} className="list-decimal ml-6 space-y-1 mb-2">
+              {(block.content as string[]).map((item, itemIdx) => (
+                <li key={itemIdx} className="text-gray-700">{item}</li>
+              ))}
+            </ol>
+          )
+        case 'spacer':
+          return <div key={idx} className="h-2" />
+        case 'paragraph':
+        default:
+          return <p key={idx} className="text-gray-700 leading-relaxed">{block.content as string}</p>
+      }
+    })
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white border-b">
@@ -1362,25 +1479,7 @@ export default function KnowledgeArticlePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
           <div className="prose prose-lg max-w-none">
-            {displayContent.split('\n').map((line, idx) => {
-              if (line.startsWith('# ')) {
-                return <h1 key={idx} className="text-3xl font-bold text-gray-900 mt-8 mb-4">{line.replace('# ', '')}</h1>
-              } else if (line.startsWith('## ')) {
-                return <h2 key={idx} className="text-2xl font-bold text-gray-900 mt-6 mb-3">{line.replace('## ', '')}</h2>
-              } else if (line.startsWith('### ')) {
-                return <h3 key={idx} className="text-xl font-bold text-gray-900 mt-4 mb-2">{line.replace('### ', '')}</h3>
-              } else if (line.startsWith('- ')) {
-                return <li key={idx} className="ml-6 text-gray-700">{line.replace('- ', '')}</li>
-              } else if (line.startsWith('1. ') || line.startsWith('2. ') || line.startsWith('3. ') || line.startsWith('4. ') || line.startsWith('5. ')) {
-                return <li key={idx} className="ml-6 text-gray-700">{line.substring(3)}</li>
-              } else if (line.startsWith('**') && line.endsWith('**')) {
-                return <p key={idx} className="font-bold text-gray-900 mt-2">{line.replace(/\*\*/g, '')}</p>
-              } else if (line.trim() === '') {
-                return <div key={idx} className="h-2" />
-              } else {
-                return <p key={idx} className="text-gray-700 leading-relaxed">{line}</p>
-              }
-            })}
+            {renderContent(displayContent)}
           </div>
           
           <div className="mt-8 pt-6 border-t border-gray-100">

@@ -29,6 +29,7 @@
     "sync:all": "pnpm crawl:ppe:all && pnpm ppe:import"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@medplum/core": "^5.1.7",
     "@medplum/fhirtypes": "^5.1.7",
     "@medplum/react": "^5.1.7",
@@ -57,6 +58,7 @@
     "recharts": "^2.15.4",
     "resend": "^6.10.0",
     "tailwind-merge": "^3.5.0",
+    "xlsx": "^0.18.5",
     "zod": "^4.3.6",
     "zustand": "^5.0.12"
   },

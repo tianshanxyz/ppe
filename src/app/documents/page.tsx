@@ -340,6 +340,90 @@ const DOCUMENTS = [
     icon: FileCheck,
     hasGuide: false
   },
+  {
+    id: 'eu-doc-form',
+    title: 'EU Declaration of Conformity Form',
+    description: 'Complete EU Declaration of Conformity form per Regulation 2016/425 Annex VI with fillable fields',
+    category: 'templates',
+    market: 'EU',
+    format: 'DOCX',
+    size: '112 KB',
+    downloads: 1876,
+    updatedAt: '2026-04-22',
+    tags: ['CE Marking', 'DoC', 'EU', 'Annex VI'],
+    icon: FileCheck,
+    hasGuide: false
+  },
+  {
+    id: 'certification-application',
+    title: 'Certification Application Form',
+    description: 'Standard certification application form for PPE products with applicant info, product details, and market selection',
+    category: 'templates',
+    market: 'Global',
+    format: 'DOCX',
+    size: '98 KB',
+    downloads: 1543,
+    updatedAt: '2026-04-20',
+    tags: ['Certification', 'Application', 'Global'],
+    icon: FileSpreadsheet,
+    hasGuide: false
+  },
+  {
+    id: 'manufacturer-info-form',
+    title: 'Manufacturer Information Form',
+    description: 'Complete manufacturer registration form with company details, facilities, and quality systems documentation',
+    category: 'templates',
+    market: 'Global',
+    format: 'DOCX',
+    size: '134 KB',
+    downloads: 1287,
+    updatedAt: '2026-04-18',
+    tags: ['Manufacturer', 'Registration', 'Global'],
+    icon: FileSpreadsheet,
+    hasGuide: false
+  },
+  {
+    id: 'qms-form',
+    title: 'Quality Management System Documentation Form',
+    description: 'ISO 13485 QMS documentation checklist with all required sections for medical device quality systems',
+    category: 'templates',
+    market: 'Global',
+    format: 'XLSX',
+    size: '178 KB',
+    downloads: 1654,
+    updatedAt: '2026-04-16',
+    tags: ['QMS', 'ISO 13485', 'Documentation', 'Checklist'],
+    icon: FileSpreadsheet,
+    hasGuide: false
+  },
+  {
+    id: 'testing-application',
+    title: 'Product Testing Application Form',
+    description: 'Lab testing application form with product specifications, test requirements, and standards references',
+    category: 'templates',
+    market: 'Global',
+    format: 'DOCX',
+    size: '89 KB',
+    downloads: 1098,
+    updatedAt: '2026-04-14',
+    tags: ['Testing', 'Application', 'Laboratory', 'Global'],
+    icon: FileText,
+    hasGuide: false
+  },
+  {
+    id: 'pms-plan',
+    title: 'Post-Market Surveillance Plan Template',
+    description: 'Post-market surveillance plan per EU requirements with vigilance procedures and reporting templates',
+    category: 'templates',
+    market: 'EU',
+    format: 'DOCX',
+    size: '156 KB',
+    downloads: 876,
+    updatedAt: '2026-04-12',
+    tags: ['PMS', 'Post-Market', 'Vigilance', 'EU'],
+    icon: FileText,
+    hasGuide: false
+  },
   // Checklists
   {
     id: 'ce-checklist',
@@ -2702,6 +2786,691 @@ function generateDocumentContent(docId: string, docTitle: string, docDescription
 <tr><td>7.3.7</td><td>Design transfer - verified and validated designs transferred to production</td></tr>
 <tr><td>7.3.8</td><td>Design changes - controlled and documented</td></tr>
 <tr><td>7.3.9</td><td>Design history file (DHF) - compilation of records</td></tr>
+</table>
+`
+    }
+
+    case 'eu-doc-form': {
+      return `
+<h1>EU Declaration of Conformity Form</h1>
+<p><strong>Regulatory Basis:</strong> Regulation (EU) 2016/425 of the European Parliament and of the Council</p>
+<p><strong>Annex Reference:</strong> Annex VI - EU Declaration of Conformity</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>EU DECLARATION OF CONFORMITY</h2>
+<p><em>Per Article 17 and Annex VI of Regulation (EU) 2016/425</em></p>
+
+<h3>1. Manufacturer (Article 17(1)(a))</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Manufacturer Name</td><td>[Full legal entity name]</td></tr>
+<tr><td>Registered Address</td><td>[Full registered address]</td></tr>
+<tr><td>City, Postal Code</td><td>[City, Postal code]</td></tr>
+<tr><td>Country</td><td>[EU Member State]</td></tr>
+<tr><td>Telephone</td><td>[Phone number]</td></tr>
+<tr><td>Email</td><td>[Email address]</td></tr>
+<tr><td>VAT / Registration Number</td><td>[Company registration number]</td></tr>
+</table>
+
+<h3>2. Authorized Representative (if manufacturer outside EU)</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Representative Name</td><td>[Full legal entity name]</td></tr>
+<tr><td>Address</td><td>[Full address within EU]</td></tr>
+<tr><td>Mandate Reference</td><td>[Mandate document reference]</td></tr>
+<tr><td>Mandate Date</td><td>[Date of mandate]</td></tr>
+</table>
+
+<h3>3. Product Identification (Article 17(1)(b))</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Product Name</td><td>[Product commercial name]</td></tr>
+<tr><td>Product Code / Model</td><td>[Model/type reference]</td></tr>
+<tr><td>Serial / Batch Number</td><td>[As marked on product]</td></tr>
+<tr><td>PPE Category</td><td>[Category I / II / III]</td></tr>
+<tr><td>Product Description</td><td>[Brief description of product and intended protection]</td></tr>
+<tr><td>Intended Use</td><td>[Description of intended use]</td></tr>
+</table>
+
+<h3>4. Conformity Declaration (Article 17(1)(c))</h3>
+<p>The undersigned manufacturer hereby declares under sole responsibility that the above-described product is in conformity with the applicable Union harmonisation legislation:</p>
+<p><strong>Regulation (EU) 2016/425</strong> of the European Parliament and of the Council of 9 March 2016 on personal protective equipment and repealing Council Directive 89/686/EEC.</p>
+
+<h3>5. Applied Conformity Assessment Procedure (Article 17(1)(d))</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Assessment Module(s)</td><td>[e.g., Module B + Module D, or Module B + Module C2]</td></tr>
+<tr><td>Notified Body Name</td><td>[Full name of Notified Body]</td></tr>
+<tr><td>Notified Body Number</td><td>[4-digit identification number]</td></tr>
+<tr><td>Notified Body Address</td><td>[Full address]</td></tr>
+<tr><td>EU Type Examination Certificate No.</td><td>[Certificate reference]</td></tr>
+<tr><td>Certificate Date</td><td>[Date of issue]</td></tr>
+<tr><td>Quality System Certificate No.</td><td>[If applicable - Module D/C2]</td></tr>
+<tr><td>Quality System Certificate Date</td><td>[Date of issue]</td></tr>
+</table>
+
+<h3>6. Harmonized Standards Applied (Article 17(1)(e))</h3>
+<table>
+<tr><th>Standard Reference</th><th>Title</th><th>Date of Standard</th></tr>
+<tr><td>[EN standard number]</td><td>[Title of standard]</td><td>[Date]</td></tr>
+<tr><td>[EN standard number]</td><td>[Title of standard]</td><td>[Date]</td></tr>
+<tr><td>[EN standard number]</td><td>[Title of standard]</td><td>[Date]</td></tr>
+</table>
+
+<h3>7. Other Technical Specifications Applied (Article 17(1)(f))</h3>
+<p>[List any other technical specifications, common specifications, or national standards applied for which no harmonized standards exist]</p>
+
+<h3>8. Statement (Article 17(1)(g))</h3>
+<p>This declaration is issued under the sole responsibility of the manufacturer. The object of the declaration described above is in conformity with the relevant Union harmonisation legislation.</p>
+<p>This declaration relates only to the product in the state in which it was placed on the market, and excludes components which are added to, modified or replaced after the product has been placed on the market.</p>
+
+<h3>9. Technical Documentation (Article 17(1)(h))</h3>
+<p>The technical documentation referred to in Annex III is available and will be provided to the market surveillance authorities upon request.</p>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Technical File Location</td><td>[Address where technical file is kept]</td></tr>
+<tr><td>Retention Period</td><td>10 years after last product placed on market</td></tr>
+</table>
+
+<h3>10. Signatory</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Place of Issue</td><td>[City, Country]</td></tr>
+<tr><td>Date of Issue</td><td>${date}</td></tr>
+<tr><td>Authorized Signatory</td><td>[Name and Title]</td></tr>
+<tr><td>Signature</td><td>_________________________</td></tr>
+</table>
+`
+    }
+
+    case 'certification-application': {
+      return `
+<h1>Certification Application Form</h1>
+<p><strong>Purpose:</strong> Standard application form for PPE product certification</p>
+<p><strong>Applicable Markets:</strong> EU, US, UK, China, Global</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>SECTION A: APPLICANT INFORMATION</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Company / Organization Name</td><td>[Full legal entity name]</td></tr>
+<tr><td>Registered Address</td><td>[Full registered address]</td></tr>
+<tr><td>City / State / Postal Code</td><td>[City, State, ZIP]</td></tr>
+<tr><td>Country</td><td>[Country]</td></tr>
+<tr><td>Company Registration Number</td><td>[Registration number]</td></tr>
+<tr><td>VAT / Tax ID Number</td><td>[Tax identification number]</td></tr>
+<tr><td>Contact Person Name</td><td>[Full name]</td></tr>
+<tr><td>Contact Person Title</td><td>[Job title]</td></tr>
+<tr><td>Telephone</td><td>[Phone number with country code]</td></tr>
+<tr><td>Email</td><td>[Email address]</td></tr>
+<tr><td>Website</td><td>[Company website URL]</td></tr>
+</table>
+
+<h2>SECTION B: PRODUCT INFORMATION</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Product Name</td><td>[Commercial product name]</td></tr>
+<tr><td>Product Code / Model</td><td>[Model/type reference]</td></tr>
+<tr><td>Product Category</td><td>[e.g., Respiratory Protection, Protective Gloves, Eye Protection]</td></tr>
+<tr><td>PPE Classification</td><td>[Category I / II / III (EU) or Class I / II / III (US/FDA)]</td></tr>
+<tr><td>Brief Product Description</td><td>[Description of product and intended protection]</td></tr>
+<tr><td>Intended Use</td><td>[Description of intended use and user population]</td></tr>
+<tr><td>Product Variants / Models</td><td>[List all variants included in this application]</td></tr>
+<tr><td>Year of First Manufacture</td><td>[Year]</td></tr>
+<tr><td>Current Market Status</td><td>[New product / Already marketed in other regions]</td></tr>
+</table>
+
+<h2>SECTION C: TARGET MARKET AND CERTIFICATION TYPE</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Target Market(s)</td><td>[ ] EU  [ ] US  [ ] UK  [ ] China  [ ] Other: ___</td></tr>
+<tr><td>Type of Certification</td><td>[CE Marking / FDA 510(k) / UKCA / NMPA / Other]</td></tr>
+<tr><td>Conformity Assessment Module</td><td>[Module A / B / B+C2 / B+D / Other]</td></tr>
+<tr><td>Applicable Regulation(s)</td><td>[List applicable regulations]</td></tr>
+<tr><td>Harmonized / Recognized Standards</td><td>[List applicable standards]</td></tr>
+</table>
+
+<h2>SECTION D: MANUFACTURING INFORMATION</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Manufacturing Site Name</td><td>[Site name]</td></tr>
+<tr><td>Manufacturing Site Address</td><td>[Full address]</td></tr>
+<tr><td>Quality Management System</td><td>[ISO 9001 / ISO 13485 / Other / None]</td></tr>
+<tr><td>QMS Certificate Number</td><td>[Certificate reference]</td></tr>
+<tr><td>QMS Certificate Issuing Body</td><td>[Certification body name]</td></tr>
+<tr><td>QMS Certificate Expiry Date</td><td>[Expiry date]</td></tr>
+</table>
+
+<h2>SECTION E: PREVIOUS CERTIFICATIONS</h2>
+<table>
+<tr><th>Certification Type</th><th>Certificate Number</th><th>Issuing Body</th><th>Date Issued</th><th>Status</th></tr>
+<tr><td>[Type]</td><td>[Number]</td><td>[Body]</td><td>[Date]</td><td>[Active/Expired]</td></tr>
+</table>
+
+<h2>SECTION F: TESTING STATUS</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Testing Completed?</td><td>[ ] Yes  [ ] No  [ ] In Progress</td></tr>
+<tr><td>Testing Laboratory</td><td>[Laboratory name and accreditation]</td></tr>
+<tr><td>Test Report Number(s)</td><td>[Report references]</td></tr>
+<tr><td>Test Report Date(s)</td><td>[Date(s)]</td></tr>
+</table>
+
+<h2>SECTION G: AUTHORIZED REPRESENTATIVE / IMPORTER</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>EU Authorized Representative</td><td>[Name and address, if applicable]</td></tr>
+<tr><td>US Initial Importer</td><td>[Name and address, if applicable]</td></tr>
+<tr><td>UK Responsible Person</td><td>[Name and address, if applicable]</td></tr>
+<tr><td>China Agent</td><td>[Name and address, if applicable]</td></tr>
+</table>
+
+<h2>SECTION H: DECLARATION AND SIGNATURE</h2>
+<p>I hereby certify that the information provided in this application is true and complete to the best of my knowledge. I understand that any false or misleading information may result in rejection of this application or revocation of any certification granted.</p>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Applicant Name</td><td>[Name]</td></tr>
+<tr><td>Title</td><td>[Title]</td></tr>
+<tr><td>Date</td><td>${date}</td></tr>
+<tr><td>Signature</td><td>_________________________</td></tr>
+</table>
+`
+    }
+
+    case 'manufacturer-info-form': {
+      return `
+<h1>Manufacturer Information Form</h1>
+<p><strong>Purpose:</strong> Complete manufacturer registration and information form for PPE compliance</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>SECTION 1: COMPANY DETAILS</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Legal Entity Name</td><td>[Full registered company name]</td></tr>
+<tr><td>Trading Name (if different)</td><td>[Trading / DBA name]</td></tr>
+<tr><td>Registered Address</td><td>[Full registered address]</td></tr>
+<tr><td>City / State / Postal Code</td><td>[City, State, ZIP]</td></tr>
+<tr><td>Country of Registration</td><td>[Country]</td></tr>
+<tr><td>Company Registration Number</td><td>[Registration number]</td></tr>
+<tr><td>VAT / Tax ID Number</td><td>[Tax identification number]</td></tr>
+<tr><td>Date of Establishment</td><td>[YYYY-MM-DD]</td></tr>
+<tr><td>Legal Form</td><td>[e.g., Ltd, GmbH, Inc, LLC]</td></tr>
+<tr><td>Company Website</td><td>[URL]</td></tr>
+</table>
+
+<h2>SECTION 2: CONTACT INFORMATION</h2>
+<h3>2.1 Primary Contact</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Contact Person Name</td><td>[Full name]</td></tr>
+<tr><td>Title / Position</td><td>[Job title]</td></tr>
+<tr><td>Department</td><td>[Department]</td></tr>
+<tr><td>Telephone</td><td>[Phone with country code]</td></tr>
+<tr><td>Email</td><td>[Email address]</td></tr>
+</table>
+
+<h3>2.2 Regulatory Affairs Contact</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Contact Person Name</td><td>[Full name]</td></tr>
+<tr><td>Title / Position</td><td>[Job title]</td></tr>
+<tr><td>Telephone</td><td>[Phone with country code]</td></tr>
+<tr><td>Email</td><td>[Email address]</td></tr>
+</table>
+
+<h3>2.3 Quality Manager Contact</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Contact Person Name</td><td>[Full name]</td></tr>
+<tr><td>Title / Position</td><td>[Job title]</td></tr>
+<tr><td>Telephone</td><td>[Phone with country code]</td></tr>
+<tr><td>Email</td><td>[Email address]</td></tr>
+</table>
+
+<h2>SECTION 3: MANUFACTURING FACILITIES</h2>
+<h3>3.1 Primary Manufacturing Site</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Site Name</td><td>[Manufacturing site name]</td></tr>
+<tr><td>Address</td><td>[Full address]</td></tr>
+<tr><td>City / State / Postal Code</td><td>[City, State, ZIP]</td></tr>
+<tr><td>Country</td><td>[Country]</td></tr>
+<tr><td>Total Floor Area (sqm)</td><td>[Area]</td></tr>
+<tr><td>Production Area (sqm)</td><td>[Area]</td></tr>
+<tr><td>Number of Employees</td><td>[Count]</td></tr>
+<tr><td>Clean Room Facilities?</td><td>[ ] Yes  [ ] No</td></tr>
+<tr><td>Clean Room Class</td><td>[ISO Class, if applicable]</td></tr>
+</table>
+
+<h3>3.2 Additional Manufacturing Sites</h3>
+<table>
+<tr><th>Site Name</th><th>Address</th><th>Country</th><th>Products Manufactured</th></tr>
+<tr><td>[Site name]</td><td>[Address]</td><td>[Country]</td><td>[Product types]</td></tr>
+</table>
+
+<h2>SECTION 4: QUALITY MANAGEMENT SYSTEMS</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>QMS Standard Implemented</td><td>[ISO 9001 / ISO 13485 / Other / None]</td></tr>
+<tr><td>Certification Body</td><td>[Name of certifying body]</td></tr>
+<tr><td>Certificate Number</td><td>[Certificate reference]</td></tr>
+<tr><td>Date of Initial Certification</td><td>[Date]</td></tr>
+<tr><td>Date of Last Audit</td><td>[Date]</td></tr>
+<tr><td>Certificate Expiry Date</td><td>[Date]</td></tr>
+<tr><td>Scope of Certification</td><td>[Scope description]</td></tr>
+</table>
+
+<h2>SECTION 5: PRODUCT PORTFOLIO</h2>
+<table>
+<tr><th>Product Category</th><th>Product Types</th><th>Markets Served</th><th>Certifications Held</th></tr>
+<tr><td>[e.g., Respiratory Protection]</td><td>[FFP2 masks, etc.]</td><td>[EU, US, etc.]</td><td>[CE, FDA, etc.]</td></tr>
+</table>
+
+<h2>SECTION 6: AUTHORIZED REPRESENTATIVES</h2>
+<table>
+<tr><th>Market</th><th>Representative Name</th><th>Address</th><th>Mandate Reference</th></tr>
+<tr><td>[EU / US / UK / CN]</td><td>[Name]</td><td>[Address]</td><td>[Reference]</td></tr>
+</table>
+
+<h2>SECTION 7: DECLARATION</h2>
+<p>I hereby certify that the information provided in this form is true, accurate, and complete. I authorize the verification of the information provided and understand that any material misstatement may result in disqualification.</p>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Authorized Signatory Name</td><td>[Name]</td></tr>
+<tr><td>Title</td><td>[Title]</td></tr>
+<tr><td>Date</td><td>${date}</td></tr>
+<tr><td>Signature</td><td>_________________________</td></tr>
+</table>
+`
+    }
+
+    case 'qms-form': {
+      return `
+<h1>Quality Management System Documentation Form</h1>
+<p><strong>Standard:</strong> ISO 13485:2016 - Medical devices - Quality management systems - Requirements for regulatory purposes</p>
+<p><strong>Purpose:</strong> Comprehensive QMS documentation checklist and compliance tracking form</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>ORGANIZATION INFORMATION</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Organization Name</td><td>[Full legal entity name]</td></tr>
+<tr><td>Address</td><td>[Full address]</td></tr>
+<tr><td>QMS Scope</td><td>[Scope of QMS certification]</td></tr>
+<tr><td>Current Certification Status</td><td>[Certified / In Progress / Not Yet Certified]</td></tr>
+<tr><td>Certification Body</td><td>[Name, if applicable]</td></tr>
+</table>
+
+<h2>CLAUSE 4: QUALITY MANAGEMENT SYSTEM</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Requirement</th><th>Documented?</th><th>Document Reference</th><th>Last Review</th><th>Status</th></tr>
+<tr><td>4.1</td><td>General requirements - QMS established, documented, implemented, and maintained</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>4.1.1</td><td>Outsourced processes identified and controlled</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>4.1.2</td><td>QMS documented per 4.2 requirements</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>4.2.1</td><td>Documentation requirements - quality policy, objectives, manual, procedures, records</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>4.2.2</td><td>Quality manual established and maintained</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>4.2.3</td><td>Medical device file maintained for each device type</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>4.2.4</td><td>Document control procedures established</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>4.2.5</td><td>Record control procedures established</td><td>[ ]</td><td></td><td></td><td></td></tr>
+</table>
+
+<h2>CLAUSE 5: MANAGEMENT RESPONSIBILITY</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Requirement</th><th>Documented?</th><th>Document Reference</th><th>Last Review</th><th>Status</th></tr>
+<tr><td>5.1</td><td>Management commitment - quality policy, objectives, reviews</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>5.2</td><td>Customer focus - customer requirements determined and met</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>5.3</td><td>Quality policy established, communicated, and reviewed</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>5.4</td><td>Planning - quality objectives and QMS planning</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>5.5</td><td>Responsibility, authority, and communication defined</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>5.6</td><td>Management review conducted at planned intervals</td><td>[ ]</td><td></td><td></td><td></td></tr>
+</table>
+
+<h2>CLAUSE 6: RESOURCE MANAGEMENT</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Requirement</th><th>Documented?</th><th>Document Reference</th><th>Last Review</th><th>Status</th></tr>
+<tr><td>6.1</td><td>Provision of resources for QMS implementation</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>6.2</td><td>Human resources - competence, training, awareness</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>6.3</td><td>Infrastructure - buildings, equipment, support services</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>6.4</td><td>Work environment and contamination control</td><td>[ ]</td><td></td><td></td><td></td></tr>
+</table>
+
+<h2>CLAUSE 7: PRODUCT REALIZATION</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Requirement</th><th>Documented?</th><th>Document Reference</th><th>Last Review</th><th>Status</th></tr>
+<tr><td>7.1</td><td>Planning of product realization</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.2</td><td>Customer requirements determined and reviewed</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.3.2</td><td>Design inputs - functional, performance, regulatory requirements</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.3.3</td><td>Design outputs documented and meet input requirements</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.3.4</td><td>Design review at suitable stages</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.3.5</td><td>Design verification - outputs meet input requirements</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.3.6</td><td>Design validation - device meets user needs</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.3.7</td><td>Design transfer to production</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.3.8</td><td>Design changes controlled and documented</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.3.9</td><td>Design history file (DHF) maintained</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.4</td><td>Purchasing - supplier evaluation, selection, monitoring</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.5.1</td><td>Production and service provision - controlled conditions</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.5.2</td><td>Cleanliness of product</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.5.5</td><td>Sterilization process validation (if applicable)</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.5.6</td><td>Validation of processes for production and service provision</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.5.7</td><td>Traceability requirements implemented</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.5.9</td><td>Labeling and packaging controls</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>7.6</td><td>Control of monitoring and measuring equipment</td><td>[ ]</td><td></td><td></td><td></td></tr>
+</table>
+
+<h2>CLAUSE 8: MEASUREMENT, ANALYSIS, IMPROVEMENT</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Requirement</th><th>Documented?</th><th>Document Reference</th><th>Last Review</th><th>Status</th></tr>
+<tr><td>8.1</td><td>General - monitoring, measurement, analysis, improvement</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>8.2.1</td><td>Feedback - post-market surveillance and customer feedback</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>8.2.3</td><td>Reporting to regulatory authorities</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>8.2.4</td><td>Internal audit conducted at planned intervals</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>8.2.5</td><td>Monitoring and measurement of processes</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>8.2.6</td><td>Monitoring and measurement of product</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>8.3</td><td>Control of nonconforming product</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>8.4</td><td>Analysis of data for QMS improvement</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>8.5</td><td>Improvement - corrective and preventive action (CAPA)</td><td>[ ]</td><td></td><td></td><td></td></tr>
+</table>
+
+<h2>RISK MANAGEMENT (ISO 14971)</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Requirement</th><th>Documented?</th><th>Document Reference</th><th>Last Review</th><th>Status</th></tr>
+<tr><td>R1</td><td>Risk management plan established</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>R2</td><td>Risk analysis completed for all products</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>R3</td><td>Risk control measures implemented and verified</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>R4</td><td>Overall residual risk evaluated and acceptable</td><td>[ ]</td><td></td><td></td><td></td></tr>
+<tr><td>R5</td><td>Risk management file maintained for each product</td><td>[ ]</td><td></td><td></td><td></td></tr>
+</table>
+
+<h2>COMPLETION SUMMARY</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Total Requirements</td><td>[Count]</td></tr>
+<tr><td>Documented</td><td>[Count]</td></tr>
+<tr><td>Not Yet Documented</td><td>[Count]</td></tr>
+<tr><td>Compliance Percentage</td><td>[Percentage]</td></tr>
+<tr><td>Target Certification Date</td><td>[Date]</td></tr>
+<tr><td>Prepared By</td><td>[Name, Title]</td></tr>
+<tr><td>Reviewed By</td><td>[Name, Title]</td></tr>
+<tr><td>Date</td><td>${date}</td></tr>
+</table>
+`
+    }
+
+    case 'testing-application': {
+      return `
+<h1>Product Testing Application Form</h1>
+<p><strong>Purpose:</strong> Application form for submitting PPE products to a testing laboratory</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>SECTION 1: APPLICANT INFORMATION</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Company Name</td><td>[Full legal entity name]</td></tr>
+<tr><td>Address</td><td>[Full address]</td></tr>
+<tr><td>City / State / Postal Code</td><td>[City, State, ZIP]</td></tr>
+<tr><td>Country</td><td>[Country]</td></tr>
+<tr><td>Contact Person</td><td>[Full name]</td></tr>
+<tr><td>Title / Position</td><td>[Job title]</td></tr>
+<tr><td>Telephone</td><td>[Phone with country code]</td></tr>
+<tr><td>Email</td><td>[Email address]</td></tr>
+<tr><td>Billing Contact (if different)</td><td>[Name and email]</td></tr>
+<tr><td>Purchase Order Number</td><td>[PO reference]</td></tr>
+</table>
+
+<h2>SECTION 2: PRODUCT SPECIFICATIONS</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Product Name</td><td>[Commercial product name]</td></tr>
+<tr><td>Product Code / Model</td><td>[Model/type reference]</td></tr>
+<tr><td>Product Category</td><td>[e.g., Filtering half mask, Surgical mask, Protective gloves]</td></tr>
+<tr><td>Product Description</td><td>[Detailed description including materials and construction]</td></tr>
+<tr><td>Intended Use</td><td>[Description of intended use and target user group]</td></tr>
+<tr><td>Product Classification</td><td>[PPE Category I/II/III or Medical Device Class]</td></tr>
+<tr><td>Number of Product Variants</td><td>[Count]</td></tr>
+<tr><td>Variant Details</td><td>[List all variants with model numbers]</td></tr>
+<tr><td>Manufacturing Date</td><td>[Date]</td></tr>
+<tr><td>Batch / Lot Number</td><td>[Reference]</td></tr>
+<tr><td>Shelf Life / Expiry Date</td><td>[Duration / Date]</td></tr>
+</table>
+
+<h2>SECTION 3: SAMPLE INFORMATION</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Number of Samples Provided</td><td>[Count]</td></tr>
+<tr><td>Sample Condition</td><td>[New / Aged / Other]</td></tr>
+<tr><td>Sample Packaging</td><td>[Description of packaging]</td></tr>
+<tr><td>Sample Storage Requirements</td><td>[Temperature, humidity, etc.]</td></tr>
+<tr><td>Special Handling Instructions</td><td>[Any special requirements]</td></tr>
+<tr><td>Date Samples Shipped</td><td>[Date]</td></tr>
+<tr><td>Shipping Method / Carrier</td><td>[Method and tracking number]</td></tr>
+</table>
+
+<h2>SECTION 4: TEST REQUIREMENTS</h2>
+<h3>4.1 Standards to Test Against</h3>
+<table>
+<tr><th>Standard Reference</th><th>Title</th><th>Specific Clauses / Tests</th></tr>
+<tr><td>[e.g., EN 149:2001+A1:2009]</td><td>[Title]</td><td>[e.g., All / Clauses 7.9, 7.11, 7.16]</td></tr>
+<tr><td>[e.g., EN 14683:2019]</td><td>[Title]</td><td>[Specific clauses]</td></tr>
+</table>
+
+<h3>4.2 Specific Tests Requested</h3>
+<table>
+<tr><th>Test Parameter</th><th>Standard / Method</th><th>Specification / Limit</th><th>Number of Samples</th></tr>
+<tr><td>[e.g., Filtration Efficiency]</td><td>[e.g., EN 149 Clause 7.9]</td><td>[e.g., FFP2: &ge;94%]</td><td>[Count]</td></tr>
+<tr><td>[e.g., Breathing Resistance]</td><td>[e.g., EN 149 Clause 7.16]</td><td>[e.g., &le;0.7 mbar]</td><td>[Count]</td></tr>
+<tr><td>[e.g., Bacterial Filtration Efficiency]</td><td>[e.g., EN 14683 Annex B]</td><td>[e.g., Type II: &ge;98%]</td><td>[Count]</td></tr>
+<tr><td>[e.g., Biocompatibility - Cytotoxicity]</td><td>[e.g., ISO 10993-5]</td><td>[Non-cytotoxic]</td><td>[Count]</td></tr>
+</table>
+
+<h3>4.3 Additional Testing Requirements</h3>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Accelerated Aging Testing Required?</td><td>[ ] Yes  [ ] No</td></tr>
+<tr><td>Shelf Life Validation Required?</td><td>[ ] Yes  [ ] No</td></tr>
+<tr><td>Custom Test Methods?</td><td>[ ] Yes  [ ] No - If yes, provide protocol</td></tr>
+<tr><td>Comparison Testing (vs. predicate)?</td><td>[ ] Yes  [ ] No</td></tr>
+<tr><td>Target Market for Results</td><td>[EU / US / UK / CN / Other]</td></tr>
+</table>
+
+<h2>SECTION 5: PRODUCT DOCUMENTATION PROVIDED</h2>
+<table>
+<tr><th style="width:40px;">#</th><th>Document</th><th>Included?</th></tr>
+<tr><td>1</td><td>Product technical drawings / specifications</td><td>[ ]</td></tr>
+<tr><td>2</td><td>Bill of materials</td><td>[ ]</td></tr>
+<tr><td>3</td><td>Material safety data sheets (MSDS)</td><td>[ ]</td></tr>
+<tr><td>4</td><td>Previous test reports</td><td>[ ]</td></tr>
+<tr><td>5</td><td>User instructions / IFU</td><td>[ ]</td></tr>
+<tr><td>6</td><td>Product labeling samples</td><td>[ ]</td></tr>
+<tr><td>7</td><td>Risk assessment report</td><td>[ ]</td></tr>
+<tr><td>8</td><td>Biocompatibility assessment</td><td>[ ]</td></tr>
+</table>
+
+<h2>SECTION 6: REPORTING REQUIREMENTS</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Report Language</td><td>[English / Chinese / Other]</td></tr>
+<tr><td>Report Format</td><td>[Standard / Detailed / Custom]</td></tr>
+<tr><td>Confidentiality Requirements</td><td>[Standard NDA / Custom NDA / None]</td></tr>
+<tr><td>Target Report Completion Date</td><td>[Date]</td></tr>
+<tr><td>Rush Service Required?</td><td>[ ] Yes  [ ] No</td></tr>
+</table>
+
+<h2>SECTION 7: AUTHORIZATION AND SIGNATURE</h2>
+<p>I authorize the testing laboratory to conduct the tests specified above on the samples provided. I confirm that the samples are representative of the product as placed on the market and that all information provided is accurate.</p>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Authorized Signatory Name</td><td>[Name]</td></tr>
+<tr><td>Title</td><td>[Title]</td></tr>
+<tr><td>Date</td><td>${date}</td></tr>
+<tr><td>Signature</td><td>_________________________</td></tr>
+</table>
+`
+    }
+
+    case 'pms-plan': {
+      return `
+<h1>Post-Market Surveillance Plan Template</h1>
+<p><strong>Regulatory Basis:</strong> Regulation (EU) 2016/425, Article 17 and Annex VII</p>
+<p><strong>Related Requirements:</strong> EU MDR 2017/745 Article 84-86 (where applicable), ISO 13485 Clause 8.2.1</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>1. GENERAL INFORMATION</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Product Name</td><td>[Product commercial name]</td></tr>
+<tr><td>Product Code / Model</td><td>[Model/type reference]</td></tr>
+<tr><td>PPE Category</td><td>[Category I / II / III]</td></tr>
+<tr><td>Manufacturer Name</td><td>[Full legal entity name]</td></tr>
+<tr><td>Notified Body (if applicable)</td><td>[Name and 4-digit number]</td></tr>
+<tr><td>EU Type Examination Certificate No.</td><td>[Certificate reference]</td></tr>
+<tr><td>Date of First Placement on Market</td><td>[Date]</td></tr>
+<tr><td>PMS Plan Reference Number</td><td>[PMS-YYYY-XXX]</td></tr>
+<tr><td>Plan Effective Date</td><td>${date}</td></tr>
+<tr><td>Next Review Date</td><td>[Date - at least annually]</td></tr>
+</table>
+
+<h2>2. SCOPE AND OBJECTIVES</h2>
+<h3>2.1 Scope</h3>
+<p>This Post-Market Surveillance (PMS) plan applies to [product name] as placed on the EU market under Regulation (EU) 2016/425. It covers all activities related to monitoring the safety and performance of the product throughout its market lifecycle.</p>
+
+<h3>2.2 Objectives</h3>
+<ul>
+<li>Systematically collect and evaluate performance and safety data from marketed products</li>
+<li>Detect and assess any changes in risk-benefit balance</li>
+<li>Identify the need for corrective or preventive actions</li>
+<li>Ensure ongoing compliance with applicable regulatory requirements</li>
+<li>Support the periodic safety update and vigilance reporting obligations</li>
+</ul>
+
+<h2>3. DATA COLLECTION METHODS</h2>
+<h3>3.1 Proactive Data Collection</h3>
+<table>
+<tr><th>Data Source</th><th>Collection Method</th><th>Frequency</th><th>Responsible Person</th></tr>
+<tr><td>Customer complaints and feedback</td><td>[Complaint handling system]</td><td>[Continuous]</td><td>[Name/Role]</td></tr>
+<tr><td>Post-market clinical follow-up</td><td>[PMCF plan, if applicable]</td><td>[Per PMCF schedule]</td><td>[Name/Role]</td></tr>
+<tr><td>User surveys and questionnaires</td><td>[Survey methodology]</td><td>[Annual / Biannual]</td><td>[Name/Role]</td></tr>
+<tr><td>Literature review</td><td>[Search strategy and databases]</td><td>[Annual]</td><td>[Name/Role]</td></tr>
+<tr><td>Product performance testing</td><td>[Retained sample testing]</td><td>[Per schedule]</td><td>[Name/Role]</td></tr>
+<tr><td>Registry data (if applicable)</td><td>[Registry participation]</td><td>[Per registry schedule]</td><td>[Name/Role]</td></tr>
+</table>
+
+<h3>3.2 Reactive Data Collection</h3>
+<table>
+<tr><th>Data Source</th><th>Collection Method</th><th>Frequency</th><th>Responsible Person</th></tr>
+<tr><td>Adverse incident reports</td><td>[Vigilance reporting system]</td><td>[Continuous]</td><td>[Name/Role]</td></tr>
+<tr><td>Field safety corrective actions</td><td>[FSCA procedure]</td><td>[As needed]</td><td>[Name/Role]</td></tr>
+<tr><td>Competent authority notifications</td><td>[Regulatory intelligence]</td><td>[Continuous]</td><td>[Name/Role]</td></tr>
+<tr><td>Notified Body findings</td><td>[Surveillance audit reports]</td><td>[Per audit schedule]</td><td>[Name/Role]</td></tr>
+<tr><td>Distributor and importer feedback</td><td>[Feedback channel]</td><td>[Continuous]</td><td>[Name/Role]</td></tr>
+</table>
+
+<h2>4. DATA EVALUATION AND ANALYSIS</h2>
+<h3>4.1 Trend Analysis</h3>
+<p>Collected data shall be analyzed for trends including:</p>
+<ul>
+<li>Complaint rate trends by product variant, batch, and market</li>
+<li>Type and severity of reported incidents</li>
+<li>Performance degradation patterns over product lifecycle</li>
+<li>Comparison with pre-market risk assessment assumptions</li>
+</ul>
+
+<h3>4.2 Risk-Benefit Re-evaluation</h3>
+<p>Based on collected data, the risk-benefit balance shall be re-evaluated considering:</p>
+<ul>
+<li>Any new or changed risks identified through PMS data</li>
+<li>Effectiveness of existing risk control measures</li>
+<li>Whether residual risks remain acceptable</li>
+<li>Whether previously unknown hazards have been identified</li>
+</ul>
+
+<h2>5. VIGILANCE PROCEDURES</h2>
+<h3>5.1 Incident Reporting Criteria</h3>
+<p>Per Regulation (EU) 2016/425, incidents that meet the following criteria must be reported to the competent authority:</p>
+<ul>
+<li>Any incident that has led to, or could have led to, the death of a user or a third person</li>
+<li>Any incident that has led to, or could have led to, a serious deterioration in the health of a user or a third person</li>
+<li>Any incident which, if it were to recur, could lead to death or serious deterioration in health</li>
+</ul>
+
+<h3>5.2 Reporting Timelines</h3>
+<table>
+<tr><th>Incident Severity</th><th>Initial Reporting Deadline</th><th>Follow-up Report</th><th>Final Report</th></tr>
+<tr><td>Death or serious deterioration in health</td><td>Within 10 calendar days</td><td>[As requested]</td><td>[Within timeframe set by CA]</td></tr>
+<tr><td>Potential for serious deterioration</td><td>Within 15 calendar days</td><td>[As requested]</td><td>[Within timeframe set by CA]</td></tr>
+<tr><td>Other reportable incidents</td><td>Within 20 calendar days</td><td>[As requested]</td><td>[Within timeframe set by CA]</td></tr>
+</table>
+
+<h3>5.3 Field Safety Corrective Actions (FSCA)</h3>
+<p>When a FSCA is initiated, the following shall be documented:</p>
+<ul>
+<li>Description of the non-conformity and affected products</li>
+<li>Risk assessment justifying the corrective action</li>
+<li>Type of FSCA (recall, modification, advisory notice, etc.)</li>
+<li>Communication plan for users, distributors, and authorities</li>
+<li>Timeline for implementation and effectiveness verification</li>
+</ul>
+
+<h2>6. PERIODIC SAFETY UPDATE REPORT (PSUR)</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>PSUR Preparation Frequency</td><td>[Annually / Biannually / Per Notified Body requirement]</td></tr>
+<tr><td>PSUR Responsible Person</td><td>[Name and role]</td></tr>
+<tr><td>PSUR Review and Approval</td><td>[Management representative]</td></tr>
+<tr><td>PSUR Distribution</td><td>[Notified Body / Competent Authority upon request]</td></tr>
+</table>
+
+<h3>6.1 PSUR Content</h3>
+<p>The PSUR shall include, at minimum:</p>
+<ol>
+<li>Summary of sales and usage data</li>
+<li>Summary of complaint and incident data with trend analysis</li>
+<li>Summary of any FSCAs taken during the reporting period</li>
+<li>Updated risk-benefit assessment</li>
+<li>Conclusion on the continued safety and performance of the product</li>
+<li>Any recommendations for product improvement</li>
+</ol>
+
+<h2>7. CORRECTIVE AND PREVENTIVE ACTIONS (CAPA)</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>CAPA Procedure Reference</td><td>[Document reference]</td></tr>
+<tr><td>CAPA Trigger Criteria</td><td>[Thresholds for initiating CAPA]</td></tr>
+<tr><td>CAPA Responsible Person</td><td>[Name and role]</td></tr>
+<tr><td>Effectiveness Verification Method</td><td>[Method description]</td></tr>
+</table>
+
+<h2>8. COMMUNICATION AND DISTRIBUTION</h2>
+<table>
+<tr><th>Stakeholder</th><th>Communication Type</th><th>Frequency</th><th>Responsible Person</th></tr>
+<tr><td>Competent Authorities</td><td>[Vigilance reports, PSUR]</td><td>[Per regulatory requirements]</td><td>[Name/Role]</td></tr>
+<tr><td>Notified Body</td><td>[PSUR, surveillance audit data]</td><td>[Per NB requirements]</td><td>[Name/Role]</td></tr>
+<tr><td>Distributors / Importers</td><td>[Safety notices, FSCA communications]</td><td>[As needed]</td><td>[Name/Role]</td></tr>
+<tr><td>End Users</td><td>[Safety notices, advisory notices]</td><td>[As needed]</td><td>[Name/Role]</td></tr>
+<tr><td>EU Authorized Representative</td><td>[All PMS-related communications]</td><td>[Continuous]</td><td>[Name/Role]</td></tr>
+</table>
+
+<h2>9. PLAN REVIEW AND UPDATE</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Review Frequency</td><td>[At least annually, or upon significant change]</td></tr>
+<tr><td>Review Triggers</td><td>[New risks, regulatory changes, FSCAs, significant complaints]</td></tr>
+<tr><td>Review Responsible Person</td><td>[Name and role]</td></tr>
+<tr><td>Approval Authority</td><td>[Management representative]</td></tr>
+</table>
+
+<h2>10. APPROVAL</h2>
+<table>
+<tr><th>Role</th><th>Name</th><th>Signature</th><th>Date</th></tr>
+<tr><td>PMS Plan Author</td><td>[Name]</td><td></td><td></td></tr>
+<tr><td>Quality Manager</td><td>[Name]</td><td></td><td></td></tr>
+<tr><td>Regulatory Affairs Manager</td><td>[Name]</td><td></td><td></td></tr>
+<tr><td>General Manager / CEO</td><td>[Name]</td><td></td><td></td></tr>
 </table>
 `
     }

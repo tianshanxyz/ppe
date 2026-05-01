@@ -127,39 +127,37 @@ export default function MarketAccessPage() {
         </div>
       </motion.section>
 
-      {/* Progress Steps */}
-      {!showReport && (
-        <div className="bg-white border-b border-gray-200">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex items-center justify-between">
-              {steps.map((s, index) => (
-                <div key={s.number} className="flex items-center">
-                  <div className="flex flex-col items-center">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
-                      step >= s.number 
-                        ? 'bg-[#339999] text-white' 
-                        : 'bg-gray-200 text-gray-500'
-                    }`}>
-                      {step > s.number ? <CheckCircle className="w-5 h-5" /> : s.number}
-                    </div>
-                    <div className="mt-2 text-center">
-                      <div className={`text-sm font-semibold ${step >= s.number ? 'text-gray-900' : 'text-gray-400'}`}>
-                        {s.title}
-                      </div>
-                      <div className="text-xs text-gray-400 hidden sm:block">{s.description}</div>
-                    </div>
+      {/* Progress Steps - always visible including on report page */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between">
+            {steps.map((s, index) => (
+              <div key={s.number} className="flex items-center">
+                <div className="flex flex-col items-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
+                    step >= s.number 
+                      ? 'bg-[#339999] text-white' 
+                      : 'bg-gray-200 text-gray-500'
+                  }`}>
+                    {step > s.number ? <CheckCircle className="w-5 h-5" /> : s.number}
                   </div>
-                  {index < steps.length - 1 && (
-                    <div className={`w-16 sm:w-24 h-0.5 mx-2 sm:mx-4 ${
-                      step > s.number ? 'bg-[#339999]' : 'bg-gray-200'
-                    }`} />
-                  )}
+                  <div className="mt-2 text-center">
+                    <div className={`text-sm font-semibold ${step >= s.number ? 'text-gray-900' : 'text-gray-400'}`}>
+                      {s.title}
+                    </div>
+                    <div className="text-xs text-gray-400 hidden sm:block">{s.description}</div>
+                  </div>
                 </div>
-              ))}
-            </div>
+                {index < steps.length - 1 && (
+                  <div className={`w-16 sm:w-24 h-0.5 mx-2 sm:mx-4 ${
+                    step > s.number ? 'bg-[#339999]' : 'bg-gray-200'
+                  }`} />
+                )}
+              </div>
+            ))}
           </div>
         </div>
-      )}
+      </div>
 
       {/* Step 1: Product Category */}
       {step === 1 && (
@@ -499,7 +497,46 @@ export default function MarketAccessPage() {
         </motion.section>
       )}
 
-      {/* Report */}
+      {/* Report - with fallback for null complianceData */}
+      {showReport && !complianceData && (
+        <motion.section 
+          className="py-12"
+          initial="initial"
+          animate="animate"
+          variants={staggerContainer}
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div className="bg-white rounded-2xl shadow-xl p-8 text-center" variants={fadeInUp}>
+              <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <AlertCircle className="w-8 h-8 text-orange-500" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                No Compliance Data Available
+              </h2>
+              <p className="text-gray-600 mb-6">
+                We could not find compliance data for the selected product category and market combination. 
+                Please try a different category or target market.
+              </p>
+              <div className="flex items-center justify-center gap-4">
+                <motion.button
+                  onClick={handleBack}
+                  className="inline-flex items-center px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+                  whileHover={{ x: -5 }}
+                >
+                  Go Back
+                </motion.button>
+                <motion.button
+                  onClick={handleReset}
+                  className="inline-flex items-center px-6 py-3 bg-[#339999] text-white font-semibold rounded-xl hover:bg-[#2d8b8b] transition-colors shadow-lg"
+                >
+                  Start New Analysis
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        </motion.section>
+      )}
+
       {showReport && complianceData && (
         <motion.section 
           className="py-12"
@@ -509,15 +546,24 @@ export default function MarketAccessPage() {
           variants={staggerContainer}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Back Button */}
-            <motion.button
-              onClick={handleReset}
-              variants={fadeInUp}
-              className="mb-6 text-[#339999] hover:text-[#2d8b8b] font-medium inline-flex items-center"
-              whileHover={{ x: -5 }}
-            >
-              ← Start New Analysis
-            </motion.button>
+            {/* Back & Reset Buttons */}
+            <div className="flex items-center gap-4 mb-6">
+              <motion.button
+                onClick={handleBack}
+                variants={fadeInUp}
+                className="text-gray-600 hover:text-gray-800 font-medium inline-flex items-center border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                whileHover={{ x: -5 }}
+              >
+                Back to Features
+              </motion.button>
+              <motion.button
+                onClick={handleReset}
+                variants={fadeInUp}
+                className="text-[#339999] hover:text-[#2d8b8b] font-medium inline-flex items-center"
+              >
+                Start New Analysis
+              </motion.button>
+            </div>
 
             {/* Report Header */}
             <motion.div className="bg-white rounded-2xl shadow-xl p-8 mb-8" variants={fadeInUp}>

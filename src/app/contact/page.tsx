@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import emailjs from '@emailjs/browser'
 import { Mail, MapPin, Phone, Send, CheckCircle, Building, Clock } from 'lucide-react'
 import Link from 'next/link'
 
@@ -21,11 +22,21 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setSubmitting(false)
-    setSubmitted(true)
-    setFormData({ name: '', email: '', subject: '', message: '' })
+    try {
+      await emailjs.send('service_uv0j9z9', 'template_wiumo8o', {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      }, '1_y80J3lBqJfYafV7')
+      setSubmitted(true)
+      setFormData({ name: '', email: '', subject: '', message: '' })
+    } catch (error) {
+      console.error('Email send failed:', error)
+      alert('Failed to send message. Please try again or email us directly at info@h-guardian.com')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -61,8 +72,8 @@ export default function ContactPage() {
                   <Mail className="w-5 h-5 text-[#339999] mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Email</p>
-                    <a href="mailto:contact@mdlooker.com" className="text-sm text-[#339999] hover:underline">
-                      contact@mdlooker.com
+                    <a href="mailto:info@h-guardian.com" className="text-sm text-[#339999] hover:underline">
+                      info@h-guardian.com
                     </a>
                   </div>
                 </div>

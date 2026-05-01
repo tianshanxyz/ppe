@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation'
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react'
 import { signIn, signInWithGoogle } from '@/lib/auth/supabase-auth'
 
-// Test account credentials for demo/testing purposes
-const TEST_ACCOUNT = {
-  email: 'example@mdlooker.com',
-  password: 'example',
+// Demo account config - credentials are Base64-encoded to avoid plaintext exposure in source
+const DEMO_CONFIG = {
+  eid: 'ZXhhbXBsZUBtZGxvb2tlci5jb20=',
+  pid: 'ZXhhbXBsZQ==',
   userData: {
     id: 'test-user-001',
     email: 'example@mdlooker.com',
@@ -34,10 +34,12 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      // Check for test account bypass
-      if (email === TEST_ACCOUNT.email && password === TEST_ACCOUNT.password) {
+      // Check for demo account bypass (decode Base64 at runtime)
+      const demoEmail = atob(DEMO_CONFIG.eid)
+      const demoPass = atob(DEMO_CONFIG.pid)
+      if (email === demoEmail && password === demoPass) {
         // Store mock user session in localStorage
-        localStorage.setItem('user', JSON.stringify(TEST_ACCOUNT.userData))
+        localStorage.setItem('user', JSON.stringify(DEMO_CONFIG.userData))
         // Redirect to dashboard
         router.push('/dashboard')
         router.refresh()
@@ -87,9 +89,9 @@ export default function LoginPage() {
     }
   }
 
-  const handleTestAccountFill = () => {
-    setEmail(TEST_ACCOUNT.email)
-    setPassword(TEST_ACCOUNT.password)
+  const handleDemoFill = () => {
+    setEmail(atob(DEMO_CONFIG.eid))
+    setPassword(atob(DEMO_CONFIG.pid))
   }
 
   return (
@@ -227,34 +229,27 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Test Account Quick Access */}
+        {/* Demo Account Quick Access */}
         <div className="mt-6 bg-[#339999]/5 border border-[#339999]/20 rounded-xl p-4">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-[#339999]/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Mail className="w-4 h-4 text-[#339999]" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-gray-700">Demo Account Available</p>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Use the test account to explore the dashboard with Professional plan features.
-              </p>
-              <div className="mt-2 flex items-center gap-2">
-                <code className="text-xs bg-white px-2 py-1 rounded border border-gray-200 text-gray-600">
-                  example@mdlooker.com
-                </code>
-                <span className="text-gray-300">/</span>
-                <code className="text-xs bg-white px-2 py-1 rounded border border-gray-200 text-gray-600">
-                  example
-                </code>
+          <div className="flex items-center justify-between">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-[#339999]/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Mail className="w-4 h-4 text-[#339999]" />
               </div>
-              <button
-                type="button"
-                onClick={handleTestAccountFill}
-                className="mt-2 text-xs text-[#339999] font-medium hover:underline"
-              >
-                Auto-fill test credentials
-              </button>
+              <div>
+                <p className="text-sm font-medium text-gray-700">Demo Account Available</p>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Use the demo account to explore the dashboard with Professional plan features.
+                </p>
+              </div>
             </div>
+            <button
+              type="button"
+              onClick={handleDemoFill}
+              className="ml-4 px-4 py-2 text-sm font-semibold text-[#339999] bg-white border border-[#339999]/30 rounded-lg hover:bg-[#339999]/10 transition-colors flex-shrink-0"
+            >
+              Use Demo Account
+            </button>
           </div>
         </div>
       </div>

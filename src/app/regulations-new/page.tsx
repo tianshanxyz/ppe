@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { 
-  BookOpen, 
-  ExternalLink, 
-  Globe, 
-  Shield, 
-  FileText, 
+import {
+  BookOpen,
+  ExternalLink,
+  Globe,
+  Shield,
+  FileText,
   CheckCircle,
   Download,
   ChevronRight,
@@ -17,7 +17,8 @@ import {
   FileCheck,
   Building2,
   Users,
-  HelpCircle
+  HelpCircle,
+  Search
 } from 'lucide-react'
 import { Button } from '@/components/ui'
 
@@ -192,15 +193,125 @@ const REGULATIONS = [
 export default function RegulationsNewPage() {
   const [selectedRegulation, setSelectedRegulation] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [searchInput, setSearchInput] = useState('')
 
-  const filteredRegulations = REGULATIONS.filter(reg =>
-    reg.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    reg.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    reg.market.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredRegulations = REGULATIONS.filter(reg => {
+    if (!searchQuery) return true
+    const q = searchQuery.toLowerCase()
+    return (
+      reg.title.toLowerCase().includes(q) ||
+      reg.description.toLowerCase().includes(q) ||
+      reg.market.toLowerCase().includes(q) ||
+      reg.scope.toLowerCase().includes(q) ||
+      reg.category.toLowerCase().includes(q) ||
+      reg.keyPoints.some(point => point.toLowerCase().includes(q)) ||
+      reg.documents.some(doc => doc.name.toLowerCase().includes(q)) ||
+      reg.relatedStandards.some(std => std.toLowerCase().includes(q)) ||
+      reg.certificationBodies.some(body => body.toLowerCase().includes(q))
+    )
+  })
 
-  const handleDownload = (docName: string) => {
-    alert(`Downloading: ${docName}\n\nNote: This is a demo. In production, this would download the actual document.`)
+  const handleSearch = () => {
+    setSearchQuery(searchInput)
+  }
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  }
+
+  const handleDownload = (docName: string, regId: string) => {
+    const reg = REGULATIONS.find(r => r.id === regId)
+    if (!reg) return
+
+    const date = new Date().toISOString().split('T')[0]
+    const year = new Date().getFullYear()
+    const docRef = `${regId.toUpperCase()}-${year}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`
+
+    const bodyContent = `
+<h1>${docName}</h1>
+<p><strong>Regulation:</strong> ${reg.title}</p>
+<p><strong>Market:</strong> ${reg.flag} ${reg.market}</p>
+<p><strong>Category:</strong> ${reg.category}</p>
+<p><strong>Effective Date:</strong> ${reg.effectiveDate}</p>
+<p><strong>Scope:</strong> ${reg.scope}</p>
+<p><strong>Generated Date:</strong> ${date}</p>
+<hr>
+
+<h2>Description</h2>
+<p>${reg.description}</p>
+
+<h2>Key Requirements</h2>
+<ol>
+${reg.keyPoints.map((point, idx) => `<li>${point}</li>`).join('\n')}
+</ol>
+
+<h2>Related Standards</h2>
+<ul>
+${reg.relatedStandards.map(std => `<li>${std}</li>`).join('\n')}
+</ul>
+
+<h2>Certification Bodies</h2>
+<ul>
+${reg.certificationBodies.map(body => `<li>${body}</li>`).join('\n')}
+</ul>
+
+<h2>Estimated Cost and Timeline</h2>
+<table>
+<tr><th style="width:200px;">Field</th><th>Content</th></tr>
+<tr><td>Estimated Cost</td><td>${reg.estimatedCost}</td></tr>
+<tr><td>Estimated Time</td><td>${reg.estimatedTime}</td></tr>
+<tr><td>Difficulty</td><td>${reg.difficulty}</td></tr>
+</table>
+`
+
+    const htmlContent = `<!DOCTYPE html>
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset='utf-8'>
+<title>${docName}</title>
+<style>
+  body { font-family: 'Calibri', 'Arial', sans-serif; font-size: 11pt; line-height: 1.6; color: #333; margin: 40px; }
+  h1 { color: #339999; font-size: 22pt; border-bottom: 2px solid #339999; padding-bottom: 8px; margin-top: 24px; }
+  h2 { color: #339999; font-size: 16pt; border-bottom: 1px solid #ddd; padding-bottom: 4px; margin-top: 20px; }
+  h3 { color: #555; font-size: 13pt; margin-top: 16px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+  th { background-color: #339999; color: white; padding: 8px; text-align: left; border: 1px solid #2d8b8b; }
+  td { padding: 8px; border: 1px solid #ddd; }
+  tr:nth-child(even) { background-color: #f9f9f9; }
+  .header { text-align: center; border-bottom: 3px solid #339999; padding-bottom: 16px; margin-bottom: 24px; }
+  .header h1 { border: none; font-size: 28pt; margin-bottom: 4px; color: #339999; }
+  .header p { color: #666; font-size: 10pt; }
+  .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #ddd; color: #888; font-size: 9pt; text-align: center; }
+  ul, ol { margin: 8px 0; padding-left: 24px; }
+  li { margin: 4px 0; }
+  hr { border: none; border-top: 1px solid #ddd; margin: 20px 0; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>MDLooker</h1>
+  <p>PPE Compliance Platform</p>
+</div>
+${bodyContent}
+<div class="footer">
+<p>Generated by MDLooker PPE Compliance Platform | ${date}</p>
+<p><em>Document: ${docName} | Regulation: ${reg.title} | Ref: ${docRef}</em></p>
+<p><em>This document is confidential and proprietary. Unauthorized distribution is prohibited.</em></p>
+</div>
+</body>
+</html>`
+
+    const blob = new Blob([htmlContent], { type: 'application/msword' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${docName.replace(/[^a-zA-Z0-9\s-]/g, '')}_${date}.doc`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
   }
 
   if (selectedRegulation) {
@@ -311,7 +422,7 @@ export default function RegulationsNewPage() {
                         </div>
                       </div>
                       <button
-                        onClick={() => handleDownload(doc.name)}
+                        onClick={() => handleDownload(doc.name, reg.id)}
                         className="p-2 text-[#339999] hover:bg-[#339999]/10 rounded-lg transition-colors"
                       >
                         <Download className="w-5 h-5" />
@@ -443,15 +554,25 @@ export default function RegulationsNewPage() {
             
             {/* Search */}
             <div className="max-w-2xl mx-auto">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search regulations, standards, or markets..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#339999] focus:border-transparent text-lg"
-                />
-                <BookOpen className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <div className="relative flex items-center gap-3">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    placeholder="Search regulations, standards, or markets..."
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    onKeyDown={handleSearchKeyDown}
+                    className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#339999] focus:border-transparent text-lg"
+                  />
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                </div>
+                <button
+                  onClick={handleSearch}
+                  className="flex items-center gap-2 px-6 py-4 bg-[#339999] text-white rounded-xl hover:bg-[#2d8b8b] transition-colors font-medium whitespace-nowrap"
+                >
+                  <Search className="w-5 h-5" />
+                  <span className="hidden sm:inline">Search</span>
+                </button>
               </div>
             </div>
           </div>
