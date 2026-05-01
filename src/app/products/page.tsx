@@ -1,62 +1,38 @@
 'use client'
 
-import { useState, useEffect, useCallback, Component, ReactNode } from 'react'
-import { Search, Filter, Package, BarChart3, ExternalLink, CheckCircle2, AlertCircle, ChevronLeft, ChevronRight, Shield } from 'lucide-react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { Search, Filter, Package, BarChart3, ExternalLink, AlertCircle, ChevronLeft, ChevronRight, Shield } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { getPPEProductsClient, getPPEProductStats, getPPECategories, getPPECountries } from '@/lib/ppe-database-client'
-import { useLocale } from '@/lib/i18n/LocaleProvider'
-import { productTranslations, getTranslations } from '@/lib/i18n/translations'
 
-// Lazy-load intelligentSearch to prevent import errors from crashing the page
-let intelligentSearch: any = null
-try {
-  // Dynamic import will be handled at runtime
-  import('@/lib/search-service').then(mod => {
-    intelligentSearch = mod.intelligentSearch
-  }).catch(() => {
-    console.warn('search-service module not available, search will be disabled')
-  })
-} catch {
-  console.warn('search-service module not available, search will be disabled')
-}
-
-// Error Boundary Component
-class ProductsErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean; error: Error | null }> {
-  constructor(props: { children: ReactNode }) {
-    super(props)
-    this.state = { hasError: false, error: null }
-  }
-
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error }
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="text-center max-w-md mx-auto px-4">
-            <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Product Database</h2>
-            <p className="text-gray-600 mb-6">
-              The product database is currently unavailable. This may be due to a configuration issue or temporary outage.
-            </p>
-            <button
-              onClick={() => {
-                this.setState({ hasError: false, error: null })
-                window.location.reload()
-              }}
-              className="px-6 py-3 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors"
-            >
-              Try Again
-            </button>
-          </div>
-        </div>
-      )
-    }
-    return this.props.children
-  }
+// Default translations to avoid SSR/hydration issues
+const t = {
+  ppeProductDatabase: 'PPE Product Database',
+  browseSearchComprehensive: 'Browse and search our comprehensive database of PPE products',
+  totalProducts: 'Total Products',
+  countries: 'Countries',
+  categories: 'Categories',
+  filters: 'Filters',
+  country: 'Country',
+  allCountries: 'All Countries',
+  category: 'Category',
+  allCategories: 'All Categories',
+  resetFilters: 'Reset Filters',
+  searchProducts: 'Search products by name, code, or manufacturer...',
+  search: 'Search',
+  searching: 'Searching...',
+  errorLoadingProducts: 'Error Loading Products',
+  tryAgain: 'Try Again',
+  loadingProducts: 'Loading products...',
+  showing: 'Showing',
+  of: 'of',
+  products: 'products',
+  previous: 'Previous',
+  next: 'Next',
+  noProductsFound: 'No products found',
+  noSearchResults: 'No search results',
+  tryAdjustingSearch: 'Try adjusting your search or filters',
 }
 
 const fadeInUp = {
@@ -87,162 +63,137 @@ function getRiskLevelStyle(riskLevel: string) {
   }
 }
 
-export default function ProductsPage() {
-  return (
-    <ProductsErrorBoundary>
-      <ProductsPageContent />
-    </ProductsErrorBoundary>
-  )
+// Client-side filter function for robust search
+function filterProductsClientSide(
+  products: any[],
+  searchQuery: string,
+  selectedCountry: string,
+  selectedCategory: string
+): any[] {
+  return products.filter((product) => {
+    const matchesSearch = !searchQuery.trim() || (
+      (product.name && product.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (product.product_name && product.product_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (product.product_code && product.product_code.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (product.manufacturer_name && product.manufacturer_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (product.product_category && product.product_category.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (product.category && product.category.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (product.description && product.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    )
+
+    const matchesCountry = selectedCountry === 'all' ||
+      product.country_of_origin === selectedCountry ||
+      product.manufacturer_country === selectedCountry
+
+    const matchesCategory = selectedCategory === 'all' ||
+      product.product_category === selectedCategory ||
+      product.category === selectedCategory
+
+    return matchesSearch && matchesCountry && matchesCategory
+  })
 }
 
-function ProductsPageContent() {
-  const locale = useLocale()
-  const t = getTranslations(productTranslations, locale)
-
+export default function ProductsPage() {
   const [products, setProducts] = useState<any[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
-  
+
   // 筛选状态
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCountry, setSelectedCountry] = useState<string>('all')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [countries, setCountries] = useState<string[]>([])
   const [categories, setCategories] = useState<string[]>([])
-  
-  const limit = 20
 
-  // 用于触发搜索的key
-  const [searchTrigger, setSearchTrigger] = useState(0)
-  const [activeSearchQuery, setActiveSearchQuery] = useState('')
+  // All loaded products for client-side filtering
+  const [allProducts, setAllProducts] = useState<any[]>([])
+
+  const limit = 20
 
   // 加载筛选选项（只在组件挂载时加载一次）
   useEffect(() => {
+    let mounted = true
+    async function loadFilterOptions() {
+      try {
+        const [countriesList, categoriesList] = await Promise.all([
+          getPPECountries(),
+          getPPECategories()
+        ])
+        if (mounted) {
+          setCountries(countriesList)
+          setCategories(categoriesList)
+        }
+      } catch (err) {
+        console.error('Failed to load filter options:', err)
+      }
+    }
     loadFilterOptions()
+    return () => { mounted = false }
   }, [])
 
-  // 加载产品数据
+  // 加载产品数据 - simplified, robust version
   const loadProducts = useCallback(async () => {
     setLoading(true)
     setError(null)
-    
+
     try {
-      // 如果有搜索关键词，使用智能搜索
-      if (activeSearchQuery.trim()) {
-        if (intelligentSearch) {
-          try {
-            const searchResult = await intelligentSearch(activeSearchQuery, {
-              category: selectedCategory !== 'all' ? selectedCategory : undefined,
-              country: selectedCountry !== 'all' ? selectedCountry : undefined,
-              limit: limit
-            })
-            
-            // 只显示产品类型的结果
-            const productResults = searchResult.results.filter((r: any) => r.type === 'product')
-            setProducts(productResults.map((r: any) => ({
-              id: r.id,
-              name: r.title,
-              product_name: r.title,
-              product_code: r.metadata?.productCode,
-              product_category: r.subtitle,
-              description: r.description,
-              country_of_origin: r.metadata?.manufacturerCountry,
-              manufacturer_name: r.metadata?.manufacturerName,
-              risk_level: r.metadata?.riskLevel,
-              similarity: r.similarity
-            })))
-            setTotal(searchResult.total)
-          } catch (searchErr) {
-            console.error('Search failed, falling back to product list:', searchErr)
-            // Fall back to regular product listing with search filter
-            const filters: any = { search: activeSearchQuery }
-            if (selectedCountry !== 'all') filters.country = selectedCountry
-            if (selectedCategory !== 'all') filters.category = selectedCategory
-            
-            const result = await getPPEProductsClient({
-              page,
-              limit,
-              filters,
-            })
-            setProducts(result.data)
-            setTotal(result.total)
-          }
-        } else {
-          // intelligentSearch not available, use basic search via getPPEProductsClient
-          const filters: any = { search: activeSearchQuery }
-          if (selectedCountry !== 'all') filters.country = selectedCountry
-          if (selectedCategory !== 'all') filters.category = selectedCategory
-          
-          const result = await getPPEProductsClient({
-            page,
-            limit,
-            filters,
-          })
-          setProducts(result.data)
-          setTotal(result.total)
-        }
-      } else {
-        // 加载产品列表
-        const filters: any = {}
-        if (selectedCountry !== 'all') filters.country = selectedCountry
-        if (selectedCategory !== 'all') filters.category = selectedCategory
-        
-        const result = await getPPEProductsClient({
-          page,
-          limit,
-          filters,
-        })
-        
-        setProducts(result.data)
-        setTotal(result.total)
+      // Load all products without search filter first, then filter client-side
+      const filters: any = {}
+      if (selectedCountry !== 'all') filters.country = selectedCountry
+      if (selectedCategory !== 'all') filters.category = selectedCategory
+
+      const result = await getPPEProductsClient({
+        page: 1,
+        limit: 1000, // Load more for client-side filtering
+        filters,
+      })
+
+      const loaded = result.data || []
+      setAllProducts(loaded)
+
+      // Apply client-side search if needed
+      let filtered = loaded
+      if (searchQuery.trim()) {
+        filtered = filterProductsClientSide(loaded, searchQuery, selectedCountry, selectedCategory)
       }
-      
+
+      // Paginate
+      const from = (page - 1) * limit
+      const paginated = filtered.slice(from, from + limit)
+
+      setProducts(paginated)
+      setTotal(filtered.length)
+
       // 加载统计数据
       try {
         const statsData = await getPPEProductStats()
         setStats(statsData)
       } catch (statsErr) {
         console.error('Failed to load stats (non-critical):', statsErr)
-        // Stats are non-critical, don't set error state
       }
     } catch (err) {
       console.error('Failed to load products:', err)
-      // Show the page with empty data instead of crashing
       setProducts([])
       setTotal(0)
       setError('Failed to load products. The database may be temporarily unavailable. Please try again later.')
     } finally {
       setLoading(false)
     }
-  }, [page, selectedCountry, selectedCategory, activeSearchQuery, limit])
+  }, [page, selectedCountry, selectedCategory, searchQuery, limit])
 
-  // 当筛选条件、分页或搜索词变化时加载产品数据
+  // 当筛选条件、分页变化时加载产品数据
   useEffect(() => {
     loadProducts()
-  }, [loadProducts, searchTrigger])
-
-  async function loadFilterOptions() {
-    try {
-      const [countriesList, categoriesList] = await Promise.all([
-        getPPECountries(),
-        getPPECategories()
-      ])
-      setCountries(countriesList)
-      setCategories(categoriesList)
-    } catch (err) {
-      console.error('Failed to load filter options:', err)
-    }
-  }
+  }, [loadProducts])
 
   // 处理搜索
   const handleSearch = () => {
-    console.log('handleSearch called with:', searchQuery)
     setPage(1)
-    setActiveSearchQuery(searchQuery)
-    setSearchTrigger(prev => prev + 1)
+    // Trigger reload which will apply search
+    loadProducts()
   }
 
   // 处理回车键搜索
@@ -254,7 +205,7 @@ function ProductsPageContent() {
 
   // 计算分页
   const totalPages = Math.ceil(total / limit)
-  const startIndex = (page - 1) * limit + 1
+  const startIndex = total > 0 ? (page - 1) * limit + 1 : 0
   const endIndex = Math.min(page * limit, total)
 
   // 生成分页页码（最多显示5页）
@@ -263,11 +214,11 @@ function ProductsPageContent() {
     const maxVisible = 5
     let startPage = Math.max(1, page - Math.floor(maxVisible / 2))
     let endPage = Math.min(totalPages, startPage + maxVisible - 1)
-    
+
     if (endPage - startPage + 1 < maxVisible) {
       startPage = Math.max(1, endPage - maxVisible + 1)
     }
-    
+
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i)
     }
@@ -277,7 +228,7 @@ function ProductsPageContent() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <motion.section 
+      <motion.section
         className="bg-gradient-to-br from-[#339999]/10 via-white to-white py-20"
         initial="initial"
         animate="animate"
@@ -302,7 +253,7 @@ function ProductsPageContent() {
 
       {/* Stats Bar */}
       {stats && (
-        <motion.section 
+        <motion.section
           className="py-8 bg-white border-b"
           initial="initial"
           whileInView="animate"
@@ -312,10 +263,10 @@ function ProductsPageContent() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                { value: stats.totalProducts, label: t.totalProducts },
-                { value: Object.keys(stats.countryCount).length, label: t.countries },
-                { value: Object.keys(stats.categoryCount).length, label: t.categories },
-                { value: Object.keys(stats.riskLevelCount || {}).length, label: 'Risk Levels' },
+                { value: stats.totalProducts ?? 0, label: t.totalProducts },
+                { value: Object.keys(stats.countryCount ?? {}).length, label: t.countries },
+                { value: Object.keys(stats.categoryCount ?? {}).length, label: t.categories },
+                { value: Object.keys(stats.riskLevelCount ?? {}).length, label: 'Risk Levels' },
               ].map((stat, i) => (
                 <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
                   <div className="text-4xl font-bold text-[#339999] mb-1">{stat.value}</div>
@@ -328,7 +279,7 @@ function ProductsPageContent() {
       )}
 
       {/* Main Content */}
-      <motion.section 
+      <motion.section
         className="py-12"
         initial="initial"
         whileInView="animate"
@@ -468,10 +419,10 @@ function ProductsPageContent() {
                     </p>
                   </div>
 
-                  <div 
+                  <div
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                   >
-                    {products.map((product, index) => (
+                    {products.map((product) => (
                       <div key={product.id}>
                         <Link
                           href={`/products/${product.id}`}
@@ -531,7 +482,7 @@ function ProductsPageContent() {
 
                   {/* Pagination */}
                   {totalPages > 1 && (
-                    <div 
+                    <div
                       className="mt-10 flex items-center justify-center gap-2"
                     >
                       <button
@@ -542,7 +493,7 @@ function ProductsPageContent() {
                         <ChevronLeft className="w-4 h-4" />
                         {t.previous}
                       </button>
-                      
+
                       {getPageNumbers().map((pageNum) => (
                         <button
                           key={pageNum}
@@ -575,11 +526,11 @@ function ProductsPageContent() {
                 <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
                   <Package className="w-20 h-20 text-gray-300 mx-auto mb-6" />
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    {activeSearchQuery.trim() ? t.noSearchResults : t.noProductsFound}
+                    {searchQuery.trim() ? t.noSearchResults : t.noProductsFound}
                   </h3>
                   <p className="text-gray-600">
-                    {activeSearchQuery.trim() 
-                      ? `No products found for "${activeSearchQuery}". Try different keywords or adjust filters.`
+                    {searchQuery.trim()
+                      ? `No products found for "${searchQuery}". Try different keywords or adjust filters.`
                       : t.tryAdjustingSearch
                     }
                   </p>

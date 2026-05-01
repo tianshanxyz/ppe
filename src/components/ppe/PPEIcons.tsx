@@ -1,29 +1,30 @@
 import {
   Shield,
   HardHat,
-  Eye,
   HandHelping,
   VenetianMask,
-  Bandage,
   Footprints,
   ShieldCheck,
-  Ear,
   Hand,
   Shirt,
+  Glasses,
+  Headphones,
+  HeartPulse,
+  Wind,
 } from 'lucide-react';
 
 export const PPEIconMap = {
   masks: VenetianMask,
   'protective-clothing': Shirt,
   gloves: Hand,
-  'eye-protection': Eye,
+  'eye-protection': Glasses,
   'head-protection': HardHat,
   'safety-footwear': Footprints,
   'face-shield': ShieldCheck,
-  respirators: Bandage,
-  'ear-protection': Ear,
+  respirators: Wind,
+  'ear-protection': Headphones,
   'hand-protection': HandHelping,
-  'body-protection': Shield,
+  'body-protection': HeartPulse,
 };
 
 interface PPEIconProps {
