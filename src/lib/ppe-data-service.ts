@@ -204,7 +204,7 @@ export async function getPPEStats() {
     .from('ppe_products')
     .select('category')
   
-  const categoryCount = categoryStats?.reduce((acc, product) => {
+  const categoryCount = categoryStats?.reduce((acc: Record<string, number>, product: any) => {
     acc[product.category] = (acc[product.category] || 0) + 1
     return acc
   }, {} as Record<string, number>) || {}
@@ -215,7 +215,7 @@ export async function getPPEStats() {
     .select('target_markets')
   
   const marketCount: Record<string, number> = {}
-  marketStats?.forEach(product => {
+  marketStats?.forEach((product: any) => {
     product.target_markets?.forEach((market: string) => {
       marketCount[market] = (marketCount[market] || 0) + 1
     })
@@ -271,12 +271,12 @@ export async function getComplianceData(categoryId: string, marketCode: string) 
   }
   
   // 汇总合规要求
-  const allRegulations = products.flatMap(product => 
+  const allRegulations = products.flatMap((product: any) => 
     product.ppe_product_regulations?.map((pr: any) => pr.ppe_regulations) || []
   )
   
   const uniqueRegulations = allRegulations.filter(
-    (reg, index, self) => index === self.findIndex(r => r.id === reg.id)
+    (reg: any, index: number, self: any[]) => index === self.findIndex((r: any) => r.id === reg.id)
   )
   
   // 生成合规报告
@@ -284,7 +284,7 @@ export async function getComplianceData(categoryId: string, marketCode: string) 
     category_id: categoryId,
     market_code: marketCode,
     classification: getCategoryRiskLevel(categoryId, marketCode),
-    standards: uniqueRegulations.map(reg => ({
+    standards: uniqueRegulations.map((reg: any) => ({
       name: reg.regulation_name,
       title: reg.description,
       url: reg.official_source_url || '#',

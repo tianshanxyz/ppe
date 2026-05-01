@@ -13,6 +13,7 @@ export interface RegulatoryAlert {
   summary: string
   action: string
   reference: string
+  sourceUrl: string
   fullText: string
 }
 
@@ -26,6 +27,7 @@ export const REGULATORY_ALERTS: RegulatoryAlert[] = [
     summary: 'The 60-day public comment period for FDA draft guidance on NIOSH-approved air-purifying respirators closes on June 19, 2026. Manufacturers must submit comments or prepare for final guidance implementation.',
     action: 'Submit comments to FDA docket FDA-2026-D-XXXX before June 19, 2026. Review current 510(k) submissions for potential impact.',
     reference: 'Federal Register Document 2026-07613',
+    sourceUrl: 'https://www.fda.gov/medical-devices',
     fullText: `The U.S. Food and Drug Administration (FDA) has issued a draft guidance document addressing the regulatory pathway for NIOSH-approved air-purifying respirators used in healthcare settings. This guidance clarifies the 510(k) submission requirements for respirators that hold NIOSH approval under 42 CFR Part 84 and are also intended for surgical use.
 
 The draft guidance introduces several key changes from previous policy. First, it establishes updated performance criteria for filter efficiency testing, aligning FDA requirements more closely with NIOSH testing protocols. Second, it provides new recommendations for biocompatibility testing specific to respirator materials that contact the user's skin and respiratory tract. Third, the guidance addresses labeling requirements for respirators marketed for both industrial and healthcare use.
@@ -41,6 +43,7 @@ Manufacturers should note that once finalized, this guidance will supersede the 
     summary: 'NMPA Announcement No. 107 of 2025 revises Good Manufacturing Practice for Medical Devices. All PPE manufacturers exporting to China must comply by November 1, 2026.',
     action: 'Update quality management system documentation. Prepare for enhanced production environment monitoring and traceability requirements.',
     reference: 'NMPA Announcement No. 107 of 2025',
+    sourceUrl: 'https://www.nmpa.gov.cn/',
     fullText: `The National Medical Products Administration (NMPA) has published Announcement No. 107 of 2025, which introduces comprehensive revisions to the Good Manufacturing Practice (GMP) for Medical Devices. These revised requirements will take effect on November 1, 2026, and apply to all domestic and foreign manufacturers of medical devices, including PPE classified as medical devices under China's regulatory framework.
 
 The revised GMP introduces significant changes in three major areas. First, production environment monitoring requirements have been substantially enhanced. Manufacturers must now implement real-time environmental monitoring systems in cleanrooms and controlled environments, with automated data logging and alert mechanisms. The acceptable limits for particulate and microbial contamination have been tightened, particularly for products classified as Class II and III medical devices.
@@ -58,6 +61,7 @@ Third, the revised GMP introduces new requirements for supplier qualification an
     summary: 'European Commission reports 35% increase in dangerous product alerts. PPE products with fraudulent CE marking are priority target for market surveillance authorities.',
     action: 'Verify CE marking authenticity. Ensure complete technical documentation and valid Notified Body certificates are available.',
     reference: 'EU Safety Gate Annual Report 2025 / Regulation (EU) 2019/1020',
+    sourceUrl: 'https://ec.europa.eu/growth/sectors/mechanical-engineering/ppe_en',
     fullText: `The European Commission's Safety Gate rapid alert system has reported a 35% increase in notifications for dangerous products in 2025, with PPE products being a particular focus area. Market surveillance authorities across EU member states have identified a growing number of PPE products bearing fraudulent or non-compliant CE marking, prompting a coordinated enforcement crackdown.
 
 Under Regulation (EU) 2019/1020, market surveillance authorities now have enhanced powers to inspect products both at EU borders and within the internal market. For PPE products, authorities are specifically checking: (1) the validity of CE marking and its conformity with the requirements of Regulation (EU) 2016/425, (2) the existence and completeness of technical documentation, (3) the validity of EU Type Examination certificates issued by Notified Bodies, and (4) the accuracy of the EU Declaration of Conformity.
@@ -75,6 +79,7 @@ The increased surveillance also extends to online marketplaces. The European Com
     summary: 'CE marking will no longer be accepted in Great Britain after December 31, 2027. All PPE products must bear UKCA marking for GB market access.',
     action: 'Engage UK Approved Body for UKCA certification. Update product labeling and technical documentation for UKCA compliance.',
     reference: 'UK Statutory Instrument 2026/456',
+    sourceUrl: 'https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency',
     fullText: `The UK government has confirmed that the transition period for CE marking recognition in Great Britain will end on December 31, 2027. After this date, all PPE products placed on the GB market (England, Scotland, and Wales) must bear the UKCA (UK Conformity Assessed) marking. CE marking alone will no longer be sufficient for market access in Great Britain.
 
 For PPE manufacturers, this transition requires several key actions. Products classified as Category II or III under the UK Equipment (Safety) Regulations 2016 must obtain certification from a UK Approved Body. This is distinct from EU Notified Body certification — manufacturers cannot rely on their EU Notified Body certificates for UKCA marking purposes. Some conformity assessment bodies hold both EU Notified Body and UK Approved Body designations, which may simplify the transition for existing certificate holders.
@@ -92,6 +97,7 @@ Manufacturers should note that Northern Ireland operates under separate rules un
     summary: 'Public consultation on 26 medical device registration guidelines closes February 28, 2026. Guidelines include enhanced requirements for PPE classified as medical devices.',
     action: 'Review draft guidelines and submit comments to NMPA. Prepare for updated registration requirements expected Q4 2026.',
     reference: 'NMPA Announcement (December 11, 2025)',
+    sourceUrl: 'https://www.nmpa.gov.cn/',
     fullText: `The National Medical Products Administration (NMPA) has opened a public consultation on 26 revised medical device registration guidelines, several of which directly impact PPE products classified as medical devices. The consultation period closes on February 28, 2026, and the finalized guidelines are expected to be published in Q4 2026.
 
 Among the 26 guidelines under revision, the most significant for PPE manufacturers include: (1) Technical Review Guidelines for Surgical Masks, which introduce updated performance requirements aligned with the latest EN 14683 and YY 0469 standards; (2) Technical Review Guidelines for Medical Protective Clothing, which add new requirements for liquid barrier performance and comfort testing; and (3) Technical Review Guidelines for Medical Respirators, which align testing requirements more closely with both NIOSH and EN 149 standards.
@@ -109,6 +115,7 @@ Foreign manufacturers should pay particular attention to the revised guidelines 
     summary: 'European Commission published 5th edition of PPE Regulation Guidelines. Notified Bodies and manufacturers must reference this edition for new certifications and renewals.',
     action: 'Update internal procedures to align with 5th edition guidelines. Review technical documentation for compliance with updated requirements.',
     reference: 'European Commission PPE Regulation Guidelines, 5th Edition',
+    sourceUrl: 'https://ec.europa.eu/growth/sectors/mechanical-engineering/ppe_en',
     fullText: `The European Commission has published the 5th edition of the PPE Regulation Guidelines, providing updated guidance on the interpretation and application of Regulation (EU) 2016/425 on personal protective equipment. This edition supersedes the 4th edition published in 2019 and introduces several important clarifications and new requirements.
 
 Key changes in the 5th edition include updated guidance on the classification of PPE products, particularly for products that may fall between categories. The guidelines provide new decision trees and examples to help manufacturers and Notified Bodies determine the correct risk category for borderline products. This is especially relevant for PPE products that incorporate electronic components or smart features, which the 5th edition addresses for the first time.

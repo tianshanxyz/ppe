@@ -40,15 +40,14 @@ export default function LoginPage() {
       if (email === demoEmail && password === demoPass) {
         // Store mock user session in localStorage
         localStorage.setItem('user', JSON.stringify(DEMO_CONFIG.userData))
-        // Redirect to dashboard
-        router.push('/dashboard')
-        router.refresh()
+        // Use full page reload to ensure dashboard picks up the new session
+        window.location.href = '/dashboard'
         return
       }
 
       // Normal Supabase auth flow
       const { user, error: authError } = await signIn(email, password)
-      
+
       if (authError) {
         setError(authError.message)
         setIsLoading(false)
@@ -56,9 +55,17 @@ export default function LoginPage() {
       }
 
       if (user) {
-        // Login successful, redirect to dashboard
-        router.push('/dashboard')
-        router.refresh()
+        // Store user data in localStorage for dashboard access
+        localStorage.setItem('user', JSON.stringify({
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata?.name || user.email?.split('@')[0] || 'User',
+          role: user.role || 'user',
+          membership: user.user_metadata?.membership || 'free',
+          created_at: user.created_at,
+        }))
+        // Use full page reload to ensure dashboard picks up the new session
+        window.location.href = '/dashboard'
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.')

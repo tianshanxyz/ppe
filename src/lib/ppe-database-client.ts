@@ -460,7 +460,7 @@ export async function getPPEProductStatsClient() {
       .select('country_of_origin')
     
     const countryCount: Record<string, number> = {}
-    countries?.forEach(p => {
+    countries?.forEach((p: any) => {
       const country = p.country_of_origin
       if (country) {
         countryCount[country] = (countryCount[country] || 0) + 1
@@ -473,7 +473,7 @@ export async function getPPEProductStatsClient() {
       .select('category,product_category')
     
     const categoryCount: Record<string, number> = {}
-    categories?.forEach(p => {
+    categories?.forEach((p: any) => {
       const category = p.product_category || p.category
       if (category) {
         categoryCount[category] = (categoryCount[category] || 0) + 1
@@ -486,7 +486,7 @@ export async function getPPEProductStatsClient() {
       .select('risk_level')
     
     const riskLevelCount: Record<string, number> = {}
-    riskLevels?.forEach(p => {
+    riskLevels?.forEach((p: any) => {
       if (p.risk_level) {
         riskLevelCount[p.risk_level] = (riskLevelCount[p.risk_level] || 0) + 1
       }
@@ -554,7 +554,7 @@ export async function getPPECategoriesClient() {
     }
     
     const categories = new Set<string>()
-    data?.forEach(p => {
+    data?.forEach((p: any) => {
       if (p.product_category) {
         categories.add(p.product_category)
       }
@@ -588,7 +588,7 @@ export async function getPPECountriesClient() {
     }
     
     const countries = new Set<string>()
-    data?.forEach(p => {
+    data?.forEach((p: any) => {
       if (p.country_of_origin) {
         countries.add(p.country_of_origin)
       }
@@ -613,7 +613,7 @@ export async function getMarketStatsClient() {
     .from('ppe_product_markets')
     .select('market, market_name, status')
   
-  const marketStats = marketData?.reduce((acc, market) => {
+  const marketStats = marketData?.reduce((acc: any, market: any) => {
     const key = market.market || 'Unknown'
     if (!acc[key]) {
       acc[key] = {

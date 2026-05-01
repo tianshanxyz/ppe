@@ -119,6 +119,17 @@ export default function RegulatoryAlertDetailPage() {
             <h2 className="text-xl font-bold text-gray-900">Reference</h2>
           </div>
           <p className="text-gray-700">{alert.reference}</p>
+          {alert.sourceUrl && (
+            <a
+              href={alert.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-4 px-4 py-2.5 bg-[#339999]/10 text-[#339999] rounded-lg hover:bg-[#339999]/20 transition-colors text-sm font-medium"
+            >
+              <ExternalLink className="w-4 h-4" />
+              View Official Source
+            </a>
+          )}
         </div>
 
         {/* Related Alerts Section */}

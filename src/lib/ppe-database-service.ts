@@ -222,7 +222,7 @@ export async function getPPEProductStats() {
   const ppeCategoryCount: Record<string, number> = {}
   const statusCount: Record<string, number> = {}
 
-  allStats?.forEach((product) => {
+  allStats?.forEach((product: any) => {
     const country = product.manufacturer_country || 'Unknown'
     countryCount[country] = (countryCount[country] || 0) + 1
 
@@ -395,7 +395,7 @@ export async function getPPECountries() {
     return []
   }
   
-  const countries = Array.from(new Set(data?.map(p => p.manufacturer_country).filter(Boolean)))
+  const countries = Array.from(new Set(data?.map((p: any) => p.manufacturer_country).filter(Boolean)))
   return countries.sort()
 }
 
@@ -414,7 +414,7 @@ export async function getPPECategories() {
     return []
   }
   
-  const categories = Array.from(new Set(data?.map(p => p.product_category).filter(Boolean)))
+  const categories = Array.from(new Set(data?.map((p: any) => p.product_category).filter(Boolean)))
   return categories.sort()
 }
 
@@ -455,7 +455,7 @@ export async function getMarketStats() {
     .from('ppe_product_markets')
     .select('market, market_name, status')
   
-  const marketStats = marketData?.reduce((acc, market) => {
+  const marketStats = marketData?.reduce((acc: any, market: any) => {
     const key = market.market || 'Unknown'
     if (!acc[key]) {
       acc[key] = {

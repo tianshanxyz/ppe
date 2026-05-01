@@ -1,14 +1,63 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, Component, ReactNode } from 'react'
 import { Search, Filter, Package, BarChart3, ExternalLink, CheckCircle2, AlertCircle, ChevronLeft, ChevronRight, Shield } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { getPPEProductsClient, getPPEProductStats, getPPECategories, getPPECountries } from '@/lib/ppe-database-client'
-import { intelligentSearch, SearchResult } from '@/lib/search-service'
-import { PPEIcon } from '@/components/ppe/PPEIcons'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { productTranslations, getTranslations } from '@/lib/i18n/translations'
+
+// Lazy-load intelligentSearch to prevent import errors from crashing the page
+let intelligentSearch: any = null
+try {
+  // Dynamic import will be handled at runtime
+  import('@/lib/search-service').then(mod => {
+    intelligentSearch = mod.intelligentSearch
+  }).catch(() => {
+    console.warn('search-service module not available, search will be disabled')
+  })
+} catch {
+  console.warn('search-service module not available, search will be disabled')
+}
+
+// Error Boundary Component
+class ProductsErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean; error: Error | null }> {
+  constructor(props: { children: ReactNode }) {
+    super(props)
+    this.state = { hasError: false, error: null }
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center max-w-md mx-auto px-4">
+            <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Product Database</h2>
+            <p className="text-gray-600 mb-6">
+              The product database is currently unavailable. This may be due to a configuration issue or temporary outage.
+            </p>
+            <button
+              onClick={() => {
+                this.setState({ hasError: false, error: null })
+                window.location.reload()
+              }}
+              className="px-6 py-3 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -39,6 +88,14 @@ function getRiskLevelStyle(riskLevel: string) {
 }
 
 export default function ProductsPage() {
+  return (
+    <ProductsErrorBoundary>
+      <ProductsPageContent />
+    </ProductsErrorBoundary>
+  )
+}
+
+function ProductsPageContent() {
   const locale = useLocale()
   const t = getTranslations(productTranslations, locale)
 
@@ -73,32 +130,60 @@ export default function ProductsPage() {
     setError(null)
     
     try {
-      console.log('loadProducts called, activeSearchQuery:', activeSearchQuery)
       // 如果有搜索关键词，使用智能搜索
       if (activeSearchQuery.trim()) {
-        console.log('Using intelligentSearch with:', activeSearchQuery)
-        const searchResult = await intelligentSearch(activeSearchQuery, {
-          category: selectedCategory !== 'all' ? selectedCategory : undefined,
-          country: selectedCountry !== 'all' ? selectedCountry : undefined,
-          limit: limit
-        })
-        
-        // 只显示产品类型的结果
-        const productResults = searchResult.results.filter(r => r.type === 'product')
-        console.log('Search results:', searchResult.total, 'products found')
-        setProducts(productResults.map(r => ({
-          id: r.id,
-          name: r.title,
-          product_name: r.title,
-          product_code: r.metadata?.productCode,
-          product_category: r.subtitle,
-          description: r.description,
-          country_of_origin: r.metadata?.manufacturerCountry,
-          manufacturer_name: r.metadata?.manufacturerName,
-          risk_level: r.metadata?.riskLevel,
-          similarity: r.similarity
-        })))
-        setTotal(searchResult.total)
+        if (intelligentSearch) {
+          try {
+            const searchResult = await intelligentSearch(activeSearchQuery, {
+              category: selectedCategory !== 'all' ? selectedCategory : undefined,
+              country: selectedCountry !== 'all' ? selectedCountry : undefined,
+              limit: limit
+            })
+            
+            // 只显示产品类型的结果
+            const productResults = searchResult.results.filter((r: any) => r.type === 'product')
+            setProducts(productResults.map((r: any) => ({
+              id: r.id,
+              name: r.title,
+              product_name: r.title,
+              product_code: r.metadata?.productCode,
+              product_category: r.subtitle,
+              description: r.description,
+              country_of_origin: r.metadata?.manufacturerCountry,
+              manufacturer_name: r.metadata?.manufacturerName,
+              risk_level: r.metadata?.riskLevel,
+              similarity: r.similarity
+            })))
+            setTotal(searchResult.total)
+          } catch (searchErr) {
+            console.error('Search failed, falling back to product list:', searchErr)
+            // Fall back to regular product listing with search filter
+            const filters: any = { search: activeSearchQuery }
+            if (selectedCountry !== 'all') filters.country = selectedCountry
+            if (selectedCategory !== 'all') filters.category = selectedCategory
+            
+            const result = await getPPEProductsClient({
+              page,
+              limit,
+              filters,
+            })
+            setProducts(result.data)
+            setTotal(result.total)
+          }
+        } else {
+          // intelligentSearch not available, use basic search via getPPEProductsClient
+          const filters: any = { search: activeSearchQuery }
+          if (selectedCountry !== 'all') filters.country = selectedCountry
+          if (selectedCategory !== 'all') filters.category = selectedCategory
+          
+          const result = await getPPEProductsClient({
+            page,
+            limit,
+            filters,
+          })
+          setProducts(result.data)
+          setTotal(result.total)
+        }
       } else {
         // 加载产品列表
         const filters: any = {}
@@ -116,11 +201,19 @@ export default function ProductsPage() {
       }
       
       // 加载统计数据
-      const statsData = await getPPEProductStats()
-      setStats(statsData)
+      try {
+        const statsData = await getPPEProductStats()
+        setStats(statsData)
+      } catch (statsErr) {
+        console.error('Failed to load stats (non-critical):', statsErr)
+        // Stats are non-critical, don't set error state
+      }
     } catch (err) {
       console.error('Failed to load products:', err)
-      setError('Failed to load products. Please try again later.')
+      // Show the page with empty data instead of crashing
+      setProducts([])
+      setTotal(0)
+      setError('Failed to load products. The database may be temporarily unavailable. Please try again later.')
     } finally {
       setLoading(false)
     }

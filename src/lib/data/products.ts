@@ -144,7 +144,7 @@ export async function getProductCategories() {
       }
 
       // 提取唯一的分类
-      const categories = [...new Set(data.map(item => item.category))]
+      const categories = [...new Set(data.map((item: any) => item.category))]
       return { categories, error: null }
     },
     cacheTTL.extended

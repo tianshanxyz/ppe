@@ -143,7 +143,7 @@ export async function getManufacturerStats() {
       const byCountry: Record<string, number> = {}
       const byVerification: Record<string, number> = {}
 
-      data.forEach(m => {
+      data.forEach((m: any) => {
         byCountry[m.country] = (byCountry[m.country] || 0) + 1
         byVerification[m.verification_status] = (byVerification[m.verification_status] || 0) + 1
       })

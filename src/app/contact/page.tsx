@@ -2,8 +2,16 @@
 
 import { useState } from 'react'
 import emailjs from '@emailjs/browser'
-import { Mail, MapPin, Phone, Send, CheckCircle, Building, Clock } from 'lucide-react'
+import { Mail, MapPin, Phone, Send, CheckCircle, Building, Clock, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
+
+// EmailJS configuration - these are public keys safe to expose in client code
+const EMAILJS_SERVICE_ID = 'service_uv0j9z9'
+const EMAILJS_TEMPLATE_ID = 'template_wiumo8o'
+const EMAILJS_PUBLIC_KEY = '1_y80J3lBqJfYafV7'
+
+// Fallback email address for when EmailJS is unavailable
+const FALLBACK_EMAIL = 'info@h-guardian.com'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -14,29 +22,44 @@ export default function ContactPage() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
+    // Clear error when user starts editing
+    if (error) setError(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
+    setError(null)
     try {
-      await emailjs.send('service_uv0j9z9', 'template_wiumo8o', {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
         from_name: formData.name,
         from_email: formData.email,
         subject: formData.subject,
         message: formData.message,
-      }, '1_y80J3lBqJfYafV7')
+        to_name: 'MDLooker Team',
+        to_email: FALLBACK_EMAIL,
+      }, EMAILJS_PUBLIC_KEY)
       setSubmitted(true)
       setFormData({ name: '', email: '', subject: '', message: '' })
-    } catch (error) {
-      console.error('Email send failed:', error)
-      alert('Failed to send message. Please try again or email us directly at info@h-guardian.com')
+    } catch (err) {
+      console.error('Email send failed:', err)
+      setError('Failed to send your message through our email service. You can use the direct email link below instead.')
     } finally {
       setSubmitting(false)
     }
+  }
+
+  // Generate mailto link as fallback
+  const getMailtoLink = () => {
+    const subject = encodeURIComponent(`[Contact Form] ${formData.subject || 'General Inquiry'}`)
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+    )
+    return `mailto:${FALLBACK_EMAIL}?subject=${subject}&body=${body}`
   }
 
   return (
@@ -154,6 +177,25 @@ export default function ContactPage() {
                   <p className="text-gray-600 mb-8">
                     Fill out the form below and we&apos;ll get back to you as soon as possible.
                   </p>
+
+                  {/* Error State */}
+                  {error && (
+                    <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <p className="text-sm text-red-700 font-medium">{error}</p>
+                          <a
+                            href={getMailtoLink()}
+                            className="inline-flex items-center gap-1.5 mt-2 text-sm text-[#339999] hover:underline font-medium"
+                          >
+                            <Mail className="w-4 h-4" />
+                            Send via email client instead
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
