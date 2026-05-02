@@ -15,9 +15,9 @@ function Progress({ value, className }: { value: number; className?: string }) {
   )
 }
 import { 
-  Shield, 
-  Globe, 
   Database, 
+  Globe, 
+  Server, 
   CheckCircle, 
   XCircle, 
   RefreshCw,
@@ -89,11 +89,11 @@ export function DataSourceList() {
   const getIcon = (type: string) => {
     switch (type) {
       case 'government':
-        return <Shield className="w-5 h-5 text-primary-500" />
+        return <Database className="w-5 h-5 text-primary-500" />
       case 'official':
         return <Globe className="w-5 h-5 text-green-500" />
       default:
-        return <Database className="w-5 h-5 text-gray-500" />
+        return <Server className="w-5 h-5 text-gray-500" />
     }
   }
 

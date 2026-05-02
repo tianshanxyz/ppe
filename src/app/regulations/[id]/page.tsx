@@ -15,7 +15,7 @@ import {
   Globe,
   Building2,
   Loader2,
-  Shield,
+  Scale,
   Sparkles,
   AlertCircle,
   Search,
@@ -260,7 +260,7 @@ export default function RegulationDetailPage() {
           {/* Title row */}
           <div className="flex items-start gap-4 mt-2">
             <div className="flex-shrink-0 w-14 h-14 bg-[#339999]/10 rounded-xl flex items-center justify-center">
-              <Shield className="w-7 h-7 text-[#339999]" />
+              <Scale className="w-7 h-7 text-[#339999]" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2 mb-2">

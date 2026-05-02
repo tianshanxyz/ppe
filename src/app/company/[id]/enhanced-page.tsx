@@ -17,7 +17,7 @@ import {
   Phone,
   Mail,
   ExternalLink,
-  Shield,
+  BadgeCheck,
   AlertTriangle,
   CheckCircle,
   Package,
@@ -251,7 +251,7 @@ export default function EnhancedCompanyDetailPage() {
                 <h1 className="text-3xl font-bold text-gray-900">{company.company_name}</h1>
                 {company.data_verified && (
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    <Shield className="w-3 h-3 mr-1" />
+                    <BadgeCheck className="w-3 h-3 mr-1" />
                     已验证
                   </span>
                 )}

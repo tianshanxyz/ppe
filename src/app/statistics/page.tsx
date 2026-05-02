@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { getPPECategories, getTargetMarkets, getPPEStats, getComplianceData } from '@/lib/ppe-data'
-import { Package, FileText, Building, TrendingUp, Globe, Shield } from 'lucide-react'
+import { Package, FileText, Building, TrendingUp, Globe, BarChart3 } from 'lucide-react'
 
 const COLORS = ['#339999', '#2d8b8b', '#267d7d', '#1f6f6f', '#186161', '#115353', '#0a4545', '#033737', '#002929', '#001b1b']
 
@@ -286,7 +286,7 @@ export default function StatisticsPage() {
             {/* Compliance Complexity */}
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <Shield className="w-6 h-6 text-[#339999] mr-3" />
+                <BarChart3 className="w-6 h-6 text-[#339999] mr-3" />
                 Compliance Complexity by Category
               </h3>
               <ResponsiveContainer width="100%" height={400}>

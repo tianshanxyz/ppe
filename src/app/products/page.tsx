@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Search, Filter, Package, BarChart3, ExternalLink, AlertCircle, ChevronLeft, ChevronRight, Shield, Globe, Factory } from 'lucide-react'
+import { Search, Filter, Package, BarChart3, ExternalLink, AlertCircle, ChevronLeft, ChevronRight, Globe, Factory } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { getPPEProducts, getPPEStats, PPEProduct } from '@/lib/ppe-api-client'

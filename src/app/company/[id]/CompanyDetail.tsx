@@ -5,7 +5,7 @@ import {
   MapPin, 
   Globe, 
   Calendar, 
-  Shield, 
+  BadgeCheck,
   ExternalLink,
   Database,
   ChevronRight,
@@ -139,7 +139,7 @@ const riskLevelConfig = {
 }
 
 const trustLevelConfig = {
-  HIGH: { color: 'bg-green-100 text-green-700', icon: Shield },
+  HIGH: { color: 'bg-green-100 text-green-700', icon: BadgeCheck },
   MEDIUM: { color: 'bg-amber-100 text-amber-700', icon: Info },
   LOW: { color: 'bg-red-100 text-red-700', icon: AlertTriangle },
 }
@@ -312,7 +312,7 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
                     )}
                   </div>
                 </div>
-                <Shield className="w-10 h-10 text-[#339999]" />
+                <BadgeCheck className="w-10 h-10 text-[#339999]" />
               </div>
             </Card>
 
@@ -535,7 +535,7 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
             {/* ====== Section 2: Compliance Information ====== */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <Shield className="w-6 h-6 text-[#339999] mr-3" />
+                <Award className="w-6 h-6 text-[#339999] mr-3" />
                 Compliance Information
               </h2>
 
@@ -627,7 +627,7 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
                   </div>
                 ) : (
                   <div className="text-center py-12 bg-gray-50 rounded-lg">
-                    <Shield className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                    <Package className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-gray-900">No registered devices found</h3>
                     <p className="text-gray-500 mt-1">This company has no registered medical devices in our database</p>
                   </div>
@@ -824,7 +824,7 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
                       </div>
                     ) : (
                       <div className="text-center py-12">
-                        <Shield className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                        <Package className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-gray-900">No registered devices found</h3>
                         <p className="text-gray-500 mt-1">This company has no registered medical devices in our database</p>
                       </div>

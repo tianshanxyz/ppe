@@ -13,8 +13,8 @@ import {
   Settings,
   LogOut,
   ChevronRight,
-  Shield,
   Package,
+  Bookmark,
   CheckCircle,
   AlertTriangle,
   Clock,
@@ -241,7 +241,7 @@ function formatRelativeTime(timestamp: string): string {
 function getActivityIcon(type: ActivityItem['type']) {
   switch (type) {
     case 'compliance_check':
-      return { icon: Shield, bg: 'bg-[#339999]/10', color: 'text-[#339999]' };
+      return { icon: CheckCircle, bg: 'bg-[#339999]/10', color: 'text-[#339999]' };
     case 'document_download':
       return { icon: Download, bg: 'bg-green-100', color: 'text-green-600' };
     case 'product_search':
@@ -262,7 +262,7 @@ function getSavedItemIcon(type: SavedItem['type']) {
     case 'product':
       return { icon: Package, bg: 'bg-blue-100', color: 'text-blue-600' };
     case 'regulation':
-      return { icon: Shield, bg: 'bg-purple-100', color: 'text-purple-600' };
+      return { icon: Bookmark, bg: 'bg-purple-100', color: 'text-purple-600' };
     case 'guide':
       return { icon: BookOpen, bg: 'bg-[#339999]/10', color: 'text-[#339999]' };
     default:
@@ -425,7 +425,7 @@ export default function DashboardPage() {
       color: 'text-blue-600',
     },
     {
-      icon: Shield,
+      icon: CheckCircle,
       title: 'Check Compliance',
       description: 'Verify product compliance status',
       href: '/market-access',
@@ -520,7 +520,7 @@ export default function DashboardPage() {
               <Card className="p-4 bg-white shadow-sm">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-[#339999]/10 rounded-lg flex items-center justify-center">
-                    <Shield className="w-5 h-5 text-[#339999]" />
+                    <Activity className="w-5 h-5 text-[#339999]" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-gray-800">{activityStats.complianceChecks}</div>
@@ -816,7 +816,7 @@ export default function DashboardPage() {
           {/* Compliance Tools (kept from original) */}
           <div className="mb-8">
             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <Shield className="w-5 h-5 text-[#339999]" />
+              <Settings className="w-5 h-5 text-[#339999]" />
               Compliance Tools
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

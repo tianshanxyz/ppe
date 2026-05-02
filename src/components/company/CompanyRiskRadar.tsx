@@ -8,7 +8,7 @@
  */
 
 import { useMemo } from 'react'
-import { AlertTriangle, Shield, CheckCircle, Info } from 'lucide-react'
+import { AlertTriangle, BadgeCheck, CheckCircle, Info } from 'lucide-react'
 import { ManufacturerCreditScore } from '@/lib/database/enhanced-types'
 
 interface CompanyRiskRadarProps {
@@ -23,7 +23,7 @@ export function CompanyRiskRadar({ creditScore, className = '' }: CompanyRiskRad
         name: '合规历史',
         score: creditScore.dimensions.compliance_history.score,
         weight: 40,
-        icon: Shield,
+        icon: BadgeCheck,
         color: getScoreColor(creditScore.dimensions.compliance_history.score),
         details: [
           `总认证数: ${creditScore.dimensions.compliance_history.total_certifications}`,

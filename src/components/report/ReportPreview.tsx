@@ -8,7 +8,6 @@ import {
   Eye,
   CheckCircle,
   Clock,
-  Shield,
   Building2,
   TrendingUp,
   Lock,
@@ -53,7 +52,7 @@ const reportConfig: Record<ReportType, {
   compliance: {
     title: '合规性报告',
     description: '全面的合规状态分析，包括注册证书、监管历史和市场准入状态',
-    icon: Shield,
+    icon: FileText,
     color: 'text-blue-600',
     bgColor: 'bg-blue-50',
     estimatedTime: '2-3 分钟',

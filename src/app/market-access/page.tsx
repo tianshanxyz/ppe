@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { CheckCircle, XCircle, AlertCircle, ArrowRight, FileText, Clock, DollarSign, Shield, Globe, ExternalLink, CheckCircle2, ChevronDown, ChevronUp, Layers, Package, Settings, BarChart3, Calculator, TrendingUp, Sparkles } from 'lucide-react'
+import { CheckCircle, XCircle, AlertCircle, ArrowRight, FileText, Clock, DollarSign, BadgeCheck, Globe, ExternalLink, CheckCircle2, ChevronDown, ChevronUp, Layers, Package, Settings, BarChart3, Calculator, TrendingUp, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { getPPECategories, getTargetMarkets, getComplianceData } from '@/lib/ppe-data'
 import { PPEIcon } from '@/components/ppe/PPEIcons'
@@ -424,7 +424,7 @@ export default function MarketAccessPage() {
                 {/* Protection Level */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    <Shield className="w-4 h-4 inline mr-2" />
+                    <BadgeCheck className="w-4 h-4 inline mr-2" />
                     Protection Level
                   </label>
                   <div className="flex flex-wrap gap-3">
@@ -732,7 +732,7 @@ export default function MarketAccessPage() {
                     </div>
                     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                       <div className="flex items-center">
-                        <Shield className="w-5 h-5 text-[#339999] mr-3" />
+                        <FileText className="w-5 h-5 text-[#339999] mr-3" />
                         <span className="text-gray-700">Notified Body / Authority Fees</span>
                       </div>
                       <span className="font-semibold text-gray-900">
@@ -778,7 +778,7 @@ export default function MarketAccessPage() {
                 className="w-full px-8 py-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center">
-                  <Shield className="w-6 h-6 text-[#339999] mr-3" />
+                  <FileText className="w-6 h-6 text-[#339999] mr-3" />
                   <h3 className="text-2xl font-bold text-gray-900">
                     Certification Requirements
                   </h3>

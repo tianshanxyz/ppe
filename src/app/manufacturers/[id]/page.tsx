@@ -6,7 +6,7 @@ import Link from 'next/link'
 import {
   ArrowLeft, Building, Globe, ExternalLink, Download,
   MapPin, Award, AlertTriangle, CheckCircle, Package,
-  Users, Calendar, DollarSign, Shield, FileText,
+  Users, Calendar, DollarSign, FileText,
   TrendingUp, AlertCircle
 } from 'lucide-react'
 import { getPPEManufacturer } from '@/lib/ppe-database-client'
@@ -217,8 +217,8 @@ export default function ManufacturerDetailPage() {
               {/* Compliance & Certifications */}
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <Shield className="w-6 h-6 text-[#339999] mr-3" />
-                  Compliance & Certifications
+                  <Award className="w-6 h-6 text-[#339999] mr-3" />
+                Compliance & Certifications
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center p-4 bg-green-50 rounded-lg">

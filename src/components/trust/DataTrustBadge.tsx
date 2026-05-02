@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Shield, 
+  BadgeCheck, 
   CheckCircle, 
   Clock, 
   ExternalLink, 
@@ -102,7 +102,7 @@ export function DataTrustBadge({
   const tooltipContent = (
     <div className="w-64 p-3 space-y-3">
       <div className="flex items-center gap-2 pb-2 border-b border-gray-200">
-        <Shield className="w-5 h-5 text-primary-500" />
+        <BadgeCheck className="w-5 h-5 text-primary-500" />
         <span className="font-semibold text-gray-900">数据可信度详情</span>
       </div>
       

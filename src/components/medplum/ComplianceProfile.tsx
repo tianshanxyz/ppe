@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, Badge, Button, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui';
-import { FileText, Download, Shield, CheckCircle, AlertTriangle, Clock, Calendar, Globe, Database } from 'lucide-react';
+import { FileText, Download, BadgeCheck, CheckCircle, AlertTriangle, Clock, Calendar, Globe, Database } from 'lucide-react';
 import { DataSourceBadge } from './DataSourceBadge';
 import { searchMedplumDevices, searchMedplumOrganizations, searchMedplumRegulatoryAuthorizations, isMedplumEnabled } from '@/lib/medplum';
 
@@ -274,7 +274,7 @@ export function ComplianceProfile({ companyName, productId, className = '' }: Co
             <TabsContent value="regulations" className="mt-4 space-y-4">
               {profileData.regulations.length === 0 ? (
                 <div className="text-center py-8">
-                  <Shield className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+                  <FileText className="w-12 h-12 text-gray-300 mx-auto mb-2" />
                   <p className="text-gray-500">No regulatory authorizations found</p>
                 </div>
               ) : (

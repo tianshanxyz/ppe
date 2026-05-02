@@ -9,7 +9,7 @@ import {
   FileSpreadsheet,
   FileCheck,
   BookOpen,
-  Shield,
+  Scale,
   ClipboardList,
   Clock,
   X,
@@ -37,7 +37,7 @@ const CATEGORIES = [
   { id: 'templates', name: 'Templates', icon: FileSpreadsheet },
   { id: 'checklists', name: 'Checklists', icon: ClipboardList },
   { id: 'guides', name: 'Guides', icon: BookOpen },
-  { id: 'regulations', name: 'Regulations', icon: Shield },
+  { id: 'regulations', name: 'Regulations', icon: Scale },
   { id: 'standards', name: 'Standards', icon: FileCheck },
 ]
 
@@ -933,7 +933,7 @@ const DOCUMENTS = [
     downloads: 4567,
     updatedAt: '2026-01-01',
     tags: ['Regulation', 'EU', 'PPE'],
-    icon: Shield,
+    icon: FileText,
     hasGuide: false
   },
   {
@@ -947,7 +947,7 @@ const DOCUMENTS = [
     downloads: 2345,
     updatedAt: '2026-01-01',
     tags: ['FDA', 'Regulation', 'US'],
-    icon: Shield,
+    icon: FileCheck,
     hasGuide: false
   },
   {
@@ -961,7 +961,7 @@ const DOCUMENTS = [
     downloads: 876,
     updatedAt: '2026-01-01',
     tags: ['NMPA', 'Regulation', 'China'],
-    icon: Shield,
+    icon: BookOpen,
     hasGuide: false
   },
   // Standards

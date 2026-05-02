@@ -18,7 +18,8 @@ import {
   Bell,
   FileText,
   Globe,
-  Shield,
+  Star,
+  Crown,
   HelpCircle,
 } from 'lucide-react'
 import { MembershipTier, MEMBERSHIP_TIERS } from '@/lib/membership/types'
@@ -38,13 +39,13 @@ export function PricingPage({ currentTier = 'free', onSelectTier, className = ''
   const getTierIcon = (tierId: MembershipTier) => {
     switch (tierId) {
       case 'free':
-        return Shield
+        return Star
       case 'professional':
         return Zap
       case 'enterprise':
-        return Building2
+        return Crown
       default:
-        return Shield
+        return Star
     }
   }
 

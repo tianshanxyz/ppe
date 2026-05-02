@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { CheckCircle, XCircle, AlertCircle, Scale, FileText, Clock, DollarSign, Shield, Globe, ArrowRight, Info, ExternalLink, CheckCircle2, Download, Table2, BarChart3, TrendingUp } from 'lucide-react'
+import { CheckCircle, XCircle, AlertCircle, Scale, FileText, Clock, DollarSign, BadgeCheck, Globe, ArrowRight, Info, ExternalLink, CheckCircle2, Download, Table2, BarChart3, TrendingUp } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { getPPECategories, getTargetMarkets, getComplianceData } from '@/lib/ppe-data'
 import { PPEIcon } from '@/components/ppe/PPEIcons'
@@ -474,7 +474,7 @@ export default function CertificationComparisonPage() {
                       <tr className="bg-white hover:bg-[#339999]/5 transition-colors">
                         <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
                           <div className="flex items-center">
-                            <Shield className="w-4 h-4 mr-2 text-[#339999]" />
+                            <FileText className="w-4 h-4 mr-2 text-[#339999]" />
                             Documents
                           </div>
                         </td>
@@ -588,7 +588,7 @@ export default function CertificationComparisonPage() {
                 {/* Certification Requirements */}
                 <div className="mb-8">
                   <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                    <Shield className="w-5 h-5 text-[#339999] mr-2" />
+                    <BadgeCheck className="w-5 h-5 text-[#339999] mr-2" />
                     Certification Requirements
                   </h4>
                   <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">

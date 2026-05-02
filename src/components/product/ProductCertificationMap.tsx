@@ -19,7 +19,7 @@ import {
   ExternalLink,
   FileText,
   Calendar,
-  Shield,
+  BadgeCheck,
   Info,
 } from 'lucide-react'
 
@@ -331,7 +331,7 @@ export function ProductCertificationMap({
                               rel="noopener noreferrer"
                               className="inline-flex items-center px-3 py-1.5 text-sm text-[#339999] hover:text-[#2d8b8b] font-medium"
                             >
-                              <Shield className="w-4 h-4 mr-1" />
+                              <BadgeCheck className="w-4 h-4 mr-1" />
                               验证认证
                               <ExternalLink className="w-3 h-3 ml-1" />
                             </a>

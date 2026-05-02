@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { SearchBar } from '@/components/search/SearchBar';
 import { ComplianceProfile } from '@/components/medplum/ComplianceProfile';
-import { Shield, FileText, Database, Users, CheckCircle, Loader2 } from 'lucide-react';
+import { BadgeCheck, FileText, Database, Users, CheckCircle, Loader2 } from 'lucide-react';
 import { Button, Card } from '@/components/ui';
 
 export default function CompliancePage() {
@@ -42,7 +42,7 @@ export default function CompliancePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center mb-12">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 mb-6">
-              <Shield className="w-8 h-8" />
+              <BadgeCheck className="w-8 h-8" />
             </div>
             <h1 className="text-4xl font-bold mb-4">
               Compliance Profiles
@@ -142,7 +142,7 @@ export default function CompliancePage() {
       {/* Empty State */}
       {!selectedCompany && (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <Shield className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+          <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-700 mb-2">
             Compliance Profiles
           </h3>

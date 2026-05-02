@@ -12,7 +12,7 @@ import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import {
   Package,
-  Shield,
+  BadgeCheck,
   Globe,
   FileText,
   Scale,
@@ -264,7 +264,7 @@ export default function EnhancedProductDetailPage() {
                 )}
                 {product.certifications?.ce && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    <Shield className="w-3 h-3 mr-1" />
+                    <BadgeCheck className="w-3 h-3 mr-1" />
                     CE 认证
                   </span>
                 )}
@@ -319,7 +319,7 @@ export default function EnhancedProductDetailPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex space-x-1">
             <TabButton active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} icon={Package} label="概览" />
-            <TabButton active={activeTab === 'certifications'} onClick={() => setActiveTab('certifications')} icon={Shield} label="认证详情" />
+            <TabButton active={activeTab === 'certifications'} onClick={() => setActiveTab('certifications')} icon={Award} label="认证详情" />
             <TabButton active={activeTab === 'markets'} onClick={() => setActiveTab('markets')} icon={Globe} label="全球市场" />
             <TabButton active={activeTab === 'specs'} onClick={() => setActiveTab('specs')} icon={FileText} label="技术规格" />
             <TabButton active={activeTab === 'compare'} onClick={() => setActiveTab('compare')} icon={Scale} label="竞品对比" />
@@ -355,7 +355,7 @@ export default function EnhancedProductDetailPage() {
                   {product.certifications?.ce && (
                     <div className="p-4 bg-green-50 rounded-lg">
                       <div className="flex items-center">
-                        <Shield className="w-5 h-5 text-green-500 mr-2" />
+                        <BadgeCheck className="w-5 h-5 text-green-500 mr-2" />
                         <h4 className="font-medium text-green-900">CE 认证</h4>
                       </div>
                       <p className="text-sm text-green-700 mt-1">证书号：CE 认证</p>

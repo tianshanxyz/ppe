@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Badge, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui'
-import { Globe, Shield, Database, CheckCircle, AlertCircle } from 'lucide-react'
+import { Globe, Database, Server, CheckCircle, AlertCircle } from 'lucide-react'
 
 interface DataSource {
   id: string
@@ -67,7 +67,7 @@ export function DataSourceBadge({
   const getIcon = () => {
     switch (source.type) {
       case 'government':
-        return <Shield className="w-3 h-3" />
+        return <Database className="w-3 h-3" />
       case 'official':
         return <Globe className="w-3 h-3" />
       default:

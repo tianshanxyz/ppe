@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Database, Shield, Globe, Zap, Users, Lock, LucideIcon, BookOpen, Award, Package, Factory, Scale } from 'lucide-react'
+import { Database, Brain, Globe, Zap, Users, Lock, LucideIcon, BookOpen, Award, Package, Factory, Scale } from 'lucide-react'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { homeTranslations, getTranslations } from '@/lib/i18n/translations'
 import { getPPEStats } from '@/lib/ppe-api-client'
@@ -91,7 +91,7 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-8">{locale === 'zh' ? '核心能力' : 'Core Capabilities'}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FeatureCard
-              icon={Shield}
+              icon={Brain}
               title={locale === 'zh' ? 'AI驱动的合规指导' : 'AI-Powered Compliance Guidance'}
               description={locale === 'zh'
                 ? '基于AI的智能合规检查，自动识别产品适用的法规标准，生成详细的合规报告和认证路径建议。'
@@ -177,7 +177,7 @@ export default function AboutPage() {
                 : 'Transparent pricing and data sources, ensuring every compliance decision is traceable and documented.'}
             />
             <ValueCard
-              icon={Shield}
+              icon={Award}
               title={t.accuracy}
               description={locale === 'zh'
                 ? '企业级数据准确性，AI辅助人工审核，确保合规建议的可靠性。'

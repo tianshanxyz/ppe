@@ -7,7 +7,7 @@ import {
   Search,
   Building2,
   Globe,
-  Shield,
+  BadgeCheck,
   AlertTriangle,
   TrendingUp,
   Filter,
@@ -550,7 +550,7 @@ export default function CompaniesPage() {
                       {(company.riskLevel || 'Low').charAt(0).toUpperCase() + (company.riskLevel || 'Low').slice(1)} Risk
                     </Badge>
                     <div className="flex items-center gap-1 text-sm">
-                      <Shield className="w-4 h-4 text-[#339999]" />
+                      <BadgeCheck className="w-4 h-4 text-[#339999]" />
                       <span className="font-medium text-gray-900">{company.trustScore || 0}</span>
                     </div>
                   </div>

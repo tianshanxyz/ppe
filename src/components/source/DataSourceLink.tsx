@@ -6,7 +6,7 @@ import {
   ExternalLink, 
   Database, 
   Globe, 
-  Shield,
+  Link2,
   CheckCircle,
   Building2,
   FileText
@@ -40,7 +40,7 @@ const sourceConfig: Record<DataSource, {
   FDA: {
     name: 'FDA',
     fullName: '美国食品药品监督管理局',
-    icon: Shield,
+    icon: Link2,
     color: 'text-blue-700',
     bgColor: 'bg-blue-50',
     borderColor: 'border-blue-200',

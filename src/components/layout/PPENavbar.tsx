@@ -6,7 +6,7 @@ import { useState } from 'react'
 import {
   Menu,
   X,
-  Shield,
+  Home,
   LogIn,
   UserPlus,
   ChevronDown,
@@ -46,7 +46,7 @@ export function PPENavbar() {
     {
       href: '/',
       label: t.home,
-      icon: Shield,
+      icon: Home,
     },
     {
       label: t.complianceTools,

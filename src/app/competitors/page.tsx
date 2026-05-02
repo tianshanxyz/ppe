@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, ResponsiveContainer, Cell, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
-import { Building, TrendingUp, Award, Target, Users, Globe, Shield, Zap } from 'lucide-react'
+import { Building, TrendingUp, Award, Target, Users, Globe, Trophy, Zap } from 'lucide-react'
 import { getCompetitors } from '@/lib/ppe-database-client'
 
 const COLORS = ['#339999', '#2d8b8b', '#267a7a', '#1f6969', '#185858']
@@ -320,7 +320,7 @@ export default function CompetitorAnalysisPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                      <Shield className="w-5 h-5 text-green-500 mr-2" />
+                      <Trophy className="w-5 h-5 text-green-500 mr-2" />
                       Strengths
                     </h4>
                     <ul className="space-y-2">

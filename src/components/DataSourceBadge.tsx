@@ -1,6 +1,6 @@
 'use client'
 
-import { Database, ExternalLink, Shield, AlertTriangle } from 'lucide-react'
+import { Database, ExternalLink, BadgeCheck, AlertTriangle } from 'lucide-react'
 
 interface DataSourceBadgeProps {
   source?: string
@@ -28,7 +28,7 @@ export function DataSourceBadge({ source, sourceUrl, confidenceLevel, lastVerifi
   const getConfidenceIcon = (level?: string) => {
     switch (level?.toLowerCase()) {
       case 'high':
-        return <Shield className="w-3 h-3 mr-1" />
+        return <BadgeCheck className="w-3 h-3 mr-1" />
       case 'medium':
         return <AlertTriangle className="w-3 h-3 mr-1" />
       default:

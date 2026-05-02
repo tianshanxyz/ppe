@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, Shield, Globe, Zap, Users, Package, Building, ChevronDown, ClipboardList, Bell, AlertTriangle, Newspaper, BookOpen, Library, Search, Sparkles, Bot, Send, X, Factory, Scale, BarChart3, BadgeCheck, GitCompare, Server } from 'lucide-react';
+import { ArrowRight, CheckCircle, Globe, Zap, Users, Package, Building, ChevronDown, ClipboardList, Bell, AlertTriangle, Newspaper, BookOpen, Library, Search, Sparkles, Bot, Send, X, Factory, Scale, BarChart3, BadgeCheck, GitCompare, Server } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getPPECategories, getTargetMarkets } from '@/lib/ppe-data';
 import { ComplianceCheckTool } from '@/components/ppe/ComplianceCheckTool';

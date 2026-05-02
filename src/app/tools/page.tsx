@@ -12,7 +12,7 @@ import {
   Zap,
   ArrowRight,
   BarChart3,
-  Shield,
+  FileCheck,
   Clock,
   CheckCircle
 } from 'lucide-react'
@@ -93,7 +93,7 @@ const tools: Tool[] = [
 const categories = {
   query: { label: 'Query Tools', icon: Search, color: 'bg-blue-50 text-blue-600' },
   analysis: { label: 'Analysis Tools', icon: BarChart3, color: 'bg-green-50 text-green-600' },
-  compliance: { label: 'Compliance Tools', icon: Shield, color: 'bg-purple-50 text-purple-600' },
+  compliance: { label: 'Compliance Tools', icon: FileCheck, color: 'bg-purple-50 text-purple-600' },
   ai: { label: 'AI Tools', icon: Sparkles, color: 'bg-primary-50 text-primary-600' }
 }
 

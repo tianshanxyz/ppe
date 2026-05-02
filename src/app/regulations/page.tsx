@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect, useCallback } from 'react'
-import { Search, Filter, BookOpen, ExternalLink, Globe, Shield, FileText, CheckCircle, ChevronDown, ChevronUp, X, Eye } from 'lucide-react'
+import { Search, Filter, BookOpen, ExternalLink, Globe, Scale, FileText, CheckCircle, ChevronDown, ChevronUp, X, Eye } from 'lucide-react'
 import { getPPECategories, getTargetMarkets } from '@/lib/ppe-data'
 
 interface Regulation {
@@ -389,7 +389,7 @@ export default function RegulationsPage() {
                     </div>
 
                     <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <Shield className="w-4 h-4 text-[#339999]" />
+                      <Scale className="w-4 h-4 text-[#339999]" />
                       <span>{getCategoryName(reg.category_id)}</span>
                     </div>
 

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Shield } from 'lucide-react'
+import { Menu, X, Home } from 'lucide-react'
 import { useState } from 'react'
 import { MarketSwitcher } from '@/components/market/MarketSwitcher'
 
@@ -24,7 +24,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-lg bg-[#339999] flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
+              <Home className="w-5 h-5 text-white" />
             </div>
             <span className="text-lg font-bold text-gray-900">MDLooker</span>
           </Link>

@@ -19,7 +19,7 @@ import {
   ChevronUp,
   Award,
   Globe,
-  Shield,
+  GitCompare,
   TrendingUp,
 } from 'lucide-react'
 import { EnhancedPPEProduct } from '@/lib/database/enhanced-types'
@@ -52,7 +52,7 @@ export function ProductComparison({
     {
       id: 'basic',
       title: '基本信息',
-      icon: Shield,
+      icon: GitCompare,
       fields: [
         { key: 'product_name', label: '产品名称', type: 'text' },
         { key: 'manufacturer_name', label: '制造商', type: 'text' },

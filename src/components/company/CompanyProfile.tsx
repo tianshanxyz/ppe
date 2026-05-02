@@ -13,7 +13,8 @@ import {
   Award,
   Activity,
   Package,
-  Shield
+  CheckCircle2,
+  AlertTriangle
 } from 'lucide-react';
 import MarketHeatmap from './MarketHeatmap';
 
@@ -193,7 +194,7 @@ export function CompanyProfile({ company }: CompanyProfileProps) {
             <TabButton
               active={activeTab === 'registrations'}
               onClick={() => setActiveTab('registrations')}
-              icon={<Shield className="w-4 h-4" />}
+              icon={<Award className="w-4 h-4" />}
               label="合规资质"
               count={stats.totalRegistrations}
             />
@@ -292,7 +293,7 @@ function OverviewTab({ company }: { company: Company }) {
         {/* 合规资质概览 */}
         <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-            <Shield className="w-5 h-5" />
+            <CheckCircle2 className="w-5 h-5" />
             合规资质概览
           </h2>
           <div className="grid grid-cols-3 gap-4">
@@ -353,7 +354,7 @@ function RegistrationsTab({ registrations }: { registrations: Registration[] }) 
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-        <Shield className="w-5 h-5" />
+        <Award className="w-5 h-5" />
         合规资质列表
       </h2>
 

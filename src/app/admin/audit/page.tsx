@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { 
-  Shield, 
+  Activity, 
   CheckCircle, 
   AlertTriangle, 
   XCircle,
@@ -164,7 +164,7 @@ export default function AuditPage() {
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="flex items-center gap-3">
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center ${overallHealth >= 80 ? 'bg-green-100' : overallHealth >= 60 ? 'bg-amber-100' : 'bg-red-100'}`}>
-                  <Shield className={`w-6 h-6 ${overallHealth >= 80 ? 'text-green-600' : overallHealth >= 60 ? 'text-amber-600' : 'text-red-600'}`} />
+                  <Activity className={`w-6 h-6 ${overallHealth >= 80 ? 'text-green-600' : overallHealth >= 60 ? 'text-amber-600' : 'text-red-600'}`} />
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-900">{overallHealth}%</p>

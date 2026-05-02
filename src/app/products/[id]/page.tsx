@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import {
-  ArrowLeft, Package, Building, Globe, Shield,
+  ArrowLeft, Package, Building, Globe, BadgeCheck,
   Clock, Download, FileText, MapPin, Award,
   AlertTriangle, CheckCircle, ExternalLink,
   BookOpen, Users, Info, Mail, Phone, MapPinned,
@@ -194,7 +194,7 @@ export default function ProductDetailPage() {
                   <span className="font-medium">{product.country_of_origin || product.manufacturer_country}</span>
                 </div>
                 <div className="flex items-center text-gray-600">
-                  <Shield className="w-5 h-5 mr-2" />
+                  <BadgeCheck className="w-5 h-5 mr-2" />
                   <span className="font-medium">{approvalDept}</span>
                 </div>
               </div>
@@ -284,8 +284,8 @@ export default function ProductDetailPage() {
               {/* ====== Section 2: Registration Information ====== */}
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <Shield className="w-6 h-6 text-[#339999] mr-3" />
-                  Registration Information
+                  <FileText className="w-6 h-6 text-[#339999] mr-3" />
+                Registration Information
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-gray-50 rounded-lg p-4">
@@ -585,7 +585,7 @@ export default function ProductDetailPage() {
                     </div>
                   ) : (
                     <div className="flex items-center p-3 bg-blue-50 rounded-lg">
-                      <Shield className="w-5 h-5 text-blue-600 mr-3" />
+                      <FileText className="w-5 h-5 text-blue-600 mr-3" />
                       <span className="text-blue-800 font-medium">Locally Registered</span>
                     </div>
                   )}
