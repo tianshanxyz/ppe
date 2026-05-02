@@ -96,7 +96,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/products" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.productDatabase}
+                  {t.products}
                 </Link>
               </li>
               <li>

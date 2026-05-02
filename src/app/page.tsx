@@ -531,9 +531,9 @@ export default function PPEHomePage() {
               {
                 href: '/products',
                 icon: Package,
-                title: t.productDatabase,
-                subtitle: t.productDatabaseDesc,
-                description: t.productDatabaseFullDesc,
+                title: t.products,
+                subtitle: t.productsDesc,
+                description: t.productsFullDesc,
                 cta: t.browseProducts
               },
               {

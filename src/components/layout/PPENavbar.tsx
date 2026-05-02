@@ -62,7 +62,7 @@ export function PPENavbar() {
       label: t.dataCenter,
       icon: Database,
       children: [
-        { href: '/products', label: t.productDatabase, icon: Package },
+        { href: '/products', label: t.products, icon: Package },
         { href: '/manufacturers', label: t.manufacturers, icon: Building2 },
         { href: '/regulations-new', label: t.regulations, icon: Gavel },
         { href: '/market-analysis', label: t.marketAnalysis, icon: Globe },
