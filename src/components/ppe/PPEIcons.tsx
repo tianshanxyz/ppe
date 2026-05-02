@@ -14,17 +14,23 @@ import {
 } from 'lucide-react';
 
 export const PPEIconMap = {
-  masks: VenetianMask,
+  // Map category IDs from categories.json to icons
+  'respiratory-protection': Wind,
   'protective-clothing': Shirt,
-  gloves: Hand,
-  'eye-protection': Glasses,
+  'protective-gloves': Hand,
+  'eye-face-protection': Glasses,
   'head-protection': HardHat,
   'safety-footwear': Footprints,
   'face-shield': ShieldCheck,
-  respirators: Wind,
-  'ear-protection': Headphones,
+  'hearing-protection': Headphones,
   'hand-protection': HandHelping,
   'body-protection': HeartPulse,
+  // Legacy mappings for backward compatibility
+  masks: VenetianMask,
+  respirators: Wind,
+  gloves: Hand,
+  'eye-protection': Glasses,
+  'ear-protection': Headphones,
 };
 
 interface PPEIconProps {
