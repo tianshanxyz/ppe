@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
 
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/ppe" className="inline-block">
+          <Link href="/" className="inline-block">
             <div className="w-16 h-16 bg-[#339999] rounded-2xl flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl font-bold text-white">MD</span>
             </div>
