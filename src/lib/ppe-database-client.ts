@@ -792,9 +792,15 @@ export async function getPPEManufacturersClient({
         filteredData = filteredData.filter(m => m.country === country)
       }
       if (search) {
+        const s = search.toLowerCase()
         filteredData = filteredData.filter(m => 
-          m.name.toLowerCase().includes(search.toLowerCase()) ||
-          m.country.toLowerCase().includes(search.toLowerCase())
+          m.name.toLowerCase().includes(s) ||
+          m.country.toLowerCase().includes(s) ||
+          (m as any).address?.toLowerCase().includes(s) ||
+          (m as any).province?.toLowerCase().includes(s) ||
+          (m as any).city?.toLowerCase().includes(s) ||
+          (m as any).business_scope?.toLowerCase().includes(s) ||
+          (m as any).website?.toLowerCase().includes(s)
         )
       }
       return { 
@@ -811,9 +817,15 @@ export async function getPPEManufacturersClient({
         filteredData = filteredData.filter(m => m.country === country)
       }
       if (search) {
+        const s = search.toLowerCase()
         filteredData = filteredData.filter(m => 
-          m.name.toLowerCase().includes(search.toLowerCase()) ||
-          m.country.toLowerCase().includes(search.toLowerCase())
+          m.name.toLowerCase().includes(s) ||
+          m.country.toLowerCase().includes(s) ||
+          (m as any).address?.toLowerCase().includes(s) ||
+          (m as any).province?.toLowerCase().includes(s) ||
+          (m as any).city?.toLowerCase().includes(s) ||
+          (m as any).business_scope?.toLowerCase().includes(s) ||
+          (m as any).website?.toLowerCase().includes(s)
         )
       }
       return { 

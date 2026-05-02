@@ -1,10 +1,28 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Scale, Search, Filter, Globe, ChevronLeft, ChevronRight, ExternalLink, AlertCircle, BookOpen } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { getPPERegulations, getPPEStats, PPERegulation } from '@/lib/ppe-api-client'
+import regulationsData from '@/data/ppe/regulations-fulltext.json'
+
+interface RegulationFulltext {
+  id: string
+  category_id: string
+  market_code: string
+  title: string
+  title_zh?: string
+  regulation_number: string
+  document_type: string
+  issuing_authority: string
+  effective_date: string
+  status: string
+  summary: string
+  summary_zh?: string
+  full_text: string
+}
+
+const ALL_REGULATIONS = regulationsData as RegulationFulltext[]
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -21,89 +39,92 @@ const staggerContainer = {
 }
 
 const regionNames: Record<string, string> = {
-  'EU': 'European Union',
-  'US': 'United States',
-  'CN': 'China',
-  'GB': 'United Kingdom',
-  'JP': 'Japan',
-  'KR': 'South Korea',
-  'BR': 'Brazil',
-  'AU': 'Australia',
-  'IN': 'India',
-  'MY': 'Malaysia',
-  'TH': 'Thailand',
-  'FR': 'France',
-  'DE': 'Germany',
-  'IT': 'Italy',
-  'ES': 'Spain',
-  'NL': 'Netherlands',
-  'SE': 'Sweden',
-  'CA': 'Canada',
-  'Global': 'Global',
+  EU: 'European Union',
+  US: 'United States',
+  CN: 'China',
+  GB: 'United Kingdom',
+  JP: 'Japan',
+  KR: 'South Korea',
+  BR: 'Brazil',
+  AU: 'Australia',
+  IN: 'India',
+  FR: 'France',
+  DE: 'Germany',
+  IT: 'Italy',
+  ES: 'Spain',
+  NL: 'Netherlands',
+  SE: 'Sweden',
+  CA: 'Canada',
+  Global: 'Global',
+}
+
+const docTypeLabels: Record<string, string> = {
+  regulation: 'Regulation',
+  standard: 'Standard',
+  guidance: 'Guidance',
+  directive: 'Directive',
+  law: 'Law',
 }
 
 export default function RegulationsPage() {
-  const [regulations, setRegulations] = useState<PPERegulation[]>([])
-  const [total, setTotal] = useState(0)
-  const [page, setPage] = useState(1)
-  const [loading, setLoading] = useState(true)
-  const [stats, setStats] = useState<any>(null)
-  const [error, setError] = useState<string | null>(null)
-
   const [searchQuery, setSearchQuery] = useState('')
   const [appliedSearch, setAppliedSearch] = useState('')
   const [selectedRegion, setSelectedRegion] = useState<string>('')
-  const [regions, setRegions] = useState<string[]>([])
+  const [selectedType, setSelectedType] = useState<string>('')
+  const [page, setPage] = useState(1)
 
   const limit = 20
 
-  useEffect(() => {
-    let mounted = true
-    async function loadStats() {
-      try {
-        const statsData = await getPPEStats()
-        if (mounted) {
-          setStats(statsData.data)
-        }
-      } catch (err) {
-        console.error('Failed to load stats:', err)
-      }
-    }
-    loadStats()
-    return () => { mounted = false }
+  const regions = useMemo(() => {
+    const set = new Set<string>()
+    ALL_REGULATIONS.forEach(r => { if (r.market_code) set.add(r.market_code) })
+    return Array.from(set).sort()
   }, [])
 
-  const loadRegulations = useCallback(async () => {
-    setLoading(true)
-    setError(null)
+  const docTypes = useMemo(() => {
+    const set = new Set<string>()
+    ALL_REGULATIONS.forEach(r => { if (r.document_type) set.add(r.document_type) })
+    return Array.from(set).sort()
+  }, [])
 
-    try {
-      const result = await getPPERegulations({
-        page,
-        limit,
-        search: appliedSearch,
-        region: selectedRegion,
-      })
+  const filteredRegulations = useMemo(() => {
+    let result = ALL_REGULATIONS
 
-      setRegulations(result.data)
-      setTotal(result.meta.total)
-
-      // Extract regions from data
-      if (result.data.length > 0) {
-        const uniqueRegions = [...new Set(result.data.map(r => r.region).filter(Boolean))]
-        setRegions(uniqueRegions)
-      }
-    } catch (err) {
-      console.error('Failed to load regulations:', err)
-      setError('Failed to load regulations. Please try again later.')
-    } finally {
-      setLoading(false)
+    if (selectedRegion) {
+      result = result.filter(r => r.market_code === selectedRegion)
     }
-  }, [page, selectedRegion, appliedSearch])
 
-  useEffect(() => {
-    loadRegulations()
-  }, [loadRegulations])
+    if (selectedType) {
+      result = result.filter(r => r.document_type === selectedType)
+    }
+
+    if (appliedSearch.trim()) {
+      const s = appliedSearch.toLowerCase().trim()
+      result = result.filter(r =>
+        r.title.toLowerCase().includes(s) ||
+        (r.title_zh && r.title_zh.toLowerCase().includes(s)) ||
+        r.regulation_number.toLowerCase().includes(s) ||
+        r.issuing_authority.toLowerCase().includes(s) ||
+        r.summary.toLowerCase().includes(s) ||
+        (r.summary_zh && r.summary_zh.toLowerCase().includes(s)) ||
+        r.category_id.toLowerCase().includes(s) ||
+        r.document_type.toLowerCase().includes(s) ||
+        r.market_code.toLowerCase().includes(s)
+      )
+    }
+
+    return result
+  }, [selectedRegion, selectedType, appliedSearch])
+
+  const total = filteredRegulations.length
+  const totalPages = Math.ceil(total / limit)
+  const startIndex = total > 0 ? (page - 1) * limit + 1 : 0
+  const endIndex = Math.min(page * limit, total)
+
+  const paginatedRegulations = useMemo(() => {
+    const from = (page - 1) * limit
+    return filteredRegulations.slice(from, from + limit)
+  }, [filteredRegulations, page, limit])
 
   const handleSearch = () => {
     setAppliedSearch(searchQuery)
@@ -115,10 +136,6 @@ export default function RegulationsPage() {
       handleSearch()
     }
   }
-
-  const totalPages = Math.ceil(total / limit)
-  const startIndex = total > 0 ? (page - 1) * limit + 1 : 0
-  const endIndex = Math.min(page * limit, total)
 
   const getPageNumbers = () => {
     const pages: number[] = []
@@ -138,7 +155,6 @@ export default function RegulationsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <motion.section
         className="bg-gradient-to-br from-[#339999]/10 via-white to-white py-20"
         initial="initial"
@@ -156,43 +172,39 @@ export default function RegulationsPage() {
               Global PPE Regulations
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Access {stats?.overview?.totalRegulations?.toLocaleString() || '...'} PPE regulations and standards from around the world
+              Access {ALL_REGULATIONS.length} PPE regulations and standards from around the world
             </p>
           </motion.div>
         </div>
       </motion.section>
 
-      {/* Stats Bar */}
-      {stats && (
-        <motion.section
-          className="py-8 bg-white border-b"
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true, margin: '-100px' }}
-          variants={staggerContainer}
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[
-                { value: stats.overview?.totalRegulations ?? 0, label: 'Total Regulations', icon: Scale },
-                { value: stats.overview?.totalProducts ?? 0, label: 'Products', icon: BookOpen },
-                { value: stats.overview?.totalManufacturers ?? 0, label: 'Manufacturers', icon: Globe },
-                { value: Object.keys(stats.distributions?.country ?? {}).length, label: 'Countries', icon: Globe },
-              ].map((stat, i) => (
-                <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
-                  <div className="flex justify-center mb-2">
-                    <stat.icon className="w-6 h-6 text-[#339999]" />
-                  </div>
-                  <div className="text-3xl font-bold text-[#339999] mb-1">{typeof stat.value === 'number' ? stat.value.toLocaleString() : stat.value}</div>
-                  <div className="text-sm text-gray-600">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
+      <motion.section
+        className="py-8 bg-white border-b"
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: '-100px' }}
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { value: ALL_REGULATIONS.length, label: 'Total Regulations', icon: Scale },
+              { value: regions.length, label: 'Markets', icon: Globe },
+              { value: docTypes.length, label: 'Document Types', icon: BookOpen },
+              { value: new Set(ALL_REGULATIONS.map(r => r.category_id)).size, label: 'Categories', icon: Scale },
+            ].map((stat, i) => (
+              <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
+                <div className="flex justify-center mb-2">
+                  <stat.icon className="w-6 h-6 text-[#339999]" />
+                </div>
+                <div className="text-3xl font-bold text-[#339999] mb-1">{stat.value}</div>
+                <div className="text-sm text-gray-600">{stat.label}</div>
+              </motion.div>
+            ))}
           </div>
-        </motion.section>
-      )}
+        </div>
+      </motion.section>
 
-      {/* Main Content */}
       <motion.section
         className="py-12"
         initial="initial"
@@ -202,7 +214,6 @@ export default function RegulationsPage() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Filters Sidebar */}
             <motion.div className="lg:w-64 flex-shrink-0" variants={fadeInUp}>
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-4 hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-center mb-6">
@@ -257,9 +268,31 @@ export default function RegulationsPage() {
                     </select>
                   </div>
 
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Document Type
+                    </label>
+                    <select
+                      value={selectedType}
+                      onChange={(e) => {
+                        setSelectedType(e.target.value)
+                        setPage(1)
+                      }}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
+                    >
+                      <option value="">All Types</option>
+                      {docTypes.map(type => (
+                        <option key={type} value={type}>
+                          {docTypeLabels[type] || type}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                   <button
                     onClick={() => {
                       setSelectedRegion('')
+                      setSelectedType('')
                       setSearchQuery('')
                       setAppliedSearch('')
                       setPage(1)
@@ -272,43 +305,17 @@ export default function RegulationsPage() {
               </div>
             </motion.div>
 
-            {/* Regulations List */}
             <motion.div className="flex-1" variants={fadeInUp}>
-              {error && (
-                <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
-                  <div className="flex items-center gap-3">
-                    <AlertCircle className="w-6 h-6 text-red-500" />
-                    <div>
-                      <h3 className="font-semibold text-red-800">Error Loading Regulations</h3>
-                      <p className="text-red-600 text-sm">{error}</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={loadRegulations}
-                    className="mt-4 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium"
-                  >
-                    Try Again
-                  </button>
-                </div>
-              )}
-
-              {loading && (
-                <div className="text-center py-20">
-                  <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-[#339999]/20 border-b-[#339999]"></div>
-                  <p className="mt-6 text-lg text-gray-600 font-medium">Loading regulations...</p>
-                </div>
-              )}
-
-              {!loading && regulations.length > 0 && (
+              {paginatedRegulations.length > 0 && (
                 <>
                   <div className="mb-6 flex items-center justify-between bg-white rounded-xl p-4 border border-gray-100">
                     <p className="text-sm text-gray-600 font-medium">
-                      Showing {startIndex}-{endIndex} of {total.toLocaleString()} regulations
+                      Showing {startIndex}-{endIndex} of {total} regulations
                     </p>
                   </div>
 
                   <div className="space-y-4">
-                    {regulations.map((reg) => (
+                    {paginatedRegulations.map((reg) => (
                       <div key={reg.id}>
                         <Link
                           href={`/regulations/${reg.id}`}
@@ -317,33 +324,38 @@ export default function RegulationsPage() {
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex-1 min-w-0">
                               <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#339999] transition-colors">
-                                {reg.name}
+                                {reg.title}
                               </h3>
-                              {reg.code && (
-                                <p className="text-sm text-gray-500 mt-1 font-mono">
-                                  {reg.code}
-                                </p>
+                              {reg.title_zh && (
+                                <p className="text-sm text-gray-500 mt-1">{reg.title_zh}</p>
                               )}
+                              <p className="text-sm text-gray-500 mt-1 font-mono">
+                                {reg.regulation_number}
+                              </p>
                             </div>
                             <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-[#339999] group-hover:translate-x-1 transition-all flex-shrink-0 ml-2" />
                           </div>
 
                           <div className="flex items-center gap-4 mb-4">
-                            {reg.region && (
-                              <div className="flex items-center text-sm text-gray-600">
-                                <Globe className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
-                                <span>{regionNames[reg.region] || reg.region}</span>
-                              </div>
+                            <div className="flex items-center text-sm text-gray-600">
+                              <Globe className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
+                              <span>{regionNames[reg.market_code] || reg.market_code}</span>
+                            </div>
+                            <span className="text-xs px-2 py-1 bg-[#339999]/10 text-[#339999] rounded-full font-medium">
+                              {docTypeLabels[reg.document_type] || reg.document_type}
+                            </span>
+                            {reg.status === 'active' && (
+                              <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
+                                Active
+                              </span>
                             )}
                           </div>
 
-                          {reg.description && (
-                            <div className="pt-4 border-t border-gray-100">
-                              <p className="text-sm text-gray-500 line-clamp-3">
-                                {reg.description}
-                              </p>
-                            </div>
-                          )}
+                          <div className="pt-4 border-t border-gray-100">
+                            <p className="text-sm text-gray-500 line-clamp-2">
+                              {reg.summary_zh || reg.summary}
+                            </p>
+                          </div>
                         </Link>
                       </div>
                     ))}
@@ -387,7 +399,7 @@ export default function RegulationsPage() {
                 </>
               )}
 
-              {!loading && regulations.length === 0 && (
+              {paginatedRegulations.length === 0 && (
                 <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
                   <Scale className="w-20 h-20 text-gray-300 mx-auto mb-6" />
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
