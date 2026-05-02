@@ -373,7 +373,7 @@ export default function CertificationComparisonPage() {
 
             {/* Table View */}
             {viewMode === 'table' && (
-              <motion.div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8" variants={fadeInUp}>
+              <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead className="bg-gradient-to-r from-[#339999]/5 to-[#339999]/10">
@@ -385,10 +385,10 @@ export default function CertificationComparisonPage() {
                           <th key={cert.market} className="px-6 py-4 text-center">
                             <div className="flex flex-col items-center">
                               <div className="text-4xl mb-2">
-                                {cert.market === 'EU' && '🇪🇺'}
-                                {cert.market === 'US' && '🇺🇸'}
-                                {cert.market === 'UK' && '🇬🇧'}
-                                {cert.market === 'CN' && '🇨🇳'}
+                                {cert.market === 'EU' && '\u{1F1EA}\u{1F1FA}'}
+                                {cert.market === 'US' && '\u{1F1FA}\u{1F1F8}'}
+                                {cert.market === 'UK' && '\u{1F1EC}\u{1F1E7}'}
+                                {cert.market === 'CN' && '\u{1F1E8}\u{1F1F3}'}
                               </div>
                               <div className="font-bold text-[#339999]">
                                 {cert.name}
@@ -403,10 +403,7 @@ export default function CertificationComparisonPage() {
                     </thead>
                     <tbody className="divide-y divide-gray-100">
                       {/* Classification */}
-                      <motion.tr 
-                        className="bg-white hover:bg-[#339999]/5 transition-colors"
-                        whileHover={{ scale: 1.01 }}
-                      >
+                      <tr className="bg-white hover:bg-[#339999]/5 transition-colors">
                         <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
                           Risk Classification
                         </td>
@@ -417,13 +414,10 @@ export default function CertificationComparisonPage() {
                             </span>
                           </td>
                         ))}
-                      </motion.tr>
+                      </tr>
 
                       {/* Timeline */}
-                      <motion.tr 
-                        className="bg-gray-50 hover:bg-[#339999]/10 transition-colors"
-                        whileHover={{ scale: 1.01 }}
-                      >
+                      <tr className="bg-gray-50 hover:bg-[#339999]/10 transition-colors">
                         <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
                           <div className="flex items-center">
                             <Clock className="w-4 h-4 mr-2 text-[#339999]" />
@@ -437,13 +431,10 @@ export default function CertificationComparisonPage() {
                             </div>
                           </td>
                         ))}
-                      </motion.tr>
+                      </tr>
 
                       {/* Cost */}
-                      <motion.tr 
-                        className="bg-white hover:bg-[#339999]/5 transition-colors"
-                        whileHover={{ scale: 1.01 }}
-                      >
+                      <tr className="bg-white hover:bg-[#339999]/5 transition-colors">
                         <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
                           <div className="flex items-center">
                             <DollarSign className="w-4 h-4 mr-2 text-[#339999]" />
@@ -460,13 +451,10 @@ export default function CertificationComparisonPage() {
                             </div>
                           </td>
                         ))}
-                      </motion.tr>
+                      </tr>
 
                       {/* Requirements Count */}
-                      <motion.tr 
-                        className="bg-gray-50 hover:bg-[#339999]/10 transition-colors"
-                        whileHover={{ scale: 1.01 }}
-                      >
+                      <tr className="bg-gray-50 hover:bg-[#339999]/10 transition-colors">
                         <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
                           <div className="flex items-center">
                             <FileText className="w-4 h-4 mr-2 text-[#339999]" />
@@ -480,13 +468,10 @@ export default function CertificationComparisonPage() {
                             </div>
                           </td>
                         ))}
-                      </motion.tr>
+                      </tr>
 
                       {/* Documents Count */}
-                      <motion.tr 
-                        className="bg-white hover:bg-[#339999]/5 transition-colors"
-                        whileHover={{ scale: 1.01 }}
-                      >
+                      <tr className="bg-white hover:bg-[#339999]/5 transition-colors">
                         <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
                           <div className="flex items-center">
                             <Shield className="w-4 h-4 mr-2 text-[#339999]" />
@@ -500,13 +485,10 @@ export default function CertificationComparisonPage() {
                             </div>
                           </td>
                         ))}
-                      </motion.tr>
+                      </tr>
 
                       {/* Difficulty Level */}
-                      <motion.tr 
-                        className="bg-gray-50 hover:bg-[#339999]/10 transition-colors"
-                        whileHover={{ scale: 1.01 }}
-                      >
+                      <tr className="bg-gray-50 hover:bg-[#339999]/10 transition-colors">
                         <td className="px-6 py-4 text-left text-sm font-medium text-gray-900">
                           <div className="flex items-center">
                             <TrendingUp className="w-4 h-4 mr-2 text-[#339999]" />
@@ -532,29 +514,27 @@ export default function CertificationComparisonPage() {
                             </div>
                           </td>
                         ))}
-                      </motion.tr>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {/* Cards View */}
             {viewMode === 'cards' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                {comparisonData.map((cert, index) => (
-                  <motion.div
+                {comparisonData.map((cert) => (
+                  <div
                     key={cert.market}
                     className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow"
-                    variants={fadeInUp}
-                    custom={index}
                   >
                     <div className="flex items-center mb-6">
                       <div className="text-4xl mr-4">
-                        {cert.market === 'EU' && '🇪🇺'}
-                        {cert.market === 'US' && '🇺🇸'}
-                        {cert.market === 'UK' && '🇬🇧'}
-                        {cert.market === 'CN' && '🇨🇳'}
+                        {cert.market === 'EU' && '\u{1F1EA}\u{1F1FA}'}
+                        {cert.market === 'US' && '\u{1F1FA}\u{1F1F8}'}
+                        {cert.market === 'UK' && '\u{1F1EC}\u{1F1E7}'}
+                        {cert.market === 'CN' && '\u{1F1E8}\u{1F1F3}'}
                       </div>
                       <div>
                         <h3 className="text-xl font-bold text-gray-900">{cert.name}</h3>
@@ -584,7 +564,7 @@ export default function CertificationComparisonPage() {
                         <span className="text-sm font-semibold text-[#339999]">{cert.documents.length} items</span>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             )}

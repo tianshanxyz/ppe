@@ -1,12 +1,31 @@
 'use client'
 
-import { Database, Shield, Globe, Zap, Users, Lock, LucideIcon, BookOpen, Award } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Database, Shield, Globe, Zap, Users, Lock, LucideIcon, BookOpen, Award, Package, Factory, Scale } from 'lucide-react'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { homeTranslations, getTranslations } from '@/lib/i18n/translations'
+import { getPPEStats } from '@/lib/ppe-api-client'
 
 export default function AboutPage() {
   const locale = useLocale()
   const t = getTranslations(homeTranslations, locale)
+  const [dbStats, setDbStats] = useState<any>(null)
+
+  useEffect(() => {
+    let mounted = true
+    async function loadStats() {
+      try {
+        const statsData = await getPPEStats()
+        if (mounted) {
+          setDbStats(statsData.data)
+        }
+      } catch (err) {
+        console.error('Failed to load stats:', err)
+      }
+    }
+    loadStats()
+    return () => { mounted = false }
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -31,26 +50,31 @@ export default function AboutPage() {
             {locale === 'zh' ? '平台数据' : 'Platform at a Glance'}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <StatCard
-              number="50,000+"
-              label={locale === 'zh' ? '认证PPE产品' : 'Certified PPE Products'}
-              icon={Database}
-            />
-            <StatCard
-              number="45+"
-              label={locale === 'zh' ? '覆盖国家/地区' : 'Countries & Regions'}
-              icon={Globe}
-            />
-            <StatCard
-              number="342"
-              label={locale === 'zh' ? '实时法规更新' : 'Real-time Regulations'}
-              icon={Zap}
-            />
-            <StatCard
-              number="99.2%"
-              label={locale === 'zh' ? 'AI合规准确率' : 'AI Compliance Accuracy'}
-              icon={Award}
-            />
+            {dbStats ? [
+              { number: dbStats.overview?.totalProducts?.toLocaleString() || '...', label: locale === 'zh' ? '认证PPE产品' : 'Certified PPE Products', icon: Package },
+              { number: Object.keys(dbStats.distributions?.country ?? {}).length || '45+', label: locale === 'zh' ? '覆盖国家/地区' : 'Countries & Regions', icon: Globe },
+              { number: dbStats.overview?.totalRegulations?.toLocaleString() || '...', label: locale === 'zh' ? '实时法规更新' : 'Real-time Regulations', icon: Scale },
+              { number: '99.2%', label: locale === 'zh' ? 'AI合规准确率' : 'AI Compliance Accuracy', icon: Award },
+            ].map((stat, i) => (
+              <StatCard
+                key={i}
+                number={String(stat.number)}
+                label={stat.label}
+                icon={stat.icon}
+              />
+            )) : [
+              { number: '50,000+', label: locale === 'zh' ? '认证PPE产品' : 'Certified PPE Products', icon: Database },
+              { number: '45+', label: locale === 'zh' ? '覆盖国家/地区' : 'Countries & Regions', icon: Globe },
+              { number: '342', label: locale === 'zh' ? '实时法规更新' : 'Real-time Regulations', icon: Zap },
+              { number: '99.2%', label: locale === 'zh' ? 'AI合规准确率' : 'AI Compliance Accuracy', icon: Award },
+            ].map((stat, i) => (
+              <StatCard
+                key={i}
+                number={stat.number}
+                label={stat.label}
+                icon={stat.icon}
+              />
+            ))}
           </div>
         </section>
 

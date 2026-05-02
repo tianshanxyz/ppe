@@ -1,39 +1,10 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
-import { Search, Filter, Package, BarChart3, ExternalLink, AlertCircle, ChevronLeft, ChevronRight, Shield } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { Search, Filter, Package, BarChart3, ExternalLink, AlertCircle, ChevronLeft, ChevronRight, Shield, Globe, Factory } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { getPPEProductsClient, getPPEProductStats, getPPECategories, getPPECountries } from '@/lib/ppe-database-client'
-
-// Default translations to avoid SSR/hydration issues
-const t = {
-  ppeProductDatabase: 'PPE Product Database',
-  browseSearchComprehensive: 'Browse and search our comprehensive database of PPE products',
-  totalProducts: 'Total Products',
-  countries: 'Countries',
-  categories: 'Categories',
-  filters: 'Filters',
-  country: 'Country',
-  allCountries: 'All Countries',
-  category: 'Category',
-  allCategories: 'All Categories',
-  resetFilters: 'Reset Filters',
-  searchProducts: 'Search products by name, code, or manufacturer...',
-  search: 'Search',
-  searching: 'Searching...',
-  errorLoadingProducts: 'Error Loading Products',
-  tryAgain: 'Try Again',
-  loadingProducts: 'Loading products...',
-  showing: 'Showing',
-  of: 'of',
-  products: 'products',
-  previous: 'Previous',
-  next: 'Next',
-  noProductsFound: 'No products found',
-  noSearchResults: 'No search results',
-  tryAdjustingSearch: 'Try adjusting your search or filters',
-}
+import { getPPEProducts, getPPEStats, PPEProduct } from '@/lib/ppe-api-client'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -49,52 +20,60 @@ const staggerContainer = {
   }
 }
 
-// 风险等级颜色映射
 function getRiskLevelStyle(riskLevel: string) {
   switch (riskLevel?.toLowerCase()) {
     case 'high':
-      return 'bg-red-100 text-red-700'
+      return 'bg-red-100 text-red-700 border-red-200'
     case 'medium':
-      return 'bg-yellow-100 text-yellow-700'
+      return 'bg-yellow-100 text-yellow-700 border-yellow-200'
     case 'low':
-      return 'bg-green-100 text-green-700'
+      return 'bg-green-100 text-green-700 border-green-200'
     default:
-      return 'bg-gray-100 text-gray-700'
+      return 'bg-gray-100 text-gray-700 border-gray-200'
   }
 }
 
-// Client-side filter function for robust search
-function filterProductsClientSide(
-  products: any[],
-  searchQuery: string,
-  selectedCountry: string,
-  selectedCategory: string
-): any[] {
-  return products.filter((product) => {
-    const matchesSearch = !searchQuery.trim() || (
-      (product.name && product.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (product.product_name && product.product_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (product.product_code && product.product_code.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (product.manufacturer_name && product.manufacturer_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (product.product_category && product.product_category.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (product.category && product.category.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (product.description && product.description.toLowerCase().includes(searchQuery.toLowerCase()))
-    )
+function getCategoryIcon(category: string) {
+  switch (category) {
+    case '呼吸防护装备':
+      return '😷'
+    case '手部防护装备':
+      return '🧤'
+    case '身体防护装备':
+      return '🥼'
+    case '眼面部防护装备':
+      return '🥽'
+    case '头部防护装备':
+      return '⛑️'
+    case '足部防护装备':
+      return '👢'
+    default:
+      return '🔧'
+  }
+}
 
-    const matchesCountry = selectedCountry === 'all' ||
-      product.country_of_origin === selectedCountry ||
-      product.manufacturer_country === selectedCountry
-
-    const matchesCategory = selectedCategory === 'all' ||
-      product.product_category === selectedCategory ||
-      product.category === selectedCategory
-
-    return matchesSearch && matchesCountry && matchesCategory
-  })
+const countryNames: Record<string, string> = {
+  US: '美国',
+  CA: '加拿大',
+  CN: '中国',
+  GB: '英国',
+  DE: '德国',
+  JP: '日本',
+  KR: '韩国',
+  BR: '巴西',
+  AU: '澳大利亚',
+  IN: '印度',
+  MY: '马来西亚',
+  TH: '泰国',
+  FR: '法国',
+  IT: '意大利',
+  ES: '西班牙',
+  NL: '荷兰',
+  SE: '瑞典',
 }
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<any[]>([])
+  const [products, setProducts] = useState<PPEProduct[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
@@ -103,86 +82,59 @@ export default function ProductsPage() {
 
   // 筛选状态
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCountry, setSelectedCountry] = useState<string>('all')
-  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [selectedCountry, setSelectedCountry] = useState<string>('')
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [selectedRiskLevel, setSelectedRiskLevel] = useState<string>('')
   const [countries, setCountries] = useState<string[]>([])
   const [categories, setCategories] = useState<string[]>([])
-
-  // All loaded products for client-side filtering
-  const [allProducts, setAllProducts] = useState<any[]>([])
+  const [riskLevels, setRiskLevels] = useState<string[]>([])
 
   const limit = 20
 
-  // 加载筛选选项（只在组件挂载时加载一次）
+  // 加载统计数据和筛选选项
   useEffect(() => {
     let mounted = true
-    async function loadFilterOptions() {
+    async function loadStats() {
       try {
-        const [countriesList, categoriesList] = await Promise.all([
-          getPPECountries(),
-          getPPECategories()
-        ])
+        const statsData = await getPPEStats()
         if (mounted) {
-          setCountries(countriesList)
-          setCategories(categoriesList)
+          setStats(statsData.data)
+          setCountries(Object.keys(statsData.data.distributions.country))
+          setCategories(Object.keys(statsData.data.distributions.category))
+          setRiskLevels(Object.keys(statsData.data.distributions.riskLevel))
         }
       } catch (err) {
-        console.error('Failed to load filter options:', err)
+        console.error('Failed to load stats:', err)
       }
     }
-    loadFilterOptions()
+    loadStats()
     return () => { mounted = false }
   }, [])
 
-  // 加载产品数据 - simplified, robust version
+  // 加载产品数据
   const loadProducts = useCallback(async () => {
     setLoading(true)
     setError(null)
 
     try {
-      // Load all products without search filter first, then filter client-side
-      const filters: any = {}
-      if (selectedCountry !== 'all') filters.country = selectedCountry
-      if (selectedCategory !== 'all') filters.category = selectedCategory
-
-      const result = await getPPEProductsClient({
-        page: 1,
-        limit: 1000, // Load more for client-side filtering
-        filters,
+      const result = await getPPEProducts({
+        page,
+        limit,
+        search: searchQuery,
+        country: selectedCountry,
+        category: selectedCategory,
+        riskLevel: selectedRiskLevel,
       })
 
-      const loaded = result.data || []
-      setAllProducts(loaded)
-
-      // Apply client-side search if needed
-      let filtered = loaded
-      if (searchQuery.trim()) {
-        filtered = filterProductsClientSide(loaded, searchQuery, selectedCountry, selectedCategory)
-      }
-
-      // Paginate
-      const from = (page - 1) * limit
-      const paginated = filtered.slice(from, from + limit)
-
-      setProducts(paginated)
-      setTotal(filtered.length)
-
-      // 加载统计数据
-      try {
-        const statsData = await getPPEProductStats()
-        setStats(statsData)
-      } catch (statsErr) {
-        console.error('Failed to load stats (non-critical):', statsErr)
-      }
+      setProducts(result.data)
+      setTotal(result.meta.total)
     } catch (err) {
       console.error('Failed to load products:', err)
-      setProducts([])
-      setTotal(0)
-      setError('Failed to load products. The database may be temporarily unavailable. Please try again later.')
+      setError('Failed to load products. Please try again later.')
     } finally {
       setLoading(false)
     }
-  }, [page, selectedCountry, selectedCategory, searchQuery, limit])
+  }, [page, selectedCountry, selectedCategory, selectedRiskLevel, searchQuery])
 
   // 当筛选条件、分页变化时加载产品数据
   useEffect(() => {
@@ -192,7 +144,6 @@ export default function ProductsPage() {
   // 处理搜索
   const handleSearch = () => {
     setPage(1)
-    // Trigger reload which will apply search
     loadProducts()
   }
 
@@ -208,7 +159,7 @@ export default function ProductsPage() {
   const startIndex = total > 0 ? (page - 1) * limit + 1 : 0
   const endIndex = Math.min(page * limit, total)
 
-  // 生成分页页码（最多显示5页）
+  // 生成分页页码
   const getPageNumbers = () => {
     const pages: number[] = []
     const maxVisible = 5
@@ -242,10 +193,10 @@ export default function ProductsPage() {
               </div>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              {t.ppeProductDatabase}
+              Global PPE Database
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {t.browseSearchComprehensive}
+              Browse and search our comprehensive database of {stats?.overview?.totalProducts?.toLocaleString() || '...'} PPE products from around the world
             </p>
           </motion.div>
         </div>
@@ -263,13 +214,16 @@ export default function ProductsPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                { value: stats.totalProducts ?? 0, label: t.totalProducts },
-                { value: Object.keys(stats.countryCount ?? {}).length, label: t.countries },
-                { value: Object.keys(stats.categoryCount ?? {}).length, label: t.categories },
-                { value: Object.keys(stats.riskLevelCount ?? {}).length, label: 'Risk Levels' },
+                { value: stats.overview?.totalProducts ?? 0, label: 'Total Products', icon: Package },
+                { value: stats.overview?.totalManufacturers ?? 0, label: 'Manufacturers', icon: Factory },
+                { value: Object.keys(stats.distributions?.country ?? {}).length, label: 'Countries', icon: Globe },
+                { value: Object.keys(stats.distributions?.category ?? {}).length, label: 'Categories', icon: BarChart3 },
               ].map((stat, i) => (
                 <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
-                  <div className="text-4xl font-bold text-[#339999] mb-1">{stat.value}</div>
+                  <div className="flex justify-center mb-2">
+                    <stat.icon className="w-6 h-6 text-[#339999]" />
+                  </div>
+                  <div className="text-3xl font-bold text-[#339999] mb-1">{typeof stat.value === 'number' ? stat.value.toLocaleString() : stat.value}</div>
                   <div className="text-sm text-gray-600">{stat.label}</div>
                 </motion.div>
               ))}
@@ -293,14 +247,32 @@ export default function ProductsPage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-4 hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-center mb-6">
                   <Filter className="w-6 h-6 text-[#339999] mr-3" />
-                  <h2 className="text-xl font-bold text-gray-900">{t.filters}</h2>
+                  <h2 className="text-xl font-bold text-gray-900">Filters</h2>
                 </div>
 
                 <div className="space-y-6">
+                  {/* Search Filter */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Search
+                    </label>
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={handleKeyPress}
+                        placeholder="Product name, code..."
+                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all text-sm"
+                      />
+                    </div>
+                  </div>
+
                   {/* Country Filter */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      {t.country}
+                      Country
                     </label>
                     <select
                       value={selectedCountry}
@@ -310,10 +282,10 @@ export default function ProductsPage() {
                       }}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
-                      <option value="all">{t.allCountries}</option>
+                      <option value="">All Countries</option>
                       {countries.map(country => (
                         <option key={country} value={country}>
-                          {country}
+                          {countryNames[country] || country}
                         </option>
                       ))}
                     </select>
@@ -322,7 +294,7 @@ export default function ProductsPage() {
                   {/* Category Filter */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      {t.category}
+                      Category
                     </label>
                     <select
                       value={selectedCategory}
@@ -332,10 +304,32 @@ export default function ProductsPage() {
                       }}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
-                      <option value="all">{t.allCategories}</option>
+                      <option value="">All Categories</option>
                       {categories.map(category => (
                         <option key={category} value={category}>
-                          {category}
+                          {getCategoryIcon(category)} {category}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Risk Level Filter */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Risk Level
+                    </label>
+                    <select
+                      value={selectedRiskLevel}
+                      onChange={(e) => {
+                        setSelectedRiskLevel(e.target.value)
+                        setPage(1)
+                      }}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
+                    >
+                      <option value="">All Risk Levels</option>
+                      {riskLevels.map(level => (
+                        <option key={level} value={level}>
+                          {level.charAt(0).toUpperCase() + level.slice(1)}
                         </option>
                       ))}
                     </select>
@@ -344,14 +338,15 @@ export default function ProductsPage() {
                   {/* Reset Button */}
                   <button
                     onClick={() => {
-                      setSelectedCountry('all')
-                      setSelectedCategory('all')
+                      setSelectedCountry('')
+                      setSelectedCategory('')
+                      setSelectedRiskLevel('')
                       setSearchQuery('')
                       setPage(1)
                     }}
                     className="w-full py-3 px-4 text-sm font-semibold text-[#339999] hover:text-[#2d8b8b] bg-[#339999]/5 hover:bg-[#339999]/10 rounded-xl transition-all duration-300"
                   >
-                    {t.resetFilters}
+                    Reset All Filters
                   </button>
                 </div>
               </div>
@@ -359,37 +354,13 @@ export default function ProductsPage() {
 
             {/* Products List */}
             <motion.div className="flex-1" variants={fadeInUp}>
-              {/* Search Bar */}
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-8 hover:shadow-xl transition-shadow duration-300">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="flex-1 relative">
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      onKeyDown={handleKeyPress}
-                      placeholder={t.searchProducts}
-                      className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
-                    />
-                  </div>
-                  <button
-                    onClick={handleSearch}
-                    disabled={loading}
-                    className="px-8 py-3 bg-gradient-to-r from-[#339999] to-[#2d8b8b] text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {loading ? t.searching : t.search}
-                  </button>
-                </div>
-              </div>
-
               {/* Error State */}
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
                   <div className="flex items-center gap-3">
                     <AlertCircle className="w-6 h-6 text-red-500" />
                     <div>
-                      <h3 className="font-semibold text-red-800">{t.errorLoadingProducts}</h3>
+                      <h3 className="font-semibold text-red-800">Error Loading Products</h3>
                       <p className="text-red-600 text-sm">{error}</p>
                     </div>
                   </div>
@@ -397,7 +368,7 @@ export default function ProductsPage() {
                     onClick={loadProducts}
                     className="mt-4 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium"
                   >
-                    {t.tryAgain}
+                    Try Again
                   </button>
                 </div>
               )}
@@ -406,7 +377,7 @@ export default function ProductsPage() {
               {loading && (
                 <div className="text-center py-20">
                   <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-[#339999]/20 border-b-[#339999]"></div>
-                  <p className="mt-6 text-lg text-gray-600 font-medium">{t.loadingProducts}</p>
+                  <p className="mt-6 text-lg text-gray-600 font-medium">Loading products...</p>
                 </div>
               )}
 
@@ -415,13 +386,11 @@ export default function ProductsPage() {
                 <>
                   <div className="mb-6 flex items-center justify-between bg-white rounded-xl p-4 border border-gray-100">
                     <p className="text-sm text-gray-600 font-medium">
-                      {t.showing} {startIndex}-{endIndex} {t.of} {total} {t.products}
+                      Showing {startIndex}-{endIndex} of {total.toLocaleString()} products
                     </p>
                   </div>
 
-                  <div
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                  >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {products.map((product) => (
                       <div key={product.id}>
                         <Link
@@ -431,7 +400,7 @@ export default function ProductsPage() {
                           <div className="flex items-start justify-between mb-4">
                             <div className="flex-1 min-w-0">
                               <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#339999] transition-colors truncate">
-                                {product.name || product.product_name}
+                                {product.name}
                               </h3>
                               {product.product_code && (
                                 <p className="text-sm text-gray-500 mt-1 font-mono truncate">
@@ -443,22 +412,22 @@ export default function ProductsPage() {
                           </div>
 
                           <div className="space-y-3 mb-6">
-                            {(product.product_category || product.category) && (
+                            {product.category && (
                               <div className="flex items-center text-sm text-gray-600">
                                 <Package className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
-                                <span className="truncate">{product.product_category || product.category}</span>
+                                <span className="truncate">{getCategoryIcon(product.category)} {product.category}</span>
                               </div>
                             )}
-                            {(product.country_of_origin || product.manufacturer_country) && (
+                            {product.country_of_origin && (
+                              <div className="flex items-center text-sm text-gray-600">
+                                <Globe className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
+                                <span className="truncate">{countryNames[product.country_of_origin] || product.country_of_origin}</span>
+                              </div>
+                            )}
+                            {product.subcategory && (
                               <div className="flex items-center text-sm text-gray-600">
                                 <BarChart3 className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
-                                <span className="truncate">{product.country_of_origin || product.manufacturer_country}</span>
-                              </div>
-                            )}
-                            {product.risk_level && (
-                              <div className="flex items-center text-sm text-gray-600">
-                                <Shield className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
-                                <span className="capitalize">{product.risk_level} Risk</span>
+                                <span className="capitalize">{product.subcategory}</span>
                               </div>
                             )}
                           </div>
@@ -466,10 +435,10 @@ export default function ProductsPage() {
                           <div className="pt-4 border-t border-gray-100">
                             <div className="flex items-center justify-between">
                               <span className="text-sm text-gray-700 font-medium truncate mr-2">
-                                {product.manufacturer_name}
+                                {product.manufacturer_name || 'Unknown Manufacturer'}
                               </span>
                               {product.risk_level && (
-                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold flex-shrink-0 ${getRiskLevelStyle(product.risk_level)}`}>
+                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold flex-shrink-0 border ${getRiskLevelStyle(product.risk_level)}`}>
                                   {product.risk_level}
                                 </span>
                               )}
@@ -482,16 +451,14 @@ export default function ProductsPage() {
 
                   {/* Pagination */}
                   {totalPages > 1 && (
-                    <div
-                      className="mt-10 flex items-center justify-center gap-2"
-                    >
+                    <div className="mt-10 flex items-center justify-center gap-2">
                       <button
                         onClick={() => setPage(page - 1)}
                         disabled={page === 1}
                         className="flex items-center gap-1 px-4 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 hover:border-[#339999]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
                       >
                         <ChevronLeft className="w-4 h-4" />
-                        {t.previous}
+                        Previous
                       </button>
 
                       {getPageNumbers().map((pageNum) => (
@@ -513,7 +480,7 @@ export default function ProductsPage() {
                         disabled={page === totalPages}
                         className="flex items-center gap-1 px-4 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 hover:border-[#339999]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
                       >
-                        {t.next}
+                        Next
                         <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
@@ -526,12 +493,12 @@ export default function ProductsPage() {
                 <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
                   <Package className="w-20 h-20 text-gray-300 mx-auto mb-6" />
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    {searchQuery.trim() ? t.noSearchResults : t.noProductsFound}
+                    {searchQuery.trim() ? 'No Search Results' : 'No Products Found'}
                   </h3>
                   <p className="text-gray-600">
                     {searchQuery.trim()
                       ? `No products found for "${searchQuery}". Try different keywords or adjust filters.`
-                      : t.tryAdjustingSearch
+                      : 'Try adjusting your search or filters'
                     }
                   </p>
                 </div>

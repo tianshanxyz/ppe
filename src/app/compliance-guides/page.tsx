@@ -10,7 +10,7 @@ import {
   AlertCircle,
   Download,
   ChevronRight,
-  Shield,
+  BadgeCheck,
   Globe,
   Factory,
   ClipboardCheck,
@@ -32,7 +32,7 @@ const COMPLIANCE_GUIDES = [
     description: 'Complete guide to CE marking for PPE products entering the EU market',
     steps: 7,
     timeline: '3-6 months',
-    cost: '€5,000 - €50,000',
+    cost: '€5,000 - €50,000 EUR',
     difficulty: 'High',
     category: 'Certification'
   },
@@ -44,7 +44,7 @@ const COMPLIANCE_GUIDES = [
     description: 'Step-by-step guide for FDA 510(k) premarket notification',
     steps: 8,
     timeline: '3-12 months',
-    cost: '$10,000 - $100,000',
+    cost: '$10,000 - $100,000 USD',
     difficulty: 'High',
     category: 'Certification'
   },
@@ -56,7 +56,7 @@ const COMPLIANCE_GUIDES = [
     description: 'Guide to NMPA medical device registration for PPE products',
     steps: 6,
     timeline: '6-18 months',
-    cost: '¥50,000 - ¥500,000',
+    cost: '¥50,000 - ¥500,000 CNY',
     difficulty: 'Very High',
     category: 'Certification'
   },
@@ -68,7 +68,7 @@ const COMPLIANCE_GUIDES = [
     description: 'UKCA marking requirements post-Brexit for PPE products',
     steps: 5,
     timeline: '2-4 months',
-    cost: '£3,000 - £30,000',
+    cost: '£3,000 - £30,000 GBP',
     difficulty: 'Medium',
     category: 'Certification'
   }
@@ -110,7 +110,7 @@ const GOVERNMENT_FEES: Record<string, {
         recurring: 'yearly'
       }
     ],
-    totalRange: '€11,000 - €27,000+'
+    totalRange: '€11,000 - €27,000+ EUR'
   },
   'fda-510k': {
     currency: 'USD',
@@ -132,7 +132,7 @@ const GOVERNMENT_FEES: Record<string, {
         description: 'Fee for designated US Agent service (foreign manufacturers)'
       }
     ],
-    totalRange: '$21,906 - $70,504+'
+    totalRange: '$21,906 - $70,504+ USD'
   },
   'nmpa-registration': {
     currency: 'CNY',
@@ -158,7 +158,7 @@ const GOVERNMENT_FEES: Record<string, {
         description: 'Fee for local registration agent / legal representative'
       }
     ],
-    totalRange: '¥113,900 - ¥213,600+'
+    totalRange: '¥113,900 - ¥213,600+ CNY'
   },
   'ukca-marking': {
     currency: 'GBP',
@@ -180,7 +180,7 @@ const GOVERNMENT_FEES: Record<string, {
         description: 'Self-declaration — no government fee for affixing the UKCA mark'
       }
     ],
-    totalRange: '£4,000 - £13,000+'
+    totalRange: '£4,000 - £13,000+ GBP'
   }
 }
 
@@ -1089,7 +1089,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-gray-400" />
+                    <BadgeCheck className="w-4 h-4 text-gray-400" />
                     <span className="text-sm text-gray-600">Difficulty: </span>
                     <span className={`text-sm font-medium ${
                       guide.difficulty === 'High' || guide.difficulty === 'Very High' 
@@ -1130,7 +1130,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
           </div>
           
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
-            <Shield className="w-10 h-10 text-[#339999] mx-auto mb-4" />
+            <BadgeCheck className="w-10 h-10 text-[#339999] mx-auto mb-4" />
             <h3 className="font-bold text-gray-900 mb-2">Certification Check</h3>
             <p className="text-sm text-gray-600 mb-4">Verify product certifications</p>
             <a href="/certification-comparison" className="text-[#339999] hover:underline text-sm font-medium">

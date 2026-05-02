@@ -174,8 +174,17 @@ export default function ContactPage() {
               ) : (
                 <>
                   <h2 className="text-2xl font-bold text-gray-900 mb-2">Send Us a Message</h2>
-                  <p className="text-gray-600 mb-8">
+                  <p className="text-gray-600 mb-4">
                     Fill out the form below and we&apos;ll get back to you as soon as possible.
+                  </p>
+                  <p className="text-gray-500 text-sm mb-8">
+                    Prefer email? Reach us directly at{' '}
+                    <a
+                      href={`mailto:${FALLBACK_EMAIL}`}
+                      className="text-[#339999] hover:underline font-medium"
+                    >
+                      {FALLBACK_EMAIL}
+                    </a>
                   </p>
 
                   {/* Error State */}

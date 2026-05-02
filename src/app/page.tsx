@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, Shield, Globe, Zap, Users, Package, Building, ChevronDown, ClipboardList, Bell, AlertTriangle, Newspaper, BookOpen, Library, Search, Sparkles, Bot, Send, X } from 'lucide-react';
+import { ArrowRight, CheckCircle, Shield, Globe, Zap, Users, Package, Building, ChevronDown, ClipboardList, Bell, AlertTriangle, Newspaper, BookOpen, Library, Search, Sparkles, Bot, Send, X, Factory, Scale, BarChart3, BadgeCheck, GitCompare, Server } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getPPECategories, getTargetMarkets } from '@/lib/ppe-data';
 import { ComplianceCheckTool } from '@/components/ppe/ComplianceCheckTool';
 import { PPEIcon } from '@/components/ppe/PPEIcons';
 import { useLocale } from '@/lib/i18n/LocaleProvider';
-import { ppeTranslations, getTranslations } from '@/lib/i18n/translations';
+import { ppeTranslations, commonTranslations, getTranslations } from '@/lib/i18n/translations';
+import { getPPEStats } from '@/lib/ppe-api-client';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -27,6 +28,7 @@ const staggerContainer = {
 export default function PPEHomePage() {
   const locale = useLocale();
   const t = getTranslations(ppeTranslations, locale);
+  const ct = getTranslations(commonTranslations, locale);
   const categories = getPPECategories();
   const markets = getTargetMarkets();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,6 +36,7 @@ export default function PPEHomePage() {
   const [aiInput, setAiInput] = useState('');
   const [aiMessages, setAiMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>([]);
   const [aiLoading, setAiLoading] = useState(false);
+  const [dbStats, setDbStats] = useState<any>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,6 +44,23 @@ export default function PPEHomePage() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Load real database stats
+  useEffect(() => {
+    let mounted = true;
+    async function loadStats() {
+      try {
+        const statsData = await getPPEStats();
+        if (mounted) {
+          setDbStats(statsData.data);
+        }
+      } catch (err) {
+        console.error('Failed to load stats:', err);
+      }
+    }
+    loadStats();
+    return () => { mounted = false };
   }, []);
 
   const handleAiSubmit = async (e: React.FormEvent) => {
@@ -59,9 +79,9 @@ export default function PPEHomePage() {
         body: JSON.stringify({ query }),
       });
       const data = await res.json();
-      setAiMessages(prev => [...prev, { role: 'assistant', content: data.answer || data.error || 'No response received.' }]);
+      setAiMessages(prev => [...prev, { role: 'assistant', content: data.answer || data.error || ct.noResponse }]);
     } catch {
-      setAiMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, an error occurred. Please try again.' }]);
+      setAiMessages(prev => [...prev, { role: 'assistant', content: ct.sorryError }]);
     } finally {
       setAiLoading(false);
     }
@@ -116,7 +136,7 @@ export default function PPEHomePage() {
               {/* AI-Powered Search Indicator */}
               <div className="flex items-center justify-center gap-2 mb-3">
                 <Sparkles className="w-4 h-4 text-[#339999]" />
-                <span className="text-sm font-medium text-[#339999]">AI-Powered Search</span>
+                <span className="text-sm font-medium text-[#339999]">{ct.aiPoweredSearch}</span>
               </div>
 
               {/* Mode Toggle & Search Box */}
@@ -137,20 +157,20 @@ export default function PPEHomePage() {
                     <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400" />
                     <input
                       type="text"
-                      placeholder="Search products, regulations, manufacturers..."
+                      placeholder={ct.searchPlaceholder}
                       className="w-full pl-14 pr-40 py-5 text-lg bg-white rounded-2xl border-2 border-gray-200 focus:border-[#339999] focus:ring-4 focus:ring-[#339999]/10 shadow-lg transition-all outline-none"
                     />
                     <button
                       type="submit"
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 px-6 py-2.5 bg-[#339999] text-white font-semibold rounded-xl hover:bg-[#2d8b8b] transition-colors shadow-md"
                     >
-                      Search
+                      {ct.search}
                     </button>
                     <button
                       type="button"
                       onClick={() => setAiMode(true)}
                       className="absolute right-[110px] top-1/2 transform -translate-y-1/2 p-2.5 text-gray-400 hover:text-[#339999] hover:bg-[#339999]/5 rounded-lg transition-all"
-                      title="Switch to AI Chat mode"
+                      title={ct.switchToAiChat}
                     >
                       <Bot className="w-5 h-5" />
                     </button>
@@ -166,7 +186,7 @@ export default function PPEHomePage() {
                       type="text"
                       value={aiInput}
                       onChange={(e) => setAiInput(e.target.value)}
-                      placeholder="Ask about PPE compliance, regulations, certifications..."
+                      placeholder={ct.aiChatPlaceholder}
                       className="w-full pl-14 pr-40 py-5 text-lg bg-white rounded-2xl border-2 border-[#339999] focus:ring-4 focus:ring-[#339999]/10 shadow-lg transition-all outline-none"
                       disabled={aiLoading}
                     />
@@ -181,7 +201,7 @@ export default function PPEHomePage() {
                       type="button"
                       onClick={() => { setAiMode(false); setAiMessages([]); setAiInput(''); }}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
-                      title="Switch back to standard search"
+                      title={ct.switchToStandardSearch}
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -207,7 +227,7 @@ export default function PPEHomePage() {
                         {msg.role === 'assistant' && (
                           <div className="flex items-center gap-1.5 mb-1.5 pb-1.5 border-b border-gray-200">
                             <Sparkles className="w-3.5 h-3.5 text-[#339999]" />
-                            <span className="text-xs font-semibold text-[#339999]">AI Assistant</span>
+                            <span className="text-xs font-semibold text-[#339999]">{ct.aiAssistant}</span>
                           </div>
                         )}
                         {msg.content}
@@ -223,7 +243,7 @@ export default function PPEHomePage() {
                             <span className="w-2 h-2 bg-[#339999] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                             <span className="w-2 h-2 bg-[#339999] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                           </div>
-                          <span className="text-xs text-gray-500">Thinking...</span>
+                          <span className="text-xs text-gray-500">{ct.thinking}</span>
                         </div>
                       </div>
                     </div>
@@ -232,9 +252,22 @@ export default function PPEHomePage() {
               )}
             </motion.div>
 
-            {/* Stats */}
+            {/* Real Database Stats */}
             <motion.div variants={fadeInUp} className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
-              {[
+              {dbStats ? [
+                { number: dbStats.overview?.totalProducts?.toLocaleString() || '...', label: ct.ppeProducts, icon: Package },
+                { number: dbStats.overview?.totalManufacturers?.toLocaleString() || '...', label: ct.manufacturers, icon: Factory },
+                { number: dbStats.overview?.totalRegulations?.toLocaleString() || '...', label: t.regulatoryAlerts, icon: Scale },
+                { number: Object.keys(dbStats.distributions?.country ?? {}).length, label: ct.countries, icon: Globe },
+              ].map((stat, i) => (
+                <div key={i} className="text-center p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                  <div className="flex justify-center mb-2">
+                    <stat.icon className="w-6 h-6 text-[#339999]" />
+                  </div>
+                  <div className="text-4xl font-bold text-[#339999] mb-2">{stat.number}</div>
+                  <div className="text-sm text-gray-600 font-medium">{stat.label}</div>
+                </div>
+              )) : [
                 { number: '5+', label: t.ppeCategories },
                 { number: '5+', label: t.globalMarkets },
                 { number: '60s', label: t.getReport },
@@ -441,7 +474,7 @@ export default function PPEHomePage() {
               },
               {
                 href: '/certification-comparison',
-                icon: Shield,
+                icon: GitCompare,
                 title: t.certificationComparison,
                 subtitle: t.certificationComparisonDesc,
                 description: t.certificationComparisonFullDesc,
@@ -451,7 +484,7 @@ export default function PPEHomePage() {
                 href: '/compliance-tracker',
                 icon: ClipboardList,
                 title: t.complianceTracker,
-                subtitle: 'Track certification progress',
+                subtitle: locale === 'zh' ? '追踪认证进度' : 'Track certification progress',
                 description: t.complianceTrackerDesc,
                 cta: t.trackProgress
               },
@@ -459,7 +492,7 @@ export default function PPEHomePage() {
                 href: '/certificate-alerts',
                 icon: Bell,
                 title: t.certificateAlerts,
-                subtitle: 'Never miss a deadline',
+                subtitle: locale === 'zh' ? '不错过任何截止日期' : 'Never miss a deadline',
                 description: t.certificateAlertsDesc,
                 cta: t.setAlerts
               },
@@ -467,7 +500,7 @@ export default function PPEHomePage() {
                 href: '/regulatory-alerts',
                 icon: AlertTriangle,
                 title: t.regulatoryAlerts,
-                subtitle: 'Stay ahead of changes',
+                subtitle: locale === 'zh' ? '领先于法规变化' : 'Stay ahead of changes',
                 description: t.regulatoryAlertsDesc,
                 cta: t.viewAlerts
               },
@@ -475,7 +508,7 @@ export default function PPEHomePage() {
                 href: '/regulatory-news',
                 icon: Newspaper,
                 title: t.regulatoryNews,
-                subtitle: 'Curated industry intelligence',
+                subtitle: locale === 'zh' ? '精选行业情报' : 'Curated industry intelligence',
                 description: t.regulatoryNewsDesc,
                 cta: t.readNews
               },
@@ -483,7 +516,7 @@ export default function PPEHomePage() {
                 href: '/case-studies',
                 icon: BookOpen,
                 title: t.caseStudies,
-                subtitle: 'Learn from real examples',
+                subtitle: locale === 'zh' ? '从真实案例中学习' : 'Learn from real examples',
                 description: t.caseStudiesDesc,
                 cta: t.readCases
               },
@@ -491,7 +524,7 @@ export default function PPEHomePage() {
                 href: '/knowledge-base',
                 icon: Library,
                 title: t.knowledgeBase,
-                subtitle: 'Guides, standards & FAQs',
+                subtitle: locale === 'zh' ? '指南、标准和常见问题' : 'Guides, standards & FAQs',
                 description: t.knowledgeBaseDesc,
                 cta: t.exploreKnowledge
               },
@@ -565,7 +598,7 @@ export default function PPEHomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                icon: Shield,
+                icon: BadgeCheck,
                 title: t.accurateUpToDate,
                 description: t.accurateUpToDateDesc
               },

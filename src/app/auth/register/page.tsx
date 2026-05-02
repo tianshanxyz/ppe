@@ -2,12 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Button, Input, Card } from '@/components/ui';
 import { Mail, Lock, User, Loader2 } from 'lucide-react';
 
 export default function RegisterPage() {
-  const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,15 +30,16 @@ export default function RegisterPage() {
       localStorage.setItem('user', JSON.stringify({
         email,
         name,
-        id: 'demo-user',
-        role: 'admin'
+        id: `user-${Date.now()}`,
+        role: 'user',
+        membership: 'free',
+        created_at: new Date().toISOString(),
       }));
       
-      router.push('/dashboard');
+      // Use full page reload to ensure dashboard picks up the new session
+      window.location.href = '/dashboard';
     } catch {
       setError('Registration failed, please try again');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -167,7 +166,7 @@ export default function RegisterPage() {
           </div>
 
           <div className="mt-4 p-3 bg-[#339999]/5 text-[#339999] rounded-lg text-sm text-center">
-            <strong>Demo Mode</strong>: All permissions are open, any information works
+            <strong>Demo Mode</strong>: New accounts start on the Free plan. Upgrade anytime from the Pricing page.
           </div>
         </Card>
       </div>

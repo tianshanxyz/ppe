@@ -2,19 +2,19 @@ import { Redis } from '@upstash/redis'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// 速率限制配置
+// Rate limit configuration
 export interface RateLimitConfig {
-  // 时间窗口内允许的最大请求数
+  // Maximum requests allowed within the time window
   maxRequests: number
-  // 时间窗口（秒）
+  // Time window in seconds
   windowInSeconds: number
-  // 是否对认证用户提高限制
+  // Whether to increase limits for authenticated users
   enableAuthBoost?: boolean
-  // 认证用户的倍数
+  // Multiplier for authenticated users
   authBoostMultiplier?: number
 }
 
-// 默认配置
+// Default configuration
 const DEFAULT_CONFIG: RateLimitConfig = {
   maxRequests: 100,
   windowInSeconds: 60,
@@ -22,7 +22,7 @@ const DEFAULT_CONFIG: RateLimitConfig = {
   authBoostMultiplier: 2,
 }
 
-// Redis 客户端（单例）
+// Redis client (singleton)
 let redisClient: Redis | null = null
 
 const memoryStore = new Map<string, { count: number; resetAt: number }>()
@@ -37,10 +37,15 @@ function getRedisClient(): Redis | null {
       return null
     }
 
-    redisClient = new Redis({
-      url,
-      token,
-    })
+    try {
+      redisClient = new Redis({
+        url,
+        token,
+      })
+    } catch (error) {
+      console.warn('[rateLimit] Failed to create Redis client:', error)
+      return null
+    }
   }
 
   return redisClient
@@ -88,32 +93,36 @@ function checkMemoryRateLimit(identifier: string, config: RateLimitConfig): Rate
 }
 
 /**
- * 生成速率限制的 key
+ * Generate rate limit key
  */
 function generateRateLimitKey(identifier: string, type: string = 'api'): string {
   return `ratelimit:${type}:${identifier}`
 }
 
 /**
- * 获取客户端的唯一标识
+ * Get client unique identifier
  */
 function getClientIdentifier(request: NextRequest): string {
-  // 优先使用用户 ID（如果已认证）
-  const userId = request.headers.get('x-user-id')
-  if (userId) {
-    return `user:${userId}`
-  }
+  try {
+    // Prefer user ID (if authenticated)
+    const userId = request.headers.get('x-user-id')
+    if (userId) {
+      return `user:${userId}`
+    }
 
-  // 使用 IP 地址
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 
-             request.headers.get('x-real-ip') || 
-             'unknown'
-  
-  return `ip:${ip}`
+    // Use IP address
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ||
+               request.headers.get('x-real-ip') ||
+               'unknown'
+
+    return `ip:${ip}`
+  } catch {
+    return 'ip:unknown'
+  }
 }
 
 /**
- * 速率限制结果
+ * Rate limit result
  */
 export interface RateLimitResult {
   success: boolean
@@ -124,7 +133,7 @@ export interface RateLimitResult {
 }
 
 /**
- * 检查速率限制
+ * Check rate limit
  */
 export async function checkRateLimit(
   request: NextRequest,
@@ -143,14 +152,14 @@ export async function checkRateLimit(
     const now = Date.now()
     const windowMs = config.windowInSeconds * 1000
 
-    // 获取当前窗口的请求数
+    // Get current window request count
     const currentCount = await redis.get(key)
     const count = currentCount ? parseInt(currentCount as string, 10) : 0
 
-    // 计算重置时间
+    // Calculate reset time
     const resetTime = now + windowMs
 
-    // 检查是否超过限制
+    // Check if limit exceeded
     if (count >= config.maxRequests) {
       const ttl = await redis.pttl(key)
       const retryAfter = ttl > 0 ? Math.ceil(ttl / 1000) : config.windowInSeconds
@@ -164,7 +173,7 @@ export async function checkRateLimit(
       }
     }
 
-    // 增加计数
+    // Increment count
     const pipeline = redis.pipeline()
     pipeline.incr(key)
     pipeline.pexpire(key, windowMs)
@@ -177,9 +186,9 @@ export async function checkRateLimit(
       reset: resetTime,
     }
   } catch (error) {
-    console.error('速率限制检查失败:', error)
-    
-    // 失败时允许请求通过（安全优先）
+    console.warn('[rateLimit] Rate limit check failed, allowing request through:', error)
+
+    // On failure, allow the request through (availability over strictness)
     return {
       success: true,
       limit: config.maxRequests,
@@ -190,7 +199,7 @@ export async function checkRateLimit(
 }
 
 /**
- * 创建速率限制响应头
+ * Create rate limit response headers
  */
 export function createRateLimitHeaders(result: RateLimitResult): Record<string, string> {
   return {
@@ -202,22 +211,38 @@ export function createRateLimitHeaders(result: RateLimitResult): Record<string, 
 }
 
 /**
- * 速率限制中间件
+ * Rate limit middleware wrapper.
+ *
+ * Wraps an API handler with rate limiting. If the rate limit is exceeded,
+ * returns 429 immediately. Otherwise calls the handler and appends rate
+ * limit headers to the response.
+ *
+ * Errors from the rate limiter itself are caught and the request is allowed
+ * through (availability over strictness). Errors from the handler are caught
+ * and converted to a 500 response.
  */
 export function withRateLimit(
   handler: (request: NextRequest) => Promise<Response>,
   config: RateLimitConfig = DEFAULT_CONFIG
 ) {
   return async (request: NextRequest): Promise<Response> => {
-    const result = await checkRateLimit(request, config)
+    let result: RateLimitResult
+
+    try {
+      result = await checkRateLimit(request, config)
+    } catch (error) {
+      console.warn('[rateLimit] checkRateLimit threw unexpectedly, allowing request:', error)
+      // If rate limit check itself throws, allow the request through
+      return handler(request)
+    }
 
     if (!result.success) {
       const headers = createRateLimitHeaders(result)
-      
+
       return NextResponse.json(
         {
           success: false,
-          error: '请求过于频繁，请稍后再试',
+          error: 'Too many requests, please try again later',
           retryAfter: result.retryAfter,
         },
         {
@@ -227,31 +252,49 @@ export function withRateLimit(
       )
     }
 
-    // 添加速率限制头到响应
-    const response = await handler(request)
-    
-    const headers = createRateLimitHeaders(result)
-    Object.entries(headers).forEach(([key, value]) => {
-      response.headers.set(key, value)
-    })
+    try {
+      // Call the wrapped handler
+      const response = await handler(request)
 
-    return response
+      // Append rate limit headers — wrapped in try/catch because
+      // response.headers may be immutable in some edge cases
+      try {
+        const headers = createRateLimitHeaders(result)
+        Object.entries(headers).forEach(([key, value]) => {
+          response.headers.set(key, value)
+        })
+      } catch {
+        // Header setting is best-effort; don't fail the request over it
+      }
+
+      return response
+    } catch (error) {
+      console.error('[rateLimit] Handler threw an error:', error)
+      return NextResponse.json(
+        { error: 'Internal server error' },
+        { status: 500 }
+      )
+    }
   }
 }
 
 /**
- * 重置指定标识的速率限制
+ * Reset rate limit for a given identifier
  */
 export async function resetRateLimit(identifier: string, type: string = 'api'): Promise<void> {
   const redis = getRedisClient()
   if (!redis) return
 
-  const key = generateRateLimitKey(identifier, type)
-  await redis.del(key)
+  try {
+    const key = generateRateLimitKey(identifier, type)
+    await redis.del(key)
+  } catch (error) {
+    console.warn('[rateLimit] Failed to reset rate limit:', error)
+  }
 }
 
 /**
- * 获取指定标识的速率限制状态
+ * Get rate limit status for a given identifier
  */
 export async function getRateLimitStatus(
   identifier: string,
@@ -263,7 +306,7 @@ export async function getRateLimitStatus(
   reset: number
 }> {
   const redis = getRedisClient()
-  
+
   if (!redis) {
     return {
       count: 0,
@@ -273,15 +316,25 @@ export async function getRateLimitStatus(
     }
   }
 
-  const key = generateRateLimitKey(identifier)
-  const currentCount = await redis.get(key)
-  const count = currentCount ? parseInt(currentCount as string, 10) : 0
-  const ttl = await redis.pttl(key)
+  try {
+    const key = generateRateLimitKey(identifier)
+    const currentCount = await redis.get(key)
+    const count = currentCount ? parseInt(currentCount as string, 10) : 0
+    const ttl = await redis.pttl(key)
 
-  return {
-    count,
-    limit: config.maxRequests,
-    remaining: Math.max(0, config.maxRequests - count),
-    reset: Date.now() + (ttl > 0 ? ttl : config.windowInSeconds * 1000),
+    return {
+      count,
+      limit: config.maxRequests,
+      remaining: Math.max(0, config.maxRequests - count),
+      reset: Date.now() + (ttl > 0 ? ttl : config.windowInSeconds * 1000),
+    }
+  } catch (error) {
+    console.warn('[rateLimit] Failed to get rate limit status:', error)
+    return {
+      count: 0,
+      limit: config.maxRequests,
+      remaining: config.maxRequests,
+      reset: Date.now() + config.windowInSeconds * 1000,
+    }
   }
 }

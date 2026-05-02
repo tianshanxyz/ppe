@@ -121,7 +121,7 @@ export default function PricingPage() {
                       ${freeTier.price}
                     </span>
                     <span className="text-gray-600 ml-2">
-                      /{freeTier.billing_period}
+                      USD/{freeTier.billing_period}
                     </span>
                   </div>
                   <p className="text-gray-500 text-sm mt-2">Forever free</p>
@@ -183,22 +183,22 @@ export default function PricingPage() {
                       ${proTier.price}
                     </span>
                     <span className="text-gray-600 ml-2">
-                      /month
+                      USD/month
                     </span>
                   </div>
                   {billingPeriod === 'yearly' && (
                     <div className="mt-2">
                       <span className="text-gray-500 line-through mr-2">
-                        ${proTier.price * 12}/yr
+                        ${proTier.price * 12} USD/yr
                       </span>
                       <span className="text-green-600 font-semibold text-sm">
-                        ${Math.round(proTier.price * 12 * 0.8)} billed yearly (save 20%)
+                        ${Math.round(proTier.price * 12 * 0.8)} USD billed yearly (save 20%)
                       </span>
                     </div>
                   )}
                   <p className="text-gray-500 text-sm mt-2">
                     {billingPeriod === 'yearly'
-                      ? `Billed annually ($${Math.round(proTier.price * 12 * 0.8)})`
+                      ? `Billed annually ($${Math.round(proTier.price * 12 * 0.8)} USD)`
                       : 'Billed monthly'}
                   </p>
                 </div>
@@ -252,22 +252,22 @@ export default function PricingPage() {
                       ${enterpriseTier.price}
                     </span>
                     <span className="text-gray-600 ml-2">
-                      /month
+                      USD/month
                     </span>
                   </div>
                   {billingPeriod === 'yearly' && (
                     <div className="mt-2">
                       <span className="text-gray-500 line-through mr-2">
-                        ${enterpriseTier.price * 12}/yr
+                        ${enterpriseTier.price * 12} USD/yr
                       </span>
                       <span className="text-green-600 font-semibold text-sm">
-                        ${Math.round(enterpriseTier.price * 12 * 0.8)} billed yearly (save 20%)
+                        ${Math.round(enterpriseTier.price * 12 * 0.8)} USD billed yearly (save 20%)
                       </span>
                     </div>
                   )}
                   <p className="text-gray-500 text-sm mt-2">
                     {billingPeriod === 'yearly'
-                      ? `Billed annually ($${Math.round(enterpriseTier.price * 12 * 0.8)})`
+                      ? `Billed annually ($${Math.round(enterpriseTier.price * 12 * 0.8)} USD)`
                       : 'Billed monthly'}
                   </p>
                 </div>

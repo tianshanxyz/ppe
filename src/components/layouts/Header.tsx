@@ -6,14 +6,14 @@ import { useState, useEffect } from 'react';
 import {
   Menu,
   X,
-  Shield,
+  Home,
   ChevronDown,
+  Wrench,
   CheckCircle,
   Globe,
   Database,
   BookOpen,
   FileText,
-  Calculator,
   Clock,
   Building2,
   Package,
@@ -24,6 +24,7 @@ import {
   LogIn,
   UserPlus,
   User,
+  GraduationCap,
 } from 'lucide-react';
 import { useLocale, useSetLocale } from '@/lib/i18n/useLocale';
 import { navTranslations, headerTranslations, getTranslations } from '@/lib/i18n/translations';
@@ -61,11 +62,11 @@ export function Header() {
     {
       href: '/',
       label: t.home,
-      icon: Shield,
+      icon: Home,
     },
     {
       label: t.complianceTools,
-      icon: CheckCircle,
+      icon: Wrench,
       children: [
         { href: '/market-access', label: t.complianceChecker, icon: CheckCircle },
         { href: '/certification-comparison', label: t.marketComparison, icon: Globe },
@@ -86,7 +87,7 @@ export function Header() {
     },
     {
       label: t.knowledgeBase,
-      icon: BookOpen,
+      icon: GraduationCap,
       children: [
         { href: '/knowledge-base', label: t.knowledgeArticles, icon: Lightbulb },
         { href: '/case-studies', label: t.caseStudies, icon: FolderOpen },

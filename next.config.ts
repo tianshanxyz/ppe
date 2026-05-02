@@ -2,6 +2,9 @@ import type { NextConfig } from 'next';
 import { withSentryConfig } from '@sentry/nextjs';
 
 const nextConfig: NextConfig = {
+  // 开发环境允许的来源
+  allowedDevOrigins: ['127.0.0.1', 'localhost'],
+
   // 图片优化配置
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -64,7 +67,7 @@ const nextConfig: NextConfig = {
           // 内容安全策略
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://xtqhjyiyjhxfdzyypfqq.supabase.co https://api.medplum.com; frame-ancestors 'none';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' http://localhost:* http://127.0.0.1:* https://xtqhjyiyjhxfdzyypfqq.supabase.co https://api.medplum.com; frame-ancestors 'none';",
           },
           // HSTS - 强制 HTTPS
           {
@@ -106,10 +109,8 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Turbopack 配置（Next.js 16+）
   turbopack: {},
 
-  // Webpack 配置优化
   webpack: (config, { dev, isServer }) => {
     // 生产环境优化
     if (!dev && !isServer) {

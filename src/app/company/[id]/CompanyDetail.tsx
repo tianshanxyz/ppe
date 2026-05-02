@@ -390,7 +390,11 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
                     Legal Representative
                   </div>
                   <div className="text-gray-900">
-                    {company.metadata?.legal_representative || 'Not available'}
+                    {company.metadata?.legal_representative &&
+                     company.metadata.legal_representative !== 'Zhang Wei' &&
+                     company.metadata.legal_representative !== 'zhangwei'
+                      ? company.metadata.legal_representative
+                      : 'Not available'}
                   </div>
                 </div>
 

@@ -28,8 +28,8 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/Tabs'
-import { createClient } from '@/lib/supabase/client'
 import { getPPECategories, getTargetMarkets } from '@/lib/ppe-data'
+import { getUserMembership, canAccessFeature, getMembershipName, type MembershipTier } from '@/lib/membership'
 
 // 文档分类
 const CATEGORIES = [
@@ -4776,9 +4776,9 @@ export default function DocumentsPage() {
   const [selectedDoc, setSelectedDoc] = useState<string | null>(null)
   const [expandedGuideSections, setExpandedGuideSections] = useState<Record<number, boolean>>({})
 
-  // Auth state
-  const [user, setUser] = useState<any>(null)
-  const [authLoading, setAuthLoading] = useState(true)
+  // Auth state - read from localStorage membership
+  const [membership, setMembership] = useState<MembershipTier>('free')
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   // Document generator state
   const [genCategory, setGenCategory] = useState('')
@@ -4796,19 +4796,9 @@ export default function DocumentsPage() {
 
   // Check auth state on mount
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const supabase = createClient()
-        const { data: { user } } = await supabase.auth.getUser()
-        setUser(user)
-      } catch {
-        // Supabase not configured or user not logged in
-        setUser(null)
-      } finally {
-        setAuthLoading(false)
-      }
-    }
-    checkAuth()
+    const tier = getUserMembership()
+    setMembership(tier)
+    setIsLoggedIn(tier !== 'free' || !!localStorage.getItem('user'))
   }, [])
 
   // 过滤文档
@@ -5306,7 +5296,7 @@ ${markdownContent
 
                       {/* Action Buttons */}
                       <div className="space-y-2">
-                        {user ? (
+                        {canAccessFeature('download') ? (
                           <button
                             onClick={() => handleDownload(doc.id, doc.title)}
                             className="w-full py-2.5 bg-[#339999] text-white font-medium rounded-lg hover:bg-[#2d8b8b] transition-colors flex items-center justify-center gap-2"
@@ -5314,6 +5304,19 @@ ${markdownContent
                             <Download className="w-4 h-4" />
                             Download
                           </button>
+                        ) : isLoggedIn ? (
+                          <div className="space-y-2">
+                            <button
+                              disabled
+                              className="w-full py-2.5 bg-gray-200 text-gray-400 font-medium rounded-lg cursor-not-allowed flex items-center justify-center gap-2"
+                            >
+                              <Download className="w-4 h-4" />
+                              Download
+                            </button>
+                            <p className="text-xs text-center text-amber-600">
+                              Requires {getMembershipName('professional')} or higher
+                            </p>
+                          </div>
                         ) : (
                           <Link
                             href="/auth/login"
@@ -5369,22 +5372,36 @@ ${markdownContent
           <TabsContent value="generate">
             <div className="max-w-6xl mx-auto">
               {/* Auth gate for document generator */}
-              {!user && !authLoading && (
+              {!canAccessFeature('generate') && (
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8">
                   <div className="flex items-start">
                     <AlertCircle className="w-5 h-5 text-amber-500 mr-3 mt-0.5 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Sign in Required</h4>
+                      <h4 className="font-semibold text-gray-900 mb-1">
+                        {!isLoggedIn ? 'Sign in Required' : 'Upgrade Required'}
+                      </h4>
                       <p className="text-sm text-gray-600 mb-3">
-                        You need to be signed in to generate custom compliance documents. Sign in to access the full document generator with all templates.
+                        {!isLoggedIn
+                          ? 'You need to be signed in to generate custom compliance documents. Sign in to access the full document generator with all templates.'
+                          : `Your current plan (${getMembershipName(membership)}) does not include document generation. Upgrade to Professional or Enterprise to generate custom compliance documents.`
+                        }
                       </p>
-                      <Link
-                        href="/auth/login"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-[#339999] text-white text-sm font-medium rounded-lg hover:bg-[#2d8b8b] transition-colors"
-                      >
-                        <LogIn className="w-4 h-4" />
-                        Sign in to Continue
-                      </Link>
+                      {!isLoggedIn ? (
+                        <Link
+                          href="/auth/login"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-[#339999] text-white text-sm font-medium rounded-lg hover:bg-[#2d8b8b] transition-colors"
+                        >
+                          <LogIn className="w-4 h-4" />
+                          Sign in to Continue
+                        </Link>
+                      ) : (
+                        <Link
+                          href="/pricing"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-[#339999] text-white text-sm font-medium rounded-lg hover:bg-[#2d8b8b] transition-colors"
+                        >
+                          View Pricing Plans
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -5402,7 +5419,7 @@ ${markdownContent
                     <select
                       value={genCategory}
                       onChange={(e) => { setGenCategory(e.target.value); setGenFormData({}) }}
-                      disabled={!user}
+                      disabled={!canAccessFeature('generate')}
                       className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                     >
                       <option value="">Select category...</option>
@@ -5416,7 +5433,7 @@ ${markdownContent
                     <select
                       value={genMarket}
                       onChange={(e) => { setGenMarket(e.target.value); setGenFormData({}) }}
-                      disabled={!user}
+                      disabled={!canAccessFeature('generate')}
                       className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                     >
                       <option value="">Select market...</option>
@@ -5486,7 +5503,7 @@ ${markdownContent
                                     value={genFormData[field.label] || ''}
                                     onChange={(e) => handleGenFieldChange(field.label, e.target.value)}
                                     placeholder={field.placeholder}
-                                    disabled={!user}
+                                    disabled={!canAccessFeature('generate')}
                                     className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                                   />
                                 </div>
@@ -5495,7 +5512,7 @@ ${markdownContent
                           </div>
 
                           <div className="mt-6 flex justify-end">
-                            {user ? (
+                            {canAccessFeature('generate') ? (
                               <button
                                 onClick={() => handleGenerate(template)}
                                 disabled={generating === template.id}
@@ -5508,6 +5525,13 @@ ${markdownContent
                                 )}
                                 {generating === template.id ? 'Generating...' : 'Generate Document'}
                               </button>
+                            ) : isLoggedIn ? (
+                              <Link
+                                href="/pricing"
+                                className="px-6 py-3 bg-amber-100 text-amber-700 rounded-xl hover:bg-amber-200 transition-all flex items-center gap-2"
+                              >
+                                Upgrade to Generate
+                              </Link>
                             ) : (
                               <Link
                                 href="/auth/login"
