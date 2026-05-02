@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Search, Filter, Package, BarChart3, ExternalLink, AlertCircle, ChevronLeft, ChevronRight, Globe, Factory } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { getPPEProducts, getPPEStats, PPEProduct } from '@/lib/ppe-api-client'
+import { getPPEProductsClient, getPPEProductStatsClient, PPEProduct } from '@/lib/ppe-database-client'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -82,6 +82,7 @@ export default function ProductsPage() {
 
   // 筛选状态
   const [searchQuery, setSearchQuery] = useState('')
+  const [appliedSearch, setAppliedSearch] = useState('')
   const [selectedCountry, setSelectedCountry] = useState<string>('')
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [selectedRiskLevel, setSelectedRiskLevel] = useState<string>('')
@@ -96,12 +97,18 @@ export default function ProductsPage() {
     let mounted = true
     async function loadStats() {
       try {
-        const statsData = await getPPEStats()
+        const statsData = await getPPEProductStatsClient()
         if (mounted) {
-          setStats(statsData.data)
-          setCountries(Object.keys(statsData.data.distributions.country))
-          setCategories(Object.keys(statsData.data.distributions.category))
-          setRiskLevels(Object.keys(statsData.data.distributions.riskLevel))
+          setStats(statsData)
+          if (statsData.countryCount) {
+            setCountries(Object.keys(statsData.countryCount))
+          }
+          if (statsData.categoryCount) {
+            setCategories(Object.keys(statsData.categoryCount))
+          }
+          if (statsData.riskLevelCount) {
+            setRiskLevels(Object.keys(statsData.riskLevelCount))
+          }
         }
       } catch (err) {
         console.error('Failed to load stats:', err)
@@ -117,24 +124,25 @@ export default function ProductsPage() {
     setError(null)
 
     try {
-      const result = await getPPEProducts({
+      const result = await getPPEProductsClient({
         page,
         limit,
-        search: searchQuery,
-        country: selectedCountry,
-        category: selectedCategory,
-        riskLevel: selectedRiskLevel,
+        filters: {
+          search: appliedSearch,
+          country: selectedCountry,
+          category: selectedCategory,
+        },
       })
 
       setProducts(result.data)
-      setTotal(result.meta.total)
+      setTotal(result.total)
     } catch (err) {
       console.error('Failed to load products:', err)
       setError('Failed to load products. Please try again later.')
     } finally {
       setLoading(false)
     }
-  }, [page, selectedCountry, selectedCategory, selectedRiskLevel, searchQuery])
+  }, [page, selectedCountry, selectedCategory, appliedSearch])
 
   // 当筛选条件、分页变化时加载产品数据
   useEffect(() => {
@@ -143,8 +151,8 @@ export default function ProductsPage() {
 
   // 处理搜索
   const handleSearch = () => {
+    setAppliedSearch(searchQuery)
     setPage(1)
-    loadProducts()
   }
 
   // 处理回车键搜索
@@ -196,7 +204,7 @@ export default function ProductsPage() {
               Global PPE Database
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Browse and search our comprehensive database of {stats?.overview?.totalProducts?.toLocaleString() || '...'} PPE products from around the world
+              Browse and search our comprehensive database of {stats?.totalProducts?.toLocaleString() || '...'} PPE products from around the world
             </p>
           </motion.div>
         </div>
@@ -214,10 +222,10 @@ export default function ProductsPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                { value: stats.overview?.totalProducts ?? 0, label: 'Total Products', icon: Package },
-                { value: stats.overview?.totalManufacturers ?? 0, label: 'Manufacturers', icon: Factory },
-                { value: Object.keys(stats.distributions?.country ?? {}).length, label: 'Countries', icon: Globe },
-                { value: Object.keys(stats.distributions?.category ?? {}).length, label: 'Categories', icon: BarChart3 },
+                { value: stats.totalProducts ?? 0, label: 'Total Products', icon: Package },
+                { value: Object.keys(stats.countryCount ?? {}).length, label: 'Countries', icon: Globe },
+                { value: Object.keys(stats.categoryCount ?? {}).length, label: 'Categories', icon: BarChart3 },
+                { value: Object.keys(stats.riskLevelCount ?? {}).length, label: 'Risk Levels', icon: AlertCircle },
               ].map((stat, i) => (
                 <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
                   <div className="flex justify-center mb-2">
@@ -256,16 +264,24 @@ export default function ProductsPage() {
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Search
                     </label>
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        onKeyDown={handleKeyPress}
-                        placeholder="Product name, code..."
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all text-sm"
-                      />
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          onKeyDown={handleKeyPress}
+                          placeholder="Product name, code..."
+                          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all text-sm"
+                        />
+                      </div>
+                      <button
+                        onClick={handleSearch}
+                        className="px-4 py-2.5 bg-[#339999] text-white rounded-xl hover:bg-[#2d8b8b] transition-all duration-300 text-sm font-semibold flex-shrink-0"
+                      >
+                        <Search className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
 
@@ -342,6 +358,7 @@ export default function ProductsPage() {
                       setSelectedCategory('')
                       setSelectedRiskLevel('')
                       setSearchQuery('')
+                      setAppliedSearch('')
                       setPage(1)
                     }}
                     className="w-full py-3 px-4 text-sm font-semibold text-[#339999] hover:text-[#2d8b8b] bg-[#339999]/5 hover:bg-[#339999]/10 rounded-xl transition-all duration-300"
@@ -493,11 +510,11 @@ export default function ProductsPage() {
                 <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
                   <Package className="w-20 h-20 text-gray-300 mx-auto mb-6" />
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    {searchQuery.trim() ? 'No Search Results' : 'No Products Found'}
+                    {appliedSearch.trim() ? 'No Search Results' : 'No Products Found'}
                   </h3>
                   <p className="text-gray-600">
-                    {searchQuery.trim()
-                      ? `No products found for "${searchQuery}". Try different keywords or adjust filters.`
+                    {appliedSearch.trim()
+                      ? `No products found for "${appliedSearch}". Try different keywords or adjust filters.`
                       : 'Try adjusting your search or filters'
                     }
                   </p>

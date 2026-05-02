@@ -676,6 +676,8 @@ export const getPPEProductStats = getPPEProductStatsClient
 export const getPPECategories = getPPECategoriesClient
 export const getPPECountries = getPPECountriesClient
 export const getMarketStats = getMarketStatsClient
+export { DEFAULT_MANUFACTURERS }
+export { DEFAULT_PRODUCTS }
 
 export interface PPEManufacturer {
   id: string

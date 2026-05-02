@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { FileText, Calendar, Clock, Tag, Filter, Search, ArrowRight, Globe, User } from 'lucide-react'
+import { FileText, Calendar, Clock, Tag, Filter, Search, ArrowRight, Globe, User, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getTranslations } from '@/lib/i18n/translations'
@@ -57,24 +57,35 @@ export default function MarketReportsPage() {
   const t = getTranslations(reportTranslations, locale)
 
   const [searchQuery, setSearchQuery] = useState('')
+  const [appliedSearch, setAppliedSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [selectedRegion, setSelectedRegion] = useState('All')
 
+  const handleSearch = () => {
+    setAppliedSearch(searchQuery)
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  }
+
   const filteredReports = useMemo(() => {
     return marketReports.filter((report: MarketReport) => {
-      const matchesSearch = !searchQuery ||
-        report.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        report.title_zh.includes(searchQuery) ||
-        report.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        report.summary_zh.includes(searchQuery) ||
-        report.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      const matchesSearch = !appliedSearch ||
+        report.title.toLowerCase().includes(appliedSearch.toLowerCase()) ||
+        report.title_zh.includes(appliedSearch) ||
+        report.summary.toLowerCase().includes(appliedSearch.toLowerCase()) ||
+        report.summary_zh.includes(appliedSearch) ||
+        report.tags.some(tag => tag.toLowerCase().includes(appliedSearch.toLowerCase()))
 
       const matchesCategory = selectedCategory === 'All' || report.category === selectedCategory
       const matchesRegion = selectedRegion === 'All' || report.region === selectedRegion
 
       return matchesSearch && matchesCategory && matchesRegion
     })
-  }, [searchQuery, selectedCategory, selectedRegion])
+  }, [appliedSearch, selectedCategory, selectedRegion])
 
   const displayTitle = (report: MarketReport) => locale === 'zh' ? report.title_zh : report.title
   const displaySummary = (report: MarketReport) => locale === 'zh' ? report.summary_zh : report.summary
@@ -107,15 +118,24 @@ export default function MarketReportsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row gap-4">
             {/* Search */}
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder={t.searchReports}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-transparent"
-              />
+            <div className="flex-1 flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder={t.searchReports}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-transparent"
+                />
+              </div>
+              <button
+                onClick={handleSearch}
+                className="px-4 py-3 bg-[#339999] text-white rounded-lg hover:bg-[#2d8b8b] transition-colors flex-shrink-0"
+              >
+                <Search className="w-5 h-5" />
+              </button>
             </div>
 
             {/* Category Filter */}
@@ -219,6 +239,19 @@ export default function MarketReportsPage() {
                     {t.readMore}
                     <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </div>
+
+                  {report.sourceUrl && (
+                    <a
+                      href={report.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#339999] transition-colors"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      {locale === 'zh' ? '原文链接' : 'Source'}
+                    </a>
+                  )}
                 </Link>
               ))}
             </div>

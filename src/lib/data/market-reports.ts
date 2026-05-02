@@ -17,6 +17,7 @@ export interface MarketReport {
   readTime: string
   author: string
   tags: string[]
+  sourceUrl?: string
   content: ReportContent
 }
 
@@ -55,6 +56,7 @@ export const marketReports: MarketReport[] = [
     readTime: '12 min',
     author: 'Dr. Sarah Chen',
     tags: ['EU', 'CE Marking', 'Regulation', 'Compliance'],
+    sourceUrl: 'https://ec.europa.eu/growth/sectors/mechanical-engineering/personal-protective-equipment_en',
     content: {
       overview: 'The EU PPE Regulation (EU) 2016/425 has undergone significant amendments in 2025-2026, impacting manufacturers and exporters worldwide. This report examines the key changes and their implications for market access.',
       overview_zh: '欧盟PPE法规 (EU) 2016/425 在2025-2026年经历了重大修订，影响了全球制造商和出口商。本报告审视了关键变化及其对市场准入的影响。',
@@ -114,6 +116,7 @@ export const marketReports: MarketReport[] = [
     readTime: '10 min',
     author: 'Michael Rodriguez',
     tags: ['FDA', 'Enforcement', 'Import Alerts', 'US Market'],
+    sourceUrl: 'https://www.fda.gov/medical-devices/device-regulation-and-guidance',
     content: {
       overview: 'FDA enforcement on PPE imports has intensified significantly, with a 45% increase in warning letters and 32 new import alerts issued in 2025. This report analyzes enforcement patterns and provides compliance guidance.',
       overview_zh: 'FDA对PPE进口的执法力度显著加强，2025年警告信增加45%，新发布32项进口警报。本报告分析执法模式并提供合规指导。',
@@ -173,6 +176,7 @@ export const marketReports: MarketReport[] = [
     readTime: '15 min',
     author: 'Dr. Li Wei',
     tags: ['NMPA', 'China', 'Registration', 'Clinical Evaluation'],
+    sourceUrl: 'https://www.nmpa.gov.cn/',
     content: {
       overview: 'China NMPA has implemented significant reforms to PPE registration pathways in 2026, introducing a new priority review track and updated testing standards aligned with international harmonization efforts.',
       overview_zh: '中国NMPA在2026年对PPE注册路径实施了重大改革，引入了新的优先审评通道和与国际协调工作一致的更新测试标准。',
@@ -232,6 +236,7 @@ export const marketReports: MarketReport[] = [
     readTime: '11 min',
     author: 'James Thompson',
     tags: ['UKCA', 'Brexit', 'UK Market', 'MHRA'],
+    sourceUrl: 'https://www.gov.uk/guidance/ukca-marking',
     content: {
       overview: 'The UKCA marking transition has entered its final phase in 2026. This report examines the current status of CE recognition, UK-approved body capacity, and practical implications for PPE exporters.',
       overview_zh: 'UKCA标志过渡在2026年进入最后阶段。本报告审视了CE认可的现状、英国认可机构的能力以及对PPE出口商的实际影响。',
@@ -291,6 +296,7 @@ export const marketReports: MarketReport[] = [
     readTime: '13 min',
     author: 'Ahmed Al-Rashid',
     tags: ['GCC', 'G-Mark', 'GSO', 'Middle East'],
+    sourceUrl: 'https://www.gso.org.sa/',
     content: {
       overview: 'The Gulf Cooperation Council has unified PPE technical regulations under GSO 1940:2025. This report provides exporters with a practical roadmap for G-Mark certification across all six GCC member states.',
       overview_zh: '海湾合作委员会已将PPE技术法规统一为GSO 1940:2025。本报告为出口商提供了在所有六个GCC成员国获得G-Mark认证的实用路线图。',
@@ -350,6 +356,7 @@ export const marketReports: MarketReport[] = [
     readTime: '14 min',
     author: 'Dr. Nguyen Tran',
     tags: ['ASEAN', 'Singapore', 'Malaysia', 'Indonesia', 'Thailand'],
+    sourceUrl: 'https://www.hsa.gov.sg/medical-devices',
     content: {
       overview: 'ASEAN medical device directive (AMDD) harmonization has reached a critical milestone in 2026. This report examines country-specific implementations and their impact on PPE market access.',
       overview_zh: '东盟医疗器械指令（AMDD）协调在2026年达到了关键里程碑。本报告审视了各国具体实施情况及其对PPE市场准入的影响。',
@@ -409,6 +416,7 @@ export const marketReports: MarketReport[] = [
     readTime: '16 min',
     author: 'Prof. David Kim',
     tags: ['Supply Chain', 'Manufacturing', 'Resilience', 'Nearshoring'],
+    sourceUrl: 'https://www.wto.org/',
     content: {
       overview: 'The global PPE supply chain has undergone significant transformation since 2020. This report analyzes current vulnerabilities, emerging manufacturing hubs, and strategies for supply chain resilience.',
       overview_zh: '自2020年以来，全球PPE供应链经历了重大转型。本报告分析了当前的脆弱性、新兴制造中心以及供应链韧性策略。',
@@ -468,6 +476,7 @@ export const marketReports: MarketReport[] = [
     readTime: '12 min',
     author: 'Dr. Emma Larsson',
     tags: ['ESG', 'Sustainability', 'Circular Economy', 'Green Deal'],
+    sourceUrl: 'https://ec.europa.eu/environment/strategy/circular-economy_en',
     content: {
       overview: 'Sustainability has become a critical competitive factor in the PPE market. This report examines regulatory requirements, consumer trends, and business opportunities in sustainable PPE.',
       overview_zh: '可持续性已成为PPE市场的关键竞争因素。本报告审视了可持续PPE的监管要求、消费者趋势和商业机会。',
@@ -527,6 +536,7 @@ export const marketReports: MarketReport[] = [
     readTime: '11 min',
     author: 'Dr. Alex Petrov',
     tags: ['AI', 'Machine Learning', 'Testing', 'Automation'],
+    sourceUrl: 'https://www.nist.gov/artificial-intelligence',
     content: {
       overview: 'Artificial intelligence is revolutionizing PPE testing and certification. This report examines current applications, regulatory acceptance, and future trends in AI-driven compliance.',
       overview_zh: '人工智能正在革新PPE测试和认证。本报告审视了当前应用、监管接受度以及AI驱动合规的未来趋势。',
@@ -586,6 +596,7 @@ export const marketReports: MarketReport[] = [
     readTime: '13 min',
     author: 'Sarah Mitchell',
     tags: ['Cybersecurity', 'IoT', 'Smart PPE', 'IEC 62443'],
+    sourceUrl: 'https://www.iec.ch/dyn/www/f?p=103:7:::::FSP_ORG_ID:13156',
     content: {
       overview: 'As PPE becomes increasingly connected, cybersecurity has emerged as a critical compliance requirement. This report provides implementation guidance for IEC 62443 in smart PPE devices.',
       overview_zh: '随着PPE日益互联，网络安全已成为关键的合规要求。本报告为智能PPE设备中的IEC 62443实施提供指导。',
@@ -645,6 +656,7 @@ export const marketReports: MarketReport[] = [
     readTime: '18 min',
     author: 'Dr. Robert Chang',
     tags: ['Market Forecast', 'Growth', 'Investment', 'Trends'],
+    sourceUrl: 'https://www.grandviewresearch.com/',
     content: {
       overview: 'The global PPE market is projected to reach $92 billion by 2030. This report provides detailed forecasts by product category, region, and end-use industry.',
       overview_zh: '全球PPE市场预计到2030年将达到920亿美元。本报告按产品类别、区域和终端使用行业提供详细预测。',
@@ -704,6 +716,7 @@ export const marketReports: MarketReport[] = [
     readTime: '10 min',
     author: 'Dr. Hans Mueller',
     tags: ['Raw Materials', 'Pricing', 'Supply Chain', 'Manufacturing'],
+    sourceUrl: 'https://www.icis.com/',
     content: {
       overview: 'Raw material costs represent 45-60% of PPE manufacturing costs. This report analyzes price trends, supply risks, and mitigation strategies for key PPE materials.',
       overview_zh: '原材料成本占PPE制造成本的45-60%。本报告分析了关键PPE材料的价格趋势、供应风险和缓解策略。',
@@ -763,6 +776,7 @@ export const marketReports: MarketReport[] = [
     readTime: '12 min',
     author: 'Jennifer Walsh',
     tags: ['Recalls', 'Risk Management', 'Quality', 'Safety'],
+    sourceUrl: 'https://www.fda.gov/medical-devices/medical-device-recalls',
     content: {
       overview: 'Product recalls in the PPE industry increased 18% in 2025. This report analyzes recall patterns, root causes, and best practices for prevention.',
       overview_zh: '2025年PPE行业产品召回增加18%。本报告分析了召回模式、根本原因和预防最佳实践。',
@@ -822,6 +836,7 @@ export const marketReports: MarketReport[] = [
     readTime: '14 min',
     author: 'Carlos Mendez',
     tags: ['Emerging Markets', 'Africa', 'Latin America', 'Market Entry'],
+    sourceUrl: 'https://www.worldbank.org/',
     content: {
       overview: 'Emerging markets represent the next frontier for PPE growth. This report examines opportunities, challenges, and entry strategies for Africa and Latin America.',
       overview_zh: '新兴市场代表PPE增长的下一个前沿。本报告审视了非洲和拉丁美洲的机遇、挑战和进入策略。',
@@ -881,6 +896,7 @@ export const marketReports: MarketReport[] = [
     readTime: '10 min',
     author: 'Dr. Patricia O\'Brien',
     tags: ['ISO', 'Standards', 'Testing', 'Certification'],
+    sourceUrl: 'https://www.iso.org/',
     content: {
       overview: 'Multiple ISO PPE standards are undergoing revision in 2026. This report provides a timeline of changes and guidance for manufacturers on transition planning.',
       overview_zh: '多项ISO PPE标准正在2026年进行修订。本报告提供了变更时间表和制造商过渡规划指导。',
@@ -940,6 +956,7 @@ export const marketReports: MarketReport[] = [
     readTime: '11 min',
     author: 'Dr. Maria Santos',
     tags: ['Post-Market', 'Vigilance', 'Surveillance', 'Compliance'],
+    sourceUrl: 'https://ec.europa.eu/health/medical-devices/post-market-surveillance_en',
     content: {
       overview: 'Post-market surveillance is increasingly critical for PPE compliance. This report outlines best practices for vigilance systems, trend analysis, and regulatory reporting.',
       overview_zh: '上市后监督对PPE合规日益关键。本报告概述了警戒系统、趋势分析和监管报告的最佳实践。',

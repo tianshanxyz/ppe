@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Scale, Search, Filter, Globe, ChevronLeft, ChevronRight, ExternalLink, AlertCircle, BookOpen } from 'lucide-react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { getPPERegulations, getPPEStats, PPERegulation } from '@/lib/ppe-api-client'
 
 const fadeInUp = {
@@ -50,6 +51,7 @@ export default function RegulationsPage() {
   const [error, setError] = useState<string | null>(null)
 
   const [searchQuery, setSearchQuery] = useState('')
+  const [appliedSearch, setAppliedSearch] = useState('')
   const [selectedRegion, setSelectedRegion] = useState<string>('')
   const [regions, setRegions] = useState<string[]>([])
 
@@ -79,7 +81,7 @@ export default function RegulationsPage() {
       const result = await getPPERegulations({
         page,
         limit,
-        search: searchQuery,
+        search: appliedSearch,
         region: selectedRegion,
       })
 
@@ -97,16 +99,20 @@ export default function RegulationsPage() {
     } finally {
       setLoading(false)
     }
-  }, [page, selectedRegion, searchQuery])
+  }, [page, selectedRegion, appliedSearch])
 
   useEffect(() => {
     loadRegulations()
   }, [loadRegulations])
 
+  const handleSearch = () => {
+    setAppliedSearch(searchQuery)
+    setPage(1)
+  }
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      setPage(1)
-      loadRegulations()
+      handleSearch()
     }
   }
 
@@ -209,16 +215,24 @@ export default function RegulationsPage() {
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Search
                     </label>
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        onKeyDown={handleKeyPress}
-                        placeholder="Regulation name, code..."
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all text-sm"
-                      />
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          onKeyDown={handleKeyPress}
+                          placeholder="Regulation name, code..."
+                          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all text-sm"
+                        />
+                      </div>
+                      <button
+                        onClick={handleSearch}
+                        className="px-4 py-2.5 bg-[#339999] text-white rounded-xl hover:bg-[#2d8b8b] transition-all duration-300 text-sm font-semibold flex-shrink-0"
+                      >
+                        <Search className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
 
@@ -247,6 +261,7 @@ export default function RegulationsPage() {
                     onClick={() => {
                       setSelectedRegion('')
                       setSearchQuery('')
+                      setAppliedSearch('')
                       setPage(1)
                     }}
                     className="w-full py-3 px-4 text-sm font-semibold text-[#339999] hover:text-[#2d8b8b] bg-[#339999]/5 hover:bg-[#339999]/10 rounded-xl transition-all duration-300"
@@ -295,7 +310,10 @@ export default function RegulationsPage() {
                   <div className="space-y-4">
                     {regulations.map((reg) => (
                       <div key={reg.id}>
-                        <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-xl hover:border-[#339999]/30 hover:-translate-y-1 transition-all duration-300">
+                        <Link
+                          href={`/regulations/${reg.id}`}
+                          className="group block bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-xl hover:border-[#339999]/30 hover:-translate-y-1 transition-all duration-300"
+                        >
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex-1 min-w-0">
                               <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#339999] transition-colors">
@@ -326,7 +344,7 @@ export default function RegulationsPage() {
                               </p>
                             </div>
                           )}
-                        </div>
+                        </Link>
                       </div>
                     ))}
                   </div>
@@ -373,11 +391,11 @@ export default function RegulationsPage() {
                 <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
                   <Scale className="w-20 h-20 text-gray-300 mx-auto mb-6" />
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    {searchQuery.trim() ? 'No Search Results' : 'No Regulations Found'}
+                    {appliedSearch.trim() ? 'No Search Results' : 'No Regulations Found'}
                   </h3>
                   <p className="text-gray-600">
-                    {searchQuery.trim()
-                      ? `No regulations found for "${searchQuery}". Try different keywords or adjust filters.`
+                    {appliedSearch.trim()
+                      ? `No regulations found for "${appliedSearch}". Try different keywords or adjust filters.`
                       : 'Try adjusting your search or filters'
                     }
                   </p>

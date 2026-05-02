@@ -135,16 +135,6 @@ export function Footer() {
                   FAQ
                 </Link>
               </li>
-              <li>
-                <Link href="/terms" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.termsOfService}
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="text-gray-500 hover:text-primary transition-colors">
-                  {t.privacyPolicy}
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

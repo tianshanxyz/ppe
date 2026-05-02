@@ -690,8 +690,8 @@ export const headerTranslations = {
 // 知识库页面翻译
 export const knowledgeBaseTranslations = {
   en: {
-    knowledgeBase: 'Knowledge Base',
-    knowledgeBaseSubtitle: 'Comprehensive PPE compliance guides, technical documentation, and market access strategies',
+    knowledgeBase: 'PPE Knowledge Hub',
+    knowledgeBaseSubtitle: 'In-depth analysis of PPE industry technical standards, testing methods, and best practices to enhance professional expertise',
     searchArticles: 'Search articles...',
     allArticles: 'All Articles',
     compliance: 'Compliance',
@@ -726,8 +726,8 @@ export const knowledgeBaseTranslations = {
     pmsSummary: 'Understanding post-market surveillance obligations for PPE manufacturers in major markets.',
   },
   zh: {
-    knowledgeBase: '知识库',
-    knowledgeBaseSubtitle: '全面的PPE合规指南、技术文档和市场准入策略',
+    knowledgeBase: 'PPE知识中心',
+    knowledgeBaseSubtitle: '深入解析PPE行业技术标准、测试方法和最佳实践，助力专业能力提升',
     searchArticles: '搜索文章...',
     allArticles: '全部文章',
     compliance: '合规',

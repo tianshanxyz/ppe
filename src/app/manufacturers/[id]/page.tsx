@@ -9,8 +9,7 @@ import {
   Users, Calendar, DollarSign, FileText,
   TrendingUp, AlertCircle
 } from 'lucide-react'
-import { getPPEManufacturer } from '@/lib/ppe-database-client'
-import { createClient } from '@/lib/supabase/client'
+import { getPPEManufacturer, DEFAULT_MANUFACTURERS, DEFAULT_PRODUCTS, getPPEProductsClient } from '@/lib/ppe-database-client'
 import { DataSourceBadge } from '@/components/DataSourceBadge'
 
 export default function ManufacturerDetailPage() {
@@ -26,24 +25,48 @@ export default function ManufacturerDetailPage() {
 
   async function loadManufacturer() {
     try {
-      const data = await getPPEManufacturer(id)
+      let data = await getPPEManufacturer(id)
+      
+      // 如果数据库中没有找到，从默认制造商数据中查找
+      if (!data) {
+        const defaultMfr = DEFAULT_MANUFACTURERS.find(m => m.id === id)
+        if (defaultMfr) {
+          data = defaultMfr
+        }
+      }
+      
       setManufacturer(data)
       
       // 加载该制造商的产品
       if (data?.name) {
-        const supabase = createClient()
-        const { data: manufacturerProducts } = await supabase
-          .from('ppe_products')
-          .select('*')
-          .eq('manufacturer_name', data.name)
-          .limit(10)
-        
-        if (manufacturerProducts) {
-          setProducts(manufacturerProducts)
+        try {
+          const result = await getPPEProductsClient({
+            page: 1,
+            limit: 10,
+            filters: { search: data.name },
+          })
+          if (result.data && result.data.length > 0) {
+            setProducts(result.data)
+          } else {
+            // 数据库查询失败时使用默认产品作为回退
+            const fallbackProducts = DEFAULT_PRODUCTS.filter(p => p.manufacturer_name === data.name)
+            setProducts(fallbackProducts)
+          }
+        } catch {
+          // 产品加载失败时使用默认产品作为回退
+          const fallbackProducts = DEFAULT_PRODUCTS.filter(p => p.manufacturer_name === data.name)
+          setProducts(fallbackProducts)
         }
       }
     } catch (error) {
       console.error('加载制造商详情失败:', error)
+      // 尝试从默认制造商数据中查找
+      const defaultMfr = DEFAULT_MANUFACTURERS.find(m => m.id === id)
+      if (defaultMfr) {
+        setManufacturer(defaultMfr)
+        const fallbackProducts = DEFAULT_PRODUCTS.filter(p => p.manufacturer_name === defaultMfr.name)
+        setProducts(fallbackProducts)
+      }
     } finally {
       setLoading(false)
     }
