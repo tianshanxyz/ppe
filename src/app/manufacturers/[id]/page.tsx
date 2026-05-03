@@ -179,30 +179,68 @@ export default function ManufacturerDetailPage() {
                     <div className="text-sm font-medium text-gray-500 mb-1">Country/Region</div>
                     <div className="text-lg text-gray-900">{manufacturer.country}</div>
                   </div>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="text-sm font-medium text-gray-500 mb-1">Established</div>
-                    <div className="text-lg text-gray-900">2010</div>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="text-sm font-medium text-gray-500 mb-1">Registered Capital</div>
-                    <div className="text-lg text-gray-900">$10 Million</div>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="text-sm font-medium text-gray-500 mb-1">Business Scope</div>
-                    <div className="text-lg text-gray-900">Medical Device Manufacturing</div>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="text-sm font-medium text-gray-500 mb-1">Legal Representative</div>
-                    <div className="text-lg text-gray-900">Zhang Wei</div>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="text-sm font-medium text-gray-500 mb-1">Employees</div>
-                    <div className="text-lg text-gray-900">500-1000</div>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="text-sm font-medium text-gray-500 mb-1">Annual Revenue</div>
-                    <div className="text-lg text-gray-900">$50-100 Million</div>
-                  </div>
+                  {manufacturer.established_date && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-sm font-medium text-gray-500 mb-1">Established</div>
+                      <div className="text-lg text-gray-900">{manufacturer.established_date}</div>
+                    </div>
+                  )}
+                  {manufacturer.registered_capital && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-sm font-medium text-gray-500 mb-1">Registered Capital</div>
+                      <div className="text-lg text-gray-900">{manufacturer.registered_capital}</div>
+                    </div>
+                  )}
+                  {manufacturer.business_scope && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-sm font-medium text-gray-500 mb-1">Business Scope</div>
+                      <div className="text-lg text-gray-900">{manufacturer.business_scope}</div>
+                    </div>
+                  )}
+                  {manufacturer.legal_representative &&
+                   manufacturer.legal_representative !== 'Zhang Wei' &&
+                   manufacturer.legal_representative !== 'zhangwei' && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-sm font-medium text-gray-500 mb-1">Legal Representative</div>
+                      <div className="text-lg text-gray-900">{manufacturer.legal_representative}</div>
+                    </div>
+                  )}
+                  {manufacturer.employee_count && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-sm font-medium text-gray-500 mb-1">Employees</div>
+                      <div className="text-lg text-gray-900">{manufacturer.employee_count}</div>
+                    </div>
+                  )}
+                  {manufacturer.annual_revenue && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-sm font-medium text-gray-500 mb-1">Annual Revenue</div>
+                      <div className="text-lg text-gray-900">{manufacturer.annual_revenue}</div>
+                    </div>
+                  )}
+                  {manufacturer.province && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-sm font-medium text-gray-500 mb-1">Province/State</div>
+                      <div className="text-lg text-gray-900">{manufacturer.province}</div>
+                    </div>
+                  )}
+                  {manufacturer.city && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-sm font-medium text-gray-500 mb-1">City</div>
+                      <div className="text-lg text-gray-900">{manufacturer.city}</div>
+                    </div>
+                  )}
+                  {manufacturer.address && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-sm font-medium text-gray-500 mb-1">Address</div>
+                      <div className="text-lg text-gray-900">{manufacturer.address}</div>
+                    </div>
+                  )}
+                  {manufacturer.website && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-sm font-medium text-gray-500 mb-1">Website</div>
+                      <a href={manufacturer.website} target="_blank" rel="noopener noreferrer" className="text-lg text-[#339999] hover:underline">{manufacturer.website}</a>
+                    </div>
+                  )}
                 </div>
               </div>
 

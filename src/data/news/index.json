@@ -1,5 +1,21 @@
 [
   {
+    "id": "auto-2026-05-03-0",
+    "title": "FDA Publishes Final Guidance on N95 Respirator Reprocessing",
+    "title_zh": "FDA发布N95呼吸器再处理最终指南",
+    "date": "2026-05-03",
+    "category": "US",
+    "impact": "high",
+    "summary": "FDA issued final guidance establishing requirements for reprocessing of N95 respirators, including validation protocols and quality system requirements.",
+    "summary_zh": "FDA发布最终指南，建立N95呼吸器再处理的要求，包括验证协议和质量体系要求。",
+    "source": "FDA CDRH",
+    "tags": [
+      "US",
+      "Regulatory Update",
+      "Compliance"
+    ]
+  },
+  {
     "id": "auto-2026-05-02-0",
     "title": "FDA Publishes Final Guidance on N95 Respirator Reprocessing",
     "title_zh": "FDA发布N95呼吸器再处理最终指南",

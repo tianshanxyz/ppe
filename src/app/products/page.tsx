@@ -52,24 +52,91 @@ function getCategoryIcon(category: string) {
   }
 }
 
-const countryNames: Record<string, string> = {
-  US: '美国',
-  CA: '加拿大',
-  CN: '中国',
-  GB: '英国',
-  DE: '德国',
-  JP: '日本',
-  KR: '韩国',
-  BR: '巴西',
-  AU: '澳大利亚',
-  IN: '印度',
-  MY: '马来西亚',
-  TH: '泰国',
-  FR: '法国',
-  IT: '意大利',
-  ES: '西班牙',
-  NL: '荷兰',
-  SE: '瑞典',
+const COUNTRY_DISPLAY: Record<string, string> = {
+  US: 'United States',
+  CA: 'Canada',
+  CN: 'China',
+  GB: 'United Kingdom',
+  DE: 'Germany',
+  JP: 'Japan',
+  KR: 'South Korea',
+  BR: 'Brazil',
+  AU: 'Australia',
+  IN: 'India',
+  MY: 'Malaysia',
+  TH: 'Thailand',
+  FR: 'France',
+  IT: 'Italy',
+  ES: 'Spain',
+  NL: 'Netherlands',
+  SE: 'Sweden',
+  MX: 'Mexico',
+  ZA: 'South Africa',
+  RU: 'Russia',
+  SG: 'Singapore',
+  ID: 'Indonesia',
+  VN: 'Vietnam',
+  PH: 'Philippines',
+  NZ: 'New Zealand',
+  IL: 'Israel',
+  CH: 'Switzerland',
+  AT: 'Austria',
+  BE: 'Belgium',
+  PL: 'Poland',
+  CZ: 'Czech Republic',
+  DK: 'Denmark',
+  FI: 'Finland',
+  NO: 'Norway',
+  PT: 'Portugal',
+  IE: 'Ireland',
+  GR: 'Greece',
+  TR: 'Turkey',
+  SA: 'Saudi Arabia',
+  AE: 'UAE',
+  'United States': 'United States',
+  'United Kingdom': 'United Kingdom',
+  China: 'China',
+  Germany: 'Germany',
+  France: 'France',
+  Japan: 'Japan',
+  'South Korea': 'South Korea',
+  India: 'India',
+  Brazil: 'Brazil',
+  Australia: 'Australia',
+  Canada: 'Canada',
+  Italy: 'Italy',
+  Spain: 'Spain',
+  Netherlands: 'Netherlands',
+  Sweden: 'Sweden',
+  Mexico: 'Mexico',
+  Switzerland: 'Switzerland',
+  Malaysia: 'Malaysia',
+  Thailand: 'Thailand',
+  Singapore: 'Singapore',
+  Indonesia: 'Indonesia',
+  Vietnam: 'Vietnam',
+  Russia: 'Russia',
+  'South Africa': 'South Africa',
+  'New Zealand': 'New Zealand',
+  中国: 'China',
+  美国: 'United States',
+  德国: 'Germany',
+  法国: 'France',
+  英国: 'United Kingdom',
+  日本: 'Japan',
+  韩国: 'South Korea',
+  印度: 'India',
+  巴西: 'Brazil',
+  澳大利亚: 'Australia',
+  加拿大: 'Canada',
+  意大利: 'Italy',
+  西班牙: 'Spain',
+  荷兰: 'Netherlands',
+  瑞典: 'Sweden',
+}
+
+function getCountryDisplay(country: string): string {
+  return COUNTRY_DISPLAY[country] || country
 }
 
 export default function ProductsPage() {
@@ -101,7 +168,12 @@ export default function ProductsPage() {
         if (mounted) {
           setStats(statsData)
           if (statsData.countryCount) {
-            setCountries(Object.keys(statsData.countryCount))
+            const sortedCountries = Object.keys(statsData.countryCount).sort((a, b) => {
+              const nameA = getCountryDisplay(a)
+              const nameB = getCountryDisplay(b)
+              return nameA.localeCompare(nameB)
+            })
+            setCountries(sortedCountries)
           }
           if (statsData.categoryCount) {
             setCategories(Object.keys(statsData.categoryCount))
@@ -301,7 +373,7 @@ export default function ProductsPage() {
                       <option value="">All Countries</option>
                       {countries.map(country => (
                         <option key={country} value={country}>
-                          {countryNames[country] || country}
+                          {getCountryDisplay(country)}
                         </option>
                       ))}
                     </select>
@@ -438,7 +510,7 @@ export default function ProductsPage() {
                             {product.country_of_origin && (
                               <div className="flex items-center text-sm text-gray-600">
                                 <Globe className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
-                                <span className="truncate">{countryNames[product.country_of_origin] || product.country_of_origin}</span>
+                                <span className="truncate">{getCountryDisplay(product.country_of_origin)}</span>
                               </div>
                             )}
                             {product.subcategory && (

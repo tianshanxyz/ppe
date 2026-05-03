@@ -1,237 +1,249 @@
-#!/usr/bin/env node
-
 const { createClient } = require('@supabase/supabase-js');
 
-const SUPABASE_URL = 'https://xtqhjyiyjhxfdzyypfqq.supabase.co';
-const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh0cWhqeWl5amh4ZmR6eXlwZnFxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjUwNTU1OSwiZXhwIjoyMDkyMDgxNTU5fQ.6uW47M6vaxbWomXiUiplhHbzST0vxs0CAIWoL5FdchU';
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+const supabase = createClient(
+  'https://xtqhjyiyjhxfdzyypfqq.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh0cWhqeWl5amh4ZmR6eXlwZnFxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjUwNTU1OSwiZXhwIjoyMDkyMDgxNTU5fQ.6uW47M6vaxbWomXiUiplhHbzST0vxs0CAIWoL5FdchU'
+);
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+async function fetchAll(table, columns, batchSize = 1000) {
+  const all = [];
+  let page = 0;
+  while (true) {
+    const { data, error } = await supabase
+      .from(table)
+      .select(columns)
+      .range(page * batchSize, (page + 1) * batchSize - 1);
+    if (error) break;
+    if (!data || data.length === 0) break;
+    all.push(...data);
+    if (data.length < batchSize) break;
+    page++;
+  }
+  return all;
+}
 
 async function main() {
-  console.log('============================================================');
-  console.log('  PPE全球数据库 - 最终数据质量报告');
-  console.log('  生成时间: ' + new Date().toISOString());
-  console.log('============================================================\n');
+  console.log('========================================');
+  console.log('PPE 数据库最终质量验证报告');
+  console.log('========================================');
+  console.log('生成时间:', new Date().toISOString());
+  console.log('');
 
-  // 1. 总体统计
-  const { count: totalProducts } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true });
-  const { count: totalManufacturers } = await supabase.from('ppe_manufacturers').select('*', { count: 'exact', head: true });
-  const { count: totalRegulations } = await supabase.from('ppe_regulations').select('*', { count: 'exact', head: true });
+  // ===== 1. 数据量统计 =====
+  console.log('1. 数据量统计');
+  console.log('─'.repeat(50));
+  const { count: productCount } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true });
+  const { count: mfrCount } = await supabase.from('ppe_manufacturers').select('*', { count: 'exact', head: true });
+  const { count: regCount } = await supabase.from('ppe_regulations').select('*', { count: 'exact', head: true });
+  console.log(`  产品总数: ${productCount}`);
+  console.log(`  制造商总数: ${mfrCount}`);
+  console.log(`  法规总数: ${regCount}`);
 
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  一、数据库总体统计');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
-  console.log(`  PPE产品总数:     ${totalProducts?.toLocaleString() || 0}`);
-  console.log(`  制造商总数:      ${totalManufacturers?.toLocaleString() || 0}`);
-  console.log(`  法规/标准总数:   ${totalRegulations?.toLocaleString() || 0}`);
+  // ===== 2. 产品字段完整性 =====
+  console.log('\n2. 产品字段完整性');
+  console.log('─'.repeat(50));
+  const products = await fetchAll('ppe_products', 'id,name,manufacturer_name,product_code,country_of_origin,category,risk_level,description,registration_number,registration_authority,data_source,model,subcategory');
 
-  // 2. 产品分类分布
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  二、产品分类分布');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
-
-  const categories = ['呼吸防护装备', '手部防护装备', '身体防护装备', '眼面部防护装备', '头部防护装备', '足部防护装备', '其他'];
-  for (const cat of categories) {
-    const { count } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true }).eq('category', cat);
-    const pct = totalProducts ? ((count || 0) / totalProducts * 100).toFixed(1) : 0;
-    console.log(`  ${cat}: ${(count || 0).toLocaleString()} (${pct}%)`);
-  }
-
-  // 3. 风险等级分布
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  三、风险等级分布');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
-
-  for (const risk of ['low', 'medium', 'high']) {
-    const { count } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true }).eq('risk_level', risk);
-    const pct = totalProducts ? ((count || 0) / totalProducts * 100).toFixed(1) : 0;
-    const label = risk === 'low' ? '低风险' : risk === 'medium' ? '中风险' : '高风险';
-    console.log(`  ${label} (${risk}): ${(count || 0).toLocaleString()} (${pct}%)`);
-  }
-
-  // 4. 原产国分布 (Top 20)
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  四、原产国分布 (Top 20)');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
-
-  const countryMap = {
-    'US': '美国', 'CN': '中国', 'GB': '英国', 'JP': '日本', 'AU': '澳大利亚',
-    'KR': '韩国', 'BR': '巴西', 'DE': '德国', 'MY': '马来西亚', 'TH': '泰国',
-    'IN': '印度', 'PH': '菲律宾', 'ID': '印度尼西亚', 'VN': '越南', 'SG': '新加坡',
-    'FR': '法国', 'IT': '意大利', 'CA': '加拿大', 'MX': '墨西哥', 'IE': '爱尔兰',
+  const total = products.length;
+  const fields = {
+    '名称(name)': p => p.name && p.name.trim() !== '',
+    '制造商(manufacturer_name)': p => p.manufacturer_name && p.manufacturer_name.trim() !== '' && p.manufacturer_name !== 'Unknown',
+    '产品代码(product_code)': p => p.product_code && p.product_code.trim() !== '',
+    '国家(country_of_origin)': p => p.country_of_origin && p.country_of_origin.trim() !== '' && p.country_of_origin !== 'Unknown',
+    '类别(category)': p => p.category && p.category.trim() !== '' && p.category !== '其他',
+    '风险等级(risk_level)': p => p.risk_level && p.risk_level.trim() !== '',
+    '描述(description)': p => p.description && p.description.trim() !== '',
+    '注册号(registration_number)': p => p.registration_number && p.registration_number.trim() !== '',
+    '注册机构(registration_authority)': p => p.registration_authority && p.registration_authority.trim() !== '',
+    '数据来源(data_source)': p => p.data_source && p.data_source.trim() !== '',
   };
 
-  const { data: countryData } = await supabase
-    .from('ppe_products')
-    .select('country_of_origin');
+  Object.entries(fields).forEach(([name, check]) => {
+    const filled = products.filter(check).length;
+    const pct = (filled / total * 100).toFixed(1);
+    const bar = '█'.repeat(Math.round(filled / total * 30)) + '░'.repeat(30 - Math.round(filled / total * 30));
+    console.log(`  ${name}: ${bar} ${pct}% (${filled}/${total})`);
+  });
 
-  const countryCounts = {};
-  for (const row of (countryData || [])) {
-    const c = row.country_of_origin || 'Unknown';
-    countryCounts[c] = (countryCounts[c] || 0) + 1;
-  }
+  // ===== 3. 类别分布 =====
+  console.log('\n3. 类别分布');
+  console.log('─'.repeat(50));
+  const catStats = {};
+  products.forEach(p => {
+    const cat = p.category || 'Unknown';
+    catStats[cat] = (catStats[cat] || 0) + 1;
+  });
+  Object.entries(catStats).sort((a, b) => b[1] - a[1]).forEach(([k, v]) => {
+    const pct = (v / total * 100).toFixed(1);
+    const bar = '█'.repeat(Math.round(v / total * 30)) + '░'.repeat(30 - Math.round(v / total * 30));
+    console.log(`  ${k}: ${bar} ${pct}% (${v})`);
+  });
 
-  const sortedCountries = Object.entries(countryCounts).sort((a, b) => b[1] - a[1]);
-  for (let i = 0; i < Math.min(20, sortedCountries.length); i++) {
-    const [code, count] = sortedCountries[i];
-    const pct = totalProducts ? (count / totalProducts * 100).toFixed(1) : 0;
-    const name = countryMap[code] || code;
-    console.log(`  ${name} (${code}): ${count.toLocaleString()} (${pct}%)`);
-  }
+  // ===== 4. 数据来源分布 =====
+  console.log('\n4. 数据来源分布');
+  console.log('─'.repeat(50));
+  const srcStats = {};
+  products.forEach(p => {
+    const src = p.data_source || 'Unknown';
+    srcStats[src] = (srcStats[src] || 0) + 1;
+  });
+  Object.entries(srcStats).sort((a, b) => b[1] - a[1]).forEach(([k, v]) => {
+    const pct = (v / total * 100).toFixed(1);
+    console.log(`  ${k}: ${v} (${pct}%)`);
+  });
 
-  // 5. 数据来源分布
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  五、数据来源分布');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+  // ===== 5. 国家分布 =====
+  console.log('\n5. 国家/地区分布');
+  console.log('─'.repeat(50));
+  const countryStats = {};
+  const COUNTRY_NAMES = {
+    'US': '美国', 'CN': '中国', 'CA': '加拿大', 'MY': '马来西亚', 'GB': '英国',
+    'TW': '台湾', 'ID': '印尼', 'TH': '泰国', 'DE': '德国', 'KR': '韩国',
+    'IN': '印度', 'FR': '法国', 'CH': '瑞士', 'AU': '澳大利亚', 'NZ': '新西兰',
+    'VN': '越南', 'HK': '香港', 'IT': '意大利', 'ES': '西班牙', 'JP': '日本',
+    'BR': '巴西', 'MX': '墨西哥', 'SE': '瑞典', 'IL': '以色列', 'IE': '爱尔兰',
+    'NL': '荷兰', 'BE': '比利时', 'CZ': '捷克', 'SG': '新加坡', 'PH': '菲律宾',
+    'PK': '巴基斯坦', 'BD': '孟加拉', 'LK': '斯里兰卡', 'ZA': '南非', 'PL': '波兰',
+    'PT': '葡萄牙', 'DK': '丹麦', 'FI': '芬兰', 'NO': '挪威', 'AT': '奥地利',
+  };
+  products.forEach(p => {
+    const c = p.country_of_origin || 'Unknown';
+    countryStats[c] = (countryStats[c] || 0) + 1;
+  });
+  Object.entries(countryStats).sort((a, b) => b[1] - a[1]).slice(0, 20).forEach(([k, v]) => {
+    const name = COUNTRY_NAMES[k] || k;
+    const pct = (v / total * 100).toFixed(1);
+    console.log(`  ${name}(${k}): ${v} (${pct}%)`);
+  });
 
-  const { data: sourceData } = await supabase
-    .from('ppe_products')
-    .select('data_source');
+  // ===== 6. 风险等级分布 =====
+  console.log('\n6. 风险等级分布');
+  console.log('─'.repeat(50));
+  const riskStats = {};
+  products.forEach(p => {
+    const r = p.risk_level || 'Unknown';
+    riskStats[r] = (riskStats[r] || 0) + 1;
+  });
+  Object.entries(riskStats).sort((a, b) => b[1] - a[1]).forEach(([k, v]) => {
+    const pct = (v / total * 100).toFixed(1);
+    console.log(`  ${k}: ${v} (${pct}%)`);
+  });
 
-  const sourceCounts = {};
-  for (const row of (sourceData || [])) {
-    const s = row.data_source || 'Unknown';
-    sourceCounts[s] = (sourceCounts[s] || 0) + 1;
-  }
+  // ===== 7. 注册机构分布 =====
+  console.log('\n7. 注册机构分布');
+  console.log('─'.repeat(50));
+  const authStats = {};
+  products.forEach(p => {
+    const a = p.registration_authority || 'Unknown';
+    authStats[a] = (authStats[a] || 0) + 1;
+  });
+  Object.entries(authStats).sort((a, b) => b[1] - a[1]).forEach(([k, v]) => {
+    const pct = (v / total * 100).toFixed(1);
+    console.log(`  ${k}: ${v} (${pct}%)`);
+  });
 
-  const sortedSources = Object.entries(sourceCounts).sort((a, b) => b[1] - a[1]);
-  for (const [source, count] of sortedSources) {
-    const pct = totalProducts ? (count / totalProducts * 100).toFixed(1) : 0;
-    console.log(`  ${source}: ${count.toLocaleString()} (${pct}%)`);
-  }
+  // ===== 8. 重复检测 =====
+  console.log('\n8. 重复检测');
+  console.log('─'.repeat(50));
+  const productGroups = {};
+  products.forEach(p => {
+    const key = `${(p.name || '').toLowerCase().trim()}|${(p.manufacturer_name || '').toLowerCase().trim()}|${(p.product_code || '').toLowerCase().trim()}`;
+    if (!productGroups[key]) productGroups[key] = [];
+    productGroups[key].push(p);
+  });
+  const duplicateGroups = Object.entries(productGroups).filter(([_, group]) => group.length > 1);
+  const totalDuplicates = duplicateGroups.reduce((sum, [_, group]) => sum + group.length - 1, 0);
+  console.log(`  唯一产品组: ${Object.keys(productGroups).length}`);
+  console.log(`  重复组数: ${duplicateGroups.length}`);
+  console.log(`  重复记录数: ${totalDuplicates}`);
 
-  // 6. 注册机构分布
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  六、注册机构分布');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+  // ===== 9. 制造商统计 =====
+  console.log('\n9. 制造商统计');
+  console.log('─'.repeat(50));
+  const manufacturers = await fetchAll('ppe_manufacturers', 'id,name,country,data_source');
+  const mfrCountryStats = {};
+  manufacturers.forEach(m => {
+    const c = m.country || 'Unknown';
+    mfrCountryStats[c] = (mfrCountryStats[c] || 0) + 1;
+  });
+  console.log(`  制造商总数: ${manufacturers.length}`);
+  console.log('  制造商国家分布:');
+  Object.entries(mfrCountryStats).sort((a, b) => b[1] - a[1]).slice(0, 10).forEach(([k, v]) => {
+    const name = COUNTRY_NAMES[k] || k;
+    console.log(`    ${name}(${k}): ${v}`);
+  });
 
-  const { data: authData } = await supabase
-    .from('ppe_products')
-    .select('registration_authority');
+  // ===== 10. 法规统计 =====
+  console.log('\n10. 法规统计');
+  console.log('─'.repeat(50));
+  const regulations = await fetchAll('ppe_regulations', 'id,name,code,region');
+  const regRegionStats = {};
+  regulations.forEach(r => {
+    const reg = r.region || 'Unknown';
+    regRegionStats[reg] = (regRegionStats[reg] || 0) + 1;
+  });
+  console.log(`  法规总数: ${regulations.length}`);
+  console.log('  法规地区分布:');
+  Object.entries(regRegionStats).sort((a, b) => b[1] - a[1]).forEach(([k, v]) => {
+    console.log(`    ${k}: ${v}`);
+  });
 
-  const authCounts = {};
-  for (const row of (authData || [])) {
-    const a = row.registration_authority || 'Unknown';
-    authCounts[a] = (authCounts[a] || 0) + 1;
-  }
+  // ===== 11. 数据质量评分 =====
+  console.log('\n11. 数据质量评分');
+  console.log('─'.repeat(50));
 
-  const sortedAuth = Object.entries(authCounts).sort((a, b) => b[1] - a[1]);
-  for (const [auth, count] of sortedAuth) {
-    const pct = totalProducts ? (count / totalProducts * 100).toFixed(1) : 0;
-    console.log(`  ${auth}: ${count.toLocaleString()} (${pct}%)`);
-  }
+  const nameScore = products.filter(p => p.name && p.name.trim() !== '').length / total * 100;
+  const mfrScore = products.filter(p => p.manufacturer_name && p.manufacturer_name.trim() !== '' && p.manufacturer_name !== 'Unknown').length / total * 100;
+  const codeScore = products.filter(p => p.product_code && p.product_code.trim() !== '').length / total * 100;
+  const countryScore = products.filter(p => p.country_of_origin && p.country_of_origin.trim() !== '' && p.country_of_origin !== 'Unknown').length / total * 100;
+  const catScore = products.filter(p => p.category && p.category.trim() !== '' && p.category !== '其他').length / total * 100;
+  const riskScore = products.filter(p => p.risk_level && p.risk_level.trim() !== '').length / total * 100;
+  const descScore = products.filter(p => p.description && p.description.trim() !== '').length / total * 100;
+  const regScore = products.filter(p => p.registration_authority && p.registration_authority.trim() !== '').length / total * 100;
+  const sourceScore = products.filter(p => p.data_source && p.data_source.trim() !== '').length / total * 100;
+  const dedupScore = (1 - totalDuplicates / total) * 100;
 
-  // 7. 数据质量评估
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  七、数据质量评估');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+  const overallScore = (nameScore * 0.15 + mfrScore * 0.12 + codeScore * 0.10 + countryScore * 0.10 +
+    catScore * 0.12 + riskScore * 0.08 + descScore * 0.08 + regScore * 0.08 +
+    sourceScore * 0.07 + dedupScore * 0.10);
 
-  const fields = ['name', 'category', 'subcategory', 'risk_level', 'manufacturer_name', 'country_of_origin', 'product_code', 'model', 'description', 'certifications', 'registration_authority', 'data_source'];
-  for (const field of fields) {
-    const { count: filled } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true }).not(field, 'is', null);
-    const { count: notEmpty } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true }).neq(field, '');
-    const effectiveCount = Math.max(filled || 0, notEmpty || 0);
-    const pct = totalProducts ? (effectiveCount / totalProducts * 100).toFixed(1) : 0;
-    console.log(`  ${field}: ${effectiveCount.toLocaleString()}/${totalProducts?.toLocaleString()} (${pct}%)`);
-  }
-
-  // 8. 制造商数据质量
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  八、制造商数据质量');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
-
-  const mfrFields = ['name', 'country', 'website'];
-  for (const field of mfrFields) {
-    const { count: filled } = await supabase.from('ppe_manufacturers').select('*', { count: 'exact', head: true }).not(field, 'is', null);
-    const { count: notEmpty } = await supabase.from('ppe_manufacturers').select('*', { count: 'exact', head: true }).neq(field, '');
-    const effectiveCount = Math.max(filled || 0, notEmpty || 0);
-    const pct = totalManufacturers ? (effectiveCount / totalManufacturers * 100).toFixed(1) : 0;
-    console.log(`  ${field}: ${effectiveCount.toLocaleString()}/${totalManufacturers?.toLocaleString()} (${pct}%)`);
-  }
-
-  // 9. 制造商国家分布
-  console.log('\n  制造商国家分布 (Top 15):');
-  const { data: mfrCountryData } = await supabase.from('ppe_manufacturers').select('country');
-  const mfrCountryCounts = {};
-  for (const row of (mfrCountryData || [])) {
-    const c = row.country || 'Unknown';
-    mfrCountryCounts[c] = (mfrCountryCounts[c] || 0) + 1;
-  }
-  const sortedMfrCountries = Object.entries(mfrCountryCounts).sort((a, b) => b[1] - a[1]);
-  for (let i = 0; i < Math.min(15, sortedMfrCountries.length); i++) {
-    const [code, count] = sortedMfrCountries[i];
-    const pct = totalManufacturers ? (count / totalManufacturers * 100).toFixed(1) : 0;
-    const name = countryMap[code] || code;
-    console.log(`    ${name} (${code}): ${count.toLocaleString()} (${pct}%)`);
-  }
-
-  // 10. 法规/标准分布
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  九、法规/标准分布');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
-
-  const { data: regRegionData } = await supabase.from('ppe_regulations').select('region');
-  const regRegionCounts = {};
-  for (const row of (regRegionData || [])) {
-    const r = row.region || 'Unknown';
-    regRegionCounts[r] = (regRegionCounts[r] || 0) + 1;
-  }
-  const sortedRegRegions = Object.entries(regRegionCounts).sort((a, b) => b[1] - a[1]);
-  for (const [region, count] of sortedRegRegions) {
-    const pct = totalRegulations ? (count / totalRegulations * 100).toFixed(1) : 0;
-    console.log(`  ${region}: ${count.toLocaleString()} (${pct}%)`);
-  }
-
-  // 11. 数据采集来源汇总
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  十、数据采集来源汇总');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
-
-  const sourceSummary = [
-    { source: 'FDA (510k, Registration, Recalls, Adverse Events, Enforcement)', region: 'US', type: 'API' },
-    { source: 'Health Canada MDALL', region: 'CA', type: 'API' },
-    { source: 'UK MHRA CMS', region: 'GB', type: 'XLSX Download' },
-    { source: 'Korea MFDS', region: 'KR', type: 'Known Manufacturers' },
-    { source: 'Brazil ANVISA', region: 'BR', type: 'Known Manufacturers' },
-    { source: 'Japan PMDA', region: 'JP', type: 'Known Manufacturers' },
-    { source: 'Australia TGA', region: 'AU', type: 'Known Manufacturers' },
-    { source: 'China NMPA', region: 'CN', type: 'Known Manufacturers' },
-    { source: 'Southeast Asia (MY/TH/PH/ID/VN/SG)', region: 'SEA', type: 'Known Manufacturers' },
-    { source: 'India BIS', region: 'IN', type: 'Known Manufacturers' },
-    { source: 'EU Regulations (EN Standards)', region: 'EU', type: 'Standards Database' },
-    { source: 'ISO Standards', region: 'Global', type: 'Standards Database' },
-    { source: 'Global Market Data', region: 'Global', type: 'Market Research' },
-  ];
-
-  for (const s of sourceSummary) {
-    console.log(`  [${s.region}] ${s.source} (${s.type})`);
-  }
-
-  // 12. 改进建议
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  十一、数据质量改进建议');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
-
-  const { count: nullCountry } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true }).is('country_of_origin', null);
-  const { count: emptyCountry } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true }).eq('country_of_origin', '');
-  const { count: unknownCountry } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true }).eq('country_of_origin', 'Unknown');
-  const { count: nullMfr } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true }).is('manufacturer_name', null);
-  const { count: emptyMfr } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true }).eq('manufacturer_name', '');
-  const { count: otherCat } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true }).eq('category', '其他');
-
-  console.log(`  1. country_of_origin缺失: null=${nullCountry || 0}, 空=${emptyCountry || 0}, Unknown=${unknownCountry || 0}`);
-  console.log(`  2. manufacturer_name缺失: null=${nullMfr || 0}, 空=${emptyMfr || 0}`);
-  console.log(`  3. "其他"分类产品: ${otherCat || 0} (${totalProducts ? ((otherCat || 0) / totalProducts * 100).toFixed(1) : 0}%)`);
+  console.log(`  名称完整性: ${nameScore.toFixed(1)}%`);
+  console.log(`  制造商完整性: ${mfrScore.toFixed(1)}%`);
+  console.log(`  产品代码完整性: ${codeScore.toFixed(1)}%`);
+  console.log(`  国家完整性: ${countryScore.toFixed(1)}%`);
+  console.log(`  分类准确性: ${catScore.toFixed(1)}%`);
+  console.log(`  风险等级完整性: ${riskScore.toFixed(1)}%`);
+  console.log(`  描述完整性: ${descScore.toFixed(1)}%`);
+  console.log(`  注册机构完整性: ${regScore.toFixed(1)}%`);
+  console.log(`  数据来源完整性: ${sourceScore.toFixed(1)}%`);
+  console.log(`  去重率: ${dedupScore.toFixed(1)}%`);
   console.log('');
-  console.log('  建议优先改进:');
-  console.log('  - 申请Korea MFDS API serviceKey以获取韩国官方PPE数据');
-  console.log('  - 开发EUDAMED自动化爬虫以获取欧盟PPE注册数据');
-  console.log('  - 接入NMPA官方数据库API以获取中国医疗器械注册数据');
-  console.log('  - 完善product_code字段，从FDA API补充更多产品编码');
-  console.log('  - 增加制造商website字段数据，提升制造商信息完整性');
+  console.log(`  ★ 综合数据质量评分: ${overallScore.toFixed(1)}/100`);
 
-  console.log('\n============================================================');
-  console.log('  报告结束');
-  console.log('============================================================\n');
+  // ===== 12. 改进建议 =====
+  console.log('\n12. 改进建议');
+  console.log('─'.repeat(50));
+  if (catScore < 90) console.log(`  ⚠ 分类准确性(${catScore.toFixed(1)}%)偏低，"其他"类别仍需进一步细分`);
+  if (descScore < 80) console.log(`  ⚠ 描述完整性(${descScore.toFixed(1)}%)偏低，建议从FDA API补充描述信息`);
+  if (mfrScore < 90) console.log(`  ⚠ 制造商完整性(${mfrScore.toFixed(1)}%)偏低，建议从FDA 510k API补充制造商名称`);
+  if (countryScore < 90) console.log(`  ⚠ 国家完整性(${countryScore.toFixed(1)}%)偏低，建议根据制造商信息补充国家数据`);
+  if (totalDuplicates > 0) console.log(`  ⚠ 仍有${totalDuplicates}条重复记录，建议执行去重清理`);
+
+  const missingRegions = [];
+  if (!srcStats['TGA ARTG'] || srcStats['TGA ARTG'] < 100) missingRegions.push('澳大利亚TGA');
+  if (!srcStats['EUDAMED'] || srcStats['EUDAMED'] < 100) missingRegions.push('欧盟EUDAMED');
+  if (!srcStats['PMDA'] || srcStats['PMDA'] < 50) missingRegions.push('日本PMDA');
+  if (!srcStats['ANVISA'] || srcStats['ANVISA'] < 50) missingRegions.push('巴西ANVISA');
+  if (!srcStats['MFDS'] || srcStats['MFDS'] < 50) missingRegions.push('韩国MFDS');
+  if (missingRegions.length > 0) {
+    console.log(`  ⚠ 以下地区数据不足: ${missingRegions.join(', ')}，建议继续采集`);
+  }
+
+  console.log('\n========================================');
+  console.log('质量验证报告生成完成');
+  console.log('========================================');
 }
 
 main().catch(console.error);

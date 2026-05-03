@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Factory, Search, Filter, Globe, ChevronLeft, ChevronRight, ExternalLink, AlertCircle, Building2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { getPPEManufacturersClient, getPPEProductStatsClient } from '@/lib/ppe-database-client'
+import { getPPEManufacturersClient, getPPEManufacturerStatsClient } from '@/lib/ppe-database-client'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -20,24 +20,116 @@ const staggerContainer = {
   }
 }
 
-const countryNames: Record<string, string> = {
-  US: '美国',
-  CA: '加拿大',
-  CN: '中国',
-  GB: '英国',
-  DE: '德国',
-  JP: '日本',
-  KR: '韩国',
-  BR: '巴西',
-  AU: '澳大利亚',
-  IN: '印度',
-  MY: '马来西亚',
-  TH: '泰国',
-  FR: '法国',
-  IT: '意大利',
-  ES: '西班牙',
-  NL: '荷兰',
-  SE: '瑞典',
+const COUNTRY_DISPLAY: Record<string, string> = {
+  US: 'United States',
+  CA: 'Canada',
+  CN: 'China',
+  GB: 'United Kingdom',
+  DE: 'Germany',
+  JP: 'Japan',
+  KR: 'South Korea',
+  BR: 'Brazil',
+  AU: 'Australia',
+  IN: 'India',
+  MY: 'Malaysia',
+  TH: 'Thailand',
+  FR: 'France',
+  IT: 'Italy',
+  ES: 'Spain',
+  NL: 'Netherlands',
+  SE: 'Sweden',
+  MX: 'Mexico',
+  ZA: 'South Africa',
+  RU: 'Russia',
+  SG: 'Singapore',
+  ID: 'Indonesia',
+  VN: 'Vietnam',
+  PH: 'Philippines',
+  NZ: 'New Zealand',
+  IL: 'Israel',
+  CH: 'Switzerland',
+  AT: 'Austria',
+  BE: 'Belgium',
+  PL: 'Poland',
+  CZ: 'Czech Republic',
+  DK: 'Denmark',
+  FI: 'Finland',
+  NO: 'Norway',
+  PT: 'Portugal',
+  IE: 'Ireland',
+  GR: 'Greece',
+  HU: 'Hungary',
+  RO: 'Romania',
+  UA: 'Ukraine',
+  TR: 'Turkey',
+  SA: 'Saudi Arabia',
+  AE: 'UAE',
+  EG: 'Egypt',
+  NG: 'Nigeria',
+  KE: 'Kenya',
+  CL: 'Chile',
+  CO: 'Colombia',
+  AR: 'Argentina',
+  PE: 'Peru',
+  'United States': 'United States',
+  'United Kingdom': 'United Kingdom',
+  China: 'China',
+  Germany: 'Germany',
+  France: 'France',
+  Japan: 'Japan',
+  'South Korea': 'South Korea',
+  India: 'India',
+  Brazil: 'Brazil',
+  Australia: 'Australia',
+  Canada: 'Canada',
+  Italy: 'Italy',
+  Spain: 'Spain',
+  Netherlands: 'Netherlands',
+  Sweden: 'Sweden',
+  Mexico: 'Mexico',
+  Switzerland: 'Switzerland',
+  Malaysia: 'Malaysia',
+  Thailand: 'Thailand',
+  Singapore: 'Singapore',
+  Indonesia: 'Indonesia',
+  Vietnam: 'Vietnam',
+  Philippines: 'Philippines',
+  Russia: 'Russia',
+  'South Africa': 'South Africa',
+  'New Zealand': 'New Zealand',
+  Israel: 'Israel',
+  Austria: 'Austria',
+  Belgium: 'Belgium',
+  Poland: 'Poland',
+  Denmark: 'Denmark',
+  Finland: 'Finland',
+  Norway: 'Norway',
+  Portugal: 'Portugal',
+  Ireland: 'Ireland',
+  Turkey: 'Turkey',
+  'Saudi Arabia': 'Saudi Arabia',
+  UAE: 'UAE',
+  中国: 'China',
+  美国: 'United States',
+  德国: 'Germany',
+  法国: 'France',
+  英国: 'United Kingdom',
+  日本: 'Japan',
+  韩国: 'South Korea',
+  印度: 'India',
+  巴西: 'Brazil',
+  澳大利亚: 'Australia',
+  加拿大: 'Canada',
+  意大利: 'Italy',
+  西班牙: 'Spain',
+  荷兰: 'Netherlands',
+  瑞典: 'Sweden',
+  马来西亚: 'Malaysia',
+  泰国: 'Thailand',
+}
+
+function getCountryDisplay(country: string): string {
+  return COUNTRY_DISPLAY[country] || country
 }
 
 export default function ManufacturersPage() {
@@ -59,11 +151,17 @@ export default function ManufacturersPage() {
     let mounted = true
     async function loadStats() {
       try {
-        const statsData = await getPPEProductStatsClient()
+        const statsData = await getPPEManufacturerStatsClient()
         if (mounted) {
           setStats(statsData)
           if (statsData.countryCount) {
-            setCountries(Object.keys(statsData.countryCount))
+            const uniqueCountries = Object.keys(statsData.countryCount)
+            const sortedCountries = uniqueCountries.sort((a, b) => {
+              const nameA = getCountryDisplay(a)
+              const nameB = getCountryDisplay(b)
+              return nameA.localeCompare(nameB)
+            })
+            setCountries(sortedCountries)
           }
         }
       } catch (err) {
@@ -150,7 +248,7 @@ export default function ManufacturersPage() {
               Global Manufacturers
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover {stats?.totalProducts?.toLocaleString() || '...'} PPE manufacturers from around the world
+              Discover {stats?.totalManufacturers?.toLocaleString() || '...'} PPE manufacturers from around the world
             </p>
           </motion.div>
         </div>
@@ -165,12 +263,11 @@ export default function ManufacturersPage() {
           variants={staggerContainer}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               {[
-                { value: stats.totalProducts ?? 0, label: 'Total Manufacturers', icon: Factory },
+                { value: stats.totalManufacturers ?? 0, label: 'Total Manufacturers', icon: Factory },
                 { value: Object.keys(stats.countryCount ?? {}).length, label: 'Countries', icon: Globe },
-                { value: stats.totalProducts ?? 0, label: 'Products', icon: Building2 },
-                { value: Object.keys(stats.categoryCount ?? {}).length, label: 'Categories', icon: Building2 },
+                { value: Object.values(stats.countryCount ?? {}).reduce((a: any, b: any) => Math.max(Number(a), Number(b)), 0), label: 'Largest Market Count', icon: Building2 },
               ].map((stat, i) => (
                 <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
                   <div className="flex justify-center mb-2">
@@ -242,7 +339,7 @@ export default function ManufacturersPage() {
                       <option value="">All Countries</option>
                       {countries.map(country => (
                         <option key={country} value={country}>
-                          {countryNames[country] || country}
+                          {getCountryDisplay(country)}
                         </option>
                       ))}
                     </select>
@@ -317,7 +414,7 @@ export default function ManufacturersPage() {
                             {mfr.country && (
                               <div className="flex items-center text-sm text-gray-600">
                                 <Globe className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
-                                <span className="truncate">{countryNames[mfr.country] || mfr.country}</span>
+                                <span className="truncate">{getCountryDisplay(mfr.country)}</span>
                               </div>
                             )}
                             {mfr.city && (

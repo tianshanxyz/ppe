@@ -877,6 +877,50 @@ export async function getPPEManufacturerClient(id: string) {
   return data
 }
 
+const DEFAULT_MANUFACTURER_STATS = {
+  totalManufacturers: DEFAULT_MANUFACTURERS.length,
+  countryCount: DEFAULT_MANUFACTURERS.reduce((acc, m) => {
+    if (m.country) {
+      acc[m.country] = (acc[m.country] || 0) + 1
+    }
+    return acc
+  }, {} as Record<string, number>),
+}
+
+export async function getPPEManufacturerStatsClient() {
+  try {
+    const supabase = createClient()
+
+    const { count: totalManufacturers } = await supabase
+      .from('ppe_manufacturers')
+      .select('*', { count: 'exact', head: true })
+
+    const { data: countries } = await supabase
+      .from('ppe_manufacturers')
+      .select('country')
+
+    const countryCount: Record<string, number> = {}
+    countries?.forEach((m: any) => {
+      const country = m.country
+      if (country) {
+        countryCount[country] = (countryCount[country] || 0) + 1
+      }
+    })
+
+    if (!totalManufacturers || totalManufacturers === 0) {
+      return DEFAULT_MANUFACTURER_STATS
+    }
+
+    return {
+      totalManufacturers: totalManufacturers || 0,
+      countryCount,
+    }
+  } catch (error) {
+    console.error('Error in getPPEManufacturerStatsClient:', error)
+    return DEFAULT_MANUFACTURER_STATS
+  }
+}
+
 // 导出别名
 export const getPPEManufacturer = getPPEManufacturerClient
 export const getPPEManufacturers = getPPEManufacturersClient
