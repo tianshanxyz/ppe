@@ -1,18 +1,14 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Newspaper, Calendar, Tag, Search, ExternalLink, ChevronDown, ChevronRight, ChevronLeft, User, PenLine, BookOpen } from 'lucide-react'
+import { Newspaper, Calendar, Tag, Search, ExternalLink, ChevronDown, ChevronRight, ChevronLeft, User } from 'lucide-react'
 
-// Milly Chen 作者配置
+// Milly 作者配置
 const MILLY_AUTHOR = {
-  name: 'Milly Chen',
-  role: 'PPE Industry Analyst',
-  bio: 'Senior PPE compliance analyst with 8+ years of experience in regulatory affairs and market access strategy.',
-  avatar: 'MC',
+  name: 'Milly',
+  role: 'Editor',
+  avatar: 'M',
 }
-
-// 内容类型定义
-type ContentType = 'all' | 'milly-insights' | 'industry-news'
 
 interface NewsArticle {
   id: string
@@ -27,7 +23,6 @@ interface NewsArticle {
   category: string
   tags: string[]
   impact: string
-  contentType: 'milly-insights' | 'industry-news'
   author?: {
     name: string
     role: string
@@ -37,7 +32,7 @@ interface NewsArticle {
 }
 
 const REGULATORY_NEWS: NewsArticle[] = [
-  // ===== Milly's Insights =====
+  // ===== Milly's articles =====
   {
     id: 'milly-1',
     title: '2026 PPE Industry Trends: How AI-Driven Compliance Testing Will Change the Game',
@@ -99,12 +94,11 @@ By 2028, we expect AI-driven compliance to be the industry standard. Manufacture
 
 *This analysis is based on interviews with 15+ industry leaders and regulatory officials, as well as review of 50+ technical papers published in 2025-2026.*`,
     date: '2026-04-28',
-    source: 'Milly Chen - MDLooker Analysis',
+    source: 'Milly - MDLooker Analysis',
     source_url: '#',
     category: 'Trends',
     tags: ['AI', 'Compliance Testing', 'Industry Trends', 'Digital Transformation'],
     impact: 'high',
-    contentType: 'milly-insights',
     author: MILLY_AUTHOR,
     contentLabel: "Editor's Pick",
   },
@@ -112,7 +106,7 @@ By 2028, we expect AI-driven compliance to be the industry standard. Manufacture
     id: 'milly-2',
     title: 'EU PPE Regulation Latest Amendments: 5 Key Changes Companies Must Know',
     title_zh: '欧盟PPE法规最新修订：企业需要关注的5个关键变化',
-    summary: 'The European Commission has introduced significant amendments to PPE Regulation 2016/425. This expert analysis breaks down the five most impactful changes and provides actionable guidance for compliance.',
+    summary: 'The European Commission has introduced significant amendments to PPE Regulation 2016/425. This analysis breaks down the five most impactful changes and provides actionable guidance for compliance.',
     summary_zh: '欧盟委员会对PPE法规2016/425进行了重大修订。本文详细解读五个最具影响力的变化，并提供可操作的合规指导。',
     fullContent: `The European Commission has introduced a series of amendments to Regulation (EU) 2016/425 on personal protective equipment. These changes, effective throughout 2026, represent the most significant regulatory update since the regulation's original implementation. Here are the five key changes every PPE manufacturer and distributor must understand.
 
@@ -171,7 +165,7 @@ Revised conformity assessment modules include:
 | Traceability | January 1, 2027 | 18 months |
 | Conformity assessment | July 1, 2027 | 24 months |
 
-## Expert Recommendations
+## Recommendations
 
 1. **Conduct a gap analysis** immediately to identify which changes affect your products
 2. **Engage your Notified Body early** to understand their implementation timeline
@@ -181,14 +175,13 @@ Revised conformity assessment modules include:
 
 *This analysis reflects the author's interpretation of the published amendments. Companies should consult with their Notified Body and legal counsel for specific compliance guidance.*`,
     date: '2026-04-15',
-    source: 'Milly Chen - MDLooker Analysis',
+    source: 'Milly - MDLooker Analysis',
     source_url: '#',
     category: 'EU',
     tags: ['EU Regulation', 'PPE 2016/425', 'Amendments', 'Compliance'],
     impact: 'high',
-    contentType: 'milly-insights',
     author: MILLY_AUTHOR,
-    contentLabel: 'Expert Analysis',
+    contentLabel: 'Deep Dive',
   },
   {
     id: 'milly-3',
@@ -282,14 +275,13 @@ Post-pandemic, Chinese N95 manufacturers have evolved significantly:
 
 *Data sources: Grand View Research, Mordor Intelligence, FDA, EU Commission, NMPA, company annual reports, and industry interviews.*`,
     date: '2026-03-20',
-    source: 'Milly Chen - MDLooker Analysis',
+    source: 'Milly - MDLooker Analysis',
     source_url: '#',
     category: 'Market',
     tags: ['N95', 'Market Analysis', 'Post-Pandemic', 'Respirator'],
     impact: 'high',
-    contentType: 'milly-insights',
     author: MILLY_AUTHOR,
-    contentLabel: 'Expert Analysis',
+    contentLabel: 'Deep Dive',
   },
   {
     id: 'milly-4',
@@ -378,17 +370,16 @@ Several Chinese PPE manufacturers have successfully navigated the new requiremen
 
 *This guide is for informational purposes. Companies should consult with qualified regulatory affairs professionals for specific compliance strategies.*`,
     date: '2026-02-10',
-    source: 'Milly Chen - MDLooker Analysis',
+    source: 'Milly - MDLooker Analysis',
     source_url: '#',
     category: 'EU',
     tags: ['EU Regulation', 'Chinese Exporters', 'Compliance', 'Market Access'],
     impact: 'high',
-    contentType: 'milly-insights',
     author: MILLY_AUTHOR,
     contentLabel: "Editor's Pick",
   },
 
-  // ===== Industry News (original articles) =====
+  // ===== Industry News =====
   {
     id: '1',
     title: 'FDA Issues Draft Guidance on NIOSH-Approved Air-Purifying Respirators',
@@ -433,7 +424,6 @@ This guidance represents FDA's continued effort to:
     category: 'US',
     tags: ['FDA', 'NIOSH', 'N95', 'Respirator', 'Guidance'],
     impact: 'high',
-    contentType: 'industry-news',
     contentLabel: 'Regulation Update',
   },
   {
@@ -484,7 +474,6 @@ The 5th edition guidelines are effective immediately and supersede previous vers
     category: 'EU',
     tags: ['EU', 'PPE Regulation', 'Guidelines', 'CE Marking'],
     impact: 'high',
-    contentType: 'industry-news',
     contentLabel: 'Regulation Update',
   },
   {
@@ -538,7 +527,6 @@ PPE products classified as medical devices in China (surgical masks, medical pro
     category: 'China',
     tags: ['NMPA', 'GMP', 'Medical Device', 'China', 'Quality Management'],
     impact: 'high',
-    contentType: 'industry-news',
     contentLabel: 'News',
   },
   {
@@ -592,7 +580,6 @@ PPE products classified as medical devices in China (surgical masks, medical pro
     category: 'EU',
     tags: ['Safety Gate', 'RAPEX', 'Market Surveillance', 'Product Safety'],
     impact: 'high',
-    contentType: 'industry-news',
     contentLabel: 'News',
   },
   {
@@ -653,7 +640,6 @@ The extension applies to:
     category: 'UK',
     tags: ['UKCA', 'CE Marking', 'Brexit', 'Transition'],
     impact: 'medium',
-    contentType: 'industry-news',
     contentLabel: 'Regulation Update',
   },
   {
@@ -709,7 +695,6 @@ Two guidelines specifically require higher-level review:
     category: 'China',
     tags: ['NMPA', 'Medical Device', 'Registration', 'Guidelines'],
     impact: 'medium',
-    contentType: 'industry-news',
     contentLabel: 'News',
   },
 ]
@@ -717,19 +702,12 @@ Two guidelines specifically require higher-level review:
 export default function RegulatoryNewsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
-  const [selectedContentType, setSelectedContentType] = useState<ContentType>('all')
   const [expandedArticle, setExpandedArticle] = useState<string | null>(null)
   const [activeSearch, setActiveSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 5
 
   const categories = ['all', 'EU', 'US', 'UK', 'China', 'Trends', 'Market']
-
-  const contentTypes: { key: ContentType; label: string; icon: typeof Newspaper }[] = [
-    { key: 'all', label: 'All', icon: Newspaper },
-    { key: 'milly-insights', label: "Milly's Insights", icon: PenLine },
-    { key: 'industry-news', label: 'Industry News', icon: BookOpen },
-  ]
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -739,13 +717,12 @@ export default function RegulatoryNewsPage() {
 
   const filteredNews = useMemo(() => REGULATORY_NEWS.filter(news => {
     const matchesCategory = selectedCategory === 'all' || news.category === selectedCategory
-    const matchesContentType = selectedContentType === 'all' || news.contentType === selectedContentType
     const matchesSearch = !activeSearch ||
       news.title.toLowerCase().includes(activeSearch.toLowerCase()) ||
       news.summary.toLowerCase().includes(activeSearch.toLowerCase()) ||
       news.tags.some(tag => tag.toLowerCase().includes(activeSearch.toLowerCase()))
-    return matchesCategory && matchesContentType && matchesSearch
-  }), [activeSearch, selectedCategory, selectedContentType])
+    return matchesCategory && matchesSearch
+  }), [activeSearch, selectedCategory])
 
   const totalPages = Math.ceil(filteredNews.length / itemsPerPage)
   const paginatedNews = filteredNews.slice(
@@ -763,32 +740,30 @@ export default function RegulatoryNewsPage() {
     setCurrentPage(1)
   }
 
-  const handleContentTypeChange = (type: ContentType) => {
-    setSelectedContentType(type)
-    setCurrentPage(1)
-  }
-
-  const getContentLabelStyle = (article: NewsArticle) => {
-    if (article.contentType === 'milly-insights') {
-      if (article.contentLabel === "Editor's Pick") {
+  const getContentLabelStyle = (label: string) => {
+    switch (label) {
+      case "Editor's Pick":
         return 'bg-amber-100 text-amber-700'
-      }
-      return 'bg-purple-100 text-purple-700'
+      case 'Deep Dive':
+        return 'bg-purple-100 text-purple-700'
+      case 'Regulation Update':
+        return 'bg-red-100 text-red-700'
+      default:
+        return 'bg-blue-100 text-blue-700'
     }
-    if (article.contentLabel === 'Regulation Update') {
-      return 'bg-red-100 text-red-700'
-    }
-    return 'bg-blue-100 text-blue-700'
   }
 
-  const getContentLabelIcon = (article: NewsArticle) => {
-    if (article.contentType === 'milly-insights') {
-      return article.contentLabel === "Editor's Pick" ? '\u270D\uFE0F' : '\uD83D\uDCDD'
+  const getContentLabelIcon = (label: string) => {
+    switch (label) {
+      case "Editor's Pick":
+        return '\u270D\uFE0F'
+      case 'Deep Dive':
+        return '\uD83D\uDCDD'
+      case 'Regulation Update':
+        return '\uD83D\uDCCB'
+      default:
+        return '\uD83D\uDCF0'
     }
-    if (article.contentLabel === 'Regulation Update') {
-      return '\uD83D\uDCCB'
-    }
-    return '\uD83D\uDCF0'
   }
 
   return (
@@ -801,53 +776,20 @@ export default function RegulatoryNewsPage() {
                 <Newspaper className="w-10 h-10 text-[#339999]" />
               </div>
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">Regulatory News & Insights</h1>
+            <h1 className="text-5xl font-bold text-gray-900 mb-4">Industry News</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Expert analysis and curated regulatory updates from official government sources
+              Regulatory updates, market insights, and in-depth analysis from the PPE industry
             </p>
-
-            {/* Milly Author Card */}
-            <div className="mt-8 inline-flex items-center gap-4 bg-white rounded-2xl shadow-md border border-gray-100 px-6 py-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-[#339999] to-[#2d8b8b] rounded-full flex items-center justify-center text-white font-bold text-lg">
-                {MILLY_AUTHOR.avatar}
-              </div>
-              <div className="text-left">
-                <div className="font-semibold text-gray-900">{MILLY_AUTHOR.name}</div>
-                <div className="text-sm text-[#339999] font-medium">{MILLY_AUTHOR.role}</div>
-                <div className="text-xs text-gray-500 mt-0.5 max-w-xs">{MILLY_AUTHOR.bio}</div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
       <section className="py-8 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Content Type Filter */}
           <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-            <div className="flex flex-wrap gap-2">
-              {contentTypes.map(ct => {
-                const Icon = ct.icon
-                return (
-                  <button
-                    key={ct.key}
-                    onClick={() => handleContentTypeChange(ct.key)}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                      selectedContentType === ct.key
-                        ? 'bg-[#339999] text-white shadow-md'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    {ct.label}
-                  </button>
-                )
-              })}
-            </div>
-
             {/* Search */}
-            <form onSubmit={handleSearch} className="flex gap-2 w-full md:w-auto">
-              <div className="relative flex-1 md:w-72">
+            <form onSubmit={handleSearch} className="flex gap-2 w-full md:w-96">
+              <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="text"
@@ -878,7 +820,7 @@ export default function RegulatoryNewsPage() {
                     : 'bg-gray-50 text-gray-500 hover:bg-gray-100 border border-transparent'
                 }`}
               >
-                {cat === 'all' ? 'All Regions' : cat}
+                {cat === 'all' ? 'All' : cat}
               </button>
             ))}
           </div>
@@ -894,8 +836,8 @@ export default function RegulatoryNewsPage() {
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${getContentLabelStyle(news)}`}>
-                          {getContentLabelIcon(news)} {news.contentLabel}
+                        <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${getContentLabelStyle(news.contentLabel)}`}>
+                          {getContentLabelIcon(news.contentLabel)} {news.contentLabel}
                         </span>
                         <span className={`text-xs font-medium px-2 py-1 rounded-full ${
                           news.impact === 'high' ? 'bg-red-50 text-red-600' :
@@ -917,7 +859,7 @@ export default function RegulatoryNewsPage() {
                     <h2 className="text-xl font-bold text-gray-900 mb-2">{news.title}</h2>
                     <p className="text-gray-600 mb-4">{news.summary}</p>
 
-                    {/* Author info for Milly's articles */}
+                    {/* Author info */}
                     {news.author && (
                       <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-xl">
                         <div className="w-10 h-10 bg-gradient-to-br from-[#339999] to-[#2d8b8b] rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -964,7 +906,7 @@ export default function RegulatoryNewsPage() {
                         ) : (
                           <>
                             <ChevronRight className="w-4 h-4" />
-                            Read Full Analysis
+                            Read Full Article
                           </>
                         )}
                       </button>
@@ -990,7 +932,6 @@ export default function RegulatoryNewsPage() {
               <button
                 onClick={() => {
                   setSelectedCategory('all')
-                  setSelectedContentType('all')
                   setActiveSearch('')
                   setSearchQuery('')
                   setCurrentPage(1)

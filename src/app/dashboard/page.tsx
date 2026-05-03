@@ -309,27 +309,34 @@ export default function DashboardPage() {
 
   // Initialize user and data from localStorage
   useEffect(() => {
-    const userData = localStorage.getItem(STORAGE_KEYS.USER);
+    // Try localStorage first, fallback to sessionStorage
+    let userData = localStorage.getItem(STORAGE_KEYS.USER)
+    if (!userData) {
+      userData = sessionStorage.getItem(STORAGE_KEYS.USER)
+    }
+    
     if (!userData) {
       // No user logged in - redirect to login page
-      router.push('/auth/login');
-      return;
+      router.push('/auth/login')
+      return
     }
 
     try {
-      const parsed = JSON.parse(userData);
+      const parsed = JSON.parse(userData)
       if (!parsed || !parsed.id) {
         // Invalid user data - redirect to login
-        localStorage.removeItem(STORAGE_KEYS.USER);
-        router.push('/auth/login');
-        return;
+        localStorage.removeItem(STORAGE_KEYS.USER)
+        sessionStorage.removeItem(STORAGE_KEYS.USER)
+        router.push('/auth/login')
+        return
       }
-      setUser(parsed);
+      setUser(parsed)
     } catch {
       // Corrupted data - redirect to login
-      localStorage.removeItem(STORAGE_KEYS.USER);
-      router.push('/auth/login');
-      return;
+      localStorage.removeItem(STORAGE_KEYS.USER)
+      sessionStorage.removeItem(STORAGE_KEYS.USER)
+      router.push('/auth/login')
+      return
     }
 
     // Load or initialize activity stats

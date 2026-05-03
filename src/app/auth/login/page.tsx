@@ -38,10 +38,19 @@ export default function LoginPage() {
       const demoEmail = atob(DEMO_CONFIG.eid)
       const demoPass = atob(DEMO_CONFIG.pid)
       if (email === demoEmail && password === demoPass) {
-        // Store mock user session in localStorage
-        localStorage.setItem('user', JSON.stringify(DEMO_CONFIG.userData))
-        // Use full page reload to ensure dashboard picks up the new session
-        window.location.href = '/dashboard'
+        // Store mock user session in localStorage synchronously
+        const userDataStr = JSON.stringify(DEMO_CONFIG.userData)
+        localStorage.setItem('user', userDataStr)
+        // Also store in sessionStorage as backup
+        sessionStorage.setItem('user', userDataStr)
+        // Verify the write was successful
+        const verify = localStorage.getItem('user')
+        if (verify === userDataStr) {
+          window.location.href = '/dashboard'
+        } else {
+          setError('Unable to save session. Please try again or use a different browser.')
+          setIsLoading(false)
+        }
         return
       }
 
@@ -56,16 +65,24 @@ export default function LoginPage() {
 
       if (user) {
         // Store user data in localStorage for dashboard access
-        localStorage.setItem('user', JSON.stringify({
+        const userDataStr = JSON.stringify({
           id: user.id,
           email: user.email,
           name: user.user_metadata?.name || user.email?.split('@')[0] || 'User',
           role: user.role || 'user',
           membership: user.user_metadata?.membership || 'free',
           created_at: user.created_at,
-        }))
-        // Use full page reload to ensure dashboard picks up the new session
-        window.location.href = '/dashboard'
+        })
+        localStorage.setItem('user', userDataStr)
+        sessionStorage.setItem('user', userDataStr)
+        // Verify the write was successful
+        const verify = localStorage.getItem('user')
+        if (verify === userDataStr) {
+          window.location.href = '/dashboard'
+        } else {
+          setError('Unable to save session. Please try again or use a different browser.')
+          setIsLoading(false)
+        }
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.')
