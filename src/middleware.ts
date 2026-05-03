@@ -86,6 +86,11 @@ export async function middleware(request: NextRequest) {
   const isAuthRoute = AUTH_ROUTES.some(route => pathname.startsWith(route))
 
   if ((isProtectedRoute || isProtectedApiRoute) && !user) {
+    // Allow demo sessions (cookie-based demo bypass)
+    const isDemoSession = request.cookies.get('demo_session')?.value === 'true'
+    if (isDemoSession) {
+      return supabaseResponse
+    }
     if (isProtectedApiRoute) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
     }
@@ -95,7 +100,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
-  if (isAuthRoute && user) {
+  // Redirect logged-in demo users away from auth pages too
+  const isDemoSession = request.cookies.get('demo_session')?.value === 'true'
+  if (isAuthRoute && (user || isDemoSession)) {
     const redirectUrl = request.nextUrl.clone()
     redirectUrl.pathname = '/dashboard'
     return NextResponse.redirect(redirectUrl)

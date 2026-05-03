@@ -41,8 +41,10 @@ export default function LoginPage() {
         // Store mock user session in localStorage synchronously
         const userDataStr = JSON.stringify(DEMO_CONFIG.userData)
         localStorage.setItem('user', userDataStr)
-        // Also store in sessionStorage as backup
         sessionStorage.setItem('user', userDataStr)
+        // Set a cookie so server-side middleware knows this is a demo session
+        // Cookie is readable by server-side middleware
+        document.cookie = `demo_session=true; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`
         // Verify the write was successful
         const verify = localStorage.getItem('user')
         if (verify === userDataStr) {
