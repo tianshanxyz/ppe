@@ -311,18 +311,25 @@ export default function DashboardPage() {
   useEffect(() => {
     const userData = localStorage.getItem(STORAGE_KEYS.USER);
     if (!userData) {
-      // No user logged in - set a demo user
-      const demoUser: UserData = {
-        id: 'demo-user',
-        email: 'demo@mdlooker.com',
-        name: 'Demo User',
-        role: 'user',
-        membership: 'free',
-        created_at: new Date().toISOString(),
-      };
-      setUser(demoUser);
-    } else {
-      setUser(JSON.parse(userData));
+      // No user logged in - redirect to login page
+      router.push('/auth/login');
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(userData);
+      if (!parsed || !parsed.id) {
+        // Invalid user data - redirect to login
+        localStorage.removeItem(STORAGE_KEYS.USER);
+        router.push('/auth/login');
+        return;
+      }
+      setUser(parsed);
+    } catch {
+      // Corrupted data - redirect to login
+      localStorage.removeItem(STORAGE_KEYS.USER);
+      router.push('/auth/login');
+      return;
     }
 
     // Load or initialize activity stats
@@ -373,7 +380,15 @@ export default function DashboardPage() {
   }
 
   if (!user) {
-    return null;
+    // 用户未登录，正在重定向到登录页
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#339999] mx-auto mb-4"></div>
+          <p className="text-gray-500">Redirecting to login...</p>
+        </div>
+      </div>
+    );
   }
 
   // Filter saved items by tab

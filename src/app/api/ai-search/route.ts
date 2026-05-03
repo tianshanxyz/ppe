@@ -55,38 +55,80 @@ Response format:
 - If unsure, acknowledge limitations and suggest contacting experts`
 
     // 调用火山方舟 API
+    // 注意：火山方舟API的 temperature、max_tokens、top_p 应直接放在 body 中，而非 parameters 子对象
+    const messages: Array<{ role: string; content: string }> = [
+      {
+        role: 'system',
+        content: systemPrompt,
+      },
+      {
+        role: 'user',
+        content: query,
+      },
+    ]
+
+    // 如果有上下文，添加到消息中
+    if (context) {
+      messages.splice(1, 0, {
+        role: 'assistant',
+        content: context,
+      })
+    }
+
+    const requestBody = {
+      model: 'doubao-pro-32k-241215',
+      messages,
+      temperature: 0.7,
+      max_tokens: 2000,
+      top_p: 0.8,
+    }
+
+    console.log('[AI Search] Sending request to ARK API, model:', requestBody.model, 'query:', query.substring(0, 100))
+
     const response = await fetch(ARK_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${ARK_API_KEY}`,
       },
-      body: JSON.stringify({
-        model: 'doubao-pro-32k-241215',
-        messages: [
-          {
-            role: 'system',
-            content: systemPrompt,
-          },
-          {
-            role: 'user',
-            content: query,
-          },
-        ],
-        parameters: {
-          temperature: 0.7,
-          max_tokens: 2000,
-          top_p: 0.8,
-        },
-      }),
+      body: JSON.stringify(requestBody),
     })
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      console.error('ARK API error:', errorData)
+      const errorText = await response.text()
+      let errorData: Record<string, unknown> = {}
+      try {
+        errorData = JSON.parse(errorText)
+      } catch {
+        // errorText is not JSON
+      }
+      console.error('[AI Search] ARK API error:', response.status, response.statusText, errorData)
+      console.error('[AI Search] Request model:', requestBody.model)
+
+      // 返回友好的回退响应，而不是500错误
       return NextResponse.json({
         query,
-        answer: generateFallbackResponse(),
+        answer: generateFallbackResponse(query),
+        suggestions: [
+          'Visit our Regulations Database for detailed information',
+          'Check our Document Templates for compliance requirements',
+          'Use the Market Access Wizard for step-by-step guidance',
+        ],
+        relatedTopics: ['CE Marking', 'FDA 510(k)', 'UKCA Marking', 'NMPA Registration'],
+        confidence: 'low',
+      })
+    }
+
+    const data = await response.json()
+    console.log('[AI Search] ARK API response received, finish_reason:', data.choices?.[0]?.finish_reason)
+
+    const aiResponse = data.choices?.[0]?.message?.content || ''
+
+    if (!aiResponse) {
+      console.warn('[AI Search] Empty AI response, using fallback')
+      return NextResponse.json({
+        query,
+        answer: generateFallbackResponse(query),
         suggestions: [
           'Visit our Regulations Database for detailed information',
           'Check our Document Templates for compliance requirements',
@@ -95,9 +137,6 @@ Response format:
         confidence: 'low',
       })
     }
-
-    const data = await response.json()
-    const aiResponse = data.choices?.[0]?.message?.content || ''
 
     // 解析AI响应，提取结构化信息
     const structuredResponse = {
@@ -111,19 +150,29 @@ Response format:
     return NextResponse.json(structuredResponse)
 
   } catch (error) {
-    console.error('AI Search API error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    console.error('[AI Search] API error:', error)
+    // 不返回500错误，而是返回友好的回退响应
+    return NextResponse.json({
+      query: 'search',
+      answer: generateFallbackResponse(),
+      suggestions: [
+        'Visit our Regulations Database for detailed information',
+        'Check our Document Templates for compliance requirements',
+        'Use the Market Access Wizard for step-by-step guidance',
+      ],
+      relatedTopics: ['CE Marking', 'FDA 510(k)', 'UKCA Marking', 'NMPA Registration'],
+      confidence: 'low',
+    })
   }
 }
 
 /**
  * 备用回复（当 AI 服务不可用时）
  */
-function generateFallbackResponse(): string {
-  return `The AI service is currently unavailable, but here is some general guidance on your question:
+function generateFallbackResponse(query?: string): string {
+  const queryStr = query ? ` regarding "${query}"` : ''
+
+  return `The AI service is currently unavailable, but here is some general guidance${queryStr}:
 
 **Common PPE Compliance Topics:**
 1. CE Marking (EU Regulation 2016/425) - Required for PPE sold in the EU market

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Search, X, Loader2, Sparkles, ArrowRight, Lightbulb } from 'lucide-react'
+import { Search, X, Loader2, Sparkles, ArrowRight, Lightbulb, TrendingUp } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface SearchResult {
@@ -12,13 +12,27 @@ interface SearchResult {
   confidence: string
 }
 
+// 热门搜索建议
+const POPULAR_SEARCHES = [
+  'CE marking for respiratory protection',
+  'FDA 510(k) requirements for N95',
+  'EN 149 FFP2 certification',
+  'PPE Regulation 2016/425 compliance',
+  'Safety footwear EN ISO 20345',
+  'Protective gloves EN 388 standards',
+  'Eye protection ANSI Z87.1',
+  'NMPA registration for medical masks',
+]
+
 export function GlobalSearch() {
   const [query, setQuery] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<SearchResult | null>(null)
   const [showResults, setShowResults] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(false)
   const [recentSearches, setRecentSearches] = useState<string[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
   // 加载最近搜索
@@ -27,6 +41,17 @@ export function GlobalSearch() {
     if (stored) {
       setRecentSearches(JSON.parse(stored))
     }
+  }, [])
+
+  // 点击外部关闭建议
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
   // 保存搜索记录
@@ -42,6 +67,7 @@ export function GlobalSearch() {
 
     setIsLoading(true)
     setShowResults(true)
+    setShowSuggestions(false)
     saveSearch(query)
 
     try {
@@ -51,12 +77,20 @@ export function GlobalSearch() {
         body: JSON.stringify({ query: query.trim() }),
       })
 
-      if (!response.ok) {
-        throw new Error('Search failed')
-      }
-
       const data = await response.json()
-      setResult(data)
+
+      if (data.error && !data.answer) {
+        // API返回了错误且没有回退内容
+        setResult({
+          query,
+          answer: 'The AI search service is temporarily unavailable. Please try again later or use the navigation menu to find what you need.',
+          suggestions: ['Try searching for "CE certification"', 'Search for "safety gloves"', 'Look up "FDA registration"'],
+          relatedTopics: [],
+          confidence: 'low',
+        })
+      } else {
+        setResult(data)
+      }
     } catch (error) {
       console.error('Search error:', error)
       setResult({
@@ -78,14 +112,68 @@ export function GlobalSearch() {
     }
   }
 
+  // 处理输入变化
+  const handleInputChange = (value: string) => {
+    setQuery(value)
+    if (value.trim() && !showResults) {
+      setShowSuggestions(true)
+    }
+  }
+
   // 快速导航到相关页面
   const handleQuickAction = (path: string) => {
     router.push(path)
     setShowResults(false)
+    setShowSuggestions(false)
+  }
+
+  // 使用建议搜索
+  const handleSuggestionClick = (suggestion: string) => {
+    setQuery(suggestion)
+    setShowSuggestions(false)
+    // 自动搜索
+    setTimeout(() => {
+      const searchWithSuggestion = async () => {
+        setIsLoading(true)
+        setShowResults(true)
+        saveSearch(suggestion)
+
+        try {
+          const response = await fetch('/api/ai-search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: suggestion }),
+          })
+          const data = await response.json()
+          if (data.error && !data.answer) {
+            setResult({
+              query: suggestion,
+              answer: 'The AI search service is temporarily unavailable. Please try again later.',
+              suggestions: [],
+              relatedTopics: [],
+              confidence: 'low',
+            })
+          } else {
+            setResult(data)
+          }
+        } catch {
+          setResult({
+            query: suggestion,
+            answer: 'Sorry, the search service is temporarily unavailable.',
+            suggestions: [],
+            relatedTopics: [],
+            confidence: 'low',
+          })
+        } finally {
+          setIsLoading(false)
+        }
+      }
+      searchWithSuggestion()
+    }, 0)
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto relative">
+    <div ref={containerRef} className="w-full max-w-4xl mx-auto relative">
       {/* 搜索框 */}
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -95,8 +183,9 @@ export function GlobalSearch() {
           ref={inputRef}
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => handleInputChange(e.target.value)}
           onKeyDown={handleKeyDown}
+          onFocus={() => { if (query.trim() && !showResults) setShowSuggestions(true) }}
           placeholder="Ask anything about PPE compliance, products, or regulations..."
           className="block w-full pl-12 pr-24 py-4 border-2 border-gray-200 rounded-2xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 transition-all text-base"
         />
@@ -106,6 +195,7 @@ export function GlobalSearch() {
               onClick={() => {
                 setQuery('')
                 setResult(null)
+                setShowResults(false)
                 inputRef.current?.focus()
               }}
               className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
@@ -130,6 +220,39 @@ export function GlobalSearch() {
         </div>
       </div>
 
+      {/* 搜索建议下拉 */}
+      {showSuggestions && !showResults && query.trim() && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+          <div className="p-4">
+            {/* 匹配的热门搜索 */}
+            {POPULAR_SEARCHES.filter(s =>
+              s.toLowerCase().includes(query.toLowerCase())
+            ).length > 0 && (
+              <div className="mb-3">
+                <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+                  <TrendingUp className="w-3 h-3" />
+                  Popular Searches
+                </h4>
+                <div className="space-y-1">
+                  {POPULAR_SEARCHES.filter(s =>
+                    s.toLowerCase().includes(query.toLowerCase())
+                  ).slice(0, 4).map((suggestion, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-[#339999]/5 hover:text-[#339999] rounded-lg transition-colors"
+                    >
+                      <Search className="w-3 h-3 inline mr-2 text-gray-400" />
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* 搜索结果面板 */}
       {showResults && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50 max-h-[600px] overflow-y-auto">
@@ -137,6 +260,7 @@ export function GlobalSearch() {
             <div className="p-8 text-center">
               <Loader2 className="h-8 w-8 animate-spin text-[#339999] mx-auto mb-4" />
               <p className="text-gray-600">AI is analyzing your question...</p>
+              <p className="text-gray-400 text-sm mt-1">This may take a few seconds</p>
             </div>
           ) : result ? (
             <div className="p-6">
@@ -146,9 +270,11 @@ export function GlobalSearch() {
                   <Sparkles className="h-5 w-5 text-[#339999]" />
                   <h3 className="font-semibold text-gray-900">AI Answer</h3>
                   <span className={`text-xs px-2 py-1 rounded-full ${
-                    result.confidence === 'high' 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'bg-yellow-100 text-yellow-700'
+                    result.confidence === 'high'
+                      ? 'bg-green-100 text-green-700'
+                      : result.confidence === 'medium'
+                      ? 'bg-yellow-100 text-yellow-700'
+                      : 'bg-gray-100 text-gray-600'
                   }`}>
                     {result.confidence} confidence
                   </span>
@@ -177,6 +303,20 @@ export function GlobalSearch() {
                       >
                         {suggestion}
                       </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 相关主题 */}
+              {result.relatedTopics && result.relatedTopics.length > 0 && (
+                <div className="mb-6">
+                  <h4 className="font-medium text-gray-900 mb-3">Related Topics</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {result.relatedTopics.map((topic, index) => (
+                      <span key={index} className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
+                        {topic}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -215,16 +355,13 @@ export function GlobalSearch() {
       )}
 
       {/* 最近搜索 */}
-      {!showResults && recentSearches.length > 0 && (
+      {!showResults && !showSuggestions && recentSearches.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-2">
           <span className="text-sm text-gray-500">Recent:</span>
           {recentSearches.map((search, index) => (
             <button
               key={index}
-              onClick={() => {
-                setQuery(search)
-                handleSearch()
-              }}
+              onClick={() => handleSuggestionClick(search)}
               className="text-sm text-[#339999] hover:text-[#2d8b8b] underline"
             >
               {search}

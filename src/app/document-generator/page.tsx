@@ -157,6 +157,42 @@ const DOCUMENT_TEMPLATES: Record<string, Record<string, DocumentTemplate[]>> = {
           { label: 'Applied Standards', placeholder: 'EN ISO 20345:2022', required: true },
         ]
       },
+      {
+        id: 'eu-doc-sf',
+        name: 'EU Declaration of Conformity - Safety Footwear',
+        name_zh: '欧盟符合性声明 - 安全鞋',
+        description: 'Official DoC template for safety footwear per EU 2016/425 Annex VI',
+        required: true,
+        category: 'regulatory',
+        authority: 'European Commission',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Steel Toe Safety Boots', required: true },
+          { label: 'Product Code/Model', placeholder: 'e.g., ProGuard X1', required: true },
+          { label: 'Manufacturer Name', placeholder: 'Legal entity name', required: true },
+          { label: 'Manufacturer Address', placeholder: 'Complete address', required: true },
+          { label: 'Notified Body Name', placeholder: 'e.g., SGS', required: true },
+          { label: 'Notified Body Number', placeholder: 'e.g., 0120', required: true },
+          { label: 'EU Type Examination Cert No.', placeholder: 'e.g., CE-12345-2026', required: true },
+          { label: 'Harmonized Standards', placeholder: 'EN ISO 20345:2022', required: true },
+          { label: 'Authorized Signatory', placeholder: 'Name and title', required: true },
+        ]
+      },
+      {
+        id: 'eu-risk-assessment-sf',
+        name: 'Risk Assessment Report - Safety Footwear (EN ISO 12100)',
+        name_zh: '风险评估报告 - 安全鞋（EN ISO 12100）',
+        description: 'Comprehensive risk assessment for safety footwear following EN ISO 12100',
+        required: true,
+        category: 'technical',
+        authority: 'CEN/CENELEC',
+        fields: [
+          { label: 'Product Name', placeholder: 'Product commercial name', required: true },
+          { label: 'Intended Use', placeholder: 'Describe intended use and foreseeable misuse', required: true },
+          { label: 'User Groups', placeholder: 'e.g., Construction workers, industrial workers', required: true },
+          { label: 'Hazard Analysis Date', placeholder: 'YYYY-MM-DD', required: true },
+          { label: 'Risk Assessment Team', placeholder: 'Names and roles of assessors', required: true },
+        ]
+      },
     ],
     'US': [
       {
@@ -173,6 +209,381 @@ const DOCUMENT_TEMPLATES: Record<string, Record<string, DocumentTemplate[]>> = {
           { label: 'Impact Rating', placeholder: 'e.g., I/75 (75 ft-lb)', required: true },
           { label: 'Compression Rating', placeholder: 'e.g., C/75 (2500 lbs)', required: true },
           { label: 'Test Lab', placeholder: 'ISO 17025 accredited lab name', required: true },
+        ]
+      },
+    ],
+  },
+  'protective-clothing': {
+    'EU': [
+      {
+        id: 'eu-tech-file-pc',
+        name: 'EU Technical File - Protective Clothing (EN ISO 13688)',
+        name_zh: '欧盟技术文件 - 防护服（EN ISO 13688）',
+        description: 'Technical documentation for protective clothing CE marking under Regulation 2016/425',
+        required: true,
+        category: 'technical',
+        authority: 'European Commission - Notified Body',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Chemical Protective Coverall Type 4', required: true },
+          { label: 'Model/Type', placeholder: 'e.g., ChemGuard Pro 400', required: true },
+          { label: 'Protection Type', placeholder: 'e.g., Type 3/4/5/6 per EN 14325', required: true },
+          { label: 'Manufacturer', placeholder: 'Company legal name', required: true },
+          { label: 'Notified Body', placeholder: 'e.g., BSI Group (0086)', required: true },
+          { label: 'Applied Standards', placeholder: 'e.g., EN ISO 13688, EN 14325, EN 14605', required: true },
+        ]
+      },
+      {
+        id: 'eu-doc-pc',
+        name: 'EU Declaration of Conformity - Protective Clothing',
+        name_zh: '欧盟符合性声明 - 防护服',
+        description: 'Official DoC template for protective clothing per EU 2016/425 Annex VI',
+        required: true,
+        category: 'regulatory',
+        authority: 'European Commission',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Chemical Protective Coverall', required: true },
+          { label: 'Product Code/Model', placeholder: 'e.g., ChemGuard Pro 400', required: true },
+          { label: 'Manufacturer Name', placeholder: 'Legal entity name', required: true },
+          { label: 'Manufacturer Address', placeholder: 'Complete address', required: true },
+          { label: 'Notified Body Name', placeholder: 'e.g., BSI Group', required: true },
+          { label: 'Notified Body Number', placeholder: 'e.g., 0086', required: true },
+          { label: 'EU Type Examination Cert No.', placeholder: 'e.g., CE-12345-2026', required: true },
+          { label: 'Harmonized Standards', placeholder: 'EN ISO 13688, EN 14325, EN 14605', required: true },
+          { label: 'Authorized Signatory', placeholder: 'Name and title', required: true },
+        ]
+      },
+      {
+        id: 'eu-risk-assessment-pc',
+        name: 'Risk Assessment Report - Protective Clothing (EN ISO 12100)',
+        name_zh: '风险评估报告 - 防护服（EN ISO 12100）',
+        description: 'Comprehensive risk assessment for protective clothing following EN ISO 12100',
+        required: true,
+        category: 'technical',
+        authority: 'CEN/CENELEC',
+        fields: [
+          { label: 'Product Name', placeholder: 'Product commercial name', required: true },
+          { label: 'Intended Use', placeholder: 'Describe intended use and foreseeable misuse', required: true },
+          { label: 'User Groups', placeholder: 'e.g., Chemical workers, healthcare professionals', required: true },
+          { label: 'Hazard Analysis Date', placeholder: 'YYYY-MM-DD', required: true },
+          { label: 'Risk Assessment Team', placeholder: 'Names and roles of assessors', required: true },
+        ]
+      },
+    ],
+    'US': [
+      {
+        id: 'nfpa-2112',
+        name: 'NFPA 2112 Compliance Report - Flame-Resistant Clothing',
+        name_zh: 'NFPA 2112合规报告 - 阻燃防护服',
+        description: 'Standard on Flame-Resistant Garments for Protection of Industrial Personnel Against Flash Fire',
+        required: true,
+        category: 'technical',
+        authority: 'National Fire Protection Association (NFPA)',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Flame-Resistant Coverall', required: true },
+          { label: 'Manufacturer', placeholder: 'Company name', required: true },
+          { label: 'Fabric Specification', placeholder: 'e.g., Nomex IIIA, 6 oz/yd2', required: true },
+          { label: 'Flash Fire Test Result', placeholder: 'e.g., Pass per NFPA 2112 §7.3', required: true },
+          { label: 'Test Lab', placeholder: 'ISO 17025 accredited lab name', required: true },
+        ]
+      },
+    ],
+  },
+  'protective-gloves': {
+    'EU': [
+      {
+        id: 'eu-tech-file-pg',
+        name: 'EU Technical File - Protective Gloves (EN ISO 21420)',
+        name_zh: '欧盟技术文件 - 防护手套（EN ISO 21420）',
+        description: 'Technical documentation for protective gloves CE marking under Regulation 2016/425',
+        required: true,
+        category: 'technical',
+        authority: 'European Commission - Notified Body',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Cut-Resistant Gloves Level E', required: true },
+          { label: 'Model/Type', placeholder: 'e.g., CutGuard Pro X5', required: true },
+          { label: 'Protection Level', placeholder: 'e.g., Cut Level A-E per EN 388:2016', required: true },
+          { label: 'Manufacturer', placeholder: 'Company legal name', required: true },
+          { label: 'Notified Body', placeholder: 'e.g., SATRA (0088)', required: true },
+          { label: 'Applied Standards', placeholder: 'e.g., EN ISO 21420, EN 388:2016, EN 374', required: true },
+        ]
+      },
+      {
+        id: 'eu-doc-pg',
+        name: 'EU Declaration of Conformity - Protective Gloves',
+        name_zh: '欧盟符合性声明 - 防护手套',
+        description: 'Official DoC template for protective gloves per EU 2016/425 Annex VI',
+        required: true,
+        category: 'regulatory',
+        authority: 'European Commission',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Cut-Resistant Gloves', required: true },
+          { label: 'Product Code/Model', placeholder: 'e.g., CutGuard Pro X5', required: true },
+          { label: 'Manufacturer Name', placeholder: 'Legal entity name', required: true },
+          { label: 'Manufacturer Address', placeholder: 'Complete address', required: true },
+          { label: 'Notified Body Name', placeholder: 'e.g., SATRA', required: true },
+          { label: 'Notified Body Number', placeholder: 'e.g., 0088', required: true },
+          { label: 'EU Type Examination Cert No.', placeholder: 'e.g., CE-12345-2026', required: true },
+          { label: 'Harmonized Standards', placeholder: 'EN ISO 21420, EN 388:2016', required: true },
+          { label: 'Authorized Signatory', placeholder: 'Name and title', required: true },
+        ]
+      },
+      {
+        id: 'eu-risk-assessment-pg',
+        name: 'Risk Assessment Report - Protective Gloves (EN ISO 12100)',
+        name_zh: '风险评估报告 - 防护手套（EN ISO 12100）',
+        description: 'Comprehensive risk assessment for protective gloves following EN ISO 12100',
+        required: true,
+        category: 'technical',
+        authority: 'CEN/CENELEC',
+        fields: [
+          { label: 'Product Name', placeholder: 'Product commercial name', required: true },
+          { label: 'Intended Use', placeholder: 'Describe intended use and foreseeable misuse', required: true },
+          { label: 'User Groups', placeholder: 'e.g., Industrial workers, laboratory personnel', required: true },
+          { label: 'Hazard Analysis Date', placeholder: 'YYYY-MM-DD', required: true },
+          { label: 'Risk Assessment Team', placeholder: 'Names and roles of assessors', required: true },
+        ]
+      },
+    ],
+    'US': [
+      {
+        id: 'ansi-isea-105',
+        name: 'ANSI/ISEA 105 Compliance Report - Hand Protection',
+        name_zh: 'ANSI/ISEA 105合规报告 - 手部防护',
+        description: 'American National Standard for Hand Protection Classification per ANSI/ISEA 105-2016',
+        required: true,
+        category: 'technical',
+        authority: 'ANSI/ISEA',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Cut-Resistant Gloves', required: true },
+          { label: 'Manufacturer', placeholder: 'Company name', required: true },
+          { label: 'Cut Resistance Level', placeholder: 'e.g., A1-A9 per ANSI/ISEA 105', required: true },
+          { label: 'Puncture Resistance', placeholder: 'e.g., Level 1-5', required: true },
+          { label: 'Test Lab', placeholder: 'ISO 17025 accredited lab name', required: true },
+        ]
+      },
+    ],
+  },
+  'eye-face-protection': {
+    'EU': [
+      {
+        id: 'eu-tech-file-ef',
+        name: 'EU Technical File - Eye & Face Protection (EN 166)',
+        name_zh: '欧盟技术文件 - 眼面防护（EN 166）',
+        description: 'Technical documentation for eye and face protection CE marking under Regulation 2016/425',
+        required: true,
+        category: 'technical',
+        authority: 'European Commission - Notified Body',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Safety Goggles EN 166', required: true },
+          { label: 'Model/Type', placeholder: 'e.g., VisionGuard Pro', required: true },
+          { label: 'Optical Class', placeholder: 'e.g., Optical Class 1 per EN 166', required: true },
+          { label: 'Manufacturer', placeholder: 'Company legal name', required: true },
+          { label: 'Notified Body', placeholder: 'e.g., TUV (0123)', required: true },
+          { label: 'Applied Standards', placeholder: 'e.g., EN 166:2002, EN 167, EN 168', required: true },
+        ]
+      },
+      {
+        id: 'eu-doc-ef',
+        name: 'EU Declaration of Conformity - Eye & Face Protection',
+        name_zh: '欧盟符合性声明 - 眼面防护',
+        description: 'Official DoC template for eye and face protection per EU 2016/425 Annex VI',
+        required: true,
+        category: 'regulatory',
+        authority: 'European Commission',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Safety Goggles', required: true },
+          { label: 'Product Code/Model', placeholder: 'e.g., VisionGuard Pro', required: true },
+          { label: 'Manufacturer Name', placeholder: 'Legal entity name', required: true },
+          { label: 'Manufacturer Address', placeholder: 'Complete address', required: true },
+          { label: 'Notified Body Name', placeholder: 'e.g., TUV', required: true },
+          { label: 'Notified Body Number', placeholder: 'e.g., 0123', required: true },
+          { label: 'EU Type Examination Cert No.', placeholder: 'e.g., CE-12345-2026', required: true },
+          { label: 'Harmonized Standards', placeholder: 'EN 166:2002, EN 167, EN 168', required: true },
+          { label: 'Authorized Signatory', placeholder: 'Name and title', required: true },
+        ]
+      },
+      {
+        id: 'eu-risk-assessment-ef',
+        name: 'Risk Assessment Report - Eye & Face Protection (EN ISO 12100)',
+        name_zh: '风险评估报告 - 眼面防护（EN ISO 12100）',
+        description: 'Comprehensive risk assessment for eye and face protection following EN ISO 12100',
+        required: true,
+        category: 'technical',
+        authority: 'CEN/CENELEC',
+        fields: [
+          { label: 'Product Name', placeholder: 'Product commercial name', required: true },
+          { label: 'Intended Use', placeholder: 'Describe intended use and foreseeable misuse', required: true },
+          { label: 'User Groups', placeholder: 'e.g., Industrial workers, welders, lab personnel', required: true },
+          { label: 'Hazard Analysis Date', placeholder: 'YYYY-MM-DD', required: true },
+          { label: 'Risk Assessment Team', placeholder: 'Names and roles of assessors', required: true },
+        ]
+      },
+    ],
+    'US': [
+      {
+        id: 'ansi-z87-1',
+        name: 'ANSI Z87.1 Compliance Report - Eye and Face Protection',
+        name_zh: 'ANSI Z87.1合规报告 - 眼面防护',
+        description: 'American National Standard for Occupational and Educational Eye and Face Protection per ANSI Z87.1-2020',
+        required: true,
+        category: 'technical',
+        authority: 'ANSI International',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Safety Goggles', required: true },
+          { label: 'Manufacturer', placeholder: 'Company name', required: true },
+          { label: 'Impact Rating', placeholder: 'e.g., Z87+ (High Impact)', required: true },
+          { label: 'Lens Type', placeholder: 'e.g., Clear, Tinted, Photochromic', required: true },
+          { label: 'Test Lab', placeholder: 'ISO 17025 accredited lab name', required: true },
+        ]
+      },
+    ],
+  },
+  'head-protection': {
+    'EU': [
+      {
+        id: 'eu-tech-file-hp',
+        name: 'EU Technical File - Head Protection (EN 14052)',
+        name_zh: '欧盟技术文件 - 头部防护（EN 14052）',
+        description: 'Technical documentation for head protection CE marking under Regulation 2016/425',
+        required: true,
+        category: 'technical',
+        authority: 'European Commission - Notified Body',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Industrial Safety Helmet', required: true },
+          { label: 'Model/Type', placeholder: 'e.g., HeadGuard Pro A1', required: true },
+          { label: 'Protection Class', placeholder: 'e.g., Class A, B, E per EN 14052', required: true },
+          { label: 'Manufacturer', placeholder: 'Company legal name', required: true },
+          { label: 'Notified Body', placeholder: 'e.g., DNV (0428)', required: true },
+          { label: 'Applied Standards', placeholder: 'e.g., EN 14052:2012, EN 397:2012+A1', required: true },
+        ]
+      },
+      {
+        id: 'eu-doc-hp',
+        name: 'EU Declaration of Conformity - Head Protection',
+        name_zh: '欧盟符合性声明 - 头部防护',
+        description: 'Official DoC template for head protection per EU 2016/425 Annex VI',
+        required: true,
+        category: 'regulatory',
+        authority: 'European Commission',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Industrial Safety Helmet', required: true },
+          { label: 'Product Code/Model', placeholder: 'e.g., HeadGuard Pro A1', required: true },
+          { label: 'Manufacturer Name', placeholder: 'Legal entity name', required: true },
+          { label: 'Manufacturer Address', placeholder: 'Complete address', required: true },
+          { label: 'Notified Body Name', placeholder: 'e.g., DNV', required: true },
+          { label: 'Notified Body Number', placeholder: 'e.g., 0428', required: true },
+          { label: 'EU Type Examination Cert No.', placeholder: 'e.g., CE-12345-2026', required: true },
+          { label: 'Harmonized Standards', placeholder: 'EN 14052:2012, EN 397:2012+A1', required: true },
+          { label: 'Authorized Signatory', placeholder: 'Name and title', required: true },
+        ]
+      },
+      {
+        id: 'eu-risk-assessment-hp',
+        name: 'Risk Assessment Report - Head Protection (EN ISO 12100)',
+        name_zh: '风险评估报告 - 头部防护（EN ISO 12100）',
+        description: 'Comprehensive risk assessment for head protection following EN ISO 12100',
+        required: true,
+        category: 'technical',
+        authority: 'CEN/CENELEC',
+        fields: [
+          { label: 'Product Name', placeholder: 'Product commercial name', required: true },
+          { label: 'Intended Use', placeholder: 'Describe intended use and foreseeable misuse', required: true },
+          { label: 'User Groups', placeholder: 'e.g., Construction workers, rescue personnel', required: true },
+          { label: 'Hazard Analysis Date', placeholder: 'YYYY-MM-DD', required: true },
+          { label: 'Risk Assessment Team', placeholder: 'Names and roles of assessors', required: true },
+        ]
+      },
+    ],
+    'US': [
+      {
+        id: 'ansi-z89-1',
+        name: 'ANSI/ISEA Z89.1 Compliance Report - Industrial Head Protection',
+        name_zh: 'ANSI/ISEA Z89.1合规报告 - 工业头部防护',
+        description: 'American National Standard for Industrial Head Protection per ANSI/ISEA Z89.1-2014',
+        required: true,
+        category: 'technical',
+        authority: 'ANSI/ISEA',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., Hard Hat Type I Class E', required: true },
+          { label: 'Manufacturer', placeholder: 'Company name', required: true },
+          { label: 'Helmet Type', placeholder: 'e.g., Type I (Top Impact) or Type II (Top/Lateral)', required: true },
+          { label: 'Class', placeholder: 'e.g., Class E (Electrical), Class G (General)', required: true },
+          { label: 'Test Lab', placeholder: 'ISO 17025 accredited lab name', required: true },
+        ]
+      },
+    ],
+  },
+  'hearing-protection': {
+    'EU': [
+      {
+        id: 'eu-tech-file-hrp',
+        name: 'EU Technical File - Hearing Protection (EN 352)',
+        name_zh: '欧盟技术文件 - 听力防护（EN 352）',
+        description: 'Technical documentation for hearing protection CE marking under Regulation 2016/425',
+        required: true,
+        category: 'technical',
+        authority: 'European Commission - Notified Body',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., SNR 28dB Earmuffs', required: true },
+          { label: 'Model/Type', placeholder: 'e.g., SoundGuard Pro 28', required: true },
+          { label: 'Protection Type', placeholder: 'e.g., Earplugs, Earmuffs, per EN 352 series', required: true },
+          { label: 'Manufacturer', placeholder: 'Company legal name', required: true },
+          { label: 'Notified Body', placeholder: 'e.g., INSPEC (0179)', required: true },
+          { label: 'Applied Standards', placeholder: 'e.g., EN 352-1:2020, EN 352-2:2020', required: true },
+        ]
+      },
+      {
+        id: 'eu-doc-hrp',
+        name: 'EU Declaration of Conformity - Hearing Protection',
+        name_zh: '欧盟符合性声明 - 听力防护',
+        description: 'Official DoC template for hearing protection per EU 2016/425 Annex VI',
+        required: true,
+        category: 'regulatory',
+        authority: 'European Commission',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., SNR 28dB Earmuffs', required: true },
+          { label: 'Product Code/Model', placeholder: 'e.g., SoundGuard Pro 28', required: true },
+          { label: 'Manufacturer Name', placeholder: 'Legal entity name', required: true },
+          { label: 'Manufacturer Address', placeholder: 'Complete address', required: true },
+          { label: 'Notified Body Name', placeholder: 'e.g., INSPEC', required: true },
+          { label: 'Notified Body Number', placeholder: 'e.g., 0179', required: true },
+          { label: 'EU Type Examination Cert No.', placeholder: 'e.g., CE-12345-2026', required: true },
+          { label: 'Harmonized Standards', placeholder: 'EN 352-1:2020, EN 352-2:2020', required: true },
+          { label: 'Authorized Signatory', placeholder: 'Name and title', required: true },
+        ]
+      },
+      {
+        id: 'eu-risk-assessment-hrp',
+        name: 'Risk Assessment Report - Hearing Protection (EN ISO 12100)',
+        name_zh: '风险评估报告 - 听力防护（EN ISO 12100）',
+        description: 'Comprehensive risk assessment for hearing protection following EN ISO 12100',
+        required: true,
+        category: 'technical',
+        authority: 'CEN/CENELEC',
+        fields: [
+          { label: 'Product Name', placeholder: 'Product commercial name', required: true },
+          { label: 'Intended Use', placeholder: 'Describe intended use and foreseeable misuse', required: true },
+          { label: 'User Groups', placeholder: 'e.g., Industrial workers, musicians, military', required: true },
+          { label: 'Hazard Analysis Date', placeholder: 'YYYY-MM-DD', required: true },
+          { label: 'Risk Assessment Team', placeholder: 'Names and roles of assessors', required: true },
+        ]
+      },
+    ],
+    'US': [
+      {
+        id: 'ansi-s3-19',
+        name: 'ANSI S3.19 / S12.6 Compliance Report - Hearing Protection',
+        name_zh: 'ANSI S3.19 / S12.6合规报告 - 听力防护',
+        description: 'American National Standard for hearing protection devices per ANSI S3.19 / S12.6',
+        required: true,
+        category: 'technical',
+        authority: 'ANSI/ASA',
+        fields: [
+          { label: 'Product Name', placeholder: 'e.g., NRR 28 Earmuffs', required: true },
+          { label: 'Manufacturer', placeholder: 'Company name', required: true },
+          { label: 'NRR Rating', placeholder: 'e.g., NRR 28 dB', required: true },
+          { label: 'Device Type', placeholder: 'e.g., Earmuffs, Formable Earplugs', required: true },
+          { label: 'Test Lab', placeholder: 'NVLAP accredited lab name', required: true },
         ]
       },
     ],
@@ -374,10 +785,11 @@ function generateOfficialDocument(template: any, formData: Record<string, string
   const categoryNames: Record<string, string> = {
     'respiratory-protection': 'Respiratory Protection',
     'safety-footwear': 'Safety Footwear',
-    'safety-gloves': 'Safety Gloves',
+    'protective-gloves': 'Protective Gloves',
     'head-protection': 'Head Protection',
     'protective-clothing': 'Protective Clothing',
-    'eye-protection': 'Eye Protection',
+    'eye-face-protection': 'Eye & Face Protection',
+    'hearing-protection': 'Hearing Protection',
   }
 
   const marketNames: Record<string, string> = {
