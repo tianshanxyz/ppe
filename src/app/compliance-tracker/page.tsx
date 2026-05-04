@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { ClipboardCheck, Search, CheckCircle2, Clock, AlertTriangle, XCircle, ArrowRight, Building, Calendar } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { ClipboardCheck, Search, CheckCircle2, Clock, AlertTriangle, XCircle, ArrowRight, Building, Calendar, LogIn, UserPlus } from 'lucide-react'
 import Link from 'next/link'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 const COMPLIANCE_ITEMS = [
   {
@@ -76,9 +78,24 @@ const COMPLIANCE_ITEMS = [
 ]
 
 export default function ComplianceTrackerPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedMarket, setSelectedMarket] = useState('all')
   const [expandedItem, setExpandedItem] = useState<string | null>(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user')
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData)
+        setIsLoggedIn(!!parsed && !!parsed.id)
+      } catch {
+        setIsLoggedIn(false)
+      }
+    }
+  }, [])
 
   const markets = ['all', 'EU', 'US', 'China', 'UK']
 
@@ -100,6 +117,15 @@ export default function ComplianceTrackerPage() {
     }
   }
 
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'completed': return locale === 'zh' ? '已完成' : 'Completed'
+      case 'in_progress': return locale === 'zh' ? '进行中' : 'In Progress'
+      case 'pending': return locale === 'zh' ? '待处理' : 'Pending'
+      default: return status
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <section className="bg-gradient-to-br from-[#339999]/10 via-white to-white py-20">
@@ -110,13 +136,42 @@ export default function ComplianceTrackerPage() {
                 <ClipboardCheck className="w-10 h-10 text-[#339999]" />
               </div>
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">Compliance Tracker</h1>
+            <h1 className="text-5xl font-bold text-gray-900 mb-4">{t.complianceTrackerTitle}</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Track your product compliance progress across different markets in real-time
+              {t.complianceTrackerSubtitle}
             </p>
           </div>
         </div>
       </section>
+
+      {/* Demo Data Banner - shown when not logged in */}
+      {!isLoggedIn && (
+        <div className="bg-amber-50 border-b border-amber-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="flex items-center gap-2 text-amber-800 text-sm">
+                <AlertTriangle className="w-5 h-5 flex-shrink-0" />
+                <span className="font-medium">{t.demoDataBanner}:</span>
+                <span>{locale === 'zh' ? t.demoDataBannerCn : t.demoDataBannerDesc}</span>
+              </div>
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <Link href="/auth/signup">
+                  <button className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#339999] text-white text-sm font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors">
+                    <UserPlus className="w-4 h-4" />
+                    {t.registerNow}
+                  </button>
+                </Link>
+                <Link href="/auth/login">
+                  <button className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-[#339999] text-[#339999] text-sm font-semibold rounded-lg hover:bg-[#339999]/5 transition-colors">
+                    <LogIn className="w-4 h-4" />
+                    {t.loginNow}
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <section className="py-8 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -127,7 +182,7 @@ export default function ComplianceTrackerPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products..."
+                placeholder={t.searchProductsPlaceholder}
                 className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
               />
             </div>
@@ -142,7 +197,7 @@ export default function ComplianceTrackerPage() {
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
-                  {market === 'all' ? 'All Markets' : market}
+                  {market === 'all' ? t.allMarkets : market}
                 </button>
               ))}
             </div>
@@ -156,7 +211,7 @@ export default function ComplianceTrackerPage() {
             <div className="space-y-6">
               {filteredItems.map(item => (
                 <div key={item.id} className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                  <div 
+                  <div
                     className="p-6 cursor-pointer hover:bg-gray-50 transition-colors"
                     onClick={() => setExpandedItem(expandedItem === item.id ? null : item.id)}
                   >
@@ -174,25 +229,25 @@ export default function ComplianceTrackerPage() {
                       </div>
                       <div className="text-right">
                         <div className="text-2xl font-bold text-[#339999]">{item.overallProgress}%</div>
-                        <div className="text-xs text-gray-400">Overall Progress</div>
+                        <div className="text-xs text-gray-400">{t.overallProgress}</div>
                       </div>
                     </div>
-                    
+
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-                      <div 
-                        className="bg-[#339999] h-2 rounded-full transition-all duration-500" 
+                      <div
+                        className="bg-[#339999] h-2 rounded-full transition-all duration-500"
                         style={{ width: `${item.overallProgress}%` }}
                       />
                     </div>
                     <div className="flex items-center justify-between text-xs text-gray-400">
-                      <span>Est. completion: {item.estimatedCompletion}</span>
-                      <span>{item.steps.filter(s => s.status === 'completed').length}/{item.steps.length} steps completed</span>
+                      <span>{t.estCompletion}: {item.estimatedCompletion}</span>
+                      <span>{item.steps.filter(s => s.status === 'completed').length}/{item.steps.length} {t.stepsCompleted}</span>
                     </div>
                   </div>
 
                   {expandedItem === item.id && (
                     <div className="px-6 pb-6 border-t border-gray-100 pt-4">
-                      <h3 className="text-sm font-semibold text-gray-700 mb-4">Compliance Steps</h3>
+                      <h3 className="text-sm font-semibold text-gray-700 mb-4">{t.complianceSteps}</h3>
                       <div className="space-y-3">
                         {item.steps.map((step, index) => (
                           <div key={index} className="flex items-center gap-4">
@@ -217,7 +272,7 @@ export default function ComplianceTrackerPage() {
                               step.status === 'in_progress' ? 'bg-[#339999]/10 text-[#339999]' :
                               'bg-gray-100 text-gray-500'
                             }`}>
-                              {step.status.replace('_', ' ')}
+                              {getStatusLabel(step.status)}
                             </span>
                           </div>
                         ))}
@@ -230,7 +285,7 @@ export default function ComplianceTrackerPage() {
           ) : (
             <div className="text-center py-12">
               <ClipboardCheck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">No compliance items found</p>
+              <p className="text-gray-500">{t.noComplianceItems}</p>
             </div>
           )}
         </div>

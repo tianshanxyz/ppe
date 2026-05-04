@@ -91,7 +91,7 @@ export default function ContactPage() {
                 <h2 className="text-lg font-bold text-gray-900">MDLooker</h2>
               </div>
               <p className="text-sm text-gray-600 mb-6">
-                AI-powered PPE compliance platform helping manufacturers and exporters navigate global regulations.
+                {t.companyDescription}
               </p>
 
               <div className="space-y-4">
@@ -129,8 +129,8 @@ export default function ContactPage() {
                 <div className="flex items-start gap-3">
                   <Clock className="w-5 h-5 text-[#339999] mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Business Hours</p>
-                    <p className="text-sm text-gray-600">Mon - Fri: 9:00 AM - 6:00 PM (CST)</p>
+                    <p className="text-sm font-medium text-gray-900">{t.businessHours}</p>
+                    <p className="text-sm text-gray-600">{t.businessHoursDetail}</p>
                   </div>
                 </div>
               </div>
@@ -138,19 +138,19 @@ export default function ContactPage() {
 
             {/* Quick Links */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">Quick Links</h3>
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">{t.quickLinks}</h3>
               <div className="space-y-2">
                 <Link href="/pricing" className="block text-sm text-[#339999] hover:underline">
-                  View Pricing Plans
+                  {t.viewPricingPlans}
                 </Link>
                 <Link href="/knowledge-base" className="block text-sm text-[#339999] hover:underline">
-                  Knowledge Base
+                  {t.knowledgeBaseLink}
                 </Link>
                 <Link href="/help" className="block text-sm text-[#339999] hover:underline">
-                  Help Center
+                  {t.helpCenter}
                 </Link>
                 <Link href="/about" className="block text-sm text-[#339999] hover:underline">
-                  About MDLooker
+                  {t.aboutMDLooker}
                 </Link>
               </div>
             </div>
@@ -166,13 +166,13 @@ export default function ContactPage() {
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-3">{locale === 'zh' ? '消息发送成功' : 'Message Sent Successfully'}</h2>
                   <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                    Thank you for reaching out. Our team will review your message and get back to you within 24 hours.
+                    {t.messageSentDesc}
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}
                     className="px-6 py-3 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors"
                   >
-                    Send Another Message
+                    {t.sendAnotherMessage}
                   </button>
                 </div>
               ) : (
@@ -182,7 +182,7 @@ export default function ContactPage() {
                     Fill out the form below and we&apos;ll get back to you as soon as possible.
                   </p>
                   <p className="text-gray-500 text-sm mb-8">
-                    Prefer email? Reach us directly at{' '}
+                    {t.preferEmail}{' '}
                     <a
                       href={`mailto:${FALLBACK_EMAIL}`}
                       className="text-[#339999] hover:underline font-medium"
@@ -203,7 +203,7 @@ export default function ContactPage() {
                             className="inline-flex items-center gap-1.5 mt-2 text-sm text-[#339999] hover:underline font-medium"
                           >
                             <Mail className="w-4 h-4" />
-                            Send via email client instead
+                            {t.sendViaEmailClient}
                           </a>
                         </div>
                       </div>
@@ -214,7 +214,7 @@ export default function ContactPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                          Name <span className="text-red-500">*</span>
+                          {t.name} <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -223,7 +223,7 @@ export default function ContactPage() {
                           required
                           value={formData.name}
                           onChange={handleChange}
-                          placeholder="Your full name"
+                          placeholder={t.yourFullName}
                           className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/10 outline-none transition-all text-gray-900 placeholder-gray-400"
                         />
                       </div>
@@ -256,14 +256,14 @@ export default function ContactPage() {
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/10 outline-none transition-all text-gray-900"
                       >
-                        <option value="">Select a subject</option>
-                        <option value="general">General Inquiry</option>
-                        <option value="enterprise">Enterprise Plan</option>
-                        <option value="api">API Access</option>
-                        <option value="compliance">Compliance Support</option>
-                        <option value="partnership">Partnership</option>
-                        <option value="feedback">Feedback</option>
-                        <option value="other">Other</option>
+                        <option value="">{t.selectSubject}</option>
+                        <option value="general">{t.generalInquiry}</option>
+                        <option value="enterprise">{t.enterprisePlan}</option>
+                        <option value="api">{t.apiAccess}</option>
+                        <option value="compliance">{t.complianceSupport}</option>
+                        <option value="partnership">{t.partnership}</option>
+                        <option value="feedback">{t.feedback}</option>
+                        <option value="other">{t.other}</option>
                       </select>
                     </div>
 
@@ -291,12 +291,12 @@ export default function ContactPage() {
                       {submitting ? (
                         <>
                           <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          Sending...
+                          {t.sending}
                         </>
                       ) : (
                         <>
                           <Send className="w-5 h-5" />
-                          {locale === 'zh' ? '发送消息' : 'Send Message'}
+                          {t.sendMessage}
                         </>
                       )}
                     </button>

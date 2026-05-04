@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { Award, Search, Clock, AlertTriangle, CheckCircle2, XCircle, Calendar, Building } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Award, Search, Clock, AlertTriangle, CheckCircle2, XCircle, Calendar, Building, LogIn, UserPlus } from 'lucide-react'
 import Link from 'next/link'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 const CERTIFICATE_ALERTS = [
   {
@@ -80,8 +82,23 @@ const CERTIFICATE_ALERTS = [
 ]
 
 export default function CertificateAlertsPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('all')
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user')
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData)
+        setIsLoggedIn(!!parsed && !!parsed.id)
+      } catch {
+        setIsLoggedIn(false)
+      }
+    }
+  }, [])
 
   const statuses = ['all', 'valid', 'expiring_soon', 'expired']
 
@@ -96,12 +113,22 @@ export default function CertificateAlertsPage() {
 
   const getStatusBadge = (status: string, daysRemaining: number) => {
     if (status === 'expired' || daysRemaining <= 0) {
-      return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-red-100 text-red-700"><XCircle className="w-3 h-3" /> Expired</span>
+      return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-red-100 text-red-700"><XCircle className="w-3 h-3" /> {t.expiredStatus}</span>
     }
     if (status === 'expiring_soon' || daysRemaining <= 90) {
-      return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-yellow-100 text-yellow-700"><AlertTriangle className="w-3 h-3" /> Expiring Soon</span>
+      return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-yellow-100 text-yellow-700"><AlertTriangle className="w-3 h-3" /> {t.expiringSoonStatus}</span>
     }
-    return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-green-100 text-green-700"><CheckCircle2 className="w-3 h-3" /> Valid</span>
+    return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-green-100 text-green-700"><CheckCircle2 className="w-3 h-3" /> {t.validStatus}</span>
+  }
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'all': return t.allLabel
+      case 'valid': return t.validStatus
+      case 'expiring_soon': return t.expiringSoonStatus
+      case 'expired': return t.expiredStatus
+      default: return status.replace('_', ' ')
+    }
   }
 
   return (
@@ -114,33 +141,50 @@ export default function CertificateAlertsPage() {
                 <Award className="w-10 h-10 text-[#339999]" />
               </div>
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">Certificate Alerts</h1>
+            <h1 className="text-5xl font-bold text-gray-900 mb-4">{t.certificateAlertsTitle}</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Track certificate expiry dates and get timely renewal reminders
+              {t.certificateAlertsSubtitle}
             </p>
           </div>
         </div>
       </section>
 
-      {/* Demo Data Notice */}
-      <div className="bg-amber-50 border-b border-amber-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex items-center gap-2 text-amber-800 text-sm">
-            <AlertTriangle className="w-4 h-4" />
-            <span className="font-medium">Demo Data:</span>
-            <span>The following certificate data is for demonstration purposes only. Real certificate tracking will be available after connecting to regulatory databases.</span>
+      {/* Demo Data Banner - shown when not logged in */}
+      {!isLoggedIn && (
+        <div className="bg-amber-50 border-b border-amber-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="flex items-center gap-2 text-amber-800 text-sm">
+                <AlertTriangle className="w-5 h-5 flex-shrink-0" />
+                <span className="font-medium">{t.demoDataBanner}:</span>
+                <span>{locale === 'zh' ? t.demoDataBannerCn : t.demoDataBannerDesc}</span>
+              </div>
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <Link href="/auth/signup">
+                  <button className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#339999] text-white text-sm font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors">
+                    <UserPlus className="w-4 h-4" />
+                    {t.registerNow}
+                  </button>
+                </Link>
+                <Link href="/auth/login">
+                  <button className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-[#339999] text-[#339999] text-sm font-semibold rounded-lg hover:bg-[#339999]/5 transition-colors">
+                    <LogIn className="w-4 h-4" />
+                    {t.loginNow}
+                  </button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <section className="py-8 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <form 
+            <form
               className="relative w-full md:w-96"
               onSubmit={(e) => {
                 e.preventDefault();
-                // Search is already handled by the input onChange
               }}
             >
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -148,14 +192,14 @@ export default function CertificateAlertsPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search certificates..."
+                placeholder={t.searchCertificates}
                 className="w-full pl-12 pr-24 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
               />
               <button
                 type="submit"
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-[#339999] text-white text-sm font-medium rounded-lg hover:bg-[#2d8b8b] transition-colors"
               >
-                Search
+                {t.search}
               </button>
             </form>
             <div className="flex flex-wrap gap-2">
@@ -163,13 +207,13 @@ export default function CertificateAlertsPage() {
                 <button
                   key={status}
                   onClick={() => setSelectedStatus(status)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize ${
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     selectedStatus === status
                       ? 'bg-[#339999] text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
-                  {status === 'all' ? 'All' : status.replace('_', ' ')}
+                  {getStatusLabel(status)}
                 </button>
               ))}
             </div>
@@ -193,35 +237,35 @@ export default function CertificateAlertsPage() {
                     </div>
                     {getStatusBadge(alert.status, alert.daysRemaining)}
                   </div>
-                  
+
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                     <div>
-                      <p className="text-xs text-gray-400 mb-1">Certificate Type</p>
+                      <p className="text-xs text-gray-400 mb-1">{t.certificateTypeLabel}</p>
                       <p className="text-sm font-medium text-gray-700">{alert.certificateType}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-400 mb-1">Certificate No.</p>
+                      <p className="text-xs text-gray-400 mb-1">{t.certificateNo}</p>
                       <p className="text-sm font-medium text-gray-700">{alert.certificateNumber}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-400 mb-1">Market</p>
+                      <p className="text-xs text-gray-400 mb-1">{t.marketCode}</p>
                       <p className="text-sm font-medium text-gray-700">{alert.market}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-400 mb-1">Days Remaining</p>
+                      <p className="text-xs text-gray-400 mb-1">{t.daysRemainingLabel}</p>
                       <p className={`text-sm font-bold ${alert.daysRemaining <= 90 ? 'text-red-600' : 'text-green-600'}`}>
-                        {alert.daysRemaining} days
+                        {alert.daysRemaining} {locale === 'zh' ? '天' : 'days'}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                     <div className="flex items-center gap-4 text-sm text-gray-500">
-                      <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> Issued: {alert.issueDate}</span>
-                      <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> Expires: {alert.expiryDate}</span>
+                      <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {t.issued}: {alert.issueDate}</span>
+                      <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {t.expires}: {alert.expiryDate}</span>
                     </div>
                     <button className="text-sm text-[#339999] hover:text-[#2d8b8b] font-medium">
-                      Set Reminder
+                      {t.setReminder}
                     </button>
                   </div>
                 </div>
@@ -230,7 +274,7 @@ export default function CertificateAlertsPage() {
           ) : (
             <div className="text-center py-12">
               <Award className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">No certificate alerts found</p>
+              <p className="text-gray-500">{t.noCertificateAlerts}</p>
             </div>
           )}
         </div>

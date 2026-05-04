@@ -81,15 +81,15 @@ export default function PricingPage() {
             <div className="flex items-center justify-center gap-6 text-sm text-gray-600">
               <div className="flex items-center gap-2">
                 <Shield className="w-5 h-5 text-[#339999]" />
-                <span>Secure Payment</span>
+                <span>{t.securePayment}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-5 h-5 text-[#339999]" />
-                <span>Free Cancellation</span>
+                <span>{t.freeCancellation}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-[#339999]" />
-                <span>Stripe & PayPal</span>
+                <span>{t.stripePayPal}</span>
               </div>
             </div>
           </motion.div>
@@ -128,7 +128,7 @@ export default function PricingPage() {
                       USD/{freeTier.billing_period}
                     </span>
                   </div>
-                  <p className="text-gray-500 text-sm mt-2">Forever free</p>
+                  <p className="text-gray-500 text-sm mt-2">{t.foreverFree}</p>
                 </div>
 
                 <Link href="/auth/register">
@@ -137,12 +137,12 @@ export default function PricingPage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    Get Started Free
+                    {t.getStartedFree}
                   </motion.button>
                 </Link>
 
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-gray-900">What&apos;s included:</h4>
+                  <h4 className="font-semibold text-gray-900">{t.whatsIncluded}</h4>
                   <ul className="space-y-3">
                     {freeTier.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-3">
@@ -172,7 +172,7 @@ export default function PricingPage() {
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#339999] text-white rounded-full text-sm font-semibold shadow-lg">
                     <Star className="w-4 h-4" />
-                    Most Popular
+                    {t.mostPopular}
                   </div>
                 </div>
 
@@ -213,12 +213,12 @@ export default function PricingPage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    Start Free Trial
+                    {t.startFreeTrial}
                   </motion.button>
                 </Link>
 
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-gray-900">Everything in Free, plus:</h4>
+                  <h4 className="font-semibold text-gray-900">{t.everythingInFree}</h4>
                   <ul className="space-y-3">
                     {proTier.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-3">
@@ -282,12 +282,12 @@ export default function PricingPage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    Contact Sales
+                    {t.contactSales}
                   </motion.button>
                 </Link>
 
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-gray-900">Everything in Pro, plus:</h4>
+                  <h4 className="font-semibold text-gray-900">{t.everythingInPro}</h4>
                   <ul className="space-y-3">
                     {enterpriseTier.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-3">
@@ -320,10 +320,10 @@ export default function PricingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div className="text-center mb-12" variants={fadeInUp}>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Compare Features
+              {t.compareFeatures}
             </h2>
             <p className="text-xl text-gray-600">
-              See what&apos;s included in each plan
+              {t.seeWhatsIncluded}
             </p>
           </motion.div>
 
@@ -332,27 +332,27 @@ export default function PricingPage() {
               <table className="w-full">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Feature</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">Free</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-white bg-[#339999]">Pro</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">Enterprise</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">{t.feature}</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">{t.freePlan}</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-white bg-[#339999]">{t.professionalPlan}</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">{t.enterprisePlanLabel}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {[
-                    { name: 'Compliance Checks', free: '3/month', pro: 'Unlimited', enterprise: 'Unlimited' },
-                    { name: 'PDF Report Downloads', free: false, pro: true, enterprise: true },
-                    { name: 'Email Report Delivery', free: false, pro: true, enterprise: true },
-                    { name: 'DoC Generator', free: false, pro: true, enterprise: true },
-                    { name: 'Template Library', free: false, pro: true, enterprise: true },
-                    { name: 'Regulation Updates', free: false, pro: true, enterprise: true },
-                    { name: 'Priority Support', free: false, pro: true, enterprise: true },
-                    { name: 'Dedicated Consultant', free: false, pro: false, enterprise: true },
-                    { name: 'Team Collaboration', free: false, pro: false, enterprise: 'Up to 10 users' },
-                    { name: 'Document Management', free: false, pro: false, enterprise: true },
-                    { name: 'API Access', free: false, pro: false, enterprise: true },
-                    { name: 'White-label Reports', free: false, pro: false, enterprise: true },
-                    { name: '24/7 Support', free: false, pro: false, enterprise: true },
+                    { name: t.complianceChecksFeature, free: '3/month', pro: 'Unlimited', enterprise: 'Unlimited' },
+                    { name: t.pdfReportDownloads, free: false, pro: true, enterprise: true },
+                    { name: t.emailReportDelivery, free: false, pro: true, enterprise: true },
+                    { name: t.doCGenerator, free: false, pro: true, enterprise: true },
+                    { name: t.templateLibraryFeature, free: false, pro: true, enterprise: true },
+                    { name: t.regulationUpdatesFeature, free: false, pro: true, enterprise: true },
+                    { name: t.prioritySupportFeature, free: false, pro: true, enterprise: true },
+                    { name: t.dedicatedConsultant, free: false, pro: false, enterprise: true },
+                    { name: t.teamCollaborationFeature, free: false, pro: false, enterprise: 'Up to 10 users' },
+                    { name: t.documentManagement, free: false, pro: false, enterprise: true },
+                    { name: t.apiAccessFeature, free: false, pro: false, enterprise: true },
+                    { name: t.whiteLabelReports, free: false, pro: false, enterprise: true },
+                    { name: t.support24_7, free: false, pro: false, enterprise: true },
                   ].map((feature, idx) => (
                     <motion.tr 
                       key={idx} 
@@ -413,38 +413,38 @@ export default function PricingPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div className="text-center mb-12" variants={fadeInUp}>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              {locale === 'zh' ? '常见问题' : 'Frequently Asked Questions'}
+              {t.frequentlyAskedQuestions}
             </h2>
             <p className="text-xl text-gray-600">
-              Everything you need to know about our pricing and plans
+              {t.faqSubtitle}
             </p>
           </motion.div>
 
           <div className="space-y-6">
             {[
               {
-                question: 'Can I switch plans later?',
-                answer: 'Yes! You can upgrade or downgrade your plan at any time. Changes will take effect at the start of your next billing cycle.'
+                question: t.faqSwitchPlans,
+                answer: t.faqSwitchPlansAnswer
               },
               {
-                question: 'What payment methods do you accept?',
-                answer: 'We accept all major credit cards (Visa, MasterCard, American Express) via Stripe, as well as PayPal payments.'
+                question: t.faqPaymentMethods,
+                answer: t.faqPaymentMethodsAnswer
               },
               {
-                question: 'Is there a free trial for Pro plans?',
-                answer: 'Yes! All Pro plans come with a 14-day free trial. No credit card required to start.'
+                question: t.faqFreeTrial,
+                answer: t.faqFreeTrialAnswer
               },
               {
-                question: 'What happens if I exceed the free tier limits?',
-                answer: 'You\'ll be notified when you\'re approaching your limit. You can upgrade to Pro to continue using the service without interruption.'
+                question: t.faqExceedLimits,
+                answer: t.faqExceedLimitsAnswer
               },
               {
-                question: 'Can I cancel my subscription?',
-                answer: 'Absolutely! You can cancel your subscription at any time. Your account will remain active until the end of your billing period.'
+                question: t.faqCancelSubscription,
+                answer: t.faqCancelSubscriptionAnswer
               },
               {
-                question: 'Do you offer discounts for non-profits?',
-                answer: 'Yes! We offer special pricing for non-profit organizations and educational institutions. Contact us to learn more.'
+                question: t.faqNonProfit,
+                answer: t.faqNonProfitAnswer
               },
             ].map((faq, idx) => (
               <motion.div 
@@ -498,25 +498,25 @@ export default function PricingPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div variants={fadeInUp}>
             <h2 className="text-4xl font-bold text-white mb-6">
-              Ready to Get Started?
+              {t.readyToGetStarted}
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Join hundreds of PPE exporters and manufacturers who trust MDLooker for their compliance needs.
+              {t.readyCtaSubtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button 
+              <motion.button
                 className="px-8 py-4 bg-white text-[#339999] font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Start Free Trial
+                {t.startFreeTrial}
               </motion.button>
-              <motion.button 
+              <motion.button
                 className="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Contact Sales
+                {t.contactSales}
               </motion.button>
             </div>
           </motion.div>

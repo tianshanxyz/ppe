@@ -22,6 +22,7 @@ const detailTranslations = {
     reportNotFound: 'Report Not Found',
     reportNotFoundDesc: 'The report you are looking for does not exist or has been removed.',
     browseOtherReports: 'Browse Other Reports',
+    viewOriginalReport: 'View Original Report',
   },
   zh: {
     backToReports: '返回报告列表',
@@ -37,6 +38,7 @@ const detailTranslations = {
     reportNotFound: '报告未找到',
     reportNotFoundDesc: '您查找的报告不存在或已被移除。',
     browseOtherReports: '浏览其他报告',
+    viewOriginalReport: '查看原始报告',
   }
 }
 
@@ -207,6 +209,34 @@ export default function ReportDetailPage() {
                 ))}
               </div>
             </div>
+
+            {/* View Original Report Button */}
+            {report.sourceUrl && (
+              <div className="bg-gradient-to-r from-[#339999]/10 to-[#339999]/5 rounded-xl border-2 border-[#339999]/30 p-6">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-[#339999] rounded-xl flex items-center justify-center flex-shrink-0">
+                      <ExternalLink className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">{t.viewOriginalReport}</h3>
+                      <p className="text-sm text-gray-500 truncate max-w-md">
+                        {report.sourceUrl}
+                      </p>
+                    </div>
+                  </div>
+                  <a
+                    href={report.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors shadow-md hover:shadow-lg flex-shrink-0"
+                  >
+                    <ExternalLink className="w-5 h-5" />
+                    {t.viewOriginalReport}
+                  </a>
+                </div>
+              </div>
+            )}
 
             {/* Sources */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">

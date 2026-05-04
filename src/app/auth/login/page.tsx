@@ -220,7 +220,7 @@ export default function LoginPage() {
                   {t.signingIn}
                 </span>
               ) : (
-                locale === 'zh' ? '登录' : 'Sign In'
+                t.signInButton
               )}
             </button>
           </form>
@@ -231,7 +231,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">Or continue with</span>
+              <span className="px-4 bg-white text-gray-500">{t.orContinueWith}</span>
             </div>
           </div>
 
@@ -247,14 +247,14 @@ export default function LoginPage() {
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            <span className="text-gray-700 font-medium">Continue with Google</span>
+            <span className="text-gray-700 font-medium">{t.continueWithGoogle}</span>
           </button>
 
           {/* Sign Up Link */}
           <p className="mt-8 text-center text-sm text-gray-600">
             {t.noAccount}{' '}
             <Link href="/auth/signup" className="text-[#339999] font-semibold hover:underline">
-              Sign up for free
+              {t.signUpFree}
             </Link>
           </p>
         </div>
@@ -267,9 +267,9 @@ export default function LoginPage() {
                 <Mail className="w-4 h-4 text-[#339999]" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-700">Demo Account Available</p>
+                <p className="text-sm font-medium text-gray-700">{t.demoAccountAvailable}</p>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  Use the demo account to explore the dashboard with Professional plan features.
+                  {t.demoAccountDesc}
                 </p>
               </div>
             </div>
@@ -278,7 +278,7 @@ export default function LoginPage() {
               onClick={handleDemoFill}
               className="ml-4 px-4 py-2 text-sm font-semibold text-[#339999] bg-white border border-[#339999]/30 rounded-lg hover:bg-[#339999]/10 transition-colors flex-shrink-0"
             >
-              Use Demo Account
+              {t.useDemoAccount}
             </button>
           </div>
         </div>

@@ -41,17 +41,17 @@ export default function SignupPage() {
 
     // Validation
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match')
+      setError(t.passwordsDoNotMatch)
       return
     }
 
     if (formData.password.length < 8) {
-      setError('Password must be at least 8 characters long')
+      setError(t.passwordMinLength)
       return
     }
 
     if (!formData.agreeToTerms) {
-      setError('You must agree to the Terms and Privacy Policy')
+      setError(t.mustAgreeTerms)
       return
     }
 
@@ -90,7 +90,7 @@ export default function SignupPage() {
           // 不影响注册流程，继续执行
         }
 
-        setSuccess('Account created successfully! Please check your email to verify your account.')
+        setSuccess(t.accountCreatedSuccess)
         // 3秒后跳转到登录页面
         setTimeout(() => {
           router.push('/auth/login')
@@ -163,7 +163,7 @@ export default function SignupPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700 mb-2">
-                  {locale === 'zh' ? '名' : 'First Name'} *
+                  {t.firstName} *
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -175,13 +175,13 @@ export default function SignupPage() {
                     onChange={handleChange}
                     required
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-transparent"
-                    placeholder="John"
+                    placeholder={locale === 'zh' ? '名' : 'John'}
                   />
                 </div>
               </div>
               <div>
                 <label htmlFor="lastName" className="block text-sm font-semibold text-gray-700 mb-2">
-                  {locale === 'zh' ? '姓' : 'Last Name'} *
+                  {t.lastName} *
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -193,7 +193,7 @@ export default function SignupPage() {
                     onChange={handleChange}
                     required
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-transparent"
-                    placeholder="Doe"
+                    placeholder={locale === 'zh' ? '姓' : 'Doe'}
                   />
                 </div>
               </div>
@@ -222,7 +222,7 @@ export default function SignupPage() {
             {/* Company */}
             <div>
               <label htmlFor="company" className="block text-sm font-semibold text-gray-700 mb-2">
-                {locale === 'zh' ? '公司名称' : 'Company Name'}
+                {t.companyName}
               </label>
               <div className="relative">
                 <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -233,7 +233,7 @@ export default function SignupPage() {
                   value={formData.company}
                   onChange={handleChange}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-transparent"
-                  placeholder="Your company name"
+                  placeholder={locale === 'zh' ? '公司名称' : 'Your company name'}
                 />
               </div>
             </div>
@@ -254,7 +254,7 @@ export default function SignupPage() {
                   required
                   minLength={8}
                   className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-transparent"
-                  placeholder="At least 8 characters"
+                  placeholder={t.atLeast8Chars}
                 />
                 <button
                   type="button"
@@ -281,7 +281,7 @@ export default function SignupPage() {
                   onChange={handleChange}
                   required
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-transparent"
-                  placeholder="Re-enter password"
+                  placeholder={t.reEnterPassword}
                 />
               </div>
             </div>
@@ -297,13 +297,13 @@ export default function SignupPage() {
                 className="mt-1 w-4 h-4 text-[#339999] border-gray-300 rounded focus:ring-[#339999]"
               />
               <label htmlFor="agreeToTerms" className="text-sm text-gray-600">
-                I agree to the{' '}
+                {t.iAgreeTo}{' '}
                 <Link href="/terms" className="text-[#339999] hover:underline">
-                  Terms of Service
+                  {t.termsOfService}
                 </Link>{' '}
-                and{' '}
+                {t.and}{' '}
                 <Link href="/privacy" className="text-[#339999] hover:underline">
-                  Privacy Policy
+                  {t.privacyPolicy}
                 </Link>
               </label>
             </div>
@@ -334,7 +334,7 @@ export default function SignupPage() {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">Or sign up with</span>
+              <span className="px-4 bg-white text-gray-500">{t.orContinueWith}</span>
             </div>
           </div>
 
@@ -350,7 +350,7 @@ export default function SignupPage() {
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            <span className="text-gray-700 font-medium">Continue with Google</span>
+            <span className="text-gray-700 font-medium">{t.continueWithGoogle}</span>
           </button>
 
           {/* Login Link */}
@@ -360,30 +360,30 @@ export default function SignupPage() {
               href="/auth/login"
               className="text-[#339999] font-semibold hover:underline"
             >
-              Sign in
+              {t.signInButton}
             </Link>
           </p>
         </div>
 
         {/* Benefits */}
         <div className="mt-8 bg-blue-50 rounded-xl p-6 border border-blue-100">
-          <h3 className="font-semibold text-gray-900 mb-4">Free account includes:</h3>
+          <h3 className="font-semibold text-gray-900 mb-4">{t.freeAccountIncludes}</h3>
           <div className="space-y-3">
             <div className="flex items-center gap-3 text-sm text-gray-700">
               <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-              <span>3 free compliance checks per month</span>
+              <span>{t.freeComplianceChecksPerMonth}</span>
             </div>
             <div className="flex items-center gap-3 text-sm text-gray-700">
               <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-              <span>Access to complete regulation knowledge base</span>
+              <span>{t.accessRegulationKB}</span>
             </div>
             <div className="flex items-center gap-3 text-sm text-gray-700">
               <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-              <span>Email newsletter with compliance updates</span>
+              <span>{t.emailNewsletterUpdates}</span>
             </div>
             <div className="flex items-center gap-3 text-sm text-gray-700">
               <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-              <span>No credit card required</span>
+              <span>{t.noCreditCard}</span>
             </div>
           </div>
         </div>

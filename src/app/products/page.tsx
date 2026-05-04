@@ -306,7 +306,7 @@ export default function ProductsPage() {
                 { value: stats.totalProducts ?? 0, label: t.totalProducts, icon: Package },
                 { value: Object.keys(stats.countryCount ?? {}).length, label: t.countries, icon: Globe },
                 { value: Object.keys(stats.categoryCount ?? {}).length, label: t.categories, icon: BarChart3 },
-                { value: Object.keys(stats.riskLevelCount ?? {}).length, label: 'Risk Levels', icon: AlertCircle },
+                { value: Object.keys(stats.riskLevelCount ?? {}).length, label: t.riskLevels, icon: AlertCircle },
               ].map((stat, i) => (
                 <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
                   <div className="flex justify-center mb-2">
@@ -407,7 +407,7 @@ export default function ProductsPage() {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      {locale === 'zh' ? '风险等级' : 'Risk Level'}
+                      {t.riskLevel}
                     </label>
                     <select
                       value={selectedRiskLevel}
@@ -417,7 +417,7 @@ export default function ProductsPage() {
                       }}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
-                      <option value="">{locale === 'zh' ? '所有风险等级' : 'All Risk Levels'}</option>
+                      <option value="">{t.allRiskLevels}</option>
                       {riskLevels.map(level => (
                         <option key={level} value={level}>
                           {getRiskLevelDisplay(level, locale)}
@@ -522,7 +522,7 @@ export default function ProductsPage() {
                           <div className="pt-4 border-t border-gray-100">
                             <div className="flex items-center justify-between">
                               <span className="text-sm text-gray-700 font-medium truncate mr-2">
-                                {product.manufacturer_name || (locale === 'zh' ? '未知制造商' : 'Unknown Manufacturer')}
+                                {product.manufacturer_name || t.unknownManufacturer}
                               </span>
                               {product.risk_level && (
                                 <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold flex-shrink-0 border ${getRiskLevelStyle(product.risk_level)}`}>
