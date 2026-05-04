@@ -4,6 +4,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button, Card } from '@/components/ui';
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 import {
   User,
   Search,
@@ -300,6 +302,8 @@ function getMembershipColor(tier?: string): string {
 
 export default function DashboardPage() {
   const router = useRouter();
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [activityStats, setActivityStats] = useState<ActivityStats>(getDefaultActivityStats());
@@ -592,7 +596,7 @@ export default function DashboardPage() {
           <div className="mb-8">
             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
               <Zap className="w-5 h-5 text-[#339999]" />
-              Quick Actions
+              {t.quickActions}
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {quickActions.map((action, index) => (
@@ -622,7 +626,7 @@ export default function DashboardPage() {
                 <div className="p-5 border-b border-gray-100 flex items-center justify-between">
                   <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
                     <Clock className="w-5 h-5 text-[#339999]" />
-                    Recent Activity
+                    {t.recentActivity}
                   </h2>
                   <Link href="/dashboard/history" className="text-sm text-[#339999] hover:underline flex items-center gap-1">
                     View All <ArrowUpRight className="w-3.5 h-3.5" />

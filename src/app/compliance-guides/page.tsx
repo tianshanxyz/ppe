@@ -21,6 +21,8 @@ import {
   Link2
 } from 'lucide-react'
 import { Button } from '@/components/ui'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 // 合规指南数据
 const COMPLIANCE_GUIDES = [
@@ -493,6 +495,8 @@ const GUIDE_DETAILS: Record<string, {
 type GuideTab = 'steps' | 'timeline' | 'fees' | 'templates'
 
 export default function ComplianceGuidesPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const [selectedGuide, setSelectedGuide] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<GuideTab>('steps')
 
@@ -603,10 +607,10 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
   }
 
   const tabs: { id: GuideTab; label: string; icon: React.ReactNode }[] = [
-    { id: 'steps', label: 'Step-by-Step', icon: <BookOpen className="w-4 h-4" /> },
-    { id: 'timeline', label: 'Timeline', icon: <Clock className="w-4 h-4" /> },
-    { id: 'fees', label: 'Fees', icon: <DollarSign className="w-4 h-4" /> },
-    { id: 'templates', label: 'Templates', icon: <FileText className="w-4 h-4" /> }
+    { id: 'steps', label: locale === 'zh' ? '步骤指南' : 'Step-by-Step', icon: <BookOpen className="w-4 h-4" /> },
+    { id: 'timeline', label: locale === 'zh' ? '时间线' : 'Timeline', icon: <Clock className="w-4 h-4" /> },
+    { id: 'fees', label: locale === 'zh' ? '费用' : 'Fees', icon: <DollarSign className="w-4 h-4" /> },
+    { id: 'templates', label: locale === 'zh' ? '模板' : 'Templates', icon: <FileText className="w-4 h-4" /> }
   ]
 
   if (selectedGuide) {
@@ -623,7 +627,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
               onClick={() => { setSelectedGuide(null); setActiveTab('steps') }}
               className="text-[#339999] hover:underline mb-4 flex items-center gap-1"
             >
-              &larr; Back to Guides
+              &larr; {locale === 'zh' ? '返回指南列表' : 'Back to Guides'}
             </button>
             <h1 className="text-3xl font-bold text-gray-900">{guide.title}</h1>
             <p className="mt-2 text-gray-600 max-w-3xl">{guide.overview}</p>
@@ -657,7 +661,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
             <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
               <ClipboardCheck className="w-5 h-5 text-[#339999]" />
-              Prerequisites
+              {locale === 'zh' ? '前提条件' : 'Prerequisites'}
             </h2>
             <ul className="space-y-3">
               {guide.prerequisites.map((prereq, idx) => (
@@ -676,7 +680,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
               <div className="lg:col-span-2 space-y-6">
                 <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-[#339999]" />
-                  Step-by-Step Process
+                  {locale === 'zh' ? '步骤指南' : 'Step-by-Step Process'}
                 </h2>
                 {guide.steps.map((step) => (
                   <div key={step.number} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -694,7 +698,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
                       <div className="bg-gray-50 rounded-lg p-4">
                         <h4 className="font-medium text-gray-900 mb-2 flex items-center gap-2">
                           <FileText className="w-4 h-4 text-gray-500" />
-                          Required Documents
+                          {locale === 'zh' ? '所需文件' : 'Required Documents'}
                         </h4>
                         <ul className="space-y-1">
                           {step.documents.map((doc, idx) => (
@@ -709,14 +713,14 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
                       <div className="bg-blue-50 rounded-lg p-4">
                         <h4 className="font-medium text-blue-900 mb-1 flex items-center gap-2">
                           <AlertCircle className="w-4 h-4" />
-                          Pro Tips
+                          {locale === 'zh' ? '专业提示' : 'Pro Tips'}
                         </h4>
                         <p className="text-sm text-blue-800">{step.tips}</p>
                       </div>
 
                       <div className="flex items-center gap-2 text-sm text-gray-500">
                         <Clock className="w-4 h-4" />
-                        Estimated time: {step.estimatedTime}
+                        {locale === 'zh' ? '预计时间' : 'Estimated time'}: {step.estimatedTime}
                       </div>
                     </div>
                   </div>
@@ -729,7 +733,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                     <Download className="w-5 h-5 text-[#339999]" />
-                    Download Templates
+                    {locale === 'zh' ? '下载模板' : 'Download Templates'}
                   </h3>
                   <div className="space-y-3">
                     {guide.templates.map((template, idx) => (
@@ -750,12 +754,12 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
 
                 {/* Quick Info */}
                 <div className="bg-gradient-to-br from-[#339999] to-[#2d8b8b] rounded-xl shadow-sm p-6 text-white">
-                  <h3 className="font-bold mb-4">Need Help?</h3>
+                  <h3 className="font-bold mb-4">{locale === 'zh' ? '需要帮助？' : 'Need Help?'}</h3>
                   <p className="text-sm text-white/90 mb-4">
-                    Our compliance experts can guide you through the entire certification process.
+                    {locale === 'zh' ? '我们的合规专家可以指导您完成整个认证流程。' : 'Our compliance experts can guide you through the entire certification process.'}
                   </p>
                   <Button className="w-full bg-white text-[#339999] hover:bg-gray-100">
-                    Contact Expert
+                    {locale === 'zh' ? '联系专家' : 'Contact Expert'}
                   </Button>
                 </div>
               </div>
@@ -768,13 +772,13 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
               <div className="bg-gradient-to-r from-[#339999] to-[#2d8b8b] rounded-xl p-6 mb-8 text-white">
                 <div className="flex items-center gap-3 mb-2">
                   <Clock className="w-6 h-6" />
-                  <h2 className="text-xl font-bold">Total Estimated Time</h2>
+                  <h2 className="text-xl font-bold">{locale === 'zh' ? '预计总时间' : 'Total Estimated Time'}</h2>
                 </div>
                 <p className="text-3xl font-bold">
                   {COMPLIANCE_GUIDES.find(g => g.id === selectedGuide)?.timeline}
                 </p>
                 <p className="text-sm text-white/80 mt-1">
-                  Estimated duration from start to market entry. Actual timelines may vary based on product complexity and regulatory body workload.
+                  {locale === 'zh' ? '从开始到市场准入的预计持续时间。实际时间可能因产品复杂性和监管机构工作量而异。' : 'Estimated duration from start to market entry. Actual timelines may vary based on product complexity and regulatory body workload.'}
                 </p>
               </div>
 
@@ -812,13 +816,13 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
                         {idx < guide.steps.length - 1 && (
                           <div className="mt-3 flex items-center gap-1 text-xs text-gray-400">
                             <ArrowRight className="w-3 h-3" />
-                            <span>Next: {guide.steps[idx + 1].title}</span>
+                            <span>{locale === 'zh' ? '下一步' : 'Next'}: {guide.steps[idx + 1].title}</span>
                           </div>
                         )}
                         {idx === guide.steps.length - 1 && (
                           <div className="mt-3 flex items-center gap-1 text-xs text-green-600 font-medium">
                             <CheckCircle className="w-3.5 h-3.5" />
-                            <span>Certification complete - ready for market entry</span>
+                            <span>{locale === 'zh' ? '认证完成 - 准备进入市场' : 'Certification complete - ready for market entry'}</span>
                           </div>
                         )}
                       </div>
@@ -829,7 +833,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
 
               {/* Timeline Legend */}
               <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h3 className="font-semibold text-gray-900 mb-3">Timeline Notes</h3>
+                <h3 className="font-semibold text-gray-900 mb-3">{locale === 'zh' ? '时间线说明' : 'Timeline Notes'}</h3>
                 <ul className="space-y-2 text-sm text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-[#339999] rounded-full mt-1.5 flex-shrink-0" />
@@ -854,11 +858,11 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
               <div className="bg-gradient-to-r from-[#339999] to-[#2d8b8b] rounded-xl p-6 mb-8 text-white">
                 <div className="flex items-center gap-3 mb-2">
                   <DollarSign className="w-6 h-6" />
-                  <h2 className="text-xl font-bold">Estimated Government Fees</h2>
+                  <h2 className="text-xl font-bold">{locale === 'zh' ? '预计政府费用' : 'Estimated Government Fees'}</h2>
                 </div>
                 <p className="text-3xl font-bold">{fees?.totalRange}</p>
                 <p className="text-sm text-white/80 mt-1">
-                  Government fees only. Does not include consulting, testing, or internal resource costs. Fees are approximate and subject to change.
+                  {locale === 'zh' ? '仅政府费用。不包括咨询、测试或内部资源成本。费用为近似值，可能会有变动。' : 'Government fees only. Does not include consulting, testing, or internal resource costs. Fees are approximate and subject to change.'}
                 </p>
               </div>
 
@@ -886,7 +890,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
                             {fee.recurring && (
                               <span className="inline-flex items-center gap-1 mt-2 px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-full">
                                 <Clock className="w-3 h-3" />
-                                Recurring {fee.recurring}
+                                {locale === 'zh' ? '周期性' : 'Recurring'} {fee.recurring}
                               </span>
                             )}
                           </div>
@@ -897,7 +901,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
                               ? 'text-green-600'
                               : 'text-gray-900'
                           }`}>
-                            {fee.amount === '€0' || fee.amount === '£0' ? 'Free' : fee.amount}
+                            {fee.amount === '€0' || fee.amount === '£0' ? (locale === 'zh' ? '免费' : 'Free') : fee.amount}
                           </p>
                         </div>
                       </div>
@@ -910,7 +914,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
               <div className="mt-8 bg-amber-50 border border-amber-200 rounded-xl p-6">
                 <h3 className="font-semibold text-amber-900 mb-3 flex items-center gap-2">
                   <AlertCircle className="w-5 h-5" />
-                  Important Notes
+                  {locale === 'zh' ? '重要提示' : 'Important Notes'}
                 </h3>
                 <ul className="space-y-2 text-sm text-amber-800">
                   <li className="flex items-start gap-2">
@@ -940,10 +944,10 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
               <div className="bg-gradient-to-r from-[#339999] to-[#2d8b8b] rounded-xl p-6 mb-8 text-white">
                 <div className="flex items-center gap-3 mb-2">
                   <FileSpreadsheet className="w-6 h-6" />
-                  <h2 className="text-xl font-bold">Document Templates</h2>
+                  <h2 className="text-xl font-bold">{locale === 'zh' ? '文档模板' : 'Document Templates'}</h2>
                 </div>
                 <p className="text-sm text-white/80">
-                  Download ready-to-use templates for your certification documentation. All templates are available in the Documents section.
+                  {locale === 'zh' ? '下载即用的认证文档模板。所有模板均可在文档部分获取。' : 'Download ready-to-use templates for your certification documentation. All templates are available in the Documents section.'}
                 </p>
               </div>
 
@@ -987,14 +991,14 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#339999] text-white text-xs font-medium rounded-lg hover:bg-[#2d8b8b] transition-colors"
                           >
                             <Download className="w-3.5 h-3.5" />
-                            Download
+                            {locale === 'zh' ? '下载' : 'Download'}
                           </button>
                           <a
                             href="/documents"
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-200 transition-colors"
                           >
                             <Link2 className="w-3.5 h-3.5" />
-                            View in Documents
+                            {locale === 'zh' ? '在文档中查看' : 'View in Documents'}
                           </a>
                         </div>
                       </div>
@@ -1005,16 +1009,16 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
 
               {/* Browse All Templates CTA */}
               <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
-                <h3 className="font-semibold text-gray-900 mb-2">Need more templates?</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{locale === 'zh' ? '需要更多模板？' : 'Need more templates?'}</h3>
                 <p className="text-sm text-gray-600 mb-4">
-                  Browse our complete library of compliance document templates for all markets and certification types.
+                  {locale === 'zh' ? '浏览我们完整的合规文档模板库，涵盖所有市场和认证类型。' : 'Browse our complete library of compliance document templates for all markets and certification types.'}
                 </p>
                 <a
                   href="/documents"
                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#339999] text-white font-medium rounded-lg hover:bg-[#2d8b8b] transition-colors"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Browse All Templates
+                  {locale === 'zh' ? '浏览所有模板' : 'Browse All Templates'}
                 </a>
               </div>
             </div>
@@ -1034,10 +1038,10 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
               <BookOpen className="w-8 h-8 text-[#339999]" />
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Compliance Guides
+              {t.complianceGuides}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Step-by-step guides to navigate PPE certification requirements across global markets
+              {locale === 'zh' ? '逐步指南，帮助您应对全球市场的PPE认证要求' : 'Step-by-step guides to navigate PPE certification requirements across global markets'}
             </p>
           </div>
         </div>
@@ -1075,22 +1079,22 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
                 <div className="grid grid-cols-3 gap-4 mb-6">
                   <div className="text-center p-3 bg-gray-50 rounded-lg">
                     <div className="text-2xl font-bold text-[#339999]">{guide.steps}</div>
-                    <div className="text-xs text-gray-600">Steps</div>
+                    <div className="text-xs text-gray-600">{locale === 'zh' ? '步骤' : 'Steps'}</div>
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded-lg">
                     <div className="text-lg font-bold text-[#339999]">{guide.timeline}</div>
-                    <div className="text-xs text-gray-600">Timeline</div>
+                    <div className="text-xs text-gray-600">{locale === 'zh' ? '时间线' : 'Timeline'}</div>
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded-lg">
                     <div className="text-sm font-bold text-[#339999]">{guide.cost}</div>
-                    <div className="text-xs text-gray-600">Est. Cost</div>
+                    <div className="text-xs text-gray-600">{locale === 'zh' ? '预估费用' : 'Est. Cost'}</div>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <BadgeCheck className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">Difficulty: </span>
+                    <span className="text-sm text-gray-600">{locale === 'zh' ? '难度' : 'Difficulty'}: </span>
                     <span className={`text-sm font-medium ${
                       guide.difficulty === 'High' || guide.difficulty === 'Very High' 
                         ? 'text-orange-600' 
@@ -1100,7 +1104,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
                     </span>
                   </div>
                   <div className="flex items-center text-[#339999] font-medium group-hover:gap-2 transition-all">
-                    View Guide
+                    {locale === 'zh' ? '查看指南' : 'View Guide'}
                     <ChevronRight className="w-5 h-5" />
                   </div>
                 </div>
@@ -1113,28 +1117,28 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
             <Globe className="w-10 h-10 text-[#339999] mx-auto mb-4" />
-            <h3 className="font-bold text-gray-900 mb-2">Global Standards</h3>
-            <p className="text-sm text-gray-600 mb-4">Compare standards across different markets</p>
+            <h3 className="font-bold text-gray-900 mb-2">{locale === 'zh' ? '全球标准' : 'Global Standards'}</h3>
+            <p className="text-sm text-gray-600 mb-4">{locale === 'zh' ? '比较不同市场的标准' : 'Compare standards across different markets'}</p>
             <a href="/regulations" className="text-[#339999] hover:underline text-sm font-medium">
-              View Standards &rarr;
+              {locale === 'zh' ? '查看标准' : 'View Standards'} &rarr;
             </a>
           </div>
           
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
             <Factory className="w-10 h-10 text-[#339999] mx-auto mb-4" />
-            <h3 className="font-bold text-gray-900 mb-2">Manufacturer Directory</h3>
-            <p className="text-sm text-gray-600 mb-4">Find certified PPE manufacturers</p>
+            <h3 className="font-bold text-gray-900 mb-2">{locale === 'zh' ? '制造商目录' : 'Manufacturer Directory'}</h3>
+            <p className="text-sm text-gray-600 mb-4">{locale === 'zh' ? '查找认证PPE制造商' : 'Find certified PPE manufacturers'}</p>
             <a href="/manufacturers" className="text-[#339999] hover:underline text-sm font-medium">
-              Browse Manufacturers &rarr;
+              {locale === 'zh' ? '浏览制造商' : 'Browse Manufacturers'} &rarr;
             </a>
           </div>
           
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
             <BadgeCheck className="w-10 h-10 text-[#339999] mx-auto mb-4" />
-            <h3 className="font-bold text-gray-900 mb-2">Certification Check</h3>
-            <p className="text-sm text-gray-600 mb-4">Verify product certifications</p>
+            <h3 className="font-bold text-gray-900 mb-2">{locale === 'zh' ? '认证检查' : 'Certification Check'}</h3>
+            <p className="text-sm text-gray-600 mb-4">{locale === 'zh' ? '验证产品认证' : 'Verify product certifications'}</p>
             <a href="/certification-comparison" className="text-[#339999] hover:underline text-sm font-medium">
-              Check Certification &rarr;
+              {locale === 'zh' ? '检查认证' : 'Check Certification'} &rarr;
             </a>
           </div>
         </div>

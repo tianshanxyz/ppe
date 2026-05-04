@@ -4,6 +4,8 @@ import { useState } from 'react'
 import emailjs from '@emailjs/browser'
 import { Mail, MapPin, Phone, Send, CheckCircle, Building, Clock, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 // EmailJS configuration - these are public keys safe to expose in client code
 const EMAILJS_SERVICE_ID = 'service_uv0j9z9'
@@ -14,6 +16,8 @@ const EMAILJS_PUBLIC_KEY = '1_y80J3lBqJfYafV7'
 const FALLBACK_EMAIL = 'info@h-guardian.com'
 
 export default function ContactPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -67,9 +71,9 @@ export default function ContactPage() {
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-[#339999]/5 via-white to-[#339999]/5 border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Get in Touch</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">{locale === 'zh' ? '联系我们' : 'Get in Touch'}</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Have questions about PPE compliance, enterprise solutions, or API access? We&apos;re here to help.
+            {locale === 'zh' ? '有关于PPE合规、企业解决方案或API访问的问题？我们随时为您提供帮助。' : "Have questions about PPE compliance, enterprise solutions, or API access? We're here to help."}
           </p>
         </div>
       </div>
@@ -94,7 +98,7 @@ export default function ContactPage() {
                 <div className="flex items-start gap-3">
                   <Mail className="w-5 h-5 text-[#339999] mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Email</p>
+                    <p className="text-sm font-medium text-gray-900">{locale === 'zh' ? '邮箱' : 'Email'}</p>
                     <a href="mailto:info@h-guardian.com" className="text-sm text-[#339999] hover:underline">
                       info@h-guardian.com
                     </a>
@@ -104,7 +108,7 @@ export default function ContactPage() {
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-[#339999] mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Office</p>
+                    <p className="text-sm font-medium text-gray-900">{locale === 'zh' ? '办公室' : 'Office'}</p>
                     <p className="text-sm text-gray-600">
                       Room 1208, Tower A<br />
                       International Trade Center<br />
@@ -117,7 +121,7 @@ export default function ContactPage() {
                 <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-[#339999] mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Phone</p>
+                    <p className="text-sm font-medium text-gray-900">{locale === 'zh' ? '电话' : 'Phone'}</p>
                     <p className="text-sm text-gray-600">+86 755 8888 9999</p>
                   </div>
                 </div>
@@ -160,7 +164,7 @@ export default function ContactPage() {
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3">Message Sent Successfully</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-3">{locale === 'zh' ? '消息发送成功' : 'Message Sent Successfully'}</h2>
                   <p className="text-gray-600 mb-6 max-w-md mx-auto">
                     Thank you for reaching out. Our team will review your message and get back to you within 24 hours.
                   </p>
@@ -173,7 +177,7 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Send Us a Message</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">{locale === 'zh' ? '给我们留言' : 'Send Us a Message'}</h2>
                   <p className="text-gray-600 mb-4">
                     Fill out the form below and we&apos;ll get back to you as soon as possible.
                   </p>
@@ -225,7 +229,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                          Email <span className="text-red-500">*</span>
+                          {locale === 'zh' ? '邮箱' : 'Email'} <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="email"
@@ -242,7 +246,7 @@ export default function ContactPage() {
 
                     <div>
                       <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                        Subject <span className="text-red-500">*</span>
+                        {locale === 'zh' ? '主题' : 'Subject'} <span className="text-red-500">*</span>
                       </label>
                       <select
                         id="subject"
@@ -265,7 +269,7 @@ export default function ContactPage() {
 
                     <div>
                       <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                        Message <span className="text-red-500">*</span>
+                        {locale === 'zh' ? '消息' : 'Message'} <span className="text-red-500">*</span>
                       </label>
                       <textarea
                         id="message"
@@ -292,7 +296,7 @@ export default function ContactPage() {
                       ) : (
                         <>
                           <Send className="w-5 h-5" />
-                          Send Message
+                          {locale === 'zh' ? '发送消息' : 'Send Message'}
                         </>
                       )}
                     </button>

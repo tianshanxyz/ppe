@@ -5,6 +5,8 @@ import { Check, X, Star, Zap, Building2, CreditCard, Shield, Mail, ChevronDown, 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { getMembershipTiers } from '@/lib/ppe-data'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -21,6 +23,8 @@ const staggerContainer = {
 }
 
 export default function PricingPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const tiers = getMembershipTiers()
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('yearly')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -41,16 +45,16 @@ export default function PricingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div className="text-center" variants={fadeInUp}>
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
-              Simple, Transparent Pricing
+              Simple, Transparent {t.pricingTitle}
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Choose the perfect plan for your PPE compliance needs. Start free and upgrade as you grow.
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              {locale === 'zh' ? '选择适合您PPE合规需求的完美方案。免费开始，随需升级。' : 'Choose the perfect plan for your PPE compliance needs. Start free and upgrade as you grow.'}
             </p>
 
             {/* Billing Toggle */}
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className={`text-sm font-medium ${billingPeriod === 'monthly' ? 'text-gray-900' : 'text-gray-500'}`}>
-                Monthly
+                {locale === 'zh' ? '月付' : 'Monthly'}
               </span>
               <motion.button
                 onClick={() => setBillingPeriod(billingPeriod === 'monthly' ? 'yearly' : 'monthly')}
@@ -66,9 +70,9 @@ export default function PricingPage() {
                 />
               </motion.button>
               <span className={`text-sm font-medium ${billingPeriod === 'yearly' ? 'text-gray-900' : 'text-gray-500'}`}>
-                Yearly
+                {locale === 'zh' ? '年付' : 'Yearly'}
                 <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                  Save 20%
+                  {locale === 'zh' ? '省20%' : 'Save 20%'}
                 </span>
               </span>
             </div>
@@ -409,7 +413,7 @@ export default function PricingPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div className="text-center mb-12" variants={fadeInUp}>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
+              {locale === 'zh' ? '常见问题' : 'Frequently Asked Questions'}
             </h2>
             <p className="text-xl text-gray-600">
               Everything you need to know about our pricing and plans

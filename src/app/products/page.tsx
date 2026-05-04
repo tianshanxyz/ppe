@@ -5,6 +5,9 @@ import { Search, Filter, Package, BarChart3, ExternalLink, AlertCircle, ChevronL
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { getPPEProductsClient, getPPEProductStatsClient, PPEProduct } from '@/lib/ppe-database-client'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
+import type { Locale } from '@/lib/i18n/config'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -33,113 +36,129 @@ function getRiskLevelStyle(riskLevel: string) {
   }
 }
 
-function getCategoryIcon(category: string) {
-  switch (category) {
-    case '呼吸防护装备':
-      return '😷'
-    case '手部防护装备':
-      return '🧤'
-    case '身体防护装备':
-      return '🥼'
-    case '眼面部防护装备':
-      return '🥽'
-    case '头部防护装备':
-      return '⛑️'
-    case '足部防护装备':
-      return '👢'
-    default:
-      return '🔧'
-  }
+const CATEGORY_ICON: Record<string, string> = {
+  '呼吸防护装备': '😷',
+  '手部防护装备': '🧤',
+  '身体防护装备': '🥼',
+  '眼面部防护装备': '🥽',
+  '头部防护装备': '⛑️',
+  '足部防护装备': '👢',
+  'Respiratory Protection': '😷',
+  'Hand Protection': '🧤',
+  'Body Protection': '🥼',
+  'Eye and Face Protection': '🥽',
+  'Head Protection': '⛑️',
+  'Foot Protection': '👢',
 }
 
-const COUNTRY_DISPLAY: Record<string, string> = {
-  US: 'United States',
-  CA: 'Canada',
-  CN: 'China',
-  GB: 'United Kingdom',
-  DE: 'Germany',
-  JP: 'Japan',
-  KR: 'South Korea',
-  BR: 'Brazil',
-  AU: 'Australia',
-  IN: 'India',
-  MY: 'Malaysia',
-  TH: 'Thailand',
-  FR: 'France',
-  IT: 'Italy',
-  ES: 'Spain',
-  NL: 'Netherlands',
-  SE: 'Sweden',
-  MX: 'Mexico',
-  ZA: 'South Africa',
-  RU: 'Russia',
-  SG: 'Singapore',
-  ID: 'Indonesia',
-  VN: 'Vietnam',
-  PH: 'Philippines',
-  NZ: 'New Zealand',
-  IL: 'Israel',
-  CH: 'Switzerland',
-  AT: 'Austria',
-  BE: 'Belgium',
-  PL: 'Poland',
-  CZ: 'Czech Republic',
-  DK: 'Denmark',
-  FI: 'Finland',
-  NO: 'Norway',
-  PT: 'Portugal',
-  IE: 'Ireland',
-  GR: 'Greece',
-  TR: 'Turkey',
-  SA: 'Saudi Arabia',
-  AE: 'UAE',
-  'United States': 'United States',
-  'United Kingdom': 'United Kingdom',
-  China: 'China',
-  Germany: 'Germany',
-  France: 'France',
-  Japan: 'Japan',
-  'South Korea': 'South Korea',
-  India: 'India',
-  Brazil: 'Brazil',
-  Australia: 'Australia',
-  Canada: 'Canada',
-  Italy: 'Italy',
-  Spain: 'Spain',
-  Netherlands: 'Netherlands',
-  Sweden: 'Sweden',
-  Mexico: 'Mexico',
-  Switzerland: 'Switzerland',
-  Malaysia: 'Malaysia',
-  Thailand: 'Thailand',
-  Singapore: 'Singapore',
-  Indonesia: 'Indonesia',
-  Vietnam: 'Vietnam',
-  Russia: 'Russia',
-  'South Africa': 'South Africa',
-  'New Zealand': 'New Zealand',
-  中国: 'China',
-  美国: 'United States',
-  德国: 'Germany',
-  法国: 'France',
-  英国: 'United Kingdom',
-  日本: 'Japan',
-  韩国: 'South Korea',
-  印度: 'India',
-  巴西: 'Brazil',
-  澳大利亚: 'Australia',
-  加拿大: 'Canada',
-  意大利: 'Italy',
-  西班牙: 'Spain',
-  荷兰: 'Netherlands',
-  瑞典: 'Sweden',
+const CATEGORY_ZH: Record<string, string> = {
+  '呼吸防护装备': '呼吸防护装备',
+  '手部防护装备': '手部防护装备',
+  '身体防护装备': '身体防护装备',
+  '眼面部防护装备': '眼面部防护装备',
+  '头部防护装备': '头部防护装备',
+  '足部防护装备': '足部防护装备',
+  'Respiratory Protection': '呼吸防护装备',
+  'Hand Protection': '手部防护装备',
+  'Body Protection': '身体防护装备',
+  'Eye and Face Protection': '眼面部防护装备',
+  'Head Protection': '头部防护装备',
+  'Foot Protection': '足部防护装备',
 }
 
-function getCountryDisplay(country: string): string {
-  return COUNTRY_DISPLAY[country] || country
+const CATEGORY_EN: Record<string, string> = {
+  '呼吸防护装备': 'Respiratory Protection',
+  '手部防护装备': 'Hand Protection',
+  '身体防护装备': 'Body Protection',
+  '眼面部防护装备': 'Eye and Face Protection',
+  '头部防护装备': 'Head Protection',
+  '足部防护装备': 'Foot Protection',
+  'Respiratory Protection': 'Respiratory Protection',
+  'Hand Protection': 'Hand Protection',
+  'Body Protection': 'Body Protection',
+  'Eye and Face Protection': 'Eye and Face Protection',
+  'Head Protection': 'Head Protection',
+  'Foot Protection': 'Foot Protection',
+}
+
+function getCategoryIcon(category: string): string {
+  return CATEGORY_ICON[category] || '🔧'
+}
+
+function getCategoryDisplay(category: string, locale: Locale): string {
+  const map = locale === 'zh' ? CATEGORY_ZH : CATEGORY_EN
+  return map[category] || category
+}
+
+const COUNTRY_DISPLAY_EN: Record<string, string> = {
+  US: 'United States', CA: 'Canada', CN: 'China', GB: 'United Kingdom',
+  DE: 'Germany', JP: 'Japan', KR: 'South Korea', BR: 'Brazil',
+  AU: 'Australia', IN: 'India', MY: 'Malaysia', TH: 'Thailand',
+  FR: 'France', IT: 'Italy', ES: 'Spain', NL: 'Netherlands',
+  SE: 'Sweden', MX: 'Mexico', ZA: 'South Africa', RU: 'Russia',
+  SG: 'Singapore', ID: 'Indonesia', VN: 'Vietnam', PH: 'Philippines',
+  NZ: 'New Zealand', IL: 'Israel', CH: 'Switzerland', AT: 'Austria',
+  BE: 'Belgium', PL: 'Poland', CZ: 'Czech Republic', DK: 'Denmark',
+  FI: 'Finland', NO: 'Norway', PT: 'Portugal', IE: 'Ireland',
+  GR: 'Greece', TR: 'Turkey', SA: 'Saudi Arabia', AE: 'UAE',
+  'United States': 'United States', 'United Kingdom': 'United Kingdom',
+  China: 'China', Germany: 'Germany', France: 'France', Japan: 'Japan',
+  'South Korea': 'South Korea', India: 'India', Brazil: 'Brazil',
+  Australia: 'Australia', Canada: 'Canada', Italy: 'Italy', Spain: 'Spain',
+  Netherlands: 'Netherlands', Sweden: 'Sweden', Mexico: 'Mexico',
+  Switzerland: 'Switzerland', Malaysia: 'Malaysia', Thailand: 'Thailand',
+  Singapore: 'Singapore', Indonesia: 'Indonesia', Vietnam: 'Vietnam',
+  Russia: 'Russia', 'South Africa': 'South Africa', 'New Zealand': 'New Zealand',
+}
+
+const COUNTRY_DISPLAY_ZH: Record<string, string> = {
+  US: '美国', CA: '加拿大', CN: '中国', GB: '英国',
+  DE: '德国', JP: '日本', KR: '韩国', BR: '巴西',
+  AU: '澳大利亚', IN: '印度', MY: '马来西亚', TH: '泰国',
+  FR: '法国', IT: '意大利', ES: '西班牙', NL: '荷兰',
+  SE: '瑞典', MX: '墨西哥', ZA: '南非', RU: '俄罗斯',
+  SG: '新加坡', ID: '印度尼西亚', VN: '越南', PH: '菲律宾',
+  NZ: '新西兰', IL: '以色列', CH: '瑞士', AT: '奥地利',
+  BE: '比利时', PL: '波兰', CZ: '捷克', DK: '丹麦',
+  FI: '芬兰', NO: '挪威', PT: '葡萄牙', IE: '爱尔兰',
+  GR: '希腊', TR: '土耳其', SA: '沙特阿拉伯', AE: '阿联酋',
+  'United States': '美国', 'United Kingdom': '英国', China: '中国',
+  Germany: '德国', France: '法国', Japan: '日本', 'South Korea': '韩国',
+  India: '印度', Brazil: '巴西', Australia: '澳大利亚', Canada: '加拿大',
+  Italy: '意大利', Spain: '西班牙', Netherlands: '荷兰', Sweden: '瑞典',
+  Mexico: '墨西哥', Switzerland: '瑞士', Malaysia: '马来西亚', Thailand: '泰国',
+  Singapore: '新加坡', Indonesia: '印度尼西亚', Vietnam: '越南',
+  Russia: '俄罗斯', 'South Africa': '南非', 'New Zealand': '新西兰',
+  中国: '中国', 美国: '美国', 德国: '德国', 法国: '法国',
+  英国: '英国', 日本: '日本', 韩国: '韩国', 印度: '印度',
+  巴西: '巴西', 澳大利亚: '澳大利亚', 加拿大: '加拿大',
+  意大利: '意大利', 西班牙: '西班牙', 荷兰: '荷兰', 瑞典: '瑞典',
+}
+
+function getCountryDisplay(country: string, locale: Locale): string {
+  const map = locale === 'zh' ? COUNTRY_DISPLAY_ZH : COUNTRY_DISPLAY_EN
+  return map[country] || country
+}
+
+const RISK_LEVEL_EN: Record<string, string> = {
+  high: 'High', medium: 'Medium', low: 'Low',
+  High: 'High', Medium: 'Medium', Low: 'Low',
+}
+
+const RISK_LEVEL_ZH: Record<string, string> = {
+  high: '高', medium: '中', low: '低',
+  High: '高', Medium: '中', Low: '低',
+}
+
+function getRiskLevelDisplay(level: string, locale: Locale): string {
+  const map = locale === 'zh' ? RISK_LEVEL_ZH : RISK_LEVEL_EN
+  return map[level] || level
 }
 
 export default function ProductsPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
+
   const [products, setProducts] = useState<PPEProduct[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -147,7 +166,6 @@ export default function ProductsPage() {
   const [stats, setStats] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
 
-  // 筛选状态
   const [searchQuery, setSearchQuery] = useState('')
   const [appliedSearch, setAppliedSearch] = useState('')
   const [selectedCountry, setSelectedCountry] = useState<string>('')
@@ -159,7 +177,6 @@ export default function ProductsPage() {
 
   const limit = 20
 
-  // 加载统计数据和筛选选项
   useEffect(() => {
     let mounted = true
     async function loadStats() {
@@ -169,8 +186,8 @@ export default function ProductsPage() {
           setStats(statsData)
           if (statsData.countryCount) {
             const sortedCountries = Object.keys(statsData.countryCount).sort((a, b) => {
-              const nameA = getCountryDisplay(a)
-              const nameB = getCountryDisplay(b)
+              const nameA = getCountryDisplay(a, locale)
+              const nameB = getCountryDisplay(b, locale)
               return nameA.localeCompare(nameB)
             })
             setCountries(sortedCountries)
@@ -188,9 +205,8 @@ export default function ProductsPage() {
     }
     loadStats()
     return () => { mounted = false }
-  }, [])
+  }, [locale])
 
-  // 加载产品数据
   const loadProducts = useCallback(async () => {
     setLoading(true)
     setError(null)
@@ -210,36 +226,31 @@ export default function ProductsPage() {
       setTotal(result.total)
     } catch (err) {
       console.error('Failed to load products:', err)
-      setError('Failed to load products. Please try again later.')
+      setError(t.errorLoadingProducts)
     } finally {
       setLoading(false)
     }
-  }, [page, selectedCountry, selectedCategory, appliedSearch])
+  }, [page, selectedCountry, selectedCategory, appliedSearch, t.errorLoadingProducts])
 
-  // 当筛选条件、分页变化时加载产品数据
   useEffect(() => {
     loadProducts()
   }, [loadProducts])
 
-  // 处理搜索
   const handleSearch = () => {
     setAppliedSearch(searchQuery)
     setPage(1)
   }
 
-  // 处理回车键搜索
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSearch()
     }
   }
 
-  // 计算分页
   const totalPages = Math.ceil(total / limit)
   const startIndex = total > 0 ? (page - 1) * limit + 1 : 0
   const endIndex = Math.min(page * limit, total)
 
-  // 生成分页页码
   const getPageNumbers = () => {
     const pages: number[] = []
     const maxVisible = 5
@@ -258,7 +269,6 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <motion.section
         className="bg-gradient-to-br from-[#339999]/10 via-white to-white py-20"
         initial="initial"
@@ -273,16 +283,15 @@ export default function ProductsPage() {
               </div>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Global PPE Database
+              {t.globalPPEProducts}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Browse and search our comprehensive database of {stats?.totalProducts?.toLocaleString() || '...'} PPE products from around the world
+              {t.discoverProducts.replace('{count}', stats?.totalProducts?.toLocaleString() || '...')}
             </p>
           </motion.div>
         </div>
       </motion.section>
 
-      {/* Stats Bar */}
       {stats && (
         <motion.section
           className="py-8 bg-white border-b"
@@ -294,9 +303,9 @@ export default function ProductsPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                { value: stats.totalProducts ?? 0, label: 'Total Products', icon: Package },
-                { value: Object.keys(stats.countryCount ?? {}).length, label: 'Countries', icon: Globe },
-                { value: Object.keys(stats.categoryCount ?? {}).length, label: 'Categories', icon: BarChart3 },
+                { value: stats.totalProducts ?? 0, label: t.totalProducts, icon: Package },
+                { value: Object.keys(stats.countryCount ?? {}).length, label: t.countries, icon: Globe },
+                { value: Object.keys(stats.categoryCount ?? {}).length, label: t.categories, icon: BarChart3 },
                 { value: Object.keys(stats.riskLevelCount ?? {}).length, label: 'Risk Levels', icon: AlertCircle },
               ].map((stat, i) => (
                 <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
@@ -312,7 +321,6 @@ export default function ProductsPage() {
         </motion.section>
       )}
 
-      {/* Main Content */}
       <motion.section
         className="py-12"
         initial="initial"
@@ -322,19 +330,17 @@ export default function ProductsPage() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Filters Sidebar */}
             <motion.div className="lg:w-64 flex-shrink-0" variants={fadeInUp}>
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-4 hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-center mb-6">
                   <Filter className="w-6 h-6 text-[#339999] mr-3" />
-                  <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+                  <h2 className="text-xl font-bold text-gray-900">{t.filters}</h2>
                 </div>
 
                 <div className="space-y-6">
-                  {/* Search Filter */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Search
+                      {t.search}
                     </label>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
@@ -344,7 +350,7 @@ export default function ProductsPage() {
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                           onKeyDown={handleKeyPress}
-                          placeholder="Product name, code..."
+                          placeholder={locale === 'zh' ? '产品名称、代码...' : 'Product name, code...'}
                           className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all text-sm"
                         />
                       </div>
@@ -357,10 +363,9 @@ export default function ProductsPage() {
                     </div>
                   </div>
 
-                  {/* Country Filter */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Country
+                      {t.countries}
                     </label>
                     <select
                       value={selectedCountry}
@@ -370,19 +375,18 @@ export default function ProductsPage() {
                       }}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
-                      <option value="">All Countries</option>
+                      <option value="">{t.allCountries}</option>
                       {countries.map(country => (
                         <option key={country} value={country}>
-                          {getCountryDisplay(country)}
+                          {getCountryDisplay(country, locale)}
                         </option>
                       ))}
                     </select>
                   </div>
 
-                  {/* Category Filter */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Category
+                      {t.categoryLabel}
                     </label>
                     <select
                       value={selectedCategory}
@@ -392,19 +396,18 @@ export default function ProductsPage() {
                       }}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
-                      <option value="">All Categories</option>
+                      <option value="">{t.allCategories}</option>
                       {categories.map(category => (
                         <option key={category} value={category}>
-                          {getCategoryIcon(category)} {category}
+                          {getCategoryIcon(category)} {getCategoryDisplay(category, locale)}
                         </option>
                       ))}
                     </select>
                   </div>
 
-                  {/* Risk Level Filter */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Risk Level
+                      {locale === 'zh' ? '风险等级' : 'Risk Level'}
                     </label>
                     <select
                       value={selectedRiskLevel}
@@ -414,16 +417,15 @@ export default function ProductsPage() {
                       }}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
-                      <option value="">All Risk Levels</option>
+                      <option value="">{locale === 'zh' ? '所有风险等级' : 'All Risk Levels'}</option>
                       {riskLevels.map(level => (
                         <option key={level} value={level}>
-                          {level.charAt(0).toUpperCase() + level.slice(1)}
+                          {getRiskLevelDisplay(level, locale)}
                         </option>
                       ))}
                     </select>
                   </div>
 
-                  {/* Reset Button */}
                   <button
                     onClick={() => {
                       setSelectedCountry('')
@@ -435,21 +437,19 @@ export default function ProductsPage() {
                     }}
                     className="w-full py-3 px-4 text-sm font-semibold text-[#339999] hover:text-[#2d8b8b] bg-[#339999]/5 hover:bg-[#339999]/10 rounded-xl transition-all duration-300"
                   >
-                    Reset All Filters
+                    {t.resetAllFilters}
                   </button>
                 </div>
               </div>
             </motion.div>
 
-            {/* Products List */}
             <motion.div className="flex-1" variants={fadeInUp}>
-              {/* Error State */}
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
                   <div className="flex items-center gap-3">
                     <AlertCircle className="w-6 h-6 text-red-500" />
                     <div>
-                      <h3 className="font-semibold text-red-800">Error Loading Products</h3>
+                      <h3 className="font-semibold text-red-800">{t.errorLoadingProducts}</h3>
                       <p className="text-red-600 text-sm">{error}</p>
                     </div>
                   </div>
@@ -457,25 +457,23 @@ export default function ProductsPage() {
                     onClick={loadProducts}
                     className="mt-4 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium"
                   >
-                    Try Again
+                    {t.tryAgain}
                   </button>
                 </div>
               )}
 
-              {/* Loading State */}
               {loading && (
                 <div className="text-center py-20">
                   <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-[#339999]/20 border-b-[#339999]"></div>
-                  <p className="mt-6 text-lg text-gray-600 font-medium">Loading products...</p>
+                  <p className="mt-6 text-lg text-gray-600 font-medium">{t.loadingProducts}</p>
                 </div>
               )}
 
-              {/* Products Grid */}
               {!loading && products.length > 0 && (
                 <>
                   <div className="mb-6 flex items-center justify-between bg-white rounded-xl p-4 border border-gray-100">
                     <p className="text-sm text-gray-600 font-medium">
-                      Showing {startIndex}-{endIndex} of {total.toLocaleString()} products
+                      {t.showing} {startIndex}-{endIndex} {t.of} {total.toLocaleString()} {t.productsCount}
                     </p>
                   </div>
 
@@ -504,13 +502,13 @@ export default function ProductsPage() {
                             {product.category && (
                               <div className="flex items-center text-sm text-gray-600">
                                 <Package className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
-                                <span className="truncate">{getCategoryIcon(product.category)} {product.category}</span>
+                                <span className="truncate">{getCategoryIcon(product.category)} {getCategoryDisplay(product.category, locale)}</span>
                               </div>
                             )}
                             {product.country_of_origin && (
                               <div className="flex items-center text-sm text-gray-600">
                                 <Globe className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
-                                <span className="truncate">{getCountryDisplay(product.country_of_origin)}</span>
+                                <span className="truncate">{getCountryDisplay(product.country_of_origin, locale)}</span>
                               </div>
                             )}
                             {product.subcategory && (
@@ -524,11 +522,11 @@ export default function ProductsPage() {
                           <div className="pt-4 border-t border-gray-100">
                             <div className="flex items-center justify-between">
                               <span className="text-sm text-gray-700 font-medium truncate mr-2">
-                                {product.manufacturer_name || 'Unknown Manufacturer'}
+                                {product.manufacturer_name || (locale === 'zh' ? '未知制造商' : 'Unknown Manufacturer')}
                               </span>
                               {product.risk_level && (
                                 <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold flex-shrink-0 border ${getRiskLevelStyle(product.risk_level)}`}>
-                                  {product.risk_level}
+                                  {getRiskLevelDisplay(product.risk_level, locale)}
                                 </span>
                               )}
                             </div>
@@ -538,7 +536,6 @@ export default function ProductsPage() {
                     ))}
                   </div>
 
-                  {/* Pagination */}
                   {totalPages > 1 && (
                     <div className="mt-10 flex items-center justify-center gap-2">
                       <button
@@ -547,7 +544,7 @@ export default function ProductsPage() {
                         className="flex items-center gap-1 px-4 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 hover:border-[#339999]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
                       >
                         <ChevronLeft className="w-4 h-4" />
-                        Previous
+                        {t.previous}
                       </button>
 
                       {getPageNumbers().map((pageNum) => (
@@ -569,7 +566,7 @@ export default function ProductsPage() {
                         disabled={page === totalPages}
                         className="flex items-center gap-1 px-4 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 hover:border-[#339999]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
                       >
-                        Next
+                        {t.next}
                         <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
@@ -577,17 +574,16 @@ export default function ProductsPage() {
                 </>
               )}
 
-              {/* Empty State */}
               {!loading && products.length === 0 && (
                 <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
                   <Package className="w-20 h-20 text-gray-300 mx-auto mb-6" />
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    {appliedSearch.trim() ? 'No Search Results' : 'No Products Found'}
+                    {appliedSearch.trim() ? t.noSearchResults : t.noProductsFound}
                   </h3>
                   <p className="text-gray-600">
                     {appliedSearch.trim()
-                      ? `No products found for "${appliedSearch}". Try different keywords or adjust filters.`
-                      : 'Try adjusting your search or filters'
+                      ? t.noProductsSearchResult.replace('{search}', appliedSearch)
+                      : t.tryAdjustingFilters
                     }
                   </p>
                 </div>

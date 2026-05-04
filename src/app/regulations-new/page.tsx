@@ -1,10 +1,13 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
-import { Scale, Search, Filter, Globe, ChevronLeft, ChevronRight, ExternalLink, AlertCircle, BookOpen } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { Scale, Search, Filter, Globe, ChevronLeft, ChevronRight, ExternalLink, BookOpen } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import regulationsData from '@/data/ppe/regulations-fulltext.json'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
+import type { Locale } from '@/lib/i18n/config'
 
 interface RegulationFulltext {
   id: string
@@ -38,35 +41,42 @@ const staggerContainer = {
   }
 }
 
-const regionNames: Record<string, string> = {
-  EU: 'European Union',
-  US: 'United States',
-  CN: 'China',
-  GB: 'United Kingdom',
-  JP: 'Japan',
-  KR: 'South Korea',
-  BR: 'Brazil',
-  AU: 'Australia',
-  IN: 'India',
-  FR: 'France',
-  DE: 'Germany',
-  IT: 'Italy',
-  ES: 'Spain',
-  NL: 'Netherlands',
-  SE: 'Sweden',
-  CA: 'Canada',
-  Global: 'Global',
+const regionNamesEN: Record<string, string> = {
+  EU: 'European Union', US: 'United States', CN: 'China', GB: 'United Kingdom',
+  JP: 'Japan', KR: 'South Korea', BR: 'Brazil', AU: 'Australia',
+  IN: 'India', FR: 'France', DE: 'Germany', IT: 'Italy',
+  ES: 'Spain', NL: 'Netherlands', SE: 'Sweden', CA: 'Canada', Global: 'Global',
 }
 
-const docTypeLabels: Record<string, string> = {
-  regulation: 'Regulation',
-  standard: 'Standard',
-  guidance: 'Guidance',
-  directive: 'Directive',
-  law: 'Law',
+const regionNamesZH: Record<string, string> = {
+  EU: '欧盟', US: '美国', CN: '中国', GB: '英国',
+  JP: '日本', KR: '韩国', BR: '巴西', AU: '澳大利亚',
+  IN: '印度', FR: '法国', DE: '德国', IT: '意大利',
+  ES: '西班牙', NL: '荷兰', SE: '瑞典', CA: '加拿大', Global: '全球',
+}
+
+function getRegionName(code: string, locale: Locale): string {
+  const map = locale === 'zh' ? regionNamesZH : regionNamesEN
+  return map[code] || code
+}
+
+const docTypeLabelsEN: Record<string, string> = {
+  regulation: 'Regulation', standard: 'Standard', guidance: 'Guidance', directive: 'Directive', law: 'Law',
+}
+
+const docTypeLabelsZH: Record<string, string> = {
+  regulation: '法规', standard: '标准', guidance: '指南', directive: '指令', law: '法律',
+}
+
+function getDocTypeLabel(type: string, locale: Locale): string {
+  const map = locale === 'zh' ? docTypeLabelsZH : docTypeLabelsEN
+  return map[type] || type
 }
 
 export default function RegulationsPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
+
   const [searchQuery, setSearchQuery] = useState('')
   const [appliedSearch, setAppliedSearch] = useState('')
   const [selectedRegion, setSelectedRegion] = useState<string>('')
@@ -169,10 +179,10 @@ export default function RegulationsPage() {
               </div>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Global PPE Regulations
+              {t.globalPPERegulations}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Access {ALL_REGULATIONS.length} PPE regulations and standards from around the world
+              {t.regulationsSubtitle} - {ALL_REGULATIONS.length} {locale === 'zh' ? '条' : ''} {t.regulations}
             </p>
           </motion.div>
         </div>
@@ -188,10 +198,10 @@ export default function RegulationsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { value: ALL_REGULATIONS.length, label: 'Total Regulations', icon: Scale },
-              { value: regions.length, label: 'Markets', icon: Globe },
-              { value: docTypes.length, label: 'Document Types', icon: BookOpen },
-              { value: new Set(ALL_REGULATIONS.map(r => r.category_id)).size, label: 'Categories', icon: Scale },
+              { value: ALL_REGULATIONS.length, label: t.totalRegulations, icon: Scale },
+              { value: regions.length, label: t.markets, icon: Globe },
+              { value: docTypes.length, label: t.documentTypes, icon: BookOpen },
+              { value: new Set(ALL_REGULATIONS.map(r => r.category_id)).size, label: t.categories, icon: Scale },
             ].map((stat, i) => (
               <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
                 <div className="flex justify-center mb-2">
@@ -218,13 +228,13 @@ export default function RegulationsPage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-4 hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-center mb-6">
                   <Filter className="w-6 h-6 text-[#339999] mr-3" />
-                  <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+                  <h2 className="text-xl font-bold text-gray-900">{t.filters}</h2>
                 </div>
 
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Search
+                      {t.search}
                     </label>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
@@ -234,7 +244,7 @@ export default function RegulationsPage() {
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                           onKeyDown={handleKeyPress}
-                          placeholder="Regulation name, code..."
+                          placeholder={t.regulationNameCode}
                           className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all text-sm"
                         />
                       </div>
@@ -249,7 +259,7 @@ export default function RegulationsPage() {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Region
+                      {t.region}
                     </label>
                     <select
                       value={selectedRegion}
@@ -259,10 +269,10 @@ export default function RegulationsPage() {
                       }}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
-                      <option value="">All Regions</option>
+                      <option value="">{t.allRegions}</option>
                       {regions.map(region => (
                         <option key={region} value={region}>
-                          {regionNames[region] || region}
+                          {getRegionName(region, locale)}
                         </option>
                       ))}
                     </select>
@@ -270,7 +280,7 @@ export default function RegulationsPage() {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Document Type
+                      {t.documentTypeLabel}
                     </label>
                     <select
                       value={selectedType}
@@ -280,10 +290,10 @@ export default function RegulationsPage() {
                       }}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
-                      <option value="">All Types</option>
+                      <option value="">{t.allDocumentTypes}</option>
                       {docTypes.map(type => (
                         <option key={type} value={type}>
-                          {docTypeLabels[type] || type}
+                          {getDocTypeLabel(type, locale)}
                         </option>
                       ))}
                     </select>
@@ -299,7 +309,7 @@ export default function RegulationsPage() {
                     }}
                     className="w-full py-3 px-4 text-sm font-semibold text-[#339999] hover:text-[#2d8b8b] bg-[#339999]/5 hover:bg-[#339999]/10 rounded-xl transition-all duration-300"
                   >
-                    Reset All Filters
+                    {t.resetAllFilters}
                   </button>
                 </div>
               </div>
@@ -310,7 +320,7 @@ export default function RegulationsPage() {
                 <>
                   <div className="mb-6 flex items-center justify-between bg-white rounded-xl p-4 border border-gray-100">
                     <p className="text-sm text-gray-600 font-medium">
-                      Showing {startIndex}-{endIndex} of {total} regulations
+                      {t.showing} {startIndex}-{endIndex} {t.of} {total} {t.regulations}
                     </p>
                   </div>
 
@@ -324,9 +334,12 @@ export default function RegulationsPage() {
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex-1 min-w-0">
                               <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#339999] transition-colors">
-                                {reg.title}
+                                {locale === 'zh' && reg.title_zh ? reg.title_zh : reg.title}
                               </h3>
-                              {reg.title_zh && (
+                              {locale === 'zh' && reg.title_zh && (
+                                <p className="text-sm text-gray-400 mt-1">{reg.title}</p>
+                              )}
+                              {locale === 'en' && reg.title_zh && (
                                 <p className="text-sm text-gray-500 mt-1">{reg.title_zh}</p>
                               )}
                               <p className="text-sm text-gray-500 mt-1 font-mono">
@@ -339,21 +352,21 @@ export default function RegulationsPage() {
                           <div className="flex items-center gap-4 mb-4">
                             <div className="flex items-center text-sm text-gray-600">
                               <Globe className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
-                              <span>{regionNames[reg.market_code] || reg.market_code}</span>
+                              <span>{getRegionName(reg.market_code, locale)}</span>
                             </div>
                             <span className="text-xs px-2 py-1 bg-[#339999]/10 text-[#339999] rounded-full font-medium">
-                              {docTypeLabels[reg.document_type] || reg.document_type}
+                              {getDocTypeLabel(reg.document_type, locale)}
                             </span>
                             {reg.status === 'active' && (
                               <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
-                                Active
+                                {t.active}
                               </span>
                             )}
                           </div>
 
                           <div className="pt-4 border-t border-gray-100">
                             <p className="text-sm text-gray-500 line-clamp-2">
-                              {reg.summary_zh || reg.summary}
+                              {locale === 'zh' && reg.summary_zh ? reg.summary_zh : reg.summary}
                             </p>
                           </div>
                         </Link>
@@ -369,7 +382,7 @@ export default function RegulationsPage() {
                         className="flex items-center gap-1 px-4 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 hover:border-[#339999]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
                       >
                         <ChevronLeft className="w-4 h-4" />
-                        Previous
+                        {t.previous}
                       </button>
 
                       {getPageNumbers().map((pageNum) => (
@@ -391,7 +404,7 @@ export default function RegulationsPage() {
                         disabled={page === totalPages}
                         className="flex items-center gap-1 px-4 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 hover:border-[#339999]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
                       >
-                        Next
+                        {t.next}
                         <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
@@ -403,12 +416,14 @@ export default function RegulationsPage() {
                 <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
                   <Scale className="w-20 h-20 text-gray-300 mx-auto mb-6" />
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    {appliedSearch.trim() ? 'No Search Results' : 'No Regulations Found'}
+                    {appliedSearch.trim() ? t.noSearchResults : t.noRegulationsFound}
                   </h3>
                   <p className="text-gray-600">
                     {appliedSearch.trim()
-                      ? `No regulations found for "${appliedSearch}". Try different keywords or adjust filters.`
-                      : 'Try adjusting your search or filters'
+                      ? locale === 'zh'
+                        ? `未找到与"${appliedSearch}"相关的法规。请尝试不同的关键词或调整筛选条件。`
+                        : `No regulations found for "${appliedSearch}". Try different keywords or adjust filters.`
+                      : t.tryAdjustingFilters
                     }
                   </p>
                 </div>

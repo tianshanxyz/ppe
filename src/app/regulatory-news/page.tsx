@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from 'react'
 import { Newspaper, Calendar, Tag, Search, ExternalLink, ChevronDown, ChevronRight, ChevronLeft, User } from 'lucide-react'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 // Milly 作者配置
 const MILLY_AUTHOR = {
@@ -700,6 +702,8 @@ Two guidelines specifically require higher-level review:
 ]
 
 export default function RegulatoryNewsPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [expandedArticle, setExpandedArticle] = useState<string | null>(null)
@@ -776,9 +780,9 @@ export default function RegulatoryNewsPage() {
                 <Newspaper className="w-10 h-10 text-[#339999]" />
               </div>
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">Industry News</h1>
+            <h1 className="text-5xl font-bold text-gray-900 mb-4">{t.industryNews}</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Regulatory updates, market insights, and in-depth analysis from the PPE industry
+              {t.industryNewsSubtitle}
             </p>
           </div>
         </div>
@@ -795,7 +799,7 @@ export default function RegulatoryNewsPage() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search articles..."
+                  placeholder={locale === 'zh' ? '搜索文章...' : 'Search articles...'}
                   className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all text-sm"
                 />
               </div>
@@ -803,7 +807,7 @@ export default function RegulatoryNewsPage() {
                 type="submit"
                 className="px-4 py-2.5 bg-[#339999] text-white text-sm font-medium rounded-xl hover:bg-[#2a7a7a] transition-colors"
               >
-                Search
+                {t.search}
               </button>
             </form>
           </div>
@@ -820,7 +824,7 @@ export default function RegulatoryNewsPage() {
                     : 'bg-gray-50 text-gray-500 hover:bg-gray-100 border border-transparent'
                 }`}
               >
-                {cat === 'all' ? 'All' : cat}
+                {cat === 'all' ? (locale === 'zh' ? '全部' : 'All') : cat}
               </button>
             ))}
           </div>
@@ -856,8 +860,8 @@ export default function RegulatoryNewsPage() {
                       </div>
                     </div>
 
-                    <h2 className="text-xl font-bold text-gray-900 mb-2">{news.title}</h2>
-                    <p className="text-gray-600 mb-4">{news.summary}</p>
+                    <h2 className="text-xl font-bold text-gray-900 mb-2">{locale === 'zh' && news.title_zh ? news.title_zh : news.title}</h2>
+                    <p className="text-gray-600 mb-4">{locale === 'zh' && news.summary_zh ? news.summary_zh : news.summary}</p>
 
                     {/* Author info */}
                     {news.author && (
@@ -886,11 +890,11 @@ export default function RegulatoryNewsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <span>Source: {news.source}</span>
+                        <span>{t.newsSource}: {news.source}</span>
                         {news.source_url !== '#' && (
                           <a href={news.source_url} target="_blank" rel="noopener noreferrer" className="text-[#339999] hover:underline flex items-center gap-1">
                             <ExternalLink className="w-4 h-4" />
-                            Official Source
+                            {t.officialSource}
                           </a>
                         )}
                       </div>
@@ -901,12 +905,12 @@ export default function RegulatoryNewsPage() {
                         {expandedArticle === news.id ? (
                           <>
                             <ChevronDown className="w-4 h-4" />
-                            Show Less
+                            {t.showLess}
                           </>
                         ) : (
                           <>
                             <ChevronRight className="w-4 h-4" />
-                            Read Full Article
+                            {t.readFullArticle}
                           </>
                         )}
                       </button>
@@ -928,7 +932,7 @@ export default function RegulatoryNewsPage() {
           ) : (
             <div className="text-center py-12">
               <Newspaper className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">No articles found matching your criteria</p>
+              <p className="text-gray-500">{t.noNewsFound}</p>
               <button
                 onClick={() => {
                   setSelectedCategory('all')
@@ -938,7 +942,7 @@ export default function RegulatoryNewsPage() {
                 }}
                 className="mt-4 text-[#339999] font-medium hover:underline"
               >
-                Clear all filters
+                {locale === 'zh' ? '清除所有筛选' : 'Clear all filters'}
               </button>
             </div>
           )}
@@ -948,7 +952,7 @@ export default function RegulatoryNewsPage() {
             <div className="mt-12 flex flex-col items-center gap-4">
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-500">
-                  Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredNews.length)} of {filteredNews.length}
+                  {t.showing} {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredNews.length)} {t.of} {filteredNews.length}
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -958,7 +962,7 @@ export default function RegulatoryNewsPage() {
                   className="inline-flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#339999] hover:text-[#339999]"
                 >
                   <ChevronLeft className="w-4 h-4" />
-                  Previous
+                  {t.previous}
                 </button>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                   <button
@@ -978,7 +982,7 @@ export default function RegulatoryNewsPage() {
                   disabled={currentPage === totalPages}
                   className="inline-flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#339999] hover:text-[#339999]"
                 >
-                  Next
+                  {t.next}
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>

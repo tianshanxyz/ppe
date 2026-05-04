@@ -21,6 +21,9 @@ import {
   Search,
 } from 'lucide-react'
 import { Badge, StatusBadge, Skeleton } from '@/components/ui'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
+import type { Locale } from '@/lib/i18n/config'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -56,7 +59,7 @@ interface RelatedRegulation {
 // Helpers
 // ---------------------------------------------------------------------------
 
-const MARKET_LABELS: Record<string, { label: string; flag: string }> = {
+const MARKET_LABELS_EN: Record<string, { label: string; flag: string }> = {
   EU: { label: 'European Union', flag: 'EU' },
   US: { label: 'United States', flag: 'US' },
   CN: { label: 'China', flag: 'CN' },
@@ -66,16 +69,32 @@ const MARKET_LABELS: Record<string, { label: string; flag: string }> = {
   KR: { label: 'South Korea', flag: 'KR' },
 }
 
-const DOCUMENT_TYPE_LABELS: Record<string, string> = {
-  regulation: 'Regulation',
-  standard: 'Standard',
-  guidance: 'Guidance',
-  directive: 'Directive',
-  law: 'Law',
+const MARKET_LABELS_ZH: Record<string, { label: string; flag: string }> = {
+  EU: { label: '欧盟', flag: 'EU' },
+  US: { label: '美国', flag: 'US' },
+  CN: { label: '中国', flag: 'CN' },
+  UK: { label: '英国', flag: 'UK' },
+  JP: { label: '日本', flag: 'JP' },
+  AU: { label: '澳大利亚', flag: 'AU' },
+  KR: { label: '韩国', flag: 'KR' },
 }
 
-function getMarketInfo(code: string) {
-  return MARKET_LABELS[code] ?? { label: code, flag: code }
+const DOCUMENT_TYPE_LABELS_EN: Record<string, string> = {
+  regulation: 'Regulation', standard: 'Standard', guidance: 'Guidance', directive: 'Directive', law: 'Law',
+}
+
+const DOCUMENT_TYPE_LABELS_ZH: Record<string, string> = {
+  regulation: '法规', standard: '标准', guidance: '指南', directive: '指令', law: '法律',
+}
+
+function getMarketInfo(code: string, locale: Locale) {
+  const map = locale === 'zh' ? MARKET_LABELS_ZH : MARKET_LABELS_EN
+  return map[code] ?? { label: code, flag: code }
+}
+
+function getDocTypeLabel(type: string, locale: Locale) {
+  const map = locale === 'zh' ? DOCUMENT_TYPE_LABELS_ZH : DOCUMENT_TYPE_LABELS_EN
+  return map[type] ?? type
 }
 
 // ---------------------------------------------------------------------------
@@ -85,6 +104,8 @@ function getMarketInfo(code: string) {
 export default function RegulationDetailPage() {
   const params = useParams()
   const id = (params as Record<string, string>).id as string
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
 
   // ---- state ----
   const [regulation, setRegulation] = useState<RegulationData | null>(null)
@@ -199,7 +220,7 @@ export default function RegulationDetailPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-[#339999] mx-auto mb-4" />
-          <p className="text-gray-500">Loading regulation data...</p>
+          <p className="text-gray-500">{t.loadingRegulations}</p>
         </div>
       </div>
     )
@@ -216,15 +237,15 @@ export default function RegulationDetailPage() {
             <AlertCircle className="w-8 h-8 text-red-600" />
           </div>
           <h2 className="text-xl font-semibold text-gray-900 mb-2">
-            {error === 'Regulation not found' ? 'Regulation Not Found' : 'Error'}
+            {error === 'Regulation not found' ? (locale === 'zh' ? '未找到法规' : 'Regulation Not Found') : t.error}
           </h2>
-          <p className="text-gray-500 mb-6">{error ?? 'The requested regulation could not be found.'}</p>
+          <p className="text-gray-500 mb-6">{error ?? (locale === 'zh' ? '无法找到请求的法规。' : 'The requested regulation could not be found.')}</p>
           <Link
             href="/regulations-new"
             className="inline-flex items-center gap-2 text-[#339999] hover:underline font-medium"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Regulations
+            {t.backToRegulations}
           </Link>
         </div>
       </div>
@@ -234,9 +255,8 @@ export default function RegulationDetailPage() {
   // =========================================================================
   // Derived data
   // =========================================================================
-  const marketInfo = getMarketInfo(regulation.market_code)
-  const docTypeLabel =
-    DOCUMENT_TYPE_LABELS[regulation.document_type] ?? regulation.document_type
+  const marketInfo = getMarketInfo(regulation.market_code, locale)
+  const docTypeLabel = getDocTypeLabel(regulation.document_type, locale)
 
   // =========================================================================
   // Render
@@ -254,7 +274,7 @@ export default function RegulationDetailPage() {
             className="text-[#339999] hover:underline mb-4 flex items-center gap-1 text-sm font-medium"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Regulations
+            {t.backToRegulations}
           </Link>
 
           {/* Title row */}
@@ -273,13 +293,16 @@ export default function RegulationDetailPage() {
                 </Badge>
                 <StatusBadge
                   status={regulation.status === 'active' ? 'active' : 'inactive'}
-                  text={regulation.status === 'active' ? 'Active' : regulation.status}
+                  text={regulation.status === 'active' ? t.active : regulation.status}
                 />
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">
-                {regulation.title}
+                {locale === 'zh' && regulation.title_zh ? regulation.title_zh : regulation.title}
               </h1>
-              {regulation.title_zh && (
+              {locale === 'zh' && regulation.title_zh && (
+                <p className="mt-1 text-gray-400 text-sm">{regulation.title}</p>
+              )}
+              {locale === 'en' && regulation.title_zh && (
                 <p className="mt-1 text-gray-500 text-sm">{regulation.title_zh}</p>
               )}
             </div>
@@ -289,17 +312,17 @@ export default function RegulationDetailPage() {
           <div className="flex flex-wrap gap-6 mt-5 text-sm text-gray-600">
             <div className="flex items-center gap-1.5">
               <FileText className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-500">Regulation No.:</span>
+              <span className="text-gray-500">{t.regulationNumber}:</span>
               <span className="font-medium text-gray-900">{regulation.regulation_number}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Building2 className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-500">Issuing Authority:</span>
+              <span className="text-gray-500">{t.issuingAuthority}:</span>
               <span className="font-medium text-gray-900">{regulation.issuing_authority}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Calendar className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-500">Effective Date:</span>
+              <span className="text-gray-500">{t.effectiveDate}:</span>
               <span className="font-medium text-gray-900">{regulation.effective_date}</span>
             </div>
           </div>
@@ -321,7 +344,7 @@ export default function RegulationDetailPage() {
                 <div className="w-8 h-8 bg-[#339999]/10 rounded-lg flex items-center justify-center">
                   <Sparkles className="w-4 h-4 text-[#339999]" />
                 </div>
-                <h2 className="text-lg font-bold text-gray-900">AI Summary</h2>
+                <h2 className="text-lg font-bold text-gray-900">{locale === 'zh' ? 'AI摘要' : 'AI Summary'}</h2>
                 {aiSummaryLoading && (
                   <Loader2 className="w-4 h-4 animate-spin text-[#339999] ml-1" />
                 )}
@@ -335,7 +358,7 @@ export default function RegulationDetailPage() {
               ) : aiSummaryError ? (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-yellow-800">
                   <AlertCircle className="w-4 h-4 inline mr-1.5 -mt-0.5" />
-                  AI summary unavailable. Showing stored summary instead.
+                  {locale === 'zh' ? 'AI摘要暂不可用，显示存储的摘要。' : 'AI summary unavailable. Showing stored summary instead.'}
                 </div>
               ) : null}
 
@@ -348,7 +371,7 @@ export default function RegulationDetailPage() {
               )}
 
               {!aiSummaryLoading && !aiSummary && !aiSummaryError && (
-                <p className="text-gray-500 italic">No summary available.</p>
+                <p className="text-gray-500 italic">{locale === 'zh' ? '暂无摘要。' : 'No summary available.'}</p>
               )}
             </section>
 
@@ -360,7 +383,7 @@ export default function RegulationDetailPage() {
                 <div className="w-8 h-8 bg-[#339999]/10 rounded-lg flex items-center justify-center">
                   <Brain className="w-4 h-4 text-[#339999]" />
                 </div>
-                <h2 className="text-lg font-bold text-gray-900">AI Interpretation</h2>
+                <h2 className="text-lg font-bold text-gray-900">{locale === 'zh' ? 'AI解读' : 'AI Interpretation'}</h2>
                 {aiInterpretationLoading && (
                   <Loader2 className="w-4 h-4 animate-spin text-[#339999] ml-1" />
                 )}
@@ -377,7 +400,7 @@ export default function RegulationDetailPage() {
               ) : aiInterpretationError ? (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-yellow-800">
                   <AlertCircle className="w-4 h-4 inline mr-1.5 -mt-0.5" />
-                  AI interpretation is currently unavailable. Please try again later.
+                  {locale === 'zh' ? 'AI解读暂不可用，请稍后重试。' : 'AI interpretation is currently unavailable. Please try again later.'}
                 </div>
               ) : aiInterpretation ? (
                 <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
@@ -422,7 +445,7 @@ export default function RegulationDetailPage() {
                   })}
                 </div>
               ) : (
-                <p className="text-gray-500 italic">No interpretation available.</p>
+                <p className="text-gray-500 italic">{locale === 'zh' ? '暂无解读。' : 'No interpretation available.'}</p>
               )}
             </section>
 
@@ -434,12 +457,14 @@ export default function RegulationDetailPage() {
                 <div className="w-8 h-8 bg-[#339999]/10 rounded-lg flex items-center justify-center">
                   <FileText className="w-4 h-4 text-[#339999]" />
                 </div>
-                <h2 className="text-lg font-bold text-gray-900">Full Regulation Text</h2>
+                <h2 className="text-lg font-bold text-gray-900">{t.fullText}</h2>
               </div>
 
               <p className="text-gray-600 text-sm mb-4">
-                View the complete text of {regulation.regulation_number} as published by{' '}
-                {regulation.issuing_authority}.
+                {locale === 'zh'
+                  ? `查看由${regulation.issuing_authority}发布的${regulation.regulation_number}完整文本。`
+                  : `View the complete text of ${regulation.regulation_number} as published by ${regulation.issuing_authority}.`
+                }
               </p>
 
               <a
@@ -447,7 +472,7 @@ export default function RegulationDetailPage() {
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#339999] text-white rounded-lg hover:bg-[#2d8b8b] transition-colors font-medium text-sm"
               >
                 <BookOpen className="w-4 h-4" />
-                View Full Text
+                {locale === 'zh' ? '查看全文' : 'View Full Text'}
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
 
@@ -505,12 +530,12 @@ export default function RegulationDetailPage() {
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <Search className="w-5 h-5 text-[#339999]" />
-                Quick Facts
+                {locale === 'zh' ? '快速概览' : 'Quick Facts'}
               </h3>
               <dl className="space-y-4">
                 <div>
                   <dt className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                    Regulation Number
+                    {t.regulationNumber}
                   </dt>
                   <dd className="font-semibold text-gray-900">
                     {regulation.regulation_number}
@@ -518,13 +543,13 @@ export default function RegulationDetailPage() {
                 </div>
                 <div>
                   <dt className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                    Document Type
+                    {t.documentType}
                   </dt>
                   <dd className="font-semibold text-gray-900">{docTypeLabel}</dd>
                 </div>
                 <div>
                   <dt className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                    Market
+                    {t.marketCode}
                   </dt>
                   <dd className="font-semibold text-gray-900">
                     {marketInfo.flag} {marketInfo.label}
@@ -532,7 +557,7 @@ export default function RegulationDetailPage() {
                 </div>
                 <div>
                   <dt className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                    Issuing Authority
+                    {t.issuingAuthority}
                   </dt>
                   <dd className="font-semibold text-gray-900 text-sm">
                     {regulation.issuing_authority}
@@ -540,24 +565,24 @@ export default function RegulationDetailPage() {
                 </div>
                 <div>
                   <dt className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                    Effective Date
+                    {t.effectiveDate}
                   </dt>
                   <dd className="font-semibold text-gray-900">
                     {regulation.effective_date}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-gray-500 uppercase tracking-wider mb-1">Status</dt>
+                  <dt className="text-xs text-gray-500 uppercase tracking-wider mb-1">{t.status}</dt>
                   <dd>
                     <StatusBadge
                       status={regulation.status === 'active' ? 'active' : 'inactive'}
-                      text={regulation.status === 'active' ? 'Active' : regulation.status}
+                      text={regulation.status === 'active' ? t.active : regulation.status}
                     />
                   </dd>
                 </div>
                 <div>
                   <dt className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                    Category
+                    {t.category}
                   </dt>
                   <dd className="font-semibold text-gray-900 capitalize">
                     {regulation.category_id.replace(/-/g, ' ')}
@@ -572,7 +597,7 @@ export default function RegulationDetailPage() {
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <Globe className="w-5 h-5 text-[#339999]" />
-                Related Regulations
+                {locale === 'zh' ? '相关法规' : 'Related Regulations'}
                 <Badge variant="gray" size="sm">
                   {marketInfo.flag}
                 </Badge>
@@ -589,14 +614,14 @@ export default function RegulationDetailPage() {
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
                             <p className="text-sm font-medium text-gray-900 group-hover:text-[#339999] transition-colors line-clamp-2">
-                              {rel.title}
+                              {locale === 'zh' && rel.title_zh ? rel.title_zh : rel.title}
                             </p>
                             <div className="flex items-center gap-2 mt-1">
                               <span className="text-xs text-gray-500">
                                 {rel.regulation_number}
                               </span>
                               <Badge variant="gray" size="sm">
-                                {DOCUMENT_TYPE_LABELS[rel.document_type] ?? rel.document_type}
+                                {getDocTypeLabel(rel.document_type, locale)}
                               </Badge>
                             </div>
                           </div>

@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { FileText, Download, CheckCircle2, ChevronRight, ChevronDown, Sparkles, Loader2, AlertCircle, Building, Package, Globe } from 'lucide-react'
 import { getPPECategories, getTargetMarkets } from '@/lib/ppe-data'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 interface DocumentTemplate {
   id: string
@@ -591,6 +593,8 @@ const DOCUMENT_TEMPLATES: Record<string, Record<string, DocumentTemplate[]>> = {
 }
 
 export default function DocumentGeneratorPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const categories = getPPECategories()
   const markets = getTargetMarkets()
 
@@ -634,9 +638,9 @@ export default function DocumentGeneratorPage() {
                 <FileText className="w-10 h-10 text-[#339999]" />
               </div>
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">Document Generator</h1>
+            <h1 className="text-5xl font-bold text-gray-900 mb-4">{t.documentGenerator}</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Generate standardized compliance documents that meet official government submission requirements
+              {t.documentGeneratorSubtitle}
             </p>
           </div>
         </div>
@@ -648,30 +652,30 @@ export default function DocumentGeneratorPage() {
           <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-gray-100">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <span className="w-8 h-8 bg-[#339999] text-white rounded-full flex items-center justify-center text-sm">1</span>
-              Select Product Category & Target Market
+              {locale === 'zh' ? '选择产品类别和目标市场' : 'Select Product Category & Target Market'}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Product Category *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">{t.productCategory} *</label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => { setSelectedCategory(e.target.value); setFormData({}) }}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                 >
-                  <option value="">Select category...</option>
+                  <option value="">{t.selectCategory}</option>
                   {categories.map(cat => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Target Market *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">{t.targetMarket} *</label>
                 <select
                   value={selectedMarket}
                   onChange={(e) => { setSelectedMarket(e.target.value); setFormData({}) }}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                 >
-                  <option value="">Select market...</option>
+                  <option value="">{t.selectMarket}</option>
                   {markets.map(m => (
                     <option key={m.code} value={m.code}>{m.flag_emoji} {m.name}</option>
                   ))}
@@ -685,7 +689,7 @@ export default function DocumentGeneratorPage() {
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
                 <span className="w-8 h-8 bg-[#339999] text-white rounded-full flex items-center justify-center text-sm">2</span>
-                Fill Document Information
+                {locale === 'zh' ? '填写文档信息' : 'Fill Document Information'}
               </h2>
 
               {templates.map(template => (
@@ -706,9 +710,9 @@ export default function DocumentGeneratorPage() {
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <h3 className="font-bold text-gray-900 text-lg">{template.name}</h3>
+                            <h3 className="font-bold text-gray-900 text-lg">{locale === 'zh' && template.name_zh ? template.name_zh : template.name}</h3>
                             {template.required && (
-                              <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-medium">Required</span>
+                              <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-medium">{locale === 'zh' ? '必填' : 'Required'}</span>
                             )}
                           </div>
                           <p className="text-sm text-gray-500 mt-1">{template.description}</p>
@@ -725,7 +729,7 @@ export default function DocumentGeneratorPage() {
                   {expandedDoc === template.id && (
                     <div className="px-6 pb-6 border-t border-gray-100">
                       <div className="mt-4 space-y-4">
-                        <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">Required Information</h4>
+                        <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">{locale === 'zh' ? '所需信息' : 'Required Information'}</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {template.fields.map((field: any, idx: number) => (
                             <div key={idx} className={field.required ? '' : 'md:col-span-2'}>
@@ -756,7 +760,7 @@ export default function DocumentGeneratorPage() {
                           ) : (
                             <Download className="w-4 h-4" />
                           )}
-                          {generating === template.id ? 'Generating...' : 'Generate Document'}
+                          {generating === template.id ? t.generating : t.generateDocument}
                         </button>
                       </div>
                     </div>
@@ -769,7 +773,7 @@ export default function DocumentGeneratorPage() {
           {!selectedCategory || !selectedMarket ? (
             <div className="bg-white rounded-2xl shadow-xl p-12 border border-gray-100 text-center">
               <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">Please select a product category and target market to see available document templates</p>
+              <p className="text-gray-500">{locale === 'zh' ? '请选择产品类别和目标市场以查看可用的文档模板' : 'Please select a product category and target market to see available document templates'}</p>
             </div>
           ) : null}
         </div>

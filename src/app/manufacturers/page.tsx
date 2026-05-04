@@ -5,6 +5,9 @@ import { Factory, Search, Filter, Globe, ChevronLeft, ChevronRight, ExternalLink
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { getPPEManufacturersClient, getPPEManufacturerStatsClient } from '@/lib/ppe-database-client'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
+import type { Locale } from '@/lib/i18n/config'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -20,7 +23,7 @@ const staggerContainer = {
   }
 }
 
-const COUNTRY_DISPLAY: Record<string, string> = {
+const COUNTRY_DISPLAY_EN: Record<string, string> = {
   US: 'United States',
   CA: 'Canada',
   CN: 'China',
@@ -71,68 +74,125 @@ const COUNTRY_DISPLAY: Record<string, string> = {
   CO: 'Colombia',
   AR: 'Argentina',
   PE: 'Peru',
-  'United States': 'United States',
-  'United Kingdom': 'United Kingdom',
-  China: 'China',
-  Germany: 'Germany',
-  France: 'France',
-  Japan: 'Japan',
-  'South Korea': 'South Korea',
-  India: 'India',
-  Brazil: 'Brazil',
-  Australia: 'Australia',
-  Canada: 'Canada',
-  Italy: 'Italy',
-  Spain: 'Spain',
-  Netherlands: 'Netherlands',
-  Sweden: 'Sweden',
-  Mexico: 'Mexico',
-  Switzerland: 'Switzerland',
-  Malaysia: 'Malaysia',
-  Thailand: 'Thailand',
-  Singapore: 'Singapore',
-  Indonesia: 'Indonesia',
-  Vietnam: 'Vietnam',
-  Philippines: 'Philippines',
-  Russia: 'Russia',
-  'South Africa': 'South Africa',
-  'New Zealand': 'New Zealand',
-  Israel: 'Israel',
-  Austria: 'Austria',
-  Belgium: 'Belgium',
-  Poland: 'Poland',
-  Denmark: 'Denmark',
-  Finland: 'Finland',
-  Norway: 'Norway',
-  Portugal: 'Portugal',
-  Ireland: 'Ireland',
-  Turkey: 'Turkey',
-  'Saudi Arabia': 'Saudi Arabia',
-  UAE: 'UAE',
-  中国: 'China',
-  美国: 'United States',
-  德国: 'Germany',
-  法国: 'France',
-  英国: 'United Kingdom',
-  日本: 'Japan',
-  韩国: 'South Korea',
-  印度: 'India',
-  巴西: 'Brazil',
-  澳大利亚: 'Australia',
-  加拿大: 'Canada',
-  意大利: 'Italy',
-  西班牙: 'Spain',
-  荷兰: 'Netherlands',
-  瑞典: 'Sweden',
-  马来西亚: 'Malaysia',
-  泰国: 'Thailand',
 }
 
-function getCountryDisplay(country: string): string {
-  return COUNTRY_DISPLAY[country] || country
+const COUNTRY_DISPLAY_ZH: Record<string, string> = {
+  US: '美国',
+  CA: '加拿大',
+  CN: '中国',
+  GB: '英国',
+  DE: '德国',
+  JP: '日本',
+  KR: '韩国',
+  BR: '巴西',
+  AU: '澳大利亚',
+  IN: '印度',
+  MY: '马来西亚',
+  TH: '泰国',
+  FR: '法国',
+  IT: '意大利',
+  ES: '西班牙',
+  NL: '荷兰',
+  SE: '瑞典',
+  MX: '墨西哥',
+  ZA: '南非',
+  RU: '俄罗斯',
+  SG: '新加坡',
+  ID: '印度尼西亚',
+  VN: '越南',
+  PH: '菲律宾',
+  NZ: '新西兰',
+  IL: '以色列',
+  CH: '瑞士',
+  AT: '奥地利',
+  BE: '比利时',
+  PL: '波兰',
+  CZ: '捷克',
+  DK: '丹麦',
+  FI: '芬兰',
+  NO: '挪威',
+  PT: '葡萄牙',
+  IE: '爱尔兰',
+  GR: '希腊',
+  HU: '匈牙利',
+  RO: '罗马尼亚',
+  UA: '乌克兰',
+  TR: '土耳其',
+  SA: '沙特阿拉伯',
+  AE: '阿联酋',
+  EG: '埃及',
+  NG: '尼日利亚',
+  KE: '肯尼亚',
+  CL: '智利',
+  CO: '哥伦比亚',
+  AR: '阿根廷',
+  PE: '秘鲁',
+  'United States': '美国',
+  'United Kingdom': '英国',
+  China: '中国',
+  Germany: '德国',
+  France: '法国',
+  Japan: '日本',
+  'South Korea': '韩国',
+  India: '印度',
+  Brazil: '巴西',
+  Australia: '澳大利亚',
+  Canada: '加拿大',
+  Italy: '意大利',
+  Spain: '西班牙',
+  Netherlands: '荷兰',
+  Sweden: '瑞典',
+  Mexico: '墨西哥',
+  Switzerland: '瑞士',
+  Malaysia: '马来西亚',
+  Thailand: '泰国',
+  Singapore: '新加坡',
+  Indonesia: '印度尼西亚',
+  Vietnam: '越南',
+  Philippines: '菲律宾',
+  Russia: '俄罗斯',
+  'South Africa': '南非',
+  'New Zealand': '新西兰',
+  Israel: '以色列',
+  Austria: '奥地利',
+  Belgium: '比利时',
+  Poland: '波兰',
+  Denmark: '丹麦',
+  Finland: '芬兰',
+  Norway: '挪威',
+  Portugal: '葡萄牙',
+  Ireland: '爱尔兰',
+  Turkey: '土耳其',
+  'Saudi Arabia': '沙特阿拉伯',
+  UAE: '阿联酋',
+  中国: '中国',
+  美国: '美国',
+  德国: '德国',
+  法国: '法国',
+  英国: '英国',
+  日本: '日本',
+  韩国: '韩国',
+  印度: '印度',
+  巴西: '巴西',
+  澳大利亚: '澳大利亚',
+  加拿大: '加拿大',
+  意大利: '意大利',
+  西班牙: '西班牙',
+  荷兰: '荷兰',
+  瑞典: '瑞典',
+  马来西亚: '马来西亚',
+  泰国: '泰国',
+}
+
+function getCountryDisplay(country: string, locale: Locale): string {
+  const map = locale === 'zh' ? COUNTRY_DISPLAY_ZH : COUNTRY_DISPLAY_EN
+  return map[country] || country
 }
 
 export default function ManufacturersPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
+
   const [manufacturers, setManufacturers] = useState<any[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -157,8 +217,8 @@ export default function ManufacturersPage() {
           if (statsData.countryCount) {
             const uniqueCountries = Object.keys(statsData.countryCount)
             const sortedCountries = uniqueCountries.sort((a, b) => {
-              const nameA = getCountryDisplay(a)
-              const nameB = getCountryDisplay(b)
+              const nameA = getCountryDisplay(a, locale)
+              const nameB = getCountryDisplay(b, locale)
               return nameA.localeCompare(nameB)
             })
             setCountries(sortedCountries)
@@ -170,7 +230,7 @@ export default function ManufacturersPage() {
     }
     loadStats()
     return () => { mounted = false }
-  }, [])
+  }, [locale])
 
   const loadManufacturers = useCallback(async () => {
     setLoading(true)
@@ -188,11 +248,11 @@ export default function ManufacturersPage() {
       setTotal(result.total || 0)
     } catch (err) {
       console.error('Failed to load manufacturers:', err)
-      setError('Failed to load manufacturers. Please try again later.')
+      setError(t.errorLoadingManufacturers)
     } finally {
       setLoading(false)
     }
-  }, [page, selectedCountry, appliedSearch])
+  }, [page, selectedCountry, appliedSearch, t.errorLoadingManufacturers])
 
   useEffect(() => {
     loadManufacturers()
@@ -245,10 +305,10 @@ export default function ManufacturersPage() {
               </div>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Global Manufacturers
+              {t.globalManufacturers}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover {stats?.totalManufacturers?.toLocaleString() || '...'} PPE manufacturers from around the world
+              {t.discoverManufacturers.replace('{count}', stats?.totalManufacturers?.toLocaleString() || '...')}
             </p>
           </motion.div>
         </div>
@@ -265,9 +325,9 @@ export default function ManufacturersPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               {[
-                { value: stats.totalManufacturers ?? 0, label: 'Total Manufacturers', icon: Factory },
-                { value: Object.keys(stats.countryCount ?? {}).length, label: 'Countries', icon: Globe },
-                { value: Object.values(stats.countryCount ?? {}).reduce((a: any, b: any) => Math.max(Number(a), Number(b)), 0), label: 'Largest Market Count', icon: Building2 },
+                { value: stats.totalManufacturers ?? 0, label: t.totalManufacturers, icon: Factory },
+                { value: Object.keys(stats.countryCount ?? {}).length, label: t.countries, icon: Globe },
+                { value: Object.values(stats.countryCount ?? {}).reduce((a: any, b: any) => Math.max(Number(a), Number(b)), 0), label: t.largestMarketCount, icon: Building2 },
               ].map((stat, i) => (
                 <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
                   <div className="flex justify-center mb-2">
@@ -295,13 +355,13 @@ export default function ManufacturersPage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-4 hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-center mb-6">
                   <Filter className="w-6 h-6 text-[#339999] mr-3" />
-                  <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+                  <h2 className="text-xl font-bold text-gray-900">{t.filters}</h2>
                 </div>
 
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Search
+                      {t.search}
                     </label>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
@@ -311,7 +371,7 @@ export default function ManufacturersPage() {
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                           onKeyDown={handleKeyPress}
-                          placeholder="Manufacturer name..."
+                          placeholder={t.manufacturerName}
                           className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all text-sm"
                         />
                       </div>
@@ -326,7 +386,7 @@ export default function ManufacturersPage() {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Country
+                      {t.countries}
                     </label>
                     <select
                       value={selectedCountry}
@@ -336,10 +396,10 @@ export default function ManufacturersPage() {
                       }}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
-                      <option value="">All Countries</option>
+                      <option value="">{t.allCountries}</option>
                       {countries.map(country => (
                         <option key={country} value={country}>
-                          {getCountryDisplay(country)}
+                          {getCountryDisplay(country, locale)}
                         </option>
                       ))}
                     </select>
@@ -354,7 +414,7 @@ export default function ManufacturersPage() {
                     }}
                     className="w-full py-3 px-4 text-sm font-semibold text-[#339999] hover:text-[#2d8b8b] bg-[#339999]/5 hover:bg-[#339999]/10 rounded-xl transition-all duration-300"
                   >
-                    Reset All Filters
+                    {t.resetAllFilters}
                   </button>
                 </div>
               </div>
@@ -366,7 +426,7 @@ export default function ManufacturersPage() {
                   <div className="flex items-center gap-3">
                     <AlertCircle className="w-6 h-6 text-red-500" />
                     <div>
-                      <h3 className="font-semibold text-red-800">Error Loading Manufacturers</h3>
+                      <h3 className="font-semibold text-red-800">{t.errorLoadingManufacturers}</h3>
                       <p className="text-red-600 text-sm">{error}</p>
                     </div>
                   </div>
@@ -374,7 +434,7 @@ export default function ManufacturersPage() {
                     onClick={loadManufacturers}
                     className="mt-4 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium"
                   >
-                    Try Again
+                    {t.tryAgain}
                   </button>
                 </div>
               )}
@@ -382,7 +442,7 @@ export default function ManufacturersPage() {
               {loading && (
                 <div className="text-center py-20">
                   <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-[#339999]/20 border-b-[#339999]"></div>
-                  <p className="mt-6 text-lg text-gray-600 font-medium">Loading manufacturers...</p>
+                  <p className="mt-6 text-lg text-gray-600 font-medium">{t.loadingManufacturers}</p>
                 </div>
               )}
 
@@ -390,7 +450,7 @@ export default function ManufacturersPage() {
                 <>
                   <div className="mb-6 flex items-center justify-between bg-white rounded-xl p-4 border border-gray-100">
                     <p className="text-sm text-gray-600 font-medium">
-                      Showing {startIndex}-{endIndex} of {total.toLocaleString()} manufacturers
+                      {t.showing} {startIndex}-{endIndex} {t.of} {total.toLocaleString()} {t.manufacturers}
                     </p>
                   </div>
 
@@ -414,7 +474,7 @@ export default function ManufacturersPage() {
                             {mfr.country && (
                               <div className="flex items-center text-sm text-gray-600">
                                 <Globe className="w-4 h-4 mr-2 text-[#339999] flex-shrink-0" />
-                                <span className="truncate">{getCountryDisplay(mfr.country)}</span>
+                                <span className="truncate">{getCountryDisplay(mfr.country, locale)}</span>
                               </div>
                             )}
                             {mfr.city && (
@@ -445,7 +505,7 @@ export default function ManufacturersPage() {
                         className="flex items-center gap-1 px-4 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 hover:border-[#339999]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
                       >
                         <ChevronLeft className="w-4 h-4" />
-                        Previous
+                        {t.previous}
                       </button>
 
                       {getPageNumbers().map((pageNum) => (
@@ -467,7 +527,7 @@ export default function ManufacturersPage() {
                         disabled={page === totalPages}
                         className="flex items-center gap-1 px-4 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 hover:border-[#339999]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
                       >
-                        Next
+                        {t.next}
                         <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
@@ -479,12 +539,12 @@ export default function ManufacturersPage() {
                 <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
                   <Factory className="w-20 h-20 text-gray-300 mx-auto mb-6" />
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    {appliedSearch.trim() ? 'No Search Results' : 'No Manufacturers Found'}
+                    {appliedSearch.trim() ? t.noSearchResults : t.noManufacturersFound}
                   </h3>
                   <p className="text-gray-600">
                     {appliedSearch.trim()
-                      ? `No manufacturers found for "${appliedSearch}". Try different keywords or adjust filters.`
-                      : 'Try adjusting your search or filters'
+                      ? t.noManufacturersSearchResult.replace('{search}', appliedSearch)
+                      : t.tryAdjustingFilters
                     }
                   </p>
                 </div>
