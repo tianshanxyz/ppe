@@ -32,6 +32,7 @@ import {
 import { useLocale, useSetLocale } from '@/lib/i18n/useLocale';
 import { navTranslations, headerTranslations, getTranslations } from '@/lib/i18n/translations';
 import { Locale, localeLabels } from '@/lib/i18n/config';
+import { localGetSession, localSignOut } from '@/lib/auth/local-auth';
 
 const languages = [
   { code: 'en' as Locale, label: 'English' },
@@ -52,18 +53,30 @@ export function Header() {
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      try {
-        const parsed = JSON.parse(userData);
-        setIsLoggedIn(!!parsed && !!parsed.id);
-        if (parsed.name) {
-          setUserName(parsed.name);
-        } else if (parsed.email) {
-          setUserName(parsed.email.split('@')[0]);
+    // 优先使用 local-auth 的 session 获取，兼容 localStorage 和 sessionStorage
+    const sessionUser = localGetSession()
+    if (sessionUser && sessionUser.id) {
+      setIsLoggedIn(true)
+      if (sessionUser.name) {
+        setUserName(sessionUser.name)
+      } else if (sessionUser.email) {
+        setUserName(sessionUser.email.split('@')[0])
+      }
+    } else {
+      // 兼容旧的 'user' key
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        try {
+          const parsed = JSON.parse(userData);
+          setIsLoggedIn(!!parsed && !!parsed.id);
+          if (parsed.name) {
+            setUserName(parsed.name);
+          } else if (parsed.email) {
+            setUserName(parsed.email.split('@')[0]);
+          }
+        } catch {
+          setIsLoggedIn(false);
         }
-      } catch {
-        setIsLoggedIn(false);
       }
     }
   }, []);
@@ -80,9 +93,7 @@ export function Header() {
   }, []);
 
   const handleSignOut = () => {
-    localStorage.removeItem('user');
-    sessionStorage.removeItem('user');
-    document.cookie = 'demo_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    localSignOut()
     setShowUserMenu(false);
     setIsLoggedIn(false);
     setUserName('');

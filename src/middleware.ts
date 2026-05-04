@@ -55,42 +55,44 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
+  // Check for demo_session cookie - this covers both demo accounts and local auth users
+  const isDemoSession = request.cookies.get('demo_session')?.value === 'true'
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  if (!supabaseUrl || !supabaseAnonKey) {
-    return supabaseResponse
+  let supabaseUser = null
+
+  if (supabaseUrl && supabaseAnonKey) {
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          )
+          supabaseResponse = NextResponse.next({ request })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          )
+        },
+      },
+    })
+
+    const { data: { user } } = await supabase.auth.getUser()
+    supabaseUser = user
   }
 
-  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll()
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) =>
-          request.cookies.set(name, value)
-        )
-        supabaseResponse = NextResponse.next({ request })
-        cookiesToSet.forEach(({ name, value, options }) =>
-          supabaseResponse.cookies.set(name, value, options)
-        )
-      },
-    },
-  })
-
-  const { data: { user } } = await supabase.auth.getUser()
+  // User is authenticated if either Supabase user exists or demo_session cookie is set
+  const isAuthenticated = !!supabaseUser || isDemoSession
 
   const isProtectedRoute = PROTECTED_ROUTES.some(route => pathname.startsWith(route))
   const isProtectedApiRoute = PROTECTED_API_ROUTES.some(route => pathname.startsWith(route))
   const isAuthRoute = AUTH_ROUTES.some(route => pathname.startsWith(route))
 
-  if ((isProtectedRoute || isProtectedApiRoute) && !user) {
-    // Allow demo sessions (cookie-based demo bypass)
-    const isDemoSession = request.cookies.get('demo_session')?.value === 'true'
-    if (isDemoSession) {
-      return supabaseResponse
-    }
+  if ((isProtectedRoute || isProtectedApiRoute) && !isAuthenticated) {
     if (isProtectedApiRoute) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
     }
@@ -100,9 +102,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
-  // Redirect logged-in demo users away from auth pages too
-  const isDemoSession = request.cookies.get('demo_session')?.value === 'true'
-  if (isAuthRoute && (user || isDemoSession)) {
+  // Redirect logged-in users away from auth pages
+  if (isAuthRoute && isAuthenticated) {
     const redirectUrl = request.nextUrl.clone()
     redirectUrl.pathname = '/dashboard'
     return NextResponse.redirect(redirectUrl)

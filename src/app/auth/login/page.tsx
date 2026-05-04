@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react'
 import { signIn, signInWithGoogle } from '@/lib/auth/supabase-auth'
+import { localSignIn, isSupabaseConfigured } from '@/lib/auth/local-auth'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
@@ -60,34 +61,50 @@ export default function LoginPage() {
         return
       }
 
-      // Normal Supabase auth flow
-      const { user, error: authError } = await signIn(email, password)
+      // Normal auth flow - try Supabase first, fall back to local auth
+      if (isSupabaseConfigured()) {
+        const { user, error: authError } = await signIn(email, password)
 
-      if (authError) {
-        setError(authError.message)
-        setIsLoading(false)
-        return
-      }
-
-      if (user) {
-        // Store user data in localStorage for dashboard access
-        const userDataStr = JSON.stringify({
-          id: user.id,
-          email: user.email,
-          name: user.user_metadata?.name || user.email?.split('@')[0] || 'User',
-          role: user.role || 'user',
-          membership: user.user_metadata?.membership || 'free',
-          created_at: user.created_at,
-        })
-        localStorage.setItem('user', userDataStr)
-        sessionStorage.setItem('user', userDataStr)
-        // Verify the write was successful
-        const verify = localStorage.getItem('user')
-        if (verify === userDataStr) {
-          window.location.href = '/dashboard'
-        } else {
-          setError('Unable to save session. Please try again or use a different browser.')
+        if (authError) {
+          setError(authError.message)
           setIsLoading(false)
+          return
+        }
+
+        if (user) {
+          // Store user data in localStorage for dashboard access
+          const userDataStr = JSON.stringify({
+            id: user.id,
+            email: user.email,
+            name: user.user_metadata?.name || user.email?.split('@')[0] || 'User',
+            role: user.role || 'user',
+            membership: user.user_metadata?.membership || 'free',
+            created_at: user.created_at,
+          })
+          localStorage.setItem('user', userDataStr)
+          sessionStorage.setItem('user', userDataStr)
+          document.cookie = `demo_session=true; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`
+          // Verify the write was successful
+          const verify = localStorage.getItem('user')
+          if (verify === userDataStr) {
+            window.location.href = '/dashboard'
+          } else {
+            setError('Unable to save session. Please try again or use a different browser.')
+            setIsLoading(false)
+          }
+        }
+      } else {
+        // Supabase not configured - use local auth
+        const { user, error: authError } = localSignIn(email, password)
+
+        if (authError) {
+          setError(authError)
+          setIsLoading(false)
+          return
+        }
+
+        if (user) {
+          window.location.href = '/dashboard'
         }
       }
     } catch (err) {

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Mail, Lock, Eye, EyeOff, User, Building, CheckCircle, AlertCircle } from 'lucide-react'
 import { signUp, signInWithGoogle } from '@/lib/auth/supabase-auth'
+import { localSignUp, isSupabaseConfigured } from '@/lib/auth/local-auth'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
@@ -59,42 +60,65 @@ export default function SignupPage() {
 
     try {
       const fullName = `${formData.firstName} ${formData.lastName}`.trim()
-      const { user, error: authError } = await signUp(
-        formData.email,
-        formData.password,
-        {
-          full_name: fullName,
-          company: formData.company,
-        }
-      )
 
-      if (authError) {
-        setError(authError.message)
-        setIsLoading(false)
-        return
-      }
+      if (isSupabaseConfigured()) {
+        // Supabase auth flow
+        const { user, error: authError } = await signUp(
+          formData.email,
+          formData.password,
+          {
+            full_name: fullName,
+            company: formData.company,
+          }
+        )
 
-      if (user) {
-        // 发送欢迎邮件
-        try {
-          await fetch('/api/auth/send-welcome', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: formData.email,
-              name: fullName,
-            }),
-          })
-        } catch (emailErr) {
-          console.error('Failed to send welcome email:', emailErr)
-          // 不影响注册流程，继续执行
+        if (authError) {
+          setError(authError.message)
+          setIsLoading(false)
+          return
         }
 
-        setSuccess(t.accountCreatedSuccess)
-        // 3秒后跳转到登录页面
-        setTimeout(() => {
-          router.push('/auth/login')
-        }, 3000)
+        if (user) {
+          // 发送欢迎邮件
+          try {
+            await fetch('/api/auth/send-welcome', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: formData.email,
+                name: fullName,
+              }),
+            })
+          } catch (emailErr) {
+            console.error('Failed to send welcome email:', emailErr)
+            // 不影响注册流程，继续执行
+          }
+
+          setSuccess(t.accountCreatedSuccess)
+          // 3秒后跳转到登录页面
+          setTimeout(() => {
+            router.push('/auth/login')
+          }, 3000)
+        }
+      } else {
+        // Supabase not configured - use local auth
+        const { user, error: authError } = localSignUp(
+          formData.email,
+          formData.password,
+          fullName,
+          formData.company,
+        )
+
+        if (authError) {
+          setError(authError)
+          setIsLoading(false)
+          return
+        }
+
+        if (user) {
+          // 本地注册成功，自动登录并跳转到 dashboard
+          window.location.href = '/dashboard'
+        }
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.')

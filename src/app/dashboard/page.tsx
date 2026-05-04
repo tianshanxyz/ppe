@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button, Card } from '@/components/ui';
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
+import { localSignOut } from '@/lib/auth/local-auth'
 import {
   User,
   Search,
@@ -773,7 +774,7 @@ export default function DashboardPage() {
   };
 
   const handleLogout = useCallback(() => {
-    localStorage.removeItem(STORAGE_KEYS.USER);
+    localSignOut();
     router.push('/');
   }, [router]);
 
