@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button, Card } from '@/components/ui';
@@ -474,12 +474,12 @@ export default function DashboardPage() {
   }, []);
 
   // Update URL hash when tab changes
-  const handleTabChange = useCallback((tab: DashboardTab) => {
+  const handleTabChange = (tab: DashboardTab) => {
     setActiveTab(tab);
     try {
       window.location.hash = tab;
     } catch {}
-  }, []);
+  };
 
   // Initialize user and data from localStorage
   useEffect(() => {
@@ -740,18 +740,20 @@ export default function DashboardPage() {
     );
   };
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = () => {
     localSignOut();
     router.push('/');
-  }, [router]);
+  };
 
-  const handleRemoveSavedItem = useCallback((id: string) => {
-    const updated = savedItems.filter(item => item.id !== id);
-    setSavedItems(updated);
-    setToStorage(STORAGE_KEYS.SAVED_ITEMS, updated);
-  }, [savedItems]);
+  const handleRemoveSavedItem = (id: string) => {
+    setSavedItems(prev => {
+      const updated = prev.filter(item => item.id !== id);
+      setToStorage(STORAGE_KEYS.SAVED_ITEMS, updated);
+      return updated;
+    });
+  };
 
-  const handleAddTracking = useCallback(() => {
+  const handleAddTracking = () => {
     if (!newTrackingProduct.trim()) return;
     const newItem: TrackingItem = {
       id: `track-${Date.now()}`,
@@ -761,19 +763,23 @@ export default function DashboardPage() {
       market: newTrackingMarket,
       addedAt: new Date().toISOString(),
     };
-    const updated = [...trackingItems, newItem];
-    setTrackingItems(updated);
-    setToStorage(STORAGE_KEYS.TRACKING_ITEMS, updated);
+    setTrackingItems(prev => {
+      const updated = [...prev, newItem];
+      setToStorage(STORAGE_KEYS.TRACKING_ITEMS, updated);
+      return updated;
+    });
     setNewTrackingProduct('');
     setNewTrackingCert('');
     setShowAddTracking(false);
-  }, [newTrackingProduct, newTrackingCert, newTrackingMarket, trackingItems]);
+  };
 
-  const handleRemoveTracking = useCallback((id: string) => {
-    const updated = trackingItems.filter(item => item.id !== id);
-    setTrackingItems(updated);
-    setToStorage(STORAGE_KEYS.TRACKING_ITEMS, updated);
-  }, [trackingItems]);
+  const handleRemoveTracking = (id: string) => {
+    setTrackingItems(prev => {
+      const updated = prev.filter(item => item.id !== id);
+      setToStorage(STORAGE_KEYS.TRACKING_ITEMS, updated);
+      return updated;
+    });
+  };
 
   // Loading state
   if (loading) {
@@ -2068,12 +2074,14 @@ export default function DashboardPage() {
     );
   };
 
-  const updateSetting = useCallback(<K extends string>(key: K, value: unknown) => {
-    if (!settings) return;
-    const updated = { ...settings, [key]: value };
-    setSettings(updated as typeof settings);
-    setToStorage('ppe_user_settings', updated);
-  }, [settings]);
+  const updateSetting = <K extends string>(key: K, value: unknown) => {
+    setSettings(prev => {
+      if (!prev) return prev;
+      const updated = { ...prev, [key]: value };
+      setToStorage('ppe_user_settings', updated);
+      return updated as typeof settings;
+    });
+  };
 
   const loginHistory: { time: string; device: string; ip: string }[] = [];
 
