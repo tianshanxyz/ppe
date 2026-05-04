@@ -57,15 +57,18 @@ import {
 
 // --- Toggle Switch Component (must be outside render functions to avoid React Error #310) ---
 
-const ToggleSwitch = ({ checked, onChange, disabled = false }: { checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }) => (
-  <button
-    onClick={() => !disabled && onChange(!checked)}
-    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${checked ? 'bg-[#339999]' : 'bg-gray-300'} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-    disabled={disabled}
-  >
-    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${checked ? 'translate-x-6' : 'translate-x-1'}`} />
-  </button>
-);
+function ToggleSwitch({ checked, onChange, disabled = false }: { checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }) {
+  return (
+    <button
+      type="button"
+      onClick={() => !disabled && onChange(!checked)}
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${checked ? 'bg-[#339999]' : 'bg-gray-300'} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+      disabled={disabled}
+    >
+      <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${checked ? 'translate-x-6' : 'translate-x-1'}`} />
+    </button>
+  );
+}
 
 // --- Types ---
 
@@ -312,6 +315,39 @@ function getMembershipColor(tier: string | undefined): string {
   }
 }
 
+// --- Helper components for Compliance Tracker ---
+
+function StepIcon({ status }: { status: string }) {
+  switch (status) {
+    case 'completed': return <CheckCircle2 className="w-5 h-5 text-green-500" />;
+    case 'in_progress': return <Clock className="w-5 h-5 text-[#339999] animate-pulse" />;
+    case 'pending': return <div className="w-5 h-5 rounded-full border-2 border-gray-300" />;
+    default: return <div className="w-5 h-5 rounded-full border-2 border-gray-300" />;
+  }
+}
+
+function StepStatusLabel({ status }: { status: string }) {
+  const isZh = status === '已完成' || status === '进行中' || status === '待处理';
+  switch (status) {
+    case 'completed': return isZh ? '已完成' : 'Completed';
+    case 'in_progress': return isZh ? '进行中' : 'In Progress';
+    case 'pending': return isZh ? '待处理' : 'Pending';
+    default: return status;
+  }
+}
+
+// --- Helper components for Certificate Alerts ---
+
+function StatusBadge({ status, daysRemaining, isZh }: { status: string; daysRemaining: number; isZh: boolean }) {
+  if (status === 'expired' || daysRemaining <= 0) {
+    return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-red-100 text-red-700"><XCircle className="w-3 h-3" /> {isZh ? '已过期' : 'Expired'}</span>;
+  }
+  if (status === 'expiring_soon' || daysRemaining <= 90) {
+    return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-yellow-100 text-yellow-700"><AlertTriangle className="w-3 h-3" /> {isZh ? '即将过期' : 'Expiring Soon'}</span>;
+  }
+  return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-green-100 text-green-700"><CheckCircle2 className="w-3 h-3" /> {isZh ? '有效' : 'Valid'}</span>;
+}
+
 function getDynamicTypeIcon(type: string) {
   switch (type) {
     case 'regulation_update': return { icon: BookOpen, bg: 'bg-purple-100', color: 'text-purple-600' };
@@ -398,113 +434,198 @@ export default function DashboardPage() {
   } | null>(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
+  const FALLBACK_USER: UserData = {
+    id: 'demo-user',
+    email: 'demo@mdlooker.com',
+    name: 'Demo User',
+    role: 'user',
+    membership: 'free',
+    created_at: new Date().toISOString(),
+  };
+
+  function getDemoSessionCookie(): boolean {
+    if (typeof document === 'undefined') return false;
+    try {
+      return document.cookie.split(';').some(c => c.trim().startsWith('demo_session=true'));
+    } catch {
+      return false;
+    }
+  }
+
+  function ensureUserInStorage(userData: UserData): void {
+    try {
+      const existing = localStorage.getItem(STORAGE_KEYS.USER) || sessionStorage.getItem(STORAGE_KEYS.USER);
+      if (!existing) {
+        const data = JSON.stringify(userData);
+        localStorage.setItem(STORAGE_KEYS.USER, data);
+        sessionStorage.setItem(STORAGE_KEYS.USER, data);
+      }
+    } catch {}
+  }
+
   // Read tab from URL hash on mount
   useEffect(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (hash && ['overview', 'compliance-tracker', 'certificate-alerts', 'favorites', 'api-keys', 'settings'].includes(hash)) {
-      setActiveTab(hash as DashboardTab);
-    }
+    try {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && ['overview', 'compliance-tracker', 'certificate-alerts', 'favorites', 'api-keys', 'settings'].includes(hash)) {
+        setActiveTab(hash as DashboardTab);
+      }
+    } catch {}
   }, []);
 
   // Update URL hash when tab changes
   const handleTabChange = useCallback((tab: DashboardTab) => {
     setActiveTab(tab);
-    window.location.hash = tab;
+    try {
+      window.location.hash = tab;
+    } catch {}
   }, []);
 
   // Initialize user and data from localStorage
   useEffect(() => {
-    let userData = localStorage.getItem(STORAGE_KEYS.USER)
-    if (!userData) {
-      userData = sessionStorage.getItem(STORAGE_KEYS.USER)
-    }
-
-    if (!userData) {
-      router.push('/auth/login')
-      return
-    }
-
     try {
-      const parsed = JSON.parse(userData)
-      if (!parsed || !parsed.id) {
-        localStorage.removeItem(STORAGE_KEYS.USER)
-        sessionStorage.removeItem(STORAGE_KEYS.USER)
-        router.push('/auth/login')
-        return
+      let userData = localStorage.getItem(STORAGE_KEYS.USER)
+      if (!userData) {
+        userData = sessionStorage.getItem(STORAGE_KEYS.USER)
       }
-      setUser(parsed)
-    } catch {
-      localStorage.removeItem(STORAGE_KEYS.USER)
-      sessionStorage.removeItem(STORAGE_KEYS.USER)
-      router.push('/auth/login')
-      return
-    }
 
-    // Load or initialize activity stats
-    const stats = getFromStorage<ActivityStats>(STORAGE_KEYS.ACTIVITY_STATS, null);
-    if (!stats) {
-      const defaultStats = getDefaultActivityStats();
-      setToStorage(STORAGE_KEYS.ACTIVITY_STATS, defaultStats);
-      setActivityStats(defaultStats);
-    } else {
-      setActivityStats(stats);
-    }
+      if (!userData) {
+        if (getDemoSessionCookie()) {
+          ensureUserInStorage(FALLBACK_USER);
+          setUser(FALLBACK_USER);
+        } else {
+          router.push('/auth/login')
+          return
+        }
+      } else {
+        try {
+          const parsed = JSON.parse(userData)
+          if (!parsed || !parsed.id) {
+            localStorage.removeItem(STORAGE_KEYS.USER)
+            sessionStorage.removeItem(STORAGE_KEYS.USER)
+            if (getDemoSessionCookie()) {
+              ensureUserInStorage(FALLBACK_USER);
+              setUser(FALLBACK_USER);
+            } else {
+              router.push('/auth/login')
+              return
+            }
+          } else {
+            setUser(parsed)
+          }
+        } catch {
+          localStorage.removeItem(STORAGE_KEYS.USER)
+          sessionStorage.removeItem(STORAGE_KEYS.USER)
+          if (getDemoSessionCookie()) {
+            ensureUserInStorage(FALLBACK_USER);
+            setUser(FALLBACK_USER);
+          } else {
+            router.push('/auth/login')
+            return
+          }
+        }
+      }
 
-    // Load or initialize activity feed
-    const feed = getFromStorage<ActivityItem[]>(STORAGE_KEYS.ACTIVITY_FEED, null);
-    if (!feed || feed.length === 0) {
-      const defaultFeed = getDefaultActivityFeed();
-      setToStorage(STORAGE_KEYS.ACTIVITY_FEED, defaultFeed);
-      setActivityFeed(defaultFeed);
-    } else {
-      setActivityFeed(feed);
-    }
+      // Load or initialize activity stats
+      try {
+        const stats = getFromStorage<ActivityStats>(STORAGE_KEYS.ACTIVITY_STATS, null);
+        if (!stats) {
+          const defaultStats = getDefaultActivityStats();
+          setToStorage(STORAGE_KEYS.ACTIVITY_STATS, defaultStats);
+          setActivityStats(defaultStats);
+        } else {
+          setActivityStats(stats);
+        }
+      } catch { setActivityStats(getDefaultActivityStats()); }
 
-    // Load or initialize saved items
-    const saved = getFromStorage<SavedItem[]>(STORAGE_KEYS.SAVED_ITEMS, null);
-    if (!saved || saved.length === 0) {
-      const defaultSaved = getDefaultSavedItems();
-      setToStorage(STORAGE_KEYS.SAVED_ITEMS, defaultSaved);
-      setSavedItems(defaultSaved);
-    } else {
-      setSavedItems(saved);
-    }
+      // Load or initialize activity feed
+      try {
+        const feed = getFromStorage<ActivityItem[]>(STORAGE_KEYS.ACTIVITY_FEED, null);
+        if (!feed || feed.length === 0) {
+          const defaultFeed = getDefaultActivityFeed();
+          setToStorage(STORAGE_KEYS.ACTIVITY_FEED, defaultFeed);
+          setActivityFeed(defaultFeed);
+        } else {
+          setActivityFeed(feed);
+        }
+      } catch { setActivityFeed(getDefaultActivityFeed()); }
 
-    // Load or initialize tracking items
-    const tracking = getFromStorage<TrackingItem[]>(STORAGE_KEYS.TRACKING_ITEMS, null);
-    if (!tracking || tracking.length === 0) {
-      const defaultTracking = getDefaultTrackingItems();
-      setToStorage(STORAGE_KEYS.TRACKING_ITEMS, defaultTracking);
-      setTrackingItems(defaultTracking);
-    } else {
-      setTrackingItems(tracking);
-    }
+      // Load or initialize saved items
+      try {
+        const saved = getFromStorage<SavedItem[]>(STORAGE_KEYS.SAVED_ITEMS, null);
+        if (!saved || saved.length === 0) {
+          const defaultSaved = getDefaultSavedItems();
+          setToStorage(STORAGE_KEYS.SAVED_ITEMS, defaultSaved);
+          setSavedItems(defaultSaved);
+        } else {
+          setSavedItems(saved);
+        }
+      } catch { setSavedItems(getDefaultSavedItems()); }
 
-    // Load or initialize user settings
-    const savedSettings = getFromStorage<Record<string, unknown>>('ppe_user_settings', null);
-    const defaultSettings = {
-      language: locale || 'en',
-      timezone: 'UTC+8',
-      dateFormat: 'YYYY-MM-DD',
-      itemsPerPage: '20',
-      defaultMarket: 'All',
-      darkMode: false,
-      notifyRegulationUpdate: true,
-      notifyCertExpiry: true,
-      notifyMarketDynamic: false,
-      notifyEmail: true,
-      remindDaysBefore: '30',
-      twoFactorAuth: false,
-    };
-    if (savedSettings) {
-      setSettings({ ...defaultSettings, ...savedSettings } as typeof defaultSettings);
-    } else {
-      setToStorage('ppe_user_settings', defaultSettings);
-      setSettings(defaultSettings);
-    }
+      // Load or initialize tracking items
+      try {
+        const tracking = getFromStorage<TrackingItem[]>(STORAGE_KEYS.TRACKING_ITEMS, null);
+        if (!tracking || tracking.length === 0) {
+          const defaultTracking = getDefaultTrackingItems();
+          setToStorage(STORAGE_KEYS.TRACKING_ITEMS, defaultTracking);
+          setTrackingItems(defaultTracking);
+        } else {
+          setTrackingItems(tracking);
+        }
+      } catch { setTrackingItems(getDefaultTrackingItems()); }
 
-    setLoading(false);
-  }, [router]);
+      // Load or initialize user settings
+      try {
+        const savedSettings = getFromStorage<Record<string, unknown>>('ppe_user_settings', null);
+        const defaultSettings = {
+          language: locale || 'en',
+          timezone: 'UTC+8',
+          dateFormat: 'YYYY-MM-DD',
+          itemsPerPage: '20',
+          defaultMarket: 'All',
+          darkMode: false,
+          notifyRegulationUpdate: true,
+          notifyCertExpiry: true,
+          notifyMarketDynamic: false,
+          notifyEmail: true,
+          remindDaysBefore: '30',
+          twoFactorAuth: false,
+        };
+        if (savedSettings) {
+          setSettings({ ...defaultSettings, ...savedSettings } as typeof defaultSettings);
+        } else {
+          setToStorage('ppe_user_settings', defaultSettings);
+          setSettings(defaultSettings);
+        }
+      } catch {
+        setSettings({
+          language: locale || 'en',
+          timezone: 'UTC+8',
+          dateFormat: 'YYYY-MM-DD',
+          itemsPerPage: '20',
+          defaultMarket: 'All',
+          darkMode: false,
+          notifyRegulationUpdate: true,
+          notifyCertExpiry: true,
+          notifyMarketDynamic: false,
+          notifyEmail: true,
+          remindDaysBefore: '30',
+          twoFactorAuth: false,
+        });
+      }
+
+      setLoading(false);
+    } catch (err) {
+      console.error('Dashboard initialization error:', err);
+      if (getDemoSessionCookie()) {
+        ensureUserInStorage(FALLBACK_USER);
+        setUser(FALLBACK_USER);
+        setLoading(false);
+      } else {
+        router.push('/auth/login');
+      }
+    }
+  }, [router, locale]);
 
   // Fetch API keys when api-keys tab is active
   useEffect(() => {
@@ -1376,23 +1497,7 @@ export default function DashboardPage() {
   );
 
   const renderComplianceTracker = () => {
-    const getStepIcon = (status: string) => {
-      switch (status) {
-        case 'completed': return <CheckCircle2 className="w-5 h-5 text-green-500" />;
-        case 'in_progress': return <Clock className="w-5 h-5 text-[#339999] animate-pulse" />;
-        case 'pending': return <div className="w-5 h-5 rounded-full border-2 border-gray-300" />;
-        default: return <div className="w-5 h-5 rounded-full border-2 border-gray-300" />;
-      }
-    };
-
-    const getStepStatusLabel = (status: string) => {
-      switch (status) {
-        case 'completed': return locale === 'zh' ? '已完成' : 'Completed';
-        case 'in_progress': return locale === 'zh' ? '进行中' : 'In Progress';
-        case 'pending': return locale === 'zh' ? '待处理' : 'Pending';
-        default: return status;
-      }
-    };
+    const isZh = locale === 'zh';
 
     return (
       <>
@@ -1477,7 +1582,7 @@ export default function DashboardPage() {
                     <div className="space-y-3">
                       {item.steps.map((step, index) => (
                         <div key={index} className="flex items-center gap-4">
-                          {getStepIcon(step.status)}
+                          <StepIcon status={step.status} />
                           <div className="flex-1">
                             <p className={`text-sm font-medium ${
                               step.status === 'completed' ? 'text-gray-500 line-through' :
@@ -1498,7 +1603,15 @@ export default function DashboardPage() {
                             step.status === 'in_progress' ? 'bg-[#339999]/10 text-[#339999]' :
                             'bg-gray-100 text-gray-500'
                           }`}>
-                            {getStepStatusLabel(step.status)}
+                            {isZh ? (
+                              step.status === 'completed' ? '已完成' :
+                              step.status === 'in_progress' ? '进行中' :
+                              step.status === 'pending' ? '待处理' : step.status
+                            ) : (
+                              step.status === 'completed' ? 'Completed' :
+                              step.status === 'in_progress' ? 'In Progress' :
+                              step.status === 'pending' ? 'Pending' : step.status
+                            )}
                           </span>
                         </div>
                       ))}
@@ -1519,17 +1632,9 @@ export default function DashboardPage() {
   };
 
   const renderCertificateAlerts = () => {
-    const getStatusBadge = (status: string, daysRemaining: number) => {
-      if (status === 'expired' || daysRemaining <= 0) {
-        return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-red-100 text-red-700"><XCircle className="w-3 h-3" /> {t.expiredStatus}</span>;
-      }
-      if (status === 'expiring_soon' || daysRemaining <= 90) {
-        return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-yellow-100 text-yellow-700"><AlertTriangle className="w-3 h-3" /> {t.expiringSoonStatus}</span>;
-      }
-      return <span className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-green-100 text-green-700"><CheckCircle2 className="w-3 h-3" /> {t.validStatus}</span>;
-    };
+    const isZh = locale === 'zh';
 
-    const getStatusLabel = (status: string) => {
+    const getStatusFilterLabel = (status: string) => {
       switch (status) {
         case 'all': return t.allLabel;
         case 'valid': return t.validStatus;
@@ -1572,7 +1677,7 @@ export default function DashboardPage() {
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                {getStatusLabel(status)}
+                {getStatusFilterLabel(status)}
               </button>
             ))}
           </div>
@@ -1591,7 +1696,7 @@ export default function DashboardPage() {
                       <span className="text-sm text-gray-500">{alert.manufacturer}</span>
                     </div>
                   </div>
-                  {getStatusBadge(alert.status, alert.daysRemaining)}
+                  <StatusBadge status={alert.status} daysRemaining={alert.daysRemaining} isZh={isZh} />
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
@@ -1610,7 +1715,7 @@ export default function DashboardPage() {
                   <div>
                     <p className="text-xs text-gray-400 mb-1">{t.daysRemainingLabel}</p>
                     <p className={`text-sm font-bold ${alert.daysRemaining <= 90 ? 'text-red-600' : 'text-green-600'}`}>
-                      {alert.daysRemaining} {locale === 'zh' ? '天' : 'days'}
+                      {alert.daysRemaining} {isZh ? '天' : 'days'}
                     </p>
                   </div>
                 </div>
@@ -1970,14 +2075,7 @@ export default function DashboardPage() {
     setToStorage('ppe_user_settings', updated);
   }, [settings]);
 
-  // Mock login history
-  const loginHistory = [
-    { time: new Date(Date.now() - 1000 * 60 * 30).toISOString(), device: 'Chrome / macOS', ip: '192.168.1.100' },
-    { time: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), device: 'Safari / iOS', ip: '10.0.0.55' },
-    { time: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(), device: 'Chrome / Windows', ip: '172.16.0.12' },
-    { time: new Date(Date.now() - 1000 * 60 * 60 * 96).toISOString(), device: 'Firefox / Linux', ip: '192.168.2.34' },
-    { time: new Date(Date.now() - 1000 * 60 * 60 * 168).toISOString(), device: 'Chrome / macOS', ip: '192.168.1.100' },
-  ];
+  const loginHistory: { time: string; device: string; ip: string }[] = [];
 
   const renderSettings = () => {
     if (!settings) return null;
@@ -2175,6 +2273,9 @@ export default function DashboardPage() {
           {/* Login History */}
           <div className="mt-6 pt-4 border-t border-gray-100">
             <h4 className="text-sm font-semibold text-gray-700 mb-3">{locale === 'zh' ? '登录历史' : 'Login History'}</h4>
+            {loginHistory.length === 0 ? (
+              <p className="text-sm text-gray-400 py-2">{locale === 'zh' ? '暂无登录记录' : 'No login history'}</p>
+            ) : (
             <div className="space-y-2">
               {loginHistory.map((entry, idx) => (
                 <div key={idx} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg text-sm">
@@ -2189,6 +2290,7 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
+            )}
           </div>
         </Card>
 
