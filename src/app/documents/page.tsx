@@ -30,6 +30,8 @@ import { Button } from '@/components/ui'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/Tabs'
 import { getPPECategories, getTargetMarkets } from '@/lib/ppe-data'
 import { getUserMembership, canAccessFeature, getMembershipName, type MembershipTier } from '@/lib/membership'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 // 文档分类
 const CATEGORIES = [
@@ -4770,6 +4772,8 @@ function generateDocumentContent(docId: string, docTitle: string, docDescription
 }
 
 export default function DocumentsPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedMarket, setSelectedMarket] = useState<string | null>(null)
@@ -5125,10 +5129,10 @@ ${markdownContent
               <Download className="w-8 h-8 text-[#339999]" />
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Document Center
+              {t.documentTemplates}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Download templates, checklists, guides, and regulatory documents for PPE compliance
+              {t.documentTemplatesSubtitle}
             </p>
           </div>
         </div>

@@ -37,6 +37,7 @@ import { DataSourceBadge } from '@/components/data/DataSourceBadge'
 import { LastUpdateTime } from '@/components/data/LastUpdateTime'
 import { Button, Badge, Card } from '@/components/ui'
 import { createClient } from '@/lib/supabase/client'
+import { FavoriteButton } from '@/components/FavoriteButton'
 
 interface Company {
   id: string
@@ -146,7 +147,6 @@ const trustLevelConfig = {
 
 export function CompanyDetail({ company, products, alerts, history, sources }: CompanyDetailProps) {
   const [activeTab, setActiveTab] = useState<'products' | 'alerts' | 'history'>('products')
-  const [isFavorite, setIsFavorite] = useState(false)
   const [relatedCompanies, setRelatedCompanies] = useState<any[]>([])
 
   const totalProducts = products.length
@@ -199,25 +199,6 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
     return base.padEnd(18, '0')
   }
 
-  // Toggle favorite
-  const toggleFavorite = async () => {
-    try {
-      if (isFavorite) {
-        await fetch(`/api/bookmarks/company/${company.id}`, { method: 'DELETE' })
-        setIsFavorite(false)
-      } else {
-        await fetch('/api/bookmarks', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ entityType: 'company', entityId: company.id })
-        })
-        setIsFavorite(true)
-      }
-    } catch (err) {
-      console.error('Failed to toggle favorite:', err)
-    }
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
@@ -249,15 +230,12 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
                   )}
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={toggleFavorite}
-                    className={isFavorite ? 'text-yellow-500 border-yellow-500' : ''}
-                  >
-                    <Star className={`w-4 h-4 mr-1 ${isFavorite ? 'fill-yellow-400' : ''}`} />
-                    {isFavorite ? 'Saved' : 'Save'}
-                  </Button>
+                  <FavoriteButton
+                    id={company.id}
+                    type="enterprise"
+                    title={company.name}
+                    url={`/company/${company.id}`}
+                  />
                 </div>
               </div>
               

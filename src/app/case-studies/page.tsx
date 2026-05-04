@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from 'react'
 import { FolderOpen, Search, Tag, MapPin, Building, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 const CASE_STUDIES = [
   {
@@ -95,6 +97,8 @@ const CASE_STUDIES = [
 ]
 
 export default function CaseStudiesPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedMarket, setSelectedMarket] = useState('all')
   const [expandedStudy, setExpandedStudy] = useState<string | null>(null)
@@ -144,9 +148,9 @@ export default function CaseStudiesPage() {
                 <FolderOpen className="w-10 h-10 text-[#339999]" />
               </div>
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">Case Studies</h1>
+            <h1 className="text-5xl font-bold text-gray-900 mb-4">{t.caseStudies}</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Real-world PPE compliance experiences from leading manufacturers across different markets
+              {t.caseStudiesSubtitle}
             </p>
           </div>
         </div>
@@ -225,19 +229,19 @@ export default function CaseStudiesPage() {
                     
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Background</h3>
+                        <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">{t.background}</h3>
                         <p className="text-gray-700 leading-relaxed">{study.background}</p>
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Challenge</h3>
+                        <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">{t.challenge}</h3>
                         <p className="text-gray-700 leading-relaxed">{study.challenge}</p>
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Solution</h3>
+                        <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">{t.solution}</h3>
                         <p className="text-gray-700 leading-relaxed">{study.solution}</p>
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Outcome</h3>
+                        <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">{t.outcome}</h3>
                         <p className="text-gray-700 leading-relaxed">{study.outcome}</p>
                       </div>
                     </div>
@@ -252,8 +256,8 @@ export default function CaseStudiesPage() {
                         ))}
                       </div>
                       <div className="flex items-center gap-4 text-sm text-gray-500">
-                        <span>Duration: {study.duration}</span>
-                        <span>Cost: {study.cost}</span>
+                        <span>{t.duration}: {study.duration}</span>
+                        <span>{t.cost}: {study.cost}</span>
                       </div>
                     </div>
                   </div>

@@ -5,6 +5,8 @@ import { CheckCircle, XCircle, AlertCircle, Scale, FileText, Clock, DollarSign, 
 import { motion } from 'framer-motion'
 import { getPPECategories, getTargetMarkets, getComplianceData } from '@/lib/ppe-data'
 import { PPEIcon } from '@/components/ppe/PPEIcons'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -32,6 +34,8 @@ interface CertificationData {
 }
 
 export default function CertificationComparisonPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const categories = getPPECategories()
   const markets = getTargetMarkets()
   
@@ -208,8 +212,50 @@ export default function CertificationComparisonPage() {
 
   const category = categories.find(c => c.id === selectedCategory)
 
-  const handleExport = (format: 'pdf' | 'excel') => {
-    alert(`Exporting comparison as ${format.toUpperCase()}...\n\nNote: This is a demo. In production, this would generate and download the actual file.`)
+  const handleExport = (format: 'pdf' | 'excel' | 'csv') => {
+    if (!comparisonData || comparisonData.length === 0) return
+
+    const categoryName = category?.name || selectedCategory
+    const headers = ['Market', 'Certification', 'Classification', 'Timeline', 'Cost', 'Requirements', 'Documents', 'Warnings']
+    const rows = comparisonData.map(cert => [
+      cert.market,
+      cert.name,
+      cert.classification,
+      typeof cert.timeline === 'object' ? `${cert.timeline.min}-${cert.timeline.max} ${cert.timeline.unit}` : String(cert.timeline),
+      typeof cert.cost === 'object' ? `${cert.cost.min}-${cert.cost.max} ${cert.cost.currency}` : String(cert.cost),
+      (cert.requirements || []).join('; '),
+      (cert.documents || []).join('; '),
+      (cert.warnings || []).join('; '),
+    ])
+
+    if (format === 'csv' || format === 'excel') {
+      const escapeCSV = (val: string) => {
+        if (val.includes(',') || val.includes('"') || val.includes('\n')) {
+          return `"${val.replace(/"/g, '""')}"`
+        }
+        return val
+      }
+      const csvContent = [headers.map(escapeCSV).join(','), ...rows.map(r => r.map(escapeCSV).join(','))].join('\n')
+      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = format === 'excel'
+        ? `PPE_Certification_Comparison_${categoryName}.xlsx`
+        : `PPE_Certification_Comparison_${categoryName}.csv`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    } else if (format === 'pdf') {
+      const printWindow = window.open('', '_blank')
+      if (printWindow) {
+        const tableRows = rows.map(r => `<tr>${r.map(c => `<td style="border:1px solid #ddd;padding:8px;font-size:12px;">${c}</td>`).join('')}</tr>`).join('')
+        const headerRow = headers.map(h => `<th style="border:1px solid #ddd;padding:8px;background:#339999;color:white;font-size:12px;">${h}</th>`).join('')
+        printWindow.document.write(`<!DOCTYPE html><html><head><title>PPE Certification Comparison - ${categoryName}</title><style>body{font-family:Arial,sans-serif;margin:20px;}h1{color:#339999;}table{border-collapse:collapse;width:100%;margin-top:16px;}th,td{border:1px solid #ddd;padding:8px;text-align:left;}</style></head><body><h1>PPE Certification Comparison</h1><p>Category: ${categoryName}</p><p>Generated: ${new Date().toLocaleDateString()}</p><table><thead><tr>${headerRow}</tr></thead><tbody>${tableRows}</tbody></table><script>window.print();</script></body></html>`)
+        printWindow.document.close()
+      }
+    }
     setShowExport(false)
   }
 
@@ -230,10 +276,10 @@ export default function CertificationComparisonPage() {
               </div>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Multi-Market Comparison
+              {t.multiMarketComparison}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Side-by-side comparison of CE, FDA, UKCA, and NMPA certification requirements
+              {t.multiMarketComparisonSubtitle}
             </p>
           </motion.div>
         </div>
@@ -250,7 +296,7 @@ export default function CertificationComparisonPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div className="bg-white rounded-2xl shadow-xl p-8" variants={fadeInUp}>
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Select Product Category to Compare
+              {t.selectProductCategory}
             </h2>
             
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -308,7 +354,7 @@ export default function CertificationComparisonPage() {
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900">
-                      {category?.name} - Market Comparison
+                      {category?.name} - {t.marketComparison}
                     </h2>
                     <p className="text-gray-600">{category?.name_zh}</p>
                   </div>
@@ -325,7 +371,7 @@ export default function CertificationComparisonPage() {
                       }`}
                     >
                       <Table2 className="w-4 h-4 inline mr-1" />
-                      Table
+                      {t.table}
                     </button>
                     <button
                       onClick={() => setViewMode('cards')}
@@ -336,7 +382,7 @@ export default function CertificationComparisonPage() {
                       }`}
                     >
                       <BarChart3 className="w-4 h-4 inline mr-1" />
-                      Cards
+                      {t.cards}
                     </button>
                   </div>
                   {/* Export Button */}
@@ -346,23 +392,30 @@ export default function CertificationComparisonPage() {
                       className="px-4 py-2 bg-[#339999] text-white rounded-lg hover:bg-[#2d8b8b] transition-colors flex items-center gap-2"
                     >
                       <Download className="w-4 h-4" />
-                      Export
+                      {t.exportLabel}
                     </button>
                     {showExport && (
                       <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-10">
                         <button
-                          onClick={() => handleExport('pdf')}
+                          onClick={() => handleExport('csv')}
                           className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-t-lg flex items-center gap-2"
                         >
-                          <FileText className="w-4 h-4 text-red-500" />
-                          Export as PDF
+                          <FileText className="w-4 h-4 text-blue-500" />
+                          {t.exportAsCSV}
                         </button>
                         <button
                           onClick={() => handleExport('excel')}
-                          className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-b-lg flex items-center gap-2"
+                          className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
                         >
                           <FileText className="w-4 h-4 text-green-500" />
-                          Export as Excel
+                          {t.exportAsExcel}
+                        </button>
+                        <button
+                          onClick={() => handleExport('pdf')}
+                          className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-b-lg flex items-center gap-2"
+                        >
+                          <FileText className="w-4 h-4 text-red-500" />
+                          {t.exportAsPDF}
                         </button>
                       </div>
                     )}

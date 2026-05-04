@@ -6,6 +6,7 @@ import { ArrowLeft, Calendar, Clock, User, Tag, TrendingUp, TrendingDown, Minus,
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getTranslations } from '@/lib/i18n/translations'
 import { getMarketReportById, MarketReport } from '@/lib/data/market-reports'
+import { FavoriteButton } from '@/components/FavoriteButton'
 
 const detailTranslations = {
   en: {
@@ -106,6 +107,16 @@ export default function ReportDetailPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             {title}
           </h1>
+
+          <div className="flex items-center gap-3 mb-4">
+            <FavoriteButton
+              id={report.id}
+              type="news"
+              title={title}
+              url={`/market-analysis/reports/${report.id}`}
+              locale={locale}
+            />
+          </div>
 
           <p className="text-xl text-gray-600 mb-6">
             {summary}

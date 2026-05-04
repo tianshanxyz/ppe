@@ -534,6 +534,23 @@ export default function DashboardPage() {
   const [visibleKeys, setVisibleKeys] = useState<Set<string>>(new Set());
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  // Settings state
+  const [settings, setSettings] = useState<{
+    language: string;
+    timezone: string;
+    dateFormat: string;
+    itemsPerPage: string;
+    defaultMarket: string;
+    darkMode: boolean;
+    notifyRegulationUpdate: boolean;
+    notifyCertExpiry: boolean;
+    notifyMarketDynamic: boolean;
+    notifyEmail: boolean;
+    remindDaysBefore: string;
+    twoFactorAuth: boolean;
+  } | null>(null);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+
   // Read tab from URL hash on mount
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
@@ -614,6 +631,29 @@ export default function DashboardPage() {
       setTrackingItems(defaultTracking);
     } else {
       setTrackingItems(tracking);
+    }
+
+    // Load or initialize user settings
+    const savedSettings = getFromStorage<Record<string, unknown>>('ppe_user_settings', null);
+    const defaultSettings = {
+      language: locale || 'en',
+      timezone: 'UTC+8',
+      dateFormat: 'YYYY-MM-DD',
+      itemsPerPage: '20',
+      defaultMarket: 'All',
+      darkMode: false,
+      notifyRegulationUpdate: true,
+      notifyCertExpiry: true,
+      notifyMarketDynamic: false,
+      notifyEmail: true,
+      remindDaysBefore: '30',
+      twoFactorAuth: false,
+    };
+    if (savedSettings) {
+      setSettings({ ...defaultSettings, ...savedSettings } as typeof defaultSettings);
+    } else {
+      setToStorage('ppe_user_settings', defaultSettings);
+      setSettings(defaultSettings);
     }
 
     setLoading(false);
@@ -2062,84 +2102,297 @@ export default function DashboardPage() {
     );
   };
 
-  const renderSettings = () => (
-    <>
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-          <Settings className="w-6 h-6 text-[#339999]" />
-          {t.settingsSection}
-        </h2>
-      </div>
+  const updateSetting = useCallback(<K extends string>(key: K, value: unknown) => {
+    if (!settings) return;
+    const updated = { ...settings, [key]: value };
+    setSettings(updated as typeof settings);
+    setToStorage('ppe_user_settings', updated);
+  }, [settings]);
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        {settingsLinks.map((item, index) => {
-          const Icon = item.icon;
-          if (item.action) {
-            return (
-              <div key={index} className="block cursor-pointer" onClick={() => handleTabChange(item.action as DashboardTab)}>
-                <Card className="p-4 bg-white shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-[#339999]/10 rounded-xl flex items-center justify-center">
-                      <Icon className="w-6 h-6 text-[#339999]" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-800">{item.title}</h3>
-                      <p className="text-gray-500 text-sm">{item.description}</p>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                  </div>
-                </Card>
-              </div>
-            );
-          }
-          return (
-            <Card key={index} className="p-4 bg-white shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-[#339999]/10 rounded-xl flex items-center justify-center">
-                  <Icon className="w-6 h-6 text-[#339999]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-gray-800">{item.title}</h3>
-                  <p className="text-gray-500 text-sm">{item.description}</p>
-                </div>
-                <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />
-              </div>
-            </Card>
-          );
-        })}
-      </div>
+  // Mock login history
+  const loginHistory = [
+    { time: new Date(Date.now() - 1000 * 60 * 30).toISOString(), device: 'Chrome / macOS', ip: '192.168.1.100' },
+    { time: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), device: 'Safari / iOS', ip: '10.0.0.55' },
+    { time: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(), device: 'Chrome / Windows', ip: '172.16.0.12' },
+    { time: new Date(Date.now() - 1000 * 60 * 60 * 96).toISOString(), device: 'Firefox / Linux', ip: '192.168.2.34' },
+    { time: new Date(Date.now() - 1000 * 60 * 60 * 168).toISOString(), device: 'Chrome / macOS', ip: '192.168.1.100' },
+  ];
 
-      {/* Account info */}
-      <Card className="p-6 bg-white shadow-sm">
-        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <User className="w-5 h-5 text-[#339999]" />
-          {locale === 'zh' ? '账户信息' : 'Account Information'}
-        </h3>
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-[#339999] to-[#2d8b8b] rounded-full flex items-center justify-center flex-shrink-0">
-              <User className="w-8 h-8 text-white" />
+  const renderSettings = () => {
+    if (!settings) return null;
+
+    const ToggleSwitch = ({ checked, onChange, disabled = false }: { checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }) => (
+      <button
+        onClick={() => !disabled && onChange(!checked)}
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${checked ? 'bg-[#339999]' : 'bg-gray-300'} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+        disabled={disabled}
+      >
+        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${checked ? 'translate-x-6' : 'translate-x-1'}`} />
+      </button>
+    );
+
+    return (
+      <>
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <Settings className="w-6 h-6 text-[#339999]" />
+            {t.settingsSection}
+          </h2>
+        </div>
+
+        {/* User Preferences */}
+        <Card className="p-6 bg-white shadow-sm mb-6">
+          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Globe className="w-5 h-5 text-[#339999]" />
+            {locale === 'zh' ? '用户偏好' : 'User Preferences'}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {locale === 'zh' ? '语言偏好' : 'Language'}
+              </label>
+              <select
+                value={settings.language}
+                onChange={(e) => updateSetting('language', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-[#339999] focus:ring-1 focus:ring-[#339999]/20 focus:outline-none"
+              >
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+              </select>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-800">{user.name || (locale === 'zh' ? '用户' : 'User')}</h4>
-              <p className="text-gray-500 text-sm">{user.email}</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className={`px-2 py-0.5 ${getMembershipColor(membershipTier)} text-xs rounded-full font-medium`}>
-                  {membershipLabel}
-                </span>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {locale === 'zh' ? '时区' : 'Timezone'}
+              </label>
+              <select
+                value={settings.timezone}
+                onChange={(e) => updateSetting('timezone', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-[#339999] focus:ring-1 focus:ring-[#339999]/20 focus:outline-none"
+              >
+                <option value="UTC">UTC</option>
+                <option value="UTC+8">UTC+8 {locale === 'zh' ? '北京' : 'Beijing'}</option>
+                <option value="UTC-5">UTC-5 {locale === 'zh' ? '纽约' : 'New York'}</option>
+                <option value="UTC+1">UTC+1 {locale === 'zh' ? '柏林' : 'Berlin'}</option>
+                <option value="UTC+9">UTC+9 {locale === 'zh' ? '东京' : 'Tokyo'}</option>
+                <option value="UTC-8">UTC-8 {locale === 'zh' ? '洛杉矶' : 'Los Angeles'}</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {locale === 'zh' ? '日期格式' : 'Date Format'}
+              </label>
+              <select
+                value={settings.dateFormat}
+                onChange={(e) => updateSetting('dateFormat', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-[#339999] focus:ring-1 focus:ring-[#339999]/20 focus:outline-none"
+              >
+                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+              </select>
+            </div>
+          </div>
+        </Card>
+
+        {/* Display Settings */}
+        <Card className="p-6 bg-white shadow-sm mb-6">
+          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Eye className="w-5 h-5 text-[#339999]" />
+            {locale === 'zh' ? '显示设置' : 'Display Settings'}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {locale === 'zh' ? '每页显示数量' : 'Items Per Page'}
+              </label>
+              <select
+                value={settings.itemsPerPage}
+                onChange={(e) => updateSetting('itemsPerPage', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-[#339999] focus:ring-1 focus:ring-[#339999]/20 focus:outline-none"
+              >
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {locale === 'zh' ? '默认市场' : 'Default Market'}
+              </label>
+              <select
+                value={settings.defaultMarket}
+                onChange={(e) => updateSetting('defaultMarket', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-[#339999] focus:ring-1 focus:ring-[#339999]/20 focus:outline-none"
+              >
+                <option value="All">{locale === 'zh' ? '全部' : 'All'}</option>
+                <option value="EU">EU</option>
+                <option value="US">US</option>
+                <option value="CN">CN</option>
+                <option value="UK">UK</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {locale === 'zh' ? '深色模式' : 'Dark Mode'}
+              </label>
+              <div className="flex items-center gap-3 py-2">
+                <ToggleSwitch checked={settings.darkMode} onChange={(v) => updateSetting('darkMode', v)} disabled />
+                <span className="text-xs text-gray-400">{locale === 'zh' ? '即将推出' : 'Coming soon'}</span>
               </div>
             </div>
           </div>
-        </div>
-        <div className="mt-6 pt-4 border-t border-gray-100">
-          <Button variant="ghost" size="sm" onClick={handleLogout} className="text-red-500 hover:text-red-700 hover:bg-red-50">
-            <LogOut className="w-4 h-4 mr-1.5" />
-            {t.signOut}
-          </Button>
-        </div>
-      </Card>
-    </>
-  );
+        </Card>
+
+        {/* Notification Settings */}
+        <Card className="p-6 bg-white shadow-sm mb-6">
+          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Bell className="w-5 h-5 text-[#339999]" />
+            {t.notificationPreferences}
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-700">{locale === 'zh' ? '法规更新通知' : 'Regulation Update Notifications'}</p>
+                <p className="text-xs text-gray-500">{locale === 'zh' ? '当关注的法规发生变化时通知您' : 'Notify when tracked regulations change'}</p>
+              </div>
+              <ToggleSwitch checked={settings.notifyRegulationUpdate} onChange={(v) => updateSetting('notifyRegulationUpdate', v)} />
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-700">{locale === 'zh' ? '证书到期提醒' : 'Certificate Expiry Reminders'}</p>
+                <p className="text-xs text-gray-500">{locale === 'zh' ? '证书即将到期时发送提醒' : 'Send reminders when certificates are expiring'}</p>
+              </div>
+              <ToggleSwitch checked={settings.notifyCertExpiry} onChange={(v) => updateSetting('notifyCertExpiry', v)} />
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-700">{locale === 'zh' ? '市场动态通知' : 'Market Dynamic Notifications'}</p>
+                <p className="text-xs text-gray-500">{locale === 'zh' ? '市场准入政策变化时通知您' : 'Notify when market access policies change'}</p>
+              </div>
+              <ToggleSwitch checked={settings.notifyMarketDynamic} onChange={(v) => updateSetting('notifyMarketDynamic', v)} />
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-700">{locale === 'zh' ? '邮件通知' : 'Email Notifications'}</p>
+                <p className="text-xs text-gray-500">{locale === 'zh' ? '通过邮件接收重要通知' : 'Receive important notifications via email'}</p>
+              </div>
+              <ToggleSwitch checked={settings.notifyEmail} onChange={(v) => updateSetting('notifyEmail', v)} />
+            </div>
+            <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+              <div>
+                <p className="text-sm font-medium text-gray-700">{locale === 'zh' ? '提前提醒天数' : 'Remind Days Before Expiry'}</p>
+                <p className="text-xs text-gray-500">{locale === 'zh' ? '证书到期前多少天发送提醒' : 'How many days before expiry to send reminder'}</p>
+              </div>
+              <input
+                type="number"
+                min="1"
+                max="365"
+                value={settings.remindDaysBefore}
+                onChange={(e) => updateSetting('remindDaysBefore', e.target.value)}
+                className="w-24 px-3 py-2 border border-gray-200 rounded-lg text-sm text-center focus:border-[#339999] focus:ring-1 focus:ring-[#339999]/20 focus:outline-none"
+              />
+            </div>
+          </div>
+        </Card>
+
+        {/* Security Settings */}
+        <Card className="p-6 bg-white shadow-sm mb-6">
+          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Lock className="w-5 h-5 text-[#339999]" />
+            {t.securitySettings}
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-700">{locale === 'zh' ? '修改密码' : 'Change Password'}</p>
+                <p className="text-xs text-gray-500">{locale === 'zh' ? '更新您的账户密码' : 'Update your account password'}</p>
+              </div>
+              <Button variant="outline" size="sm" onClick={() => setShowPasswordModal(true)}>
+                <Edit className="w-4 h-4 mr-1.5" />
+                {locale === 'zh' ? '修改密码' : 'Change'}
+              </Button>
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-700">{locale === 'zh' ? '两步验证' : 'Two-Factor Authentication'}</p>
+                <p className="text-xs text-gray-500">{locale === 'zh' ? '为您的账户添加额外安全层' : 'Add an extra layer of security to your account'}</p>
+              </div>
+              <ToggleSwitch checked={settings.twoFactorAuth} onChange={(v) => updateSetting('twoFactorAuth', v)} />
+            </div>
+          </div>
+
+          {/* Login History */}
+          <div className="mt-6 pt-4 border-t border-gray-100">
+            <h4 className="text-sm font-semibold text-gray-700 mb-3">{locale === 'zh' ? '登录历史' : 'Login History'}</h4>
+            <div className="space-y-2">
+              {loginHistory.map((entry, idx) => (
+                <div key={idx} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg text-sm">
+                  <div className="flex items-center gap-3">
+                    <Activity className="w-4 h-4 text-gray-400" />
+                    <span className="text-gray-700">{entry.device}</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs text-gray-500">
+                    <span>{entry.ip}</span>
+                    <span>{formatRelativeTime(entry.time, t)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Card>
+
+        {/* Account info */}
+        <Card className="p-6 bg-white shadow-sm">
+          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <User className="w-5 h-5 text-[#339999]" />
+            {locale === 'zh' ? '账户信息' : 'Account Information'}
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#339999] to-[#2d8b8b] rounded-full flex items-center justify-center flex-shrink-0">
+                <User className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-800">{user.name || (locale === 'zh' ? '用户' : 'User')}</h4>
+                <p className="text-gray-500 text-sm">{user.email}</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className={`px-2 py-0.5 ${getMembershipColor(membershipTier)} text-xs rounded-full font-medium`}>
+                    {membershipLabel}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-6 pt-4 border-t border-gray-100">
+            <Button variant="ghost" size="sm" onClick={handleLogout} className="text-red-500 hover:text-red-700 hover:bg-red-50">
+              <LogOut className="w-4 h-4 mr-1.5" />
+              {t.signOut}
+            </Button>
+          </div>
+        </Card>
+
+        {/* Password Modal */}
+        {showPasswordModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowPasswordModal(false)}>
+            <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Lock className="w-8 h-8 text-amber-600" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{locale === 'zh' ? '修改密码' : 'Change Password'}</h3>
+                <p className="text-gray-600 text-sm mb-6">
+                  {locale === 'zh' ? '请联系管理员修改密码。' : 'Please contact the administrator to change your password.'}
+                </p>
+                <Button variant="primary" onClick={() => setShowPasswordModal(false)}>
+                  {t.close}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
+  };
 
   // --- Render main layout ---
   return (

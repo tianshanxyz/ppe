@@ -14,6 +14,7 @@ import { DataSourceBadge } from '@/components/DataSourceBadge'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 import type { Locale } from '@/lib/i18n/config'
+import { FavoriteButton } from '@/components/FavoriteButton'
 
 const COUNTRY_DISPLAY_EN: Record<string, string> = {
   US: 'United States', CA: 'Canada', CN: 'China', GB: 'United Kingdom',
@@ -155,9 +156,18 @@ export default function ManufacturerDetailPage() {
 
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                {manufacturer.name}
-              </h1>
+              <div className="flex items-center gap-3">
+                <h1 className="text-4xl font-bold text-gray-900 mb-4">
+                  {manufacturer.name}
+                </h1>
+                <FavoriteButton
+                  id={id}
+                  type="enterprise"
+                  title={manufacturer.name}
+                  url={`/manufacturers/${id}`}
+                  locale={locale}
+                />
+              </div>
               <div className="flex flex-wrap gap-6">
                 {manufacturer.country && (
                   <div className="flex items-center text-gray-600">

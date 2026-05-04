@@ -3,6 +3,8 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Bell, Search, AlertTriangle, Clock, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 export interface RegulatoryAlert {
   id: string
@@ -127,6 +129,8 @@ Notified Bodies are required to apply the 5th edition guidelines to all new EU T
 ]
 
 export default function RegulatoryAlertsPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedSeverity, setSelectedSeverity] = useState('all')
   const [activeSearch, setActiveSearch] = useState('')
@@ -185,9 +189,9 @@ export default function RegulatoryAlertsPage() {
                 <Bell className="w-10 h-10 text-[#339999]" />
               </div>
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">Regulatory Alerts</h1>
+            <h1 className="text-5xl font-bold text-gray-900 mb-4">{t.regulatoryAlerts}</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Stay ahead of regulatory changes that impact your PPE products and compliance status
+              {t.regulatoryAlertsSubtitle}
             </p>
           </div>
         </div>

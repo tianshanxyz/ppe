@@ -1041,7 +1041,7 @@ ${guide.templates.map(t => `<tr><td>${t.name}</td><td>${t.format}</td><td>${t.si
               {t.complianceGuides}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {locale === 'zh' ? '逐步指南，帮助您应对全球市场的PPE认证要求' : 'Step-by-step guides to navigate PPE certification requirements across global markets'}
+              {t.complianceGuidesSubtitle}
             </p>
           </div>
         </div>

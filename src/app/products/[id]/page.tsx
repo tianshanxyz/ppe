@@ -13,6 +13,7 @@ import {
 import { getPPEProduct } from '@/lib/ppe-database-client'
 import { createClient } from '@/lib/supabase/client'
 import { DataSourceBadge } from '@/components/DataSourceBadge'
+import { FavoriteButton } from '@/components/FavoriteButton'
 
 export default function ProductDetailPage() {
   const params = useParams()
@@ -166,10 +167,18 @@ export default function ProductDetailPage() {
                 <div className="w-14 h-14 bg-gradient-to-br from-[#339999]/10 to-[#339999]/5 rounded-2xl flex items-center justify-center border border-[#339999]/20">
                   <Package className="w-7 h-7 text-[#339999]" />
                 </div>
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900">
-                    {product.product_name || product.name}
-                  </h1>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3">
+                    <h1 className="text-3xl font-bold text-gray-900">
+                      {product.product_name || product.name}
+                    </h1>
+                    <FavoriteButton
+                      id={id}
+                      type="product"
+                      title={product.product_name || product.name}
+                      url={`/products/${id}`}
+                    />
+                  </div>
                   {product.risk_level && (
                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mt-1 ${
                       product.risk_level === 'high'

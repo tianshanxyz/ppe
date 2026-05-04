@@ -5,6 +5,7 @@ import { BookOpen, ArrowLeft, Clock, Calendar, Tag, AlertCircle } from 'lucide-r
 import Link from 'next/link'
 import { useTranslation, useLocale } from '@/lib/i18n/useLocale'
 import { knowledgeBaseTranslations } from '@/lib/i18n/translations'
+import { FavoriteButton } from '@/components/FavoriteButton'
 
 const KNOWLEDGE_ARTICLES: Record<string, {
   title: string
@@ -1465,6 +1466,13 @@ export default function KnowledgeArticlePage() {
             <span className="flex items-center gap-1"><BookOpen className="w-4 h-4" />{article.category}</span>
             <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{article.readTime}</span>
             <span className="flex items-center gap-1"><Calendar className="w-4 h-4" />{article.updatedAt}</span>
+            <FavoriteButton
+              id={articleId}
+              type="news"
+              title={displayTitle}
+              url={`/knowledge-base/${articleId}`}
+              locale={locale}
+            />
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
             {article.tags.map(tag => (

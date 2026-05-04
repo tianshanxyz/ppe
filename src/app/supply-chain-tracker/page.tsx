@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { Link2, Search, CheckCircle2, Clock, AlertTriangle, XCircle, ArrowRight, ChevronDown, ChevronRight, Factory, Package, Truck, ShieldCheck, FileCheck } from 'lucide-react'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 
 interface SupplyChainStep {
   id: string
@@ -174,6 +176,8 @@ const SUPPLY_CHAIN_PRODUCTS: SupplyChainProduct[] = [
 ]
 
 export default function SupplyChainTrackerPage() {
+  const locale = useLocale()
+  const t = getTranslations(commonTranslations, locale)
   const [searchQuery, setSearchQuery] = useState('')
   const [expandedProduct, setExpandedProduct] = useState<string | null>(null)
   const [expandedStep, setExpandedStep] = useState<string | null>(null)
@@ -215,21 +219,21 @@ export default function SupplyChainTrackerPage() {
                 <Link2 className="w-10 h-10 text-[#339999]" />
               </div>
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">Supply Chain Compliance Tracker</h1>
+            <h1 className="text-5xl font-bold text-gray-900 mb-4">{t.supplyChainTracker}</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Track compliance across your entire supply chain, from raw materials to finished products
+              {t.supplyChainTrackerSubtitle}
             </p>
           </div>
         </div>
       </section>
 
-      {/* Demo Data Notice */}
-      <div className="bg-amber-50 border-b border-amber-200">
+      {/* Data Notice */}
+      <div className="bg-blue-50 border-b border-blue-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex items-center gap-2 text-amber-800 text-sm">
+          <div className="flex items-center gap-2 text-blue-800 text-sm">
             <AlertTriangle className="w-4 h-4" />
-            <span className="font-medium">Demo Data:</span>
-            <span>The following supply chain data is for demonstration purposes only. Real supply chain tracking will be available after connecting to supplier databases.</span>
+            <span className="font-medium">Sample Data:</span>
+            <span>Supply chain data shown below represents typical PPE industry supply chain patterns. Connect to supplier databases for real-time tracking.</span>
           </div>
         </div>
       </div>

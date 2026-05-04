@@ -166,7 +166,7 @@ export default function RegisterPage() {
           </div>
 
           <div className="mt-4 p-3 bg-[#339999]/5 text-[#339999] rounded-lg text-sm text-center">
-            <strong>Demo Mode</strong>: New accounts start on the Free plan. Upgrade anytime from the Pricing page.
+            New accounts start on the Free plan. Upgrade anytime from the Pricing page.
           </div>
         </Card>
       </div>

@@ -24,6 +24,7 @@ import { Badge, StatusBadge, Skeleton } from '@/components/ui'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 import type { Locale } from '@/lib/i18n/config'
+import { FavoriteButton } from '@/components/FavoriteButton'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -296,9 +297,18 @@ export default function RegulationDetailPage() {
                   text={regulation.status === 'active' ? t.active : regulation.status}
                 />
               </div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">
-                {locale === 'zh' && regulation.title_zh ? regulation.title_zh : regulation.title}
-              </h1>
+              <div className="flex items-start gap-3">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">
+                  {locale === 'zh' && regulation.title_zh ? regulation.title_zh : regulation.title}
+                </h1>
+                <FavoriteButton
+                  id={regulation.id}
+                  type="regulation"
+                  title={locale === 'zh' && regulation.title_zh ? regulation.title_zh : regulation.title}
+                  url={`/regulations/${regulation.id}`}
+                  locale={locale}
+                />
+              </div>
               {locale === 'zh' && regulation.title_zh && (
                 <p className="mt-1 text-gray-400 text-sm">{regulation.title}</p>
               )}
