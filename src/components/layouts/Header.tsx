@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
 import {
   Menu,
   X,
@@ -25,6 +25,9 @@ import {
   UserPlus,
   User,
   GraduationCap,
+  Settings,
+  LogOut,
+  LayoutDashboard,
 } from 'lucide-react';
 import { useLocale, useSetLocale } from '@/lib/i18n/useLocale';
 import { navTranslations, headerTranslations, getTranslations } from '@/lib/i18n/translations';
@@ -37,17 +40,54 @@ const languages = [
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const locale = useLocale();
   const setLocale = useSetLocale();
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const user = localStorage.getItem('user');
-    setIsLoggedIn(!!user);
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData);
+        setIsLoggedIn(!!parsed && !!parsed.id);
+        if (parsed.name) {
+          setUserName(parsed.name);
+        } else if (parsed.email) {
+          setUserName(parsed.email.split('@')[0]);
+        }
+      } catch {
+        setIsLoggedIn(false);
+      }
+    }
   }, []);
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSignOut = () => {
+    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
+    document.cookie = 'demo_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    setShowUserMenu(false);
+    setIsLoggedIn(false);
+    setUserName('');
+    router.push('/');
+  };
 
   const t = getTranslations(navTranslations, locale);
   const ht = getTranslations(headerTranslations, locale);
@@ -237,13 +277,47 @@ export function Header() {
             <div className="w-px h-6 bg-gray-200 mx-1"></div>
 
             {isLoggedIn ? (
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary transition-colors"
-              >
-                <User className="w-4 h-4" />
-                Dashboard
-              </Link>
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
+                >
+                  <div className="w-7 h-7 bg-gradient-to-br from-[#339999] to-[#2d8b8b] rounded-full flex items-center justify-center">
+                    <User className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <span className="max-w-[120px] truncate">{userName || (locale === 'zh' ? '用户' : 'User')}</span>
+                  <ChevronDown className={`w-3 h-3 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
+                </button>
+
+                {showUserMenu && (
+                  <div className="absolute top-full right-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50">
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setShowUserMenu(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors"
+                    >
+                      <LayoutDashboard className="w-4 h-4" />
+                      {locale === 'zh' ? '仪表盘' : 'Dashboard'}
+                    </Link>
+                    <Link
+                      href="/dashboard#settings"
+                      onClick={() => setShowUserMenu(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors"
+                    >
+                      <Settings className="w-4 h-4" />
+                      {locale === 'zh' ? '设置' : 'Settings'}
+                    </Link>
+                    <div className="border-t border-gray-100 my-1"></div>
+                    <button
+                      onClick={handleSignOut}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      {locale === 'zh' ? '退出登录' : 'Sign Out'}
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
               <>
                 <Link
@@ -351,14 +425,40 @@ export function Header() {
 
               <div className="border-t border-gray-100 my-2 pt-4">
                 {isLoggedIn ? (
-                  <Link
-                    href="/dashboard"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 border border-gray-200 rounded-lg hover:text-primary hover:border-primary transition-colors"
-                  >
-                    <User className="w-4 h-4" />
-                    Dashboard
-                  </Link>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-3 px-4 py-2">
+                      <div className="w-8 h-8 bg-gradient-to-br from-[#339999] to-[#2d8b8b] rounded-full flex items-center justify-center">
+                        <User className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-800 truncate max-w-[200px]">{userName || (locale === 'zh' ? '用户' : 'User')}</span>
+                    </div>
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                      <LayoutDashboard className="w-4 h-4" />
+                      {locale === 'zh' ? '仪表盘' : 'Dashboard'}
+                    </Link>
+                    <Link
+                      href="/dashboard#settings"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                      <Settings className="w-4 h-4" />
+                      {locale === 'zh' ? '设置' : 'Settings'}
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleSignOut();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      {locale === 'zh' ? '退出登录' : 'Sign Out'}
+                    </button>
+                  </div>
                 ) : (
                   <div className="flex flex-col gap-2">
                     <Link
