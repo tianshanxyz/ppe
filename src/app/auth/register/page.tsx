@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button, Input, Card } from '@/components/ui';
-import { Mail, Lock, User, Loader2, Building } from 'lucide-react';
+import { Mail, Lock, User, Loader2, Building, AlertTriangle, Download, Upload } from 'lucide-react';
 import { localSignUp } from '@/lib/auth/local-auth';
 
 export default function RegisterPage() {
@@ -14,6 +14,8 @@ export default function RegisterPage() {
   const [company, setCompany] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showDataModal, setShowDataModal] = useState(false);
+  const [importSuccess, setImportSuccess] = useState('');
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +53,63 @@ export default function RegisterPage() {
     }
   };
 
+  // 导出用户数据
+  const handleExportData = () => {
+    if (typeof window === 'undefined') return;
+    
+    const data = {
+      users: localStorage.getItem('ppe_local_users'),
+      session: localStorage.getItem('ppe_local_session'),
+      user: localStorage.getItem('user'),
+      activityStats: localStorage.getItem('ppe_activity_stats'),
+      activityFeed: localStorage.getItem('ppe_activity_feed'),
+      savedItems: localStorage.getItem('ppe_saved_items_v2'),
+      trackingItems: localStorage.getItem('ppe_tracking_items'),
+      settings: localStorage.getItem('ppe_user_settings'),
+      exportedAt: new Date().toISOString(),
+    };
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `mdlooker-data-backup-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  // 导入用户数据
+  const handleImportData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target?.result as string);
+        
+        // 恢复 localStorage 数据
+        if (data.users) localStorage.setItem('ppe_local_users', data.users);
+        if (data.session) localStorage.setItem('ppe_local_session', data.session);
+        if (data.user) localStorage.setItem('user', data.user);
+        if (data.activityStats) localStorage.setItem('ppe_activity_stats', data.activityStats);
+        if (data.activityFeed) localStorage.setItem('ppe_activity_feed', data.activityFeed);
+        if (data.savedItems) localStorage.setItem('ppe_saved_items_v2', data.savedItems);
+        if (data.trackingItems) localStorage.setItem('ppe_tracking_items', data.trackingItems);
+        if (data.settings) localStorage.setItem('ppe_user_settings', data.settings);
+
+        setImportSuccess('Data imported successfully! Please refresh the page.');
+        setTimeout(() => setImportSuccess(''), 3000);
+      } catch {
+        setError('Failed to import data. Please check the file format.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
+
   return (
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center py-12 bg-gray-50">
       <div className="w-full max-w-md px-4">
@@ -60,9 +119,35 @@ export default function RegisterPage() {
             <p className="text-gray-500">Start your MDLooker journey</p>
           </div>
 
+          {/* Local Storage Disclaimer */}
+          <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+            <div className="flex items-start gap-2">
+              <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-amber-800">
+                <p className="font-medium mb-1">Current using Local Storage Mode</p>
+                <p className="text-amber-700 text-xs">
+                  Your data is stored only in your browser. It will not sync across devices. 
+                  For cloud sync, please contact the administrator.
+                </p>
+                <button 
+                  onClick={() => setShowDataModal(true)}
+                  className="text-amber-600 underline text-xs mt-2 hover:text-amber-800"
+                >
+                  Backup/Restore Data →
+                </button>
+              </div>
+            </div>
+          </div>
+
           {error && (
             <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">
               {error}
+            </div>
+          )}
+
+          {importSuccess && (
+            <div className="mb-4 p-3 bg-green-50 text-green-600 rounded-lg text-sm">
+              {importSuccess}
             </div>
           )}
 
@@ -194,6 +279,80 @@ export default function RegisterPage() {
             New accounts start on the Free plan. Upgrade anytime from the Pricing page.
           </div>
         </Card>
+
+        {/* Data Backup/Restore Modal */}
+        {showDataModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowDataModal(false)}>
+            <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Backup & Restore Data</h3>
+              
+              <div className="space-y-4">
+                {/* Export Section */}
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <h4 className="font-medium text-gray-800 mb-2 flex items-center gap-2">
+                    <Download className="w-4 h-4" />
+                    Export Your Data
+                  </h4>
+                  <p className="text-sm text-gray-500 mb-3">
+                    Download a backup of all your data (favorites, tracking items, settings, etc.)
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={handleExportData}
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Backup
+                  </Button>
+                </div>
+
+                {/* Import Section */}
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <h4 className="font-medium text-gray-800 mb-2 flex items-center gap-2">
+                    <Upload className="w-4 h-4" />
+                    Import Data
+                  </h4>
+                  <p className="text-sm text-gray-500 mb-3">
+                    Restore your data from a previous backup file
+                  </p>
+                  <label className="block">
+                    <input
+                      type="file"
+                      accept=".json"
+                      onChange={handleImportData}
+                      className="hidden"
+                    />
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => {
+                        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement | null;
+                        fileInput?.click();
+                      }}
+                    >
+                      <Upload className="w-4 h-4 mr-2" />
+                      Select Backup File
+                    </Button>
+                  </label>
+                </div>
+
+                <div className="text-xs text-gray-400 text-center">
+                  Note: Importing data will overwrite your current local data.
+                </div>
+              </div>
+
+              <Button 
+                variant="ghost" 
+                className="w-full mt-4" 
+                onClick={() => setShowDataModal(false)}
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

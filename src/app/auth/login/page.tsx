@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react'
+import { Mail, Lock, Eye, EyeOff, AlertCircle, AlertTriangle } from 'lucide-react'
 import { signIn, signInWithGoogle } from '@/lib/auth/supabase-auth'
 import { localSignIn, isSupabaseConfigured } from '@/lib/auth/local-auth'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
@@ -94,17 +94,47 @@ export default function LoginPage() {
           }
         }
       } else {
-        // Supabase not configured - use local auth
-        const { user, error: authError } = localSignIn(email, password)
+        // Supabase not configured - use API-based auth
+        try {
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          })
 
-        if (authError) {
-          setError(authError)
+          const data = await response.json()
+
+          if (!response.ok) {
+            setError(data.error || 'Invalid email or password')
+            setIsLoading(false)
+            return
+          }
+
+          if (data.user) {
+            // Store user data in localStorage for dashboard access
+            const userDataStr = JSON.stringify({
+              id: data.user.id,
+              email: data.user.email,
+              name: data.user.name || data.user.email?.split('@')[0] || 'User',
+              role: data.user.role || 'user',
+              membership: data.user.membership || 'free',
+              created_at: data.user.createdAt,
+            })
+            localStorage.setItem('user', userDataStr)
+            sessionStorage.setItem('user', userDataStr)
+            document.cookie = `demo_session=true; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`
+            // Verify the write was successful
+            const verify = localStorage.getItem('user')
+            if (verify === userDataStr) {
+              window.location.href = '/dashboard'
+            } else {
+              setError('Unable to save session. Please try again or use a different browser.')
+              setIsLoading(false)
+            }
+          }
+        } catch (err) {
+          setError('Login failed. Please try again.')
           setIsLoading(false)
-          return
-        }
-
-        if (user) {
-          window.location.href = '/dashboard'
         }
       }
     } catch (err) {
@@ -158,6 +188,22 @@ export default function LoginPage() {
             {t.loginSubtitle}
           </p>
         </div>
+
+        {/* Local Storage Disclaimer - Only show when Supabase is not configured */}
+        {!isSupabaseConfigured() && (
+          <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+            <div className="flex items-start gap-2">
+              <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-amber-800">
+                <p className="font-medium mb-1">Local Storage Mode</p>
+                <p className="text-amber-700 text-xs">
+                  Your data is stored only in your browser and will not sync across devices.
+                  For cloud sync, please contact the administrator.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Login Form */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">

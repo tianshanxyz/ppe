@@ -101,23 +101,39 @@ export default function SignupPage() {
           }, 3000)
         }
       } else {
-        // Supabase not configured - use local auth
-        const { user, error: authError } = localSignUp(
-          formData.email,
-          formData.password,
-          fullName,
-          formData.company,
-        )
+        // Supabase not configured - use API-based auth
+        try {
+          const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: formData.email,
+              password: formData.password,
+              name: fullName,
+              company: formData.company,
+            }),
+          })
 
-        if (authError) {
-          setError(authError)
+          const data = await response.json()
+
+          if (!response.ok) {
+            setError(data.error || 'Registration failed')
+            setIsLoading(false)
+            return
+          }
+
+          if (data.user) {
+            // 注册成功，自动登录
+            localStorage.setItem('user', JSON.stringify(data.user))
+            setSuccess(t.accountCreatedSuccess)
+            // 跳转到 dashboard
+            setTimeout(() => {
+              window.location.href = '/dashboard'
+            }, 1000)
+          }
+        } catch (err) {
+          setError('Registration failed. Please try again.')
           setIsLoading(false)
-          return
-        }
-
-        if (user) {
-          // 本地注册成功，自动登录并跳转到 dashboard
-          window.location.href = '/dashboard'
         }
       }
     } catch (err) {

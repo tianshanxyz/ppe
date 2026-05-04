@@ -55,6 +55,18 @@ import {
   Copy,
 } from 'lucide-react';
 
+// --- Toggle Switch Component (must be outside render functions to avoid React Error #310) ---
+
+const ToggleSwitch = ({ checked, onChange, disabled = false }: { checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }) => (
+  <button
+    onClick={() => !disabled && onChange(!checked)}
+    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${checked ? 'bg-[#339999]' : 'bg-gray-300'} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+    disabled={disabled}
+  >
+    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${checked ? 'translate-x-6' : 'translate-x-1'}`} />
+  </button>
+);
+
 // --- Types ---
 
 interface UserData {
@@ -203,210 +215,44 @@ function setToStorage<T>(key: string, value: T): void {
 }
 
 // --- Default data generators ---
+// All mock data removed for production - using empty arrays or zeros
 
 function getDefaultActivityStats(): ActivityStats {
+  // Return zeros instead of mock data - will be populated from localStorage or show 0
   return {
-    complianceChecks: 24,
-    documentsDownloaded: 18,
-    productsSearched: 56,
-    regulationsReviewed: 31,
+    complianceChecks: 0,
+    documentsDownloaded: 0,
+    productsSearched: 0,
+    regulationsReviewed: 0,
   };
 }
 
 function getDefaultActivityFeed(): ActivityItem[] {
-  const now = Date.now();
-  return [
-    { id: 'act-1', type: 'compliance_check', title: 'Compliance check completed', description: 'EN 149 FFP2 respirator compliance verified', timestamp: new Date(now - 1000 * 60 * 15).toISOString() },
-    { id: 'act-2', type: 'document_download', title: 'Document downloaded', description: 'CE Declaration of Conformity template', timestamp: new Date(now - 1000 * 60 * 60 * 2).toISOString() },
-    { id: 'act-3', type: 'product_search', title: 'Product search', description: 'Searched for "N95 respirator EU MDR"', timestamp: new Date(now - 1000 * 60 * 60 * 5).toISOString() },
-    { id: 'act-4', type: 'regulation_review', title: 'Regulation reviewed', description: 'EU PPE Regulation 2016/425 updated summary', timestamp: new Date(now - 1000 * 60 * 60 * 24).toISOString() },
-    { id: 'act-5', type: 'compliance_check', title: 'Compliance check completed', description: 'ANSI Z87.1 eye protection standard verified', timestamp: new Date(now - 1000 * 60 * 60 * 26).toISOString() },
-    { id: 'act-6', type: 'document_download', title: 'Document downloaded', description: 'ISO 13485 Quality Management checklist', timestamp: new Date(now - 1000 * 60 * 60 * 48).toISOString() },
-    { id: 'act-7', type: 'product_search', title: 'Product search', description: 'Searched for "chemical resistant gloves EN 374"', timestamp: new Date(now - 1000 * 60 * 60 * 72).toISOString() },
-    { id: 'act-8', type: 'login', title: 'Signed in', description: 'Logged in from Chrome on macOS', timestamp: new Date(now - 1000 * 60 * 60 * 73).toISOString() },
-  ];
+  // Return empty array instead of mock data
+  return [];
 }
 
 function getDefaultSavedItems(): SavedItem[] {
-  return [
-    { id: 'saved-1', type: 'product', title: '3M 8210 N95 Particulate Respirator', subtitle: 'NIOSH Approved | FFP2 Equivalent', href: '/products/3m-8210', addedAt: new Date().toISOString() },
-    { id: 'saved-2', type: 'regulation', title: 'EU PPE Regulation 2016/425', subtitle: 'Effective: April 21, 2018', href: '/regulations/eu-ppe-2016-425', addedAt: new Date().toISOString() },
-    { id: 'saved-3', type: 'enterprise', title: 'SafeGuard PPE Co., Ltd.', subtitle: 'N95 Respirator Manufacturer', href: '/manufacturers/safeguard', addedAt: new Date().toISOString() },
-    { id: 'saved-4', type: 'news', title: 'EU Updates PPE Classification Guidelines', subtitle: 'Regulatory News - Jan 2026', href: '/regulatory-news/eu-ppe-update', addedAt: new Date().toISOString() },
-  ];
+  // Return empty array instead of mock data
+  return [];
 }
 
 function getDefaultTrackingItems(): TrackingItem[] {
-  return [
-    { id: 'track-1', productName: 'N95 Respirator XR-500', certificateNumber: 'NIOSH-2024-1234', status: 'compliant', market: 'US', addedAt: new Date().toISOString() },
-    { id: 'track-2', productName: 'Safety Helmet ProShield X1', certificateNumber: 'CE-2023-5678', status: 'pending', market: 'EU', addedAt: new Date().toISOString() },
-  ];
+  // Return empty array instead of mock data
+  return [];
 }
 
-// Mock market dynamics data
-const MARKET_DYNAMICS: MarketDynamic[] = [
-  { id: 'md-1', market: 'China', marketCode: 'CN', description: 'Updated 3 regulations for respiratory protection', descriptionZh: '更新了3部呼吸防护法规', timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), type: 'regulation_update' },
-  { id: 'md-2', market: 'European Union', marketCode: 'EU', description: 'New PPE classification guidelines published', descriptionZh: '发布了新的PPE分类指南', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), type: 'new_standard' },
-  { id: 'md-3', market: 'United States', marketCode: 'US', description: 'FDA updated 510(k) submission requirements', descriptionZh: 'FDA更新了510(k)提交要求', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(), type: 'policy_change' },
-  { id: 'md-4', market: 'Singapore', marketCode: 'SG', description: 'New chemical protective equipment standard adopted', descriptionZh: '采纳了新的化学防护设备标准', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), type: 'new_standard' },
-  { id: 'md-5', market: 'Australia', marketCode: 'AU', description: 'Updated hearing protection regulation AS/NZS 1270', descriptionZh: '更新了听力防护法规AS/NZS 1270', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(), type: 'regulation_update' },
-];
+// Market dynamics data - empty for production
+const MARKET_DYNAMICS: MarketDynamic[] = [];
 
-// Mock enterprise dynamics data
-const ENTERPRISE_DYNAMICS: EnterpriseDynamic[] = [
-  { id: 'ed-1', enterprise: 'SafeGuard PPE Co., Ltd.', description: 'New protective suit application for Singapore market access', descriptionZh: '新申请防护服在新加坡市场的准入', timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(), type: 'new_application' },
-  { id: 'ed-2', enterprise: 'HeadGuard Industries', description: 'Obtained CE Category II certification for safety helmet', descriptionZh: '安全头盔获得CE Category II认证', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(), type: 'certification_obtained' },
-  { id: 'ed-3', enterprise: 'ChemSafe Manufacturing', description: 'Entered Australian market with chemical protective suit', descriptionZh: '化学防护服进入澳大利亚市场', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(), type: 'market_entry' },
-  { id: 'ed-4', enterprise: 'MediShield Corp.', description: 'Applied for NMPA Class II registration for medical mask', descriptionZh: '医用口罩申请NMPA II类注册', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), type: 'new_application' },
-];
+// Enterprise dynamics data - empty for production
+const ENTERPRISE_DYNAMICS: EnterpriseDynamic[] = [];
 
-// Mock compliance tracker data
-const COMPLIANCE_ITEMS: ComplianceItem[] = [
-  {
-    id: '1',
-    productName: 'N95 Respirator XR-500',
-    manufacturer: 'SafeGuard PPE Co., Ltd.',
-    market: 'US',
-    regulation: 'FDA 510(k)',
-    steps: [
-      { name: 'Predicate Device Identification', status: 'completed', date: '2025-11-15' },
-      { name: 'Performance Testing', status: 'completed', date: '2025-12-20' },
-      { name: 'Biocompatibility Testing', status: 'completed', date: '2026-01-10' },
-      { name: '510(k) Summary Preparation', status: 'in_progress', date: '2026-02-01' },
-      { name: 'FDA Submission', status: 'pending', date: '' },
-      { name: 'FDA Review & Clearance', status: 'pending', date: '' }
-    ],
-    overallProgress: 50,
-    estimatedCompletion: '2026-08-15'
-  },
-  {
-    id: '2',
-    productName: 'Safety Helmet ProShield X1',
-    manufacturer: 'HeadGuard Industries',
-    market: 'EU',
-    regulation: 'CE Category II',
-    steps: [
-      { name: 'Risk Assessment', status: 'completed', date: '2025-09-01' },
-      { name: 'Technical File Preparation', status: 'completed', date: '2025-10-15' },
-      { name: 'Notified Body Application', status: 'completed', date: '2025-11-20' },
-      { name: 'EU Type Examination (Module B)', status: 'in_progress', date: '2026-01-05' },
-      { name: 'Conformity Assessment', status: 'pending', date: '' },
-      { name: 'CE Marking & DoC', status: 'pending', date: '' }
-    ],
-    overallProgress: 55,
-    estimatedCompletion: '2026-07-20'
-  },
-  {
-    id: '3',
-    productName: 'Chemical Protective Suit CPS-200',
-    manufacturer: 'ChemSafe Manufacturing',
-    market: 'EU',
-    regulation: 'CE Category III',
-    steps: [
-      { name: 'Risk Assessment', status: 'completed', date: '2025-06-01' },
-      { name: 'Technical File Preparation', status: 'completed', date: '2025-07-15' },
-      { name: 'EU Type Examination (Module B)', status: 'completed', date: '2025-09-20' },
-      { name: 'Quality System Assessment (Module D)', status: 'in_progress', date: '2025-11-10' },
-      { name: 'Production Quality Assurance', status: 'pending', date: '' },
-      { name: 'CE Marking & DoC', status: 'pending', date: '' }
-    ],
-    overallProgress: 60,
-    estimatedCompletion: '2026-06-30'
-  },
-  {
-    id: '4',
-    productName: 'Medical Face Mask Type IIR',
-    manufacturer: 'MediShield Corp.',
-    market: 'China',
-    regulation: 'NMPA Class II',
-    steps: [
-      { name: 'Product Classification', status: 'completed', date: '2025-08-01' },
-      { name: 'Type Testing at NMPA Lab', status: 'in_progress', date: '2025-10-15' },
-      { name: 'Clinical Evaluation', status: 'pending', date: '' },
-      { name: 'Registration Application', status: 'pending', date: '' },
-      { name: 'GMP Inspection', status: 'pending', date: '' },
-      { name: 'Registration Certificate', status: 'pending', date: '' }
-    ],
-    overallProgress: 25,
-    estimatedCompletion: '2027-02-28'
-  }
-];
+// Compliance tracker data - empty for production
+const COMPLIANCE_ITEMS: ComplianceItem[] = [];
 
-// Mock certificate alerts data
-const CERTIFICATE_ALERTS: CertificateAlert[] = [
-  {
-    id: '1',
-    productName: 'N95 Respirator Model XR-500',
-    manufacturer: 'SafeGuard PPE Co., Ltd.',
-    certificateType: 'NIOSH Approval',
-    certificateNumber: 'NIOSH-2024-1234',
-    issueDate: '2024-03-15',
-    expiryDate: '2026-03-15',
-    daysRemaining: 325,
-    status: 'valid',
-    market: 'US'
-  },
-  {
-    id: '2',
-    productName: 'Safety Helmet ProShield X1',
-    manufacturer: 'HeadGuard Industries',
-    certificateType: 'CE Certificate',
-    certificateNumber: 'CE-2023-5678',
-    issueDate: '2023-06-20',
-    expiryDate: '2026-06-20',
-    daysRemaining: 422,
-    status: 'valid',
-    market: 'EU'
-  },
-  {
-    id: '3',
-    productName: 'Chemical Protective Suit CPS-200',
-    manufacturer: 'ChemSafe Manufacturing',
-    certificateType: 'CE Category III',
-    certificateNumber: 'CE-2022-9012',
-    issueDate: '2022-01-10',
-    expiryDate: '2026-01-10',
-    daysRemaining: 260,
-    status: 'expiring_soon',
-    market: 'EU'
-  },
-  {
-    id: '4',
-    productName: 'Medical Face Mask Type IIR',
-    manufacturer: 'MediShield Corp.',
-    certificateType: 'FDA 510(k)',
-    certificateNumber: 'K240567',
-    issueDate: '2024-02-28',
-    expiryDate: '2026-02-28',
-    daysRemaining: 309,
-    status: 'valid',
-    market: 'US'
-  },
-  {
-    id: '5',
-    productName: 'Anti-impact Gloves AG-100',
-    manufacturer: 'HandSafe Solutions',
-    certificateType: 'UKCA Certificate',
-    certificateNumber: 'UKCA-2023-3456',
-    issueDate: '2023-09-01',
-    expiryDate: '2026-09-01',
-    daysRemaining: 495,
-    status: 'valid',
-    market: 'UK'
-  },
-  {
-    id: '6',
-    productName: 'Safety Footwear SteelToe Pro',
-    manufacturer: 'StepSafe Ltd.',
-    certificateType: 'CE Certificate',
-    certificateNumber: 'CE-2021-7890',
-    issueDate: '2021-11-15',
-    expiryDate: '2026-05-15',
-    daysRemaining: 20,
-    status: 'expiring_soon',
-    market: 'EU'
-  }
-];
+// Certificate alerts data - empty for production
+const CERTIFICATE_ALERTS: CertificateAlert[] = [];
 
 // --- Helper functions ---
 
@@ -1021,46 +867,14 @@ export default function DashboardPage() {
             {t.marketComplianceDynamics}
           </h2>
           <Card className="bg-white shadow-sm p-0 overflow-hidden">
-            <div className="divide-y divide-gray-50">
-              {MARKET_DYNAMICS.map((item) => {
-                const { icon: ItemIcon, bg, color } = getDynamicTypeIcon(item.type);
-                return (
-                  <div key={item.id} className="px-5 py-3.5 hover:bg-gray-50/50 transition-colors">
-                    <div className="flex items-start gap-3">
-                      <div className={`w-9 h-9 ${bg} rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5`}>
-                        <ItemIcon className={`w-4.5 h-4.5 ${color}`} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs bg-[#339999]/10 text-[#339999] px-2 py-0.5 rounded font-medium">
-                            {item.market} ({item.marketCode})
-                          </span>
-                          <span className="text-xs text-gray-400 whitespace-nowrap flex-shrink-0">
-                            {formatRelativeTime(item.timestamp, t)}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-700 mt-1">
-                          {locale === 'zh' ? item.descriptionZh : item.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </Card>
-        </div>
-
-        {/* Enterprise Global Dynamics */}
-        <div>
-          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <Building className="w-5 h-5 text-[#339999]" />
-            {t.enterpriseGlobalDynamics}
-          </h2>
-          <Card className="bg-white shadow-sm p-0 overflow-hidden">
-            {featureAccess.showEnterpriseDynamics ? (
+            {MARKET_DYNAMICS.length === 0 ? (
+              <div className="p-8 text-center text-gray-400">
+                <Globe className="w-10 h-10 mx-auto mb-2 opacity-50" />
+                <p className="text-sm">{locale === 'zh' ? '暂无市场动态' : 'No market updates'}</p>
+              </div>
+            ) : (
               <div className="divide-y divide-gray-50">
-                {ENTERPRISE_DYNAMICS.map((item) => {
+                {MARKET_DYNAMICS.map((item) => {
                   const { icon: ItemIcon, bg, color } = getDynamicTypeIcon(item.type);
                   return (
                     <div key={item.id} className="px-5 py-3.5 hover:bg-gray-50/50 transition-colors">
@@ -1070,8 +884,8 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2">
-                            <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded font-medium">
-                              {item.enterprise}
+                            <span className="text-xs bg-[#339999]/10 text-[#339999] px-2 py-0.5 rounded font-medium">
+                              {item.market} ({item.marketCode})
                             </span>
                             <span className="text-xs text-gray-400 whitespace-nowrap flex-shrink-0">
                               {formatRelativeTime(item.timestamp, t)}
@@ -1086,6 +900,52 @@ export default function DashboardPage() {
                   );
                 })}
               </div>
+            )}
+          </Card>
+        </div>
+
+        {/* Enterprise Global Dynamics */}
+        <div>
+          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Building className="w-5 h-5 text-[#339999]" />
+            {t.enterpriseGlobalDynamics}
+          </h2>
+          <Card className="bg-white shadow-sm p-0 overflow-hidden">
+            {featureAccess.showEnterpriseDynamics ? (
+              ENTERPRISE_DYNAMICS.length === 0 ? (
+                <div className="p-8 text-center text-gray-400">
+                  <Building className="w-10 h-10 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">{locale === 'zh' ? '暂无企业动态' : 'No enterprise updates'}</p>
+                </div>
+              ) : (
+                <div className="divide-y divide-gray-50">
+                  {ENTERPRISE_DYNAMICS.map((item) => {
+                    const { icon: ItemIcon, bg, color } = getDynamicTypeIcon(item.type);
+                    return (
+                      <div key={item.id} className="px-5 py-3.5 hover:bg-gray-50/50 transition-colors">
+                        <div className="flex items-start gap-3">
+                          <div className={`w-9 h-9 ${bg} rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                            <ItemIcon className={`w-4.5 h-4.5 ${color}`} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded font-medium">
+                                {item.enterprise}
+                              </span>
+                              <span className="text-xs text-gray-400 whitespace-nowrap flex-shrink-0">
+                                {formatRelativeTime(item.timestamp, t)}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-700 mt-1">
+                              {locale === 'zh' ? item.descriptionZh : item.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )
             ) : (
               <div className="p-8 text-center">
                 <Lock className="w-10 h-10 text-gray-300 mx-auto mb-3" />
@@ -2121,16 +1981,6 @@ export default function DashboardPage() {
 
   const renderSettings = () => {
     if (!settings) return null;
-
-    const ToggleSwitch = ({ checked, onChange, disabled = false }: { checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }) => (
-      <button
-        onClick={() => !disabled && onChange(!checked)}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${checked ? 'bg-[#339999]' : 'bg-gray-300'} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-        disabled={disabled}
-      >
-        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${checked ? 'translate-x-6' : 'translate-x-1'}`} />
-      </button>
-    );
 
     return (
       <>

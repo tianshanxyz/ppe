@@ -67,7 +67,15 @@ const nextConfig: NextConfig = {
           // 内容安全策略
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' http://localhost:* http://127.0.0.1:* https://xtqhjyiyjhxfdzyypfqq.supabase.co https://api.medplum.com; frame-ancestors 'none';",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://static.cloudflareinsights.com https://va.vercel-scripts.com",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: https:",
+              "font-src 'self' data:",
+              "connect-src 'self' http://localhost:* http://127.0.0.1:* https://*.supabase.co https://api.medplum.com https://ark.cn-beijing.volces.com https://api.openai.com",
+              "frame-ancestors 'none'",
+            ].join('; '),
           },
           // HSTS - 强制 HTTPS
           {

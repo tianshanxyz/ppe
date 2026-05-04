@@ -9,12 +9,30 @@ import { createClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
 import { apiKeyService } from '@/lib/api-keys'
 
+// Check if Supabase is configured
+const isSupabaseConfigured = !!(
+  process.env.NEXT_PUBLIC_SUPABASE_URL &&
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
+
 /**
  * GET /api/api-keys
  * 列出用户的所有API密钥
  */
 export async function GET(request: NextRequest) {
   const startTime = Date.now()
+
+  // Check if Supabase is configured
+  if (!isSupabaseConfigured) {
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: 'API Keys feature requires database support. Please contact the administrator.',
+        processing_time_ms: Date.now() - startTime 
+      },
+      { status: 503 }
+    )
+  }
 
   try {
     
@@ -55,6 +73,18 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   const startTime = Date.now()
+
+  // Check if Supabase is configured
+  if (!isSupabaseConfigured) {
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: 'API Keys feature requires database support. Please contact the administrator.',
+        processing_time_ms: Date.now() - startTime 
+      },
+      { status: 503 }
+    )
+  }
 
   try {
     
