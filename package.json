@@ -42,6 +42,7 @@
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "^2.100.0",
     "@upstash/redis": "^1.37.0",
+    "adm-zip": "^0.5.17",
     "axios": "^1.15.0",
     "cheerio": "^1.2.0",
     "clsx": "^2.1.1",

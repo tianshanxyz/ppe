@@ -53,6 +53,7 @@ import {
   Loader2,
   AlertCircle,
   Copy,
+  Camera,
 } from 'lucide-react';
 
 // --- Toggle Switch Component (must be outside render functions to avoid React Error #310) ---
@@ -78,6 +79,8 @@ interface UserData {
   name?: string;
   role: string;
   membership?: string;
+  company?: string;
+  avatar?: string;
   created_at?: string;
 }
 
@@ -196,6 +199,8 @@ const STORAGE_KEYS = {
   ACTIVITY_FEED: 'ppe_activity_feed',
   SAVED_ITEMS: 'ppe_saved_items_v2',
   TRACKING_ITEMS: 'ppe_tracking_items',
+  COMPLIANCE_ITEMS: 'ppe_compliance_items',
+  CERTIFICATE_ALERTS: 'ppe_certificate_alerts',
 };
 
 function getFromStorage<T>(key: string, fallback: T | null): T | null {
@@ -400,10 +405,24 @@ export default function DashboardPage() {
   const [ctSearchQuery, setCtSearchQuery] = useState('');
   const [ctSelectedMarket, setCtSelectedMarket] = useState('all');
   const [ctExpandedItem, setCtExpandedItem] = useState<string | null>(null);
+  const [complianceItems, setComplianceItems] = useState<ComplianceItem[]>([]);
+  const [showAddCompliance, setShowAddCompliance] = useState(false);
+  const [newComplianceProduct, setNewComplianceProduct] = useState('');
+  const [newComplianceManufacturer, setNewComplianceManufacturer] = useState('');
+  const [newComplianceMarket, setNewComplianceMarket] = useState('EU');
+  const [newComplianceRegulation, setNewComplianceRegulation] = useState('');
 
   // Certificate Alerts state
   const [caSearchQuery, setCaSearchQuery] = useState('');
   const [caSelectedStatus, setCaSelectedStatus] = useState('all');
+  const [certificateAlerts, setCertificateAlerts] = useState<CertificateAlert[]>([]);
+  const [showAddCertAlert, setShowAddCertAlert] = useState(false);
+  const [newCertProduct, setNewCertProduct] = useState('');
+  const [newCertManufacturer, setNewCertManufacturer] = useState('');
+  const [newCertType, setNewCertType] = useState('CE');
+  const [newCertNumber, setNewCertNumber] = useState('');
+  const [newCertExpiry, setNewCertExpiry] = useState('');
+  const [newCertMarket, setNewCertMarket] = useState('EU');
 
   // API Keys state
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
@@ -574,6 +593,26 @@ export default function DashboardPage() {
         }
       } catch { setTrackingItems(getDefaultTrackingItems()); }
 
+      // Load or initialize compliance items
+      try {
+        const ci = getFromStorage<ComplianceItem[]>(STORAGE_KEYS.COMPLIANCE_ITEMS, null);
+        if (ci) {
+          setComplianceItems(ci);
+        } else {
+          setComplianceItems([]);
+        }
+      } catch { setComplianceItems([]); }
+
+      // Load or initialize certificate alerts
+      try {
+        const ca = getFromStorage<CertificateAlert[]>(STORAGE_KEYS.CERTIFICATE_ALERTS, null);
+        if (ca) {
+          setCertificateAlerts(ca);
+        } else {
+          setCertificateAlerts([]);
+        }
+      } catch { setCertificateAlerts([]); }
+
       // Load or initialize user settings
       try {
         const savedSettings = getFromStorage<Record<string, unknown>>('ppe_user_settings', null);
@@ -634,11 +673,22 @@ export default function DashboardPage() {
     }
   }, [activeTab]);
 
+  const getAuthHeaders = (): Record<string, string> => {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (user?.id) {
+      headers['x-user-id'] = user.id;
+      try {
+        headers['authorization'] = 'Bearer ' + btoa(JSON.stringify({ id: user.id, email: user.email }));
+      } catch {}
+    }
+    return headers;
+  };
+
   const fetchApiKeys = async () => {
     try {
       setApiKeysLoading(true);
       setApiKeysError(null);
-      const response = await fetch('/api/api-keys');
+      const response = await fetch('/api/api-keys', { headers: getAuthHeaders() });
       const data = await response.json();
       if (data.success) {
         setApiKeys(data.keys || []);
@@ -659,7 +709,7 @@ export default function DashboardPage() {
       setApiKeysError(null);
       const response = await fetch('/api/api-keys', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ name: newKeyName.trim() }),
       });
       const data = await response.json();
@@ -668,8 +718,8 @@ export default function DashboardPage() {
           id: data.apiKey.id,
           name: data.apiKey.name,
           fullKey: data.apiKey.fullKey,
-          keyPrefix: data.apiKey.keyPrefix,
-          createdAt: data.apiKey.metadata?.createdAt,
+          keyPrefix: data.apiKey.keyPrefix || data.apiKey.keyPrefix,
+          createdAt: data.apiKey.createdAt || data.apiKey.metadata?.createdAt,
         });
         setNewKeyName('');
         setShowCreateForm(false);
@@ -691,10 +741,13 @@ export default function DashboardPage() {
     try {
       setDeletingId(id);
       setApiKeysError(null);
-      const response = await fetch(`/api/api-keys?id=${id}`, { method: 'DELETE' });
+      const response = await fetch(`/api/api-keys?id=${id}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders(),
+      });
       const data = await response.json();
       if (data.success) {
-        setApiKeys(apiKeys.filter(key => key.id !== id));
+        setApiKeys(prev => prev.filter(key => key.id !== id));
       } else {
         setApiKeysError(data.error || 'Failed to revoke API key');
       }
@@ -781,6 +834,97 @@ export default function DashboardPage() {
     });
   };
 
+  const handleAddComplianceItem = () => {
+    const product = newComplianceProduct.trim();
+    const manufacturer = newComplianceManufacturer.trim();
+    const regulation = newComplianceRegulation.trim();
+    if (!product) return;
+    if (product.length < 2) return;
+    if (!manufacturer) return;
+    const newItem: ComplianceItem = {
+      id: `ci-${Date.now()}`,
+      productName: product,
+      manufacturer,
+      market: newComplianceMarket,
+      regulation: regulation || 'PPE Regulation (EU) 2016/425',
+      steps: [
+        { name: locale === 'zh' ? '产品分类确认' : 'Product Classification', status: 'pending', date: '' },
+        { name: locale === 'zh' ? '技术文档准备' : 'Technical Documentation', status: 'pending', date: '' },
+        { name: locale === 'zh' ? '符合性评估' : 'Conformity Assessment', status: 'pending', date: '' },
+        { name: locale === 'zh' ? 'CE标志申请' : 'CE Marking Application', status: 'pending', date: '' },
+        { name: locale === 'zh' ? '证书颁发' : 'Certificate Issuance', status: 'pending', date: '' },
+      ],
+      overallProgress: 0,
+      estimatedCompletion: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    };
+    setComplianceItems(prev => {
+      const updated = [...prev, newItem];
+      setToStorage(STORAGE_KEYS.COMPLIANCE_ITEMS, updated);
+      return updated;
+    });
+    setNewComplianceProduct('');
+    setNewComplianceManufacturer('');
+    setNewComplianceRegulation('');
+    setShowAddCompliance(false);
+  };
+
+  const handleRemoveComplianceItem = (id: string) => {
+    setComplianceItems(prev => {
+      const updated = prev.filter(item => item.id !== id);
+      setToStorage(STORAGE_KEYS.COMPLIANCE_ITEMS, updated);
+      return updated;
+    });
+  };
+
+  const handleAddCertAlert = () => {
+    const product = newCertProduct.trim();
+    const manufacturer = newCertManufacturer.trim();
+    const certNumber = newCertNumber.trim();
+    if (!product) return;
+    if (product.length < 2) return;
+    if (!certNumber) return;
+    if (!newCertExpiry) return;
+
+    const expiryDate = new Date(newCertExpiry);
+    const now = new Date();
+    const daysRemaining = Math.ceil((expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+
+    let status = 'valid';
+    if (daysRemaining <= 0) status = 'expired';
+    else if (daysRemaining <= 90) status = 'expiring_soon';
+
+    const newItem: CertificateAlert = {
+      id: `ca-${Date.now()}`,
+      productName: product,
+      manufacturer,
+      certificateType: newCertType,
+      certificateNumber: certNumber,
+      issueDate: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      expiryDate: newCertExpiry,
+      daysRemaining,
+      status,
+      market: newCertMarket,
+    };
+    setCertificateAlerts(prev => {
+      const updated = [...prev, newItem];
+      setToStorage(STORAGE_KEYS.CERTIFICATE_ALERTS, updated);
+      return updated;
+    });
+    setNewCertProduct('');
+    setNewCertManufacturer('');
+    setNewCertNumber('');
+    setNewCertExpiry('');
+    setShowAddCertAlert(false);
+  };
+
+  const handleRemoveCertAlert = (id: string) => {
+    setCertificateAlerts(prev => {
+      const updated = prev.filter(item => item.id !== id);
+      setToStorage(STORAGE_KEYS.CERTIFICATE_ALERTS, updated);
+      return updated;
+    });
+  };
+
   // Loading state
   if (loading) {
     return (
@@ -812,7 +956,7 @@ export default function DashboardPage() {
 
   // Filter compliance tracker items
   const ctMarkets = ['all', 'EU', 'US', 'China', 'UK'];
-  const filteredComplianceItems = COMPLIANCE_ITEMS.filter(item => {
+  const filteredComplianceItems = complianceItems.filter(item => {
     const matchesMarket = ctSelectedMarket === 'all' || item.market === ctSelectedMarket;
     const matchesSearch = !ctSearchQuery ||
       item.productName.toLowerCase().includes(ctSearchQuery.toLowerCase()) ||
@@ -823,7 +967,7 @@ export default function DashboardPage() {
 
   // Filter certificate alerts
   const caStatuses = ['all', 'valid', 'expiring_soon', 'expired'];
-  const filteredCertificateAlerts = CERTIFICATE_ALERTS.filter(alert => {
+  const filteredCertificateAlerts = certificateAlerts.filter(alert => {
     const matchesStatus = caSelectedStatus === 'all' || alert.status === caSelectedStatus;
     const matchesSearch = !caSearchQuery ||
       alert.productName.toLowerCase().includes(caSearchQuery.toLowerCase()) ||
@@ -885,8 +1029,12 @@ export default function DashboardPage() {
       {/* User Profile Section */}
       <Card className="mb-8 p-6 bg-white shadow-sm">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-[#339999] to-[#2d8b8b] rounded-full flex items-center justify-center flex-shrink-0">
-            <User className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 bg-gradient-to-br from-[#339999] to-[#2d8b8b] rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
+            {user?.avatar ? (
+              <img src={user.avatar} alt="" className="w-full h-full object-cover" />
+            ) : (
+              <User className="w-8 h-8 text-white" />
+            )}
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-2xl font-bold text-gray-800">
@@ -1527,7 +1675,7 @@ export default function DashboardPage() {
               className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
             />
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 items-center">
             {ctMarkets.map(market => (
               <button
                 key={market}
@@ -1541,8 +1689,91 @@ export default function DashboardPage() {
                 {market === 'all' ? t.allMarkets : market}
               </button>
             ))}
+            <button
+              onClick={() => setShowAddCompliance(!showAddCompliance)}
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-[#339999] text-white hover:bg-[#2a8080] transition-all flex items-center gap-1"
+            >
+              <Plus className="w-4 h-4" />
+              {isZh ? '添加项目' : 'Add Item'}
+            </button>
           </div>
         </div>
+
+        {/* Add Compliance Item Form */}
+        {showAddCompliance && (
+          <div className="bg-white rounded-2xl shadow-lg border border-[#339999]/20 p-6 mb-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">{isZh ? '添加合规跟踪项目' : 'Add Compliance Tracking Item'}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {isZh ? '产品名称 *' : 'Product Name *'}
+                </label>
+                <input
+                  type="text"
+                  value={newComplianceProduct}
+                  onChange={(e) => setNewComplianceProduct(e.target.value)}
+                  placeholder={isZh ? '输入产品名称（至少2个字符）' : 'Enter product name (min 2 chars)'}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                  minLength={2}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {isZh ? '制造商 *' : 'Manufacturer *'}
+                </label>
+                <input
+                  type="text"
+                  value={newComplianceManufacturer}
+                  onChange={(e) => setNewComplianceManufacturer(e.target.value)}
+                  placeholder={isZh ? '输入制造商名称' : 'Enter manufacturer name'}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {isZh ? '目标市场' : 'Target Market'}
+                </label>
+                <select
+                  value={newComplianceMarket}
+                  onChange={(e) => setNewComplianceMarket(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                >
+                  <option value="EU">EU</option>
+                  <option value="US">US</option>
+                  <option value="China">China</option>
+                  <option value="UK">UK</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {isZh ? '适用法规' : 'Regulation'}
+                </label>
+                <input
+                  type="text"
+                  value={newComplianceRegulation}
+                  onChange={(e) => setNewComplianceRegulation(e.target.value)}
+                  placeholder={isZh ? '如：PPE Regulation (EU) 2016/425' : 'e.g., PPE Regulation (EU) 2016/425'}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end gap-3 mt-4">
+              <button
+                onClick={() => setShowAddCompliance(false)}
+                className="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                {isZh ? '取消' : 'Cancel'}
+              </button>
+              <button
+                onClick={handleAddComplianceItem}
+                disabled={!newComplianceProduct.trim() || newComplianceProduct.trim().length < 2 || !newComplianceManufacturer.trim()}
+                className="px-4 py-2 bg-[#339999] text-white rounded-lg hover:bg-[#2a8080] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isZh ? '添加' : 'Add'}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Items */}
         {filteredComplianceItems.length > 0 ? (
@@ -1568,6 +1799,12 @@ export default function DashboardPage() {
                     <div className="text-right">
                       <div className="text-2xl font-bold text-[#339999]">{item.overallProgress}%</div>
                       <div className="text-xs text-gray-400">{t.overallProgress}</div>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleRemoveComplianceItem(item.id); }}
+                        className="mt-2 text-xs text-red-400 hover:text-red-600 transition-colors"
+                      >
+                        {isZh ? '删除' : 'Remove'}
+                      </button>
                     </div>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
@@ -1672,7 +1909,7 @@ export default function DashboardPage() {
               className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
             />
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 items-center">
             {caStatuses.map(status => (
               <button
                 key={status}
@@ -1686,8 +1923,107 @@ export default function DashboardPage() {
                 {getStatusFilterLabel(status)}
               </button>
             ))}
+            <button
+              onClick={() => setShowAddCertAlert(!showAddCertAlert)}
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-[#339999] text-white hover:bg-[#2a8080] transition-all flex items-center gap-1"
+            >
+              <Plus className="w-4 h-4" />
+              {isZh ? '添加证书' : 'Add Certificate'}
+            </button>
           </div>
         </div>
+
+        {/* Add Certificate Alert Form */}
+        {showAddCertAlert && (
+          <div className="bg-white rounded-2xl shadow-lg border border-[#339999]/20 p-6 mb-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">{isZh ? '添加证书提醒' : 'Add Certificate Alert'}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{isZh ? '产品名称 *' : 'Product Name *'}</label>
+                <input
+                  type="text"
+                  value={newCertProduct}
+                  onChange={(e) => setNewCertProduct(e.target.value)}
+                  placeholder={isZh ? '输入产品名称（至少2个字符）' : 'Enter product name (min 2 chars)'}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                  minLength={2}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{isZh ? '制造商' : 'Manufacturer'}</label>
+                <input
+                  type="text"
+                  value={newCertManufacturer}
+                  onChange={(e) => setNewCertManufacturer(e.target.value)}
+                  placeholder={isZh ? '输入制造商名称' : 'Enter manufacturer name'}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{isZh ? '证书类型' : 'Certificate Type'}</label>
+                <select
+                  value={newCertType}
+                  onChange={(e) => setNewCertType(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                >
+                  <option value="CE">CE</option>
+                  <option value="FDA">FDA 510(k)</option>
+                  <option value="N95">NIOSH N95</option>
+                  <option value="ISO">ISO 13485</option>
+                  <option value="GB">GB Standard</option>
+                  <option value="Other">{isZh ? '其他' : 'Other'}</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{isZh ? '证书编号 *' : 'Certificate No. *'}</label>
+                <input
+                  type="text"
+                  value={newCertNumber}
+                  onChange={(e) => setNewCertNumber(e.target.value)}
+                  placeholder={isZh ? '输入证书编号' : 'Enter certificate number'}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{isZh ? '到期日期 *' : 'Expiry Date *'}</label>
+                <input
+                  type="date"
+                  value={newCertExpiry}
+                  onChange={(e) => setNewCertExpiry(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{isZh ? '市场' : 'Market'}</label>
+                <select
+                  value={newCertMarket}
+                  onChange={(e) => setNewCertMarket(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                >
+                  <option value="EU">EU</option>
+                  <option value="US">US</option>
+                  <option value="China">China</option>
+                  <option value="UK">UK</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex justify-end gap-3 mt-4">
+              <button
+                onClick={() => setShowAddCertAlert(false)}
+                className="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                {isZh ? '取消' : 'Cancel'}
+              </button>
+              <button
+                onClick={handleAddCertAlert}
+                disabled={!newCertProduct.trim() || newCertProduct.trim().length < 2 || !newCertNumber.trim() || !newCertExpiry}
+                className="px-4 py-2 bg-[#339999] text-white rounded-lg hover:bg-[#2a8080] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isZh ? '添加' : 'Add'}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Alerts */}
         {filteredCertificateAlerts.length > 0 ? (
@@ -1702,7 +2038,15 @@ export default function DashboardPage() {
                       <span className="text-sm text-gray-500">{alert.manufacturer}</span>
                     </div>
                   </div>
-                  <StatusBadge status={alert.status} daysRemaining={alert.daysRemaining} isZh={isZh} />
+                  <div className="flex items-center gap-2">
+                    <StatusBadge status={alert.status} daysRemaining={alert.daysRemaining} isZh={isZh} />
+                    <button
+                      onClick={() => handleRemoveCertAlert(alert.id)}
+                      className="text-xs text-red-400 hover:text-red-600 transition-colors"
+                    >
+                      {isZh ? '删除' : 'Remove'}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
@@ -2096,6 +2440,109 @@ export default function DashboardPage() {
             {t.settingsSection}
           </h2>
         </div>
+
+        {/* Profile Settings */}
+        <Card className="p-6 bg-white shadow-sm mb-6">
+          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <User className="w-5 h-5 text-[#339999]" />
+            {locale === 'zh' ? '个人资料' : 'Profile'}
+          </h3>
+          <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex flex-col items-center gap-3">
+              <div className="relative group">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#339999] to-[#2d8b8b] flex items-center justify-center overflow-hidden">
+                  {user?.avatar ? (
+                    <img src={user.avatar} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <User className="w-12 h-12 text-white" />
+                  )}
+                </div>
+                <label className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                  <Camera className="w-6 h-6 text-white" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        if (file.size > 2 * 1024 * 1024) {
+                          alert(locale === 'zh' ? '图片大小不能超过2MB' : 'Image must be under 2MB');
+                          return;
+                        }
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                          const result = ev.target?.result as string;
+                          const updatedUser = { ...user, avatar: result };
+                          setUser(updatedUser as UserData);
+                          try {
+                            localStorage.setItem('user', JSON.stringify(updatedUser));
+                            sessionStorage.setItem('user', JSON.stringify(updatedUser));
+                          } catch {}
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                  />
+                </label>
+              </div>
+              <span className="text-xs text-gray-400">{locale === 'zh' ? '点击更换头像' : 'Click to change'}</span>
+            </div>
+            <div className="flex-1 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {locale === 'zh' ? '昵称' : 'Display Name'}
+                </label>
+                <input
+                  type="text"
+                  value={user?.name || ''}
+                  onChange={(e) => {
+                    const newName = e.target.value;
+                    const updatedUser = { ...user, name: newName };
+                    setUser(updatedUser as UserData);
+                    try {
+                      localStorage.setItem('user', JSON.stringify(updatedUser));
+                      sessionStorage.setItem('user', JSON.stringify(updatedUser));
+                    } catch {}
+                  }}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                  placeholder={locale === 'zh' ? '输入昵称' : 'Enter display name'}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {locale === 'zh' ? '邮箱' : 'Email'}
+                </label>
+                <input
+                  type="email"
+                  value={user?.email || ''}
+                  disabled
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {locale === 'zh' ? '公司' : 'Company'}
+                </label>
+                <input
+                  type="text"
+                  value={user?.company || ''}
+                  onChange={(e) => {
+                    const newCompany = e.target.value;
+                    const updatedUser = { ...user, company: newCompany };
+                    setUser(updatedUser as UserData);
+                    try {
+                      localStorage.setItem('user', JSON.stringify(updatedUser));
+                      sessionStorage.setItem('user', JSON.stringify(updatedUser));
+                    } catch {}
+                  }}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                  placeholder={locale === 'zh' ? '输入公司名称' : 'Enter company name'}
+                />
+              </div>
+            </div>
+          </div>
+        </Card>
 
         {/* User Preferences */}
         <Card className="p-6 bg-white shadow-sm mb-6">
