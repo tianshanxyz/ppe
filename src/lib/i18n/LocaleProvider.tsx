@@ -27,10 +27,14 @@ function getUrlLocale(): Locale {
     return defaultLocale;
   }
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const langParam = urlParams.get('lang') as Locale;
-  if (langParam && locales.includes(langParam)) {
-    return langParam;
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const langParam = urlParams.get('lang') as Locale;
+    if (langParam && locales.includes(langParam)) {
+      return langParam;
+    }
+  } catch (e) {
+    // Silently handle errors during navigation
   }
 
   return defaultLocale;
@@ -87,7 +91,7 @@ interface LocaleProviderProps {
 export function LocaleProvider({ initialLocale = defaultLocale, children }: LocaleProviderProps) {
   const [locale, setLocale] = useState<Locale>(initialLocale);
   const [isHydrated, setIsHydrated] = useState(false);
-  const isInitialized = useRef(initialLocale !== defaultLocale);
+  const isInitialized = useRef(false);
 
   useEffect(() => {
     setIsHydrated(true);
@@ -102,45 +106,6 @@ export function LocaleProvider({ initialLocale = defaultLocale, children }: Loca
       }
     }
   }, [isHydrated, initialLocale]);
-
-  useEffect(() => {
-    const handleLocaleChange = (event: Event) => {
-      const customEvent = event as CustomEvent<{ locale: Locale }>;
-      if (customEvent.detail?.locale) {
-        setLocale(customEvent.detail.locale);
-      }
-    };
-
-    window.addEventListener('localechange', handleLocaleChange);
-    return () => window.removeEventListener('localechange', handleLocaleChange);
-  }, []);
-
-  useEffect(() => {
-    if (!isHydrated) return;
-    
-    const checkUrlLocale = () => {
-      const urlLocale = getUrlLocale();
-      if (urlLocale !== defaultLocale && urlLocale !== locale) {
-        localStorage.setItem('mdlooker-locale', urlLocale);
-        setLocale(urlLocale);
-      }
-    };
-
-    checkUrlLocale();
-
-    window.addEventListener('popstate', checkUrlLocale);
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
-        checkUrlLocale();
-      }
-    });
-
-    return () => {
-      window.removeEventListener('popstate', checkUrlLocale);
-      document.removeEventListener('visibilitychange', () => {});
-    };
-  }, [locale, isHydrated]);
 
   return (
     <LocaleContext.Provider value={{ locale, setLocale, isReady: isHydrated }}>
@@ -157,10 +122,16 @@ export function useLocale(): Locale {
 export function useSetLocale(): (locale: Locale) => void {
   return useCallback((newLocale: Locale) => {
     localStorage.setItem('mdlooker-locale', newLocale);
-    
-    const url = new URL(window.location.href);
-    url.searchParams.set('lang', newLocale);
-    window.location.href = url.toString();
+
+    if (typeof window !== 'undefined' && window.location) {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', newLocale);
+        window.location.href = url.toString();
+      } catch (e) {
+        // Silently handle navigation errors
+      }
+    }
   }, []);
 }
 

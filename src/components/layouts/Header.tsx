@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import {
   Menu,
@@ -29,7 +28,7 @@ import {
   LogOut,
   LayoutDashboard,
 } from 'lucide-react';
-import { useLocale, useSetLocale } from '@/lib/i18n/useLocale';
+import { useLocale, useSetLocale } from '@/lib/i18n/LocaleProvider';
 import { navTranslations, headerTranslations, getTranslations } from '@/lib/i18n/translations';
 import { Locale, localeLabels } from '@/lib/i18n/config';
 import { localGetSession, localSignOut } from '@/lib/auth/local-auth';
@@ -40,8 +39,7 @@ const languages = [
 ];
 
 export function Header() {
-  const pathname = usePathname();
-  const router = useRouter();
+  const [pathname, setPathname] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const locale = useLocale();
@@ -51,6 +49,22 @@ export function Header() {
   const [userName, setUserName] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Read pathname directly from window.location to avoid next/navigation context issues
+    if (typeof window !== 'undefined' && window.location) {
+      setPathname(window.location.pathname);
+    }
+
+    const handleRouteChange = () => {
+      if (window.location) {
+        setPathname(window.location.pathname);
+      }
+    };
+
+    window.addEventListener('popstate', handleRouteChange);
+    return () => window.removeEventListener('popstate', handleRouteChange);
+  }, []);
 
   useEffect(() => {
     // 优先使用 local-auth 的 session 获取，兼容 localStorage 和 sessionStorage
@@ -97,14 +111,13 @@ export function Header() {
     setShowUserMenu(false);
     setIsLoggedIn(false);
     setUserName('');
-    router.push('/');
+    window.location.href = '/';
   };
 
   const t = getTranslations(navTranslations, locale);
   const ht = getTranslations(headerTranslations, locale);
 
   const handleLangChange = (newLocale: Locale) => {
-    console.log('Header handleLangChange called with:', newLocale);
     setLocale(newLocale);
     setShowLangMenu(false);
   };
@@ -257,8 +270,8 @@ export function Header() {
             })}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-3">
-            <div className="relative">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="hidden sm:flex relative">
               <button
                 onClick={() => setShowLangMenu(!showLangMenu)}
                 className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-all"
@@ -285,8 +298,9 @@ export function Header() {
               )}
             </div>
 
-            <div className="w-px h-6 bg-gray-200 mx-1"></div>
+            <div className="hidden sm:block w-px h-6 bg-gray-200 mx-1"></div>
 
+            <div className="hidden sm:flex items-center gap-2">
             {isLoggedIn ? (
               <div className="relative" ref={userMenuRef}>
                 <button
@@ -333,20 +347,21 @@ export function Header() {
               <>
                 <Link
                   href="/auth/login"
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary transition-colors"
+                  className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary transition-colors"
                 >
                   <LogIn className="w-4 h-4" />
                   {t.signIn}
                 </Link>
                 <Link
                   href="/auth/register"
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary-dark rounded-lg transition-colors shadow-sm"
+                  className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary-dark rounded-lg transition-colors shadow-sm"
                 >
                   <UserPlus className="w-4 h-4" />
                   {t.signUpFree}
                 </Link>
               </>
             )}
+            </div>
           </div>
 
           <button
@@ -435,6 +450,31 @@ export function Header() {
               })}
 
               <div className="border-t border-gray-100 my-2 pt-4">
+                <div className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg mb-4">
+                  <span className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                    <Globe className="w-4 h-4" />
+                    {locale === 'zh' ? '语言' : 'Language'}
+                  </span>
+                  <div className="flex gap-1">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => {
+                          handleLangChange(lang.code);
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                          locale === lang.code
+                            ? 'bg-[#339999] text-white'
+                            : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                        }`}
+                      >
+                        {lang.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 {isLoggedIn ? (
                   <div className="space-y-1">
                     <div className="flex items-center gap-3 px-4 py-2">

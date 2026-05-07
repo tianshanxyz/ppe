@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { Search, X, Loader2, Sparkles, ArrowRight, Lightbulb, TrendingUp } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 
 interface SearchResult {
   query: string
@@ -33,7 +32,6 @@ export function GlobalSearch() {
   const [recentSearches, setRecentSearches] = useState<string[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const router = useRouter()
 
   // 加载最近搜索
   useEffect(() => {
@@ -122,7 +120,7 @@ export function GlobalSearch() {
 
   // 快速导航到相关页面
   const handleQuickAction = (path: string) => {
-    router.push(path)
+    window.location.href = path
     setShowResults(false)
     setShowSuggestions(false)
   }

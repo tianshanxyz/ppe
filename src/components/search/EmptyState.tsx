@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Search, Filter, Building2, Package, X, Loader2, AlertCircle, Lightbulb, FileQuestion, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui'
 
@@ -28,7 +29,7 @@ const SEARCH_TIPS = [
   'Try product categories like "respirator" or "protective clothing"',
 ]
 
-function EmptyState({ type, message, onReset, searchQuery }: EmptyStateProps) {
+export function EmptyState({ type, message, onReset, searchQuery }: EmptyStateProps) {
   const [showAnimation, setShowAnimation] = useState(false)
 
   useEffect(() => {
@@ -39,182 +40,198 @@ function EmptyState({ type, message, onReset, searchQuery }: EmptyStateProps) {
     window.location.href = `/search?q=${encodeURIComponent(term)}`
   }
 
-  if (type === 'initial') {
-    return (
-      <div className={`transition-all duration-500 ${showAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <div className="text-center py-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#339999]/20 to-[#339999]/5 rounded-2xl mb-6">
-            <Search className="w-10 h-10 text-[#339999]" />
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-3">
-            Start Your Search
-          </h3>
-          <p className="text-gray-600 mb-8 max-w-lg mx-auto">
-            Search for PPE products, manufacturers, or compliance regulations. Get instant access to certification requirements and market data.
-          </p>
-
-          {/* 热门搜索 */}
-          <div className="max-w-2xl mx-auto">
-            <p className="text-sm font-medium text-gray-500 mb-4">Popular searches:</p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {POPULAR_SEARCHES.map((item, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handlePopularSearch(item.term)}
-                  className="inline-flex items-center px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:border-[#339999] hover:text-[#339999] transition-all shadow-sm hover:shadow-md"
-                >
-                  {item.type === 'product' && <Package className="w-3.5 h-3.5 mr-1.5 text-gray-400" />}
-                  {item.type === 'company' && <Building2 className="w-3.5 h-3.5 mr-1.5 text-gray-400" />}
-                  {item.type === 'regulation' && <FileQuestion className="w-3.5 h-3.5 mr-1.5 text-gray-400" />}
-                  {item.term}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* 搜索提示 */}
-          <div className="mt-12 max-w-2xl mx-auto">
-            <div className="bg-blue-50 rounded-xl p-6 text-left">
-              <div className="flex items-center gap-2 mb-4">
-                <Lightbulb className="w-5 h-5 text-blue-600" />
-                <h4 className="font-semibold text-blue-900">Search Tips</h4>
+  const renderContent = () => {
+    switch (type) {
+      case 'no-results':
+        return (
+          <div className="text-center py-16">
+            <div className={`transition-all duration-500 ${showAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-6">
+                <Search className="w-10 h-10 text-gray-400" />
               </div>
-              <ul className="space-y-2">
-                {SEARCH_TIPS.map((tip, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-blue-800">
-                    <ArrowRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-blue-400" />
-                    <span>{tip}</span>
-                  </li>
-                ))}
-              </ul>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                No results found
+              </h3>
+              <p className="text-gray-600 max-w-md mx-auto mb-8">
+                {message || `We couldn't find any results for "${searchQuery}". Try different keywords or browse our popular searches below.`}
+              </p>
             </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
 
-  if (type === 'no-results') {
-    return (
-      <div className={`transition-all duration-500 ${showAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <div className="text-center py-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-2xl mb-6">
-            <Search className="w-10 h-10 text-gray-400" />
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-3">
-            No results found
-          </h3>
-          {searchQuery && (
-            <p className="text-lg text-gray-600 mb-2">
-              for &quot;<span className="font-medium text-[#339999]">{searchQuery}</span>&quot;
-            </p>
-          )}
-          <p className="text-gray-500 mb-8 max-w-md mx-auto">
-            {message || 'Try adjusting your search terms or browse our popular searches below'}
-          </p>
+            {/* 搜索建议 */}
+            <div className={`transition-all duration-500 delay-100 ${showAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8 max-w-md mx-auto">
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-sm font-medium text-blue-900 mb-2">Search Tips</h4>
+                    <ul className="text-xs text-blue-700 space-y-1">
+                      {SEARCH_TIPS.map((tip, index) => (
+                        <li key={index}>• {tip}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          {/* 操作按钮 */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
-            {onReset && (
+            {/* 热门搜索 */}
+            <div className={`transition-all duration-500 delay-200 ${showAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <h4 className="text-sm font-medium text-gray-700 mb-3">Popular Searches</h4>
+              <div className="flex flex-wrap justify-center gap-2 mb-6">
+                {POPULAR_SEARCHES.map((item, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handlePopularSearch(item.term)}
+                    className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg hover:border-[#339999] hover:bg-[#339999]/5 transition-colors group"
+                  >
+                    {item.type === 'product' && <Package className="w-4 h-4 text-gray-400 group-hover:text-[#339999]" />}
+                    {item.type === 'company' && <Building2 className="w-4 h-4 text-gray-400 group-hover:text-[#339999]" />}
+                    {item.type === 'regulation' && <Filter className="w-4 h-4 text-gray-400 group-hover:text-[#339999]" />}
+                    <span className="text-sm text-gray-700 group-hover:text-[#339999]">{item.term}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className={`transition-all duration-500 delay-300 ${showAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               <Button
                 onClick={onReset}
                 variant="outline"
-                className="border-gray-300 text-gray-700 hover:border-[#339999] hover:text-[#339999]"
+                className="flex items-center gap-2"
               >
-                <X className="w-4 h-4 mr-2" />
-                Clear filters
+                <X className="w-4 h-4" />
+                Clear search
               </Button>
-            )}
-            <Button
-              onClick={() => window.location.href = '/search'}
-              className="bg-[#339999] hover:bg-[#2a8080] text-white"
-            >
-              <Search className="w-4 h-4 mr-2" />
-              New search
-            </Button>
-          </div>
-
-          {/* 推荐搜索 */}
-          <div className="max-w-2xl mx-auto">
-            <p className="text-sm font-medium text-gray-500 mb-4">Try searching for:</p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {POPULAR_SEARCHES.map((item, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handlePopularSearch(item.term)}
-                  className="inline-flex items-center px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:border-[#339999] hover:text-[#339999] transition-all shadow-sm hover:shadow-md"
-                >
-                  {item.type === 'product' && <Package className="w-3.5 h-3.5 mr-1.5 text-gray-400" />}
-                  {item.type === 'company' && <Building2 className="w-3.5 h-3.5 mr-1.5 text-gray-400" />}
-                  {item.type === 'regulation' && <FileQuestion className="w-3.5 h-3.5 mr-1.5 text-gray-400" />}
-                  {item.term}
-                </button>
-              ))}
             </div>
           </div>
+        )
 
-          {/* 帮助链接 */}
-          <div className="mt-10 pt-8 border-t border-gray-200">
-            <p className="text-sm text-gray-500 mb-4">
-              Can&apos;t find what you&apos;re looking for?
+      case 'no-filters':
+        return (
+          <div className="text-center py-16">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-6">
+              <Filter className="w-10 h-10 text-gray-400" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">
+              No results match your filters
+            </h3>
+            <p className="text-gray-600 max-w-md mx-auto mb-8">
+              Try adjusting your filter criteria or clear some filters to see more results.
             </p>
-            <div className="flex justify-center gap-4">
-              <a href="/help" className="text-sm text-[#339999] hover:underline">
-                Visit Help Center
-              </a>
-              <span className="text-gray-300">|</span>
-              <a href="/api-docs" className="text-sm text-[#339999] hover:underline">
-                API Documentation
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (type === 'error') {
-    return (
-      <div className={`transition-all duration-500 ${showAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <div className="text-center py-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-red-50 rounded-2xl mb-6">
-            <AlertCircle className="w-10 h-10 text-red-500" />
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-3">
-            Something went wrong
-          </h3>
-          <p className="text-gray-600 mb-8 max-w-md mx-auto">
-            {message || 'We encountered an error while searching. Please try again.'}
-          </p>
-          {onReset && (
             <Button
               onClick={onReset}
-              className="bg-[#339999] hover:bg-[#2a8080] text-white"
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <X className="w-4 h-4" />
+              Clear filters
+            </Button>
+          </div>
+        )
+
+      case 'error':
+        return (
+          <div className="text-center py-16">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-red-50 rounded-full mb-6">
+              <AlertCircle className="w-10 h-10 text-red-500" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">
+              Something went wrong
+            </h3>
+            <p className="text-gray-600 max-w-md mx-auto mb-8">
+              {message || 'An error occurred while searching. Please try again.'}
+            </p>
+            <Button
+              onClick={onReset}
+              variant="outline"
+              className="flex items-center gap-2"
             >
               Try again
             </Button>
-          )}
-        </div>
-      </div>
-    )
+          </div>
+        )
+
+      case 'initial':
+      default:
+        return (
+          <div className="text-center py-16">
+            <div className={`transition-all duration-500 ${showAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#339999]/20 to-[#339999]/5 rounded-full mb-6">
+                <Search className="w-10 h-10 text-[#339999]" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                Start your PPE compliance search
+              </h3>
+              <p className="text-gray-600 max-w-md mx-auto mb-8">
+                Search across FDA, NMPA, and EUDAMED databases for products, manufacturers, and regulations.
+              </p>
+            </div>
+
+            {/* 快捷搜索入口 */}
+            <div className={`transition-all duration-500 delay-100 ${showAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className="flex flex-wrap justify-center gap-3 mb-8">
+                <Link href="/search?type=product" className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:border-[#339999] hover:bg-[#339999]/5 transition-colors group">
+                  <Package className="w-5 h-5 text-gray-400 group-hover:text-[#339999]" />
+                  <span className="text-sm font-medium text-gray-700 group-hover:text-[#339999]">Browse Products</span>
+                  <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#339999]" />
+                </Link>
+                <Link href="/search?type=company" className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:border-[#339999] hover:bg-[#339999]/5 transition-colors group">
+                  <Building2 className="w-5 h-5 text-gray-400 group-hover:text-[#339999]" />
+                  <span className="text-sm font-medium text-gray-700 group-hover:text-[#339999]">Browse Companies</span>
+                  <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#339999]" />
+                </Link>
+                <Link href="/search?type=regulation" className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:border-[#339999] hover:bg-[#339999]/5 transition-colors group">
+                  <Filter className="w-5 h-5 text-gray-400 group-hover:text-[#339999]" />
+                  <span className="text-sm font-medium text-gray-700 group-hover:text-[#339999]">Browse Regulations</span>
+                  <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#339999]" />
+                </Link>
+              </div>
+            </div>
+
+            {/* 热门搜索 */}
+            <div className={`transition-all duration-500 delay-200 ${showAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <h4 className="text-sm font-medium text-gray-700 mb-3">Popular Searches</h4>
+              <div className="flex flex-wrap justify-center gap-2">
+                {POPULAR_SEARCHES.map((item, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handlePopularSearch(item.term)}
+                    className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg hover:border-[#339999] hover:bg-[#339999]/5 transition-colors group"
+                  >
+                    {item.type === 'product' && <Package className="w-4 h-4 text-gray-400 group-hover:text-[#339999]" />}
+                    {item.type === 'company' && <Building2 className="w-4 h-4 text-gray-400 group-hover:text-[#339999]" />}
+                    {item.type === 'regulation' && <Filter className="w-4 h-4 text-gray-400 group-hover:text-[#339999]" />}
+                    <span className="text-sm text-gray-700 group-hover:text-[#339999]">{item.term}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )
+    }
   }
 
-  return null
-}
-
-function LoadingState() {
   return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <div className="text-center">
-        <div className="relative w-16 h-16 mx-auto mb-6">
-          <div className="absolute inset-0 border-4 border-[#339999]/20 rounded-full" />
-          <div className="absolute inset-0 border-4 border-[#339999] border-t-transparent rounded-full animate-spin" />
-        </div>
-        <p className="text-gray-600 font-medium">Searching...</p>
-        <p className="text-sm text-gray-400 mt-2">This may take a few seconds</p>
-      </div>
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+      {renderContent()}
     </div>
   )
 }
 
-export { EmptyState, LoadingState }
+function LoadingState() {
+  return (
+    <div className="text-center py-16">
+      <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#339999]/20 to-[#339999]/5 rounded-full mb-6">
+        <Loader2 className="w-10 h-10 text-[#339999] animate-spin" />
+      </div>
+      <h3 className="text-xl font-semibold text-gray-900 mb-3">
+        Searching...
+      </h3>
+      <p className="text-gray-600">
+        Looking across multiple databases for matching results
+      </p>
+    </div>
+  )
+}
+
+export { LoadingState }

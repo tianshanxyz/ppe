@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { Search, Clock, X } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -20,7 +19,6 @@ export function SearchBar({
   className = '',
   size = 'default',
 }: SearchBarProps) {
-  const router = useRouter()
   const [query, setQuery] = useState(initialQuery)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
@@ -44,101 +42,74 @@ export function SearchBar({
     e.preventDefault()
     if (query.trim()) {
       setShowSuggestions(false)
-      router.push(`/search?q=${encodeURIComponent(query.trim())}`)
+      window.location.href = `/search?q=${encodeURIComponent(query.trim())}`
     }
   }
 
   const handleSuggestionSelect = (selectedQuery: string) => {
     setQuery(selectedQuery)
     setShowSuggestions(false)
-    router.push(`/search?q=${encodeURIComponent(selectedQuery)}`)
+    window.location.href = `/search?q=${encodeURIComponent(selectedQuery)}`
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value)
-    setShowSuggestions(true)
+    const value = e.target.value
+    setQuery(value)
+    setShowSuggestions(value.trim().length > 1)
   }
 
-  const handleInputFocus = () => {
-    setIsFocused(true)
-    setShowSuggestions(true)
-  }
-
-  const clearInput = () => {
+  const handleClear = () => {
     setQuery('')
+    setShowSuggestions(false)
     inputRef.current?.focus()
   }
 
+  const inputSize = size === 'large' ? 'lg' : 'md'
+
   return (
-    <div ref={containerRef} className={`relative ${className}`}>
-      <form
-        onSubmit={handleSubmit}
-        className="flex gap-2"
-      >
-        <div className={`
-          relative flex-1 transition-all duration-200
-          ${isFocused ? 'ring-2 ring-[#339999] ring-opacity-50' : ''}
-          ${size === 'large' ? 'scale-105' : ''}
-          rounded-lg
-        `}>
+    <div className={`relative ${className}`} ref={containerRef}>
+      <form onSubmit={handleSubmit}>
+        <div className="relative">
+          <Search className={`absolute left-3 ${inputSize === 'lg' ? 'top-4' : 'top-2.5'} w-5 h-5 text-gray-400`} />
           <Input
             ref={inputRef}
             type="text"
             value={query}
             onChange={handleInputChange}
-            onFocus={handleInputFocus}
+            onFocus={() => {
+              setIsFocused(true)
+              if (query.trim().length > 1) setShowSuggestions(true)
+            }}
+            onBlur={() => setIsFocused(false)}
             placeholder={placeholder}
-            className={`
-              w-full 
-              ${size === 'large' ? 'py-4 text-lg' : 'py-2.5'}
-              pr-24
-              border-2
-              ${isFocused ? 'border-[#339999]' : 'border-gray-200'}
-              transition-colors
-              rounded-lg
-            `}
+            className={`pl-10 ${size === 'large' ? 'h-12 text-lg' : 'h-10'} rounded-lg ${
+              isFocused ? 'border-primary ring-2 ring-primary/20' : ''
+            }`}
           />
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-            {query && (
-              <button
-                type="button"
-                onClick={clearInput}
-                className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-                title="Clear"
-              >
-                <X className="h-4 w-4 text-gray-400" />
-              </button>
-            )}
+          {query && (
             <button
               type="button"
-              onClick={() => setShowSuggestions(!showSuggestions)}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
-              title="Search History"
+              onClick={handleClear}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-gray-100 transition-colors"
             >
-              <Clock className="h-4 w-4 text-gray-400" />
+              <X className="w-4 h-4 text-gray-400" />
             </button>
-            <Search className="h-4 w-4 text-gray-400" />
-          </div>
+          )}
         </div>
-        <Button 
-          type="submit"
-          className={`
-            bg-[#339999] hover:bg-[#2d8b8b] text-white
-            ${size === 'large' ? 'px-8 py-4 text-lg' : ''}
-            transition-all duration-200
-          `}
-        >
-          <Search className="h-4 w-4 mr-2" />
-          Search
-        </Button>
       </form>
 
-      <SearchSuggestions
-        query={query}
-        onSelect={handleSuggestionSelect}
-        onClose={() => setShowSuggestions(false)}
-        visible={showSuggestions}
-      />
+      {showSuggestions && (
+        <div className="absolute top-full left-0 right-0 mt-1 z-50">
+          <SearchSuggestions
+            query={query}
+            onSelect={handleSuggestionSelect}
+            onClose={() => setShowSuggestions(false)}
+            visible={showSuggestions}
+          />
+        </div>
+      )}
     </div>
   )
 }
+
+export default SearchBar

@@ -158,12 +158,18 @@ export function useLocaleLabel(): string {
 export function useSetLocale() {
   const setLocale = useCallback((newLocale: Locale) => {
     // 更新localStorage
-    localStorage.setItem('mdlooker-locale', newLocale);
-    
-    // 更新URL参数
-    const url = new URL(window.location.href);
-    url.searchParams.set('lang', newLocale);
-    window.location.href = url.toString();
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('mdlooker-locale', newLocale);
+      
+      // 更新URL参数
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', newLocale);
+        window.location.href = url.toString();
+      } catch (e) {
+        console.warn('Failed to update URL locale:', e);
+      }
+    }
   }, []);
 
   return setLocale;
