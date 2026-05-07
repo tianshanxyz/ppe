@@ -46,6 +46,7 @@ function SearchContent() {
 
   const performSearch = async (query: string, type: 'all' | 'product' | 'company' | 'regulation') => {
     setLoading(true)
+    setHasSearched(true)
     try {
       const allResults: any[] = []
 
@@ -68,7 +69,9 @@ function SearchContent() {
         const response = await fetch(`/api/search?${params}`)
         const data = await response.json()
         
-        if (data.data) {
+        if (!response.ok) {
+          console.error('Search API error:', data)
+        } else if (data.data) {
           if (data.data.products) {
             allResults.push(...data.data.products.map((p: any) => ({ ...p, _resultType: 'product' })))
           }

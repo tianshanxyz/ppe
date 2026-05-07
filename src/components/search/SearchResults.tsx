@@ -1,16 +1,20 @@
 'use client'
 
-import { Card, CardContent, CardHeader, Badge, Button, Skeleton } from '@/components/ui'
+import { useMemo } from 'react'
+import { Card, CardContent, Badge, Button } from '@/components/ui'
 import { DataSourceBadge } from '@/components/medplum/DataSourceBadge'
 import { LastUpdateTime } from '@/components/data/LastUpdateTime'
-import { Building2, Package, Scale, MapPin, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
+import { Building2, Package, Scale, MapPin, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { EmptyState } from './EmptyState'
+import { ProductFamilyCard } from './ProductFamilyCard'
+import { groupProductsByFamily } from '@/lib/product-family'
 
 interface SearchResultItem {
   id: string
   name: string
   company_name?: string
+  manufacturer_name?: string
   market?: string
   market_code?: string
   device_class?: string
@@ -19,6 +23,7 @@ interface SearchResultItem {
   registration_number?: string
   regulation_number?: string
   country?: string
+  country_of_origin?: string
   website?: string
   title?: string
   title_zh?: string
@@ -28,8 +33,11 @@ interface SearchResultItem {
   document_type?: string
   effective_date?: string
   category_id?: string
+  category?: string
+  data_source?: string
   created_at?: string
   updated_at?: string
+  last_updated_at?: string
   _resultType?: 'product' | 'company' | 'regulation'
   [key: string]: string | number | boolean | null | undefined
 }
@@ -40,15 +48,12 @@ interface SearchResultsProps {
 }
 
 function getResultType(result: SearchResultItem, propType?: string): 'product' | 'company' | 'regulation' {
-  // Use the explicit _resultType marker first
   if (result._resultType) return result._resultType
-  // Fallback: infer from prop type and data shape
   if (propType === 'regulation') return 'regulation'
   if (propType === 'company') return 'company'
   if (propType === 'product') return 'product'
-  // For 'all' type, infer from data shape
   if (result.regulation_number || result.issuing_authority || result.document_type) return 'regulation'
-  if (result.company_name) return 'product'
+  if (result.company_name || result.manufacturer_name) return 'product'
   return 'company'
 }
 
@@ -86,6 +91,29 @@ function getTypeLabel(resultType: 'product' | 'company' | 'regulation'): string 
 }
 
 export function SearchResults({ results, type = 'all' }: SearchResultsProps) {
+  // 分离产品、公司和法规
+  const { products, companies, regulations, productFamilies } = useMemo(() => {
+    const products: SearchResultItem[] = []
+    const companies: SearchResultItem[] = []
+    const regulations: SearchResultItem[] = []
+
+    results.forEach(result => {
+      const resultType = getResultType(result, type)
+      if (resultType === 'product') {
+        products.push(result)
+      } else if (resultType === 'company') {
+        companies.push(result)
+      } else {
+        regulations.push(result)
+      }
+    })
+
+    // 将产品聚合成产品家族
+    const productFamilies = groupProductsByFamily(products)
+
+    return { products, companies, regulations, productFamilies }
+  }, [results, type])
+
   if (results.length === 0) {
     return (
       <EmptyState 
@@ -96,142 +124,188 @@ export function SearchResults({ results, type = 'all' }: SearchResultsProps) {
   }
 
   return (
-    <div className="space-y-4">
-      {results.map((result) => {
-        const resultType = getResultType(result, type)
-        const Icon = getTypeIcon(resultType)
-        const detailLink = getDetailLink(result, resultType)
-        const typeLabel = getTypeLabel(resultType)
+    <div className="space-y-6">
+      {/* 产品家族聚合展示 */}
+      {productFamilies.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-medium text-gray-500">
+              Products ({productFamilies.length} families, {products.length} registrations)
+            </h3>
+            {productFamilies.some(f => f.registrations.length > 1) && (
+              <Badge variant="outline" className="bg-blue-50 text-blue-700">
+                Multi-country registrations grouped
+              </Badge>
+            )}
+          </div>
+          <div className="space-y-4">
+            {productFamilies.map(family => (
+              <ProductFamilyCard key={family.familyId} family={family} />
+            ))}
+          </div>
+        </div>
+      )}
 
-        return (
-          <Card key={`${resultType}-${result.id}`} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div className="space-y-2 flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-                    <Link 
-                      href={detailLink}
-                      className="text-xl font-semibold hover:text-primary transition-colors truncate"
-                    >
-                      {resultType === 'regulation'
-                        ? (result.title || result.name || result.regulation_number || 'Unknown Regulation')
-                        : (result.name || result.company_name || 'Unknown')
-                      }
-                    </Link>
-                    <Badge variant="outline" className="bg-gray-50 text-gray-600 border-gray-200 flex-shrink-0 text-xs">
-                      {typeLabel}
-                    </Badge>
-                  </div>
-                  
-                  {/* Product-specific fields */}
-                  {resultType === 'product' && result.company_name && (
-                    <p className="text-sm text-muted-foreground">
-                      Manufacturer: {result.company_name}
-                    </p>
-                  )}
+      {/* 公司列表 */}
+      {companies.length > 0 && (
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium text-gray-500">
+            Companies ({companies.length})
+          </h3>
+          <div className="space-y-4">
+            {companies.map((result) => {
+              const resultType = 'company'
+              const Icon = getTypeIcon(resultType)
+              const detailLink = getDetailLink(result, resultType)
+              const typeLabel = getTypeLabel(resultType)
 
-                  {/* Regulation-specific fields */}
-                  {resultType === 'regulation' && (
-                    <>
-                      {result.title_zh && (
-                        <p className="text-sm text-muted-foreground">
-                          {result.title_zh}
-                        </p>
-                      )}
-                      {result.issuing_authority && (
-                        <p className="text-sm text-muted-foreground">
-                          Authority: {result.issuing_authority}
-                        </p>
-                      )}
-                      {result.summary && (
-                        <p className="text-sm text-gray-600 line-clamp-2">
-                          {result.summary}
-                        </p>
-                      )}
-                    </>
-                  )}
-                  
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
-                    {resultType === 'regulation' ? (
-                      <>
-                        {result.regulation_number && (
-                          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-                            {result.regulation_number}
+              return (
+                <Card key={`${resultType}-${result.id}`} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-2 flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                          <Link 
+                            href={detailLink}
+                            className="text-xl font-semibold hover:text-primary transition-colors truncate"
+                          >
+                            {result.name || result.company_name || 'Unknown'}
+                          </Link>
+                          <Badge variant="outline" className="bg-gray-50 text-gray-600 border-gray-200 flex-shrink-0 text-xs">
+                            {typeLabel}
                           </Badge>
-                        )}
-                        {result.market_code && (
-                          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                            {result.market_code}
-                          </Badge>
-                        )}
-                        {result.document_type && (
-                          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                            {result.document_type}
-                          </Badge>
-                        )}
-                        {result.status && (
-                          <span className="flex items-center gap-1">
-                            Status: {result.status}
-                          </span>
-                        )}
-                        {result.effective_date && (
-                          <span className="flex items-center gap-1">
-                            Effective: {result.effective_date}
-                          </span>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        {(result.market || result.market_code) && (
-                          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                            {result.market || result.market_code}
-                          </Badge>
-                        )}
-                        {result.device_class && (
-                          <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
-                            {result.device_class}
-                          </Badge>
-                        )}
-                        {result.status && (
-                          <span className="flex items-center gap-1">
-                            Status: {result.status}
-                          </span>
-                        )}
+                        </div>
+                        
                         {result.country && (
-                          <span className="flex items-center gap-1">
-                            <MapPin className="w-4 h-4" />
-                            {result.country}
-                          </span>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-4 h-4" />
+                              {result.country}
+                            </span>
+                          </div>
                         )}
-                      </>
-                    )}
-                  </div>
-                  
-                  <div className="flex items-center gap-2 pt-2">
-                    {typeof result.data_source === 'string' && result.data_source && (
-                      <DataSourceBadge source={result.data_source as any} />
-                    )}
-                    {result.last_updated_at && typeof result.last_updated_at === 'string' && (
-                      <LastUpdateTime 
-                        timestamp={result.last_updated_at}
-                        showNextUpdate={false}
-                      />
-                    )}
-                  </div>
-                </div>
-                
-                <Link href={detailLink} className="flex-shrink-0 ml-4">
-                  <Button variant="outline" size="sm" className="flex items-center gap-1">
-                    More
-                    <ArrowRight className="w-3 h-3" />
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        )
-      })}
+                        
+                        <div className="flex items-center gap-2 pt-2">
+                          {typeof result.data_source === 'string' && result.data_source && (
+                            <DataSourceBadge source={result.data_source as any} />
+                          )}
+                          {result.last_updated_at && typeof result.last_updated_at === 'string' && (
+                            <LastUpdateTime 
+                              timestamp={result.last_updated_at}
+                              showNextUpdate={false}
+                            />
+                          )}
+                        </div>
+                      </div>
+                      
+                      <Link href={detailLink} className="flex-shrink-0 ml-4">
+                        <Button variant="outline" size="sm" className="flex items-center gap-1">
+                          More
+                          <ArrowRight className="w-3 h-3" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 法规列表 */}
+      {regulations.length > 0 && (
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium text-gray-500">
+            Regulations ({regulations.length})
+          </h3>
+          <div className="space-y-4">
+            {regulations.map((result) => {
+              const resultType = 'regulation'
+              const Icon = getTypeIcon(resultType)
+              const detailLink = getDetailLink(result, resultType)
+              const typeLabel = getTypeLabel(resultType)
+
+              return (
+                <Card key={`${resultType}-${result.id}`} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-2 flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                          <Link 
+                            href={detailLink}
+                            className="text-xl font-semibold hover:text-primary transition-colors truncate"
+                          >
+                            {result.title || result.name || result.regulation_number || 'Unknown Regulation'}
+                          </Link>
+                          <Badge variant="outline" className="bg-gray-50 text-gray-600 border-gray-200 flex-shrink-0 text-xs">
+                            {typeLabel}
+                          </Badge>
+                        </div>
+                        
+                        {result.title_zh && (
+                          <p className="text-sm text-muted-foreground">
+                            {result.title_zh}
+                          </p>
+                        )}
+                        {result.issuing_authority && (
+                          <p className="text-sm text-muted-foreground">
+                            Authority: {result.issuing_authority}
+                          </p>
+                        )}
+                        {result.summary && (
+                          <p className="text-sm text-gray-600 line-clamp-2">
+                            {result.summary}
+                          </p>
+                        )}
+                        
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                          {result.regulation_number && (
+                            <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+                              {result.regulation_number}
+                            </Badge>
+                          )}
+                          {result.market_code && (
+                            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                              {result.market_code}
+                            </Badge>
+                          )}
+                          {result.document_type && (
+                            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                              {result.document_type}
+                            </Badge>
+                          )}
+                          {result.status && (
+                            <span>Status: {result.status}</span>
+                          )}
+                          {result.effective_date && (
+                            <span>Effective: {result.effective_date}</span>
+                          )}
+                        </div>
+                        
+                        <div className="flex items-center gap-2 pt-2">
+                          {typeof result.data_source === 'string' && result.data_source && (
+                            <DataSourceBadge source={result.data_source as any} />
+                          )}
+                        </div>
+                      </div>
+                      
+                      <Link href={detailLink} className="flex-shrink-0 ml-4">
+                        <Button variant="outline" size="sm" className="flex items-center gap-1">
+                          More
+                          <ArrowRight className="w-3 h-3" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
