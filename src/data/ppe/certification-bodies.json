@@ -1,0 +1,128 @@
+[
+  {
+    "id": "nb-0158-dekra",
+    "nb_number": "NB 0158",
+    "name": "DEKRA Testing and Certification GmbH",
+    "name_zh": "DEKRA测试与认证有限公司",
+    "country": "DE",
+    "scope": "PPE认证 (EU 2016/425), 医疗器械 (EU 2017/745)",
+    "ppe_categories": ["呼吸防护 (EN 149)", "头部防护 (EN 397)", "防护服 (EN ISO 13688)"],
+    "website": "https://www.dekra-product-safety.com",
+    "status": "active",
+    "verification_source": {
+      "name": "欧盟NANDO数据库",
+      "url": "https://ec.europa.eu/growth/tools-databases/nando/index.cfm?fuseaction=notifiedbody.main",
+      "last_verified": "2026-05-06"
+    }
+  },
+  {
+    "id": "nb-0194-insta",
+    "nb_number": "NB 0194",
+    "name": "INSPEC International Ltd",
+    "name_zh": "INSPEC国际有限公司",
+    "country": "GB",
+    "scope": "PPE认证 (EU 2016/425)",
+    "ppe_categories": ["呼吸防护", "防护手套 (EN 388)"],
+    "website": "https://www.inspec-international.com",
+    "status": "active",
+    "verification_source": {
+      "name": "欧盟NANDO数据库",
+      "url": "https://ec.europa.eu/growth/tools-databases/nando/index.cfm?fuseaction=notifiedbody.main",
+      "last_verified": "2026-05-06"
+    }
+  },
+  {
+    "id": "nb-0359-ist",
+    "nb_number": "NB 0359",
+    "name": "IST - Institut für Sicherheitstechnik GmbH",
+    "name_zh": "IST安全技术研究所",
+    "country": "DE",
+    "scope": "PPE认证 (EU 2016/425)",
+    "ppe_categories": ["呼吸防护", "头部防护", "安全鞋 (EN ISO 20345)"],
+    "website": "https://www.ist-net.com",
+    "status": "active",
+    "verification_source": {
+      "name": "欧盟NANDO数据库",
+      "url": "https://ec.europa.eu/growth/tools-databases/nando/index.cfm?fuseaction=notifiedbody.main",
+      "last_verified": "2026-05-06"
+    }
+  },
+  {
+    "id": "nb-0598-sgs",
+    "nb_number": "NB 0598",
+    "name": "SGS Fimko Oy",
+    "name_zh": "SGS Fimko有限公司",
+    "country": "FI",
+    "scope": "PPE认证 (EU 2016/425)",
+    "ppe_categories": ["呼吸防护", "防护手套", "防护服", "足部防护"],
+    "website": "https://www.sgs.com",
+    "status": "active",
+    "verification_source": {
+      "name": "欧盟NANDO数据库",
+      "url": "https://ec.europa.eu/growth/tools-databases/nando/index.cfm?fuseaction=notifiedbody.main",
+      "last_verified": "2026-05-06"
+    }
+  },
+  {
+    "id": "nb-1024-bsi",
+    "nb_number": "NB 1024",
+    "name": "BSI Assurance UK Ltd (Notified Body 1024)",
+    "name_zh": "BSI Assurance UK有限公司",
+    "country": "GB",
+    "scope": "PPE认证 (EU 2016/425), UKCA认证 (UK Approved Body 0086)",
+    "ppe_categories": ["呼吸防护", "防护服", "足部防护", "头部防护", "眼面部防护"],
+    "website": "https://www.bsigroup.com",
+    "status": "active",
+    "verification_source": {
+      "name": "欧盟NANDO数据库",
+      "url": "https://ec.europa.eu/growth/tools-databases/nando/index.cfm?fuseaction=notifiedbody.main",
+      "last_verified": "2026-05-06"
+    }
+  },
+  {
+    "id": "nb-2797-bsi",
+    "nb_number": "NB 2797",
+    "name": "BSI Assurance UK Ltd (Notified Body 2797)",
+    "name_zh": "BSI Assurance UK有限公司",
+    "country": "GB",
+    "scope": "医疗器械认证 (EU 2017/745 MDR)",
+    "ppe_categories": ["医用口罩 (EN 14683)", "医用防护服", "医用手套"],
+    "website": "https://www.bsigroup.com",
+    "status": "active",
+    "verification_source": {
+      "name": "欧盟NANDO数据库",
+      "url": "https://ec.europa.eu/growth/tools-databases/nando/index.cfm?fuseaction=notifiedbody.main",
+      "last_verified": "2026-05-06"
+    }
+  },
+  {
+    "id": "fda-lab-ul",
+    "name": "UL LLC (Underwriters Laboratories)",
+    "name_zh": "UL有限责任公司",
+    "country": "US",
+    "scope": "FDA认可实验室，PPE测试认证",
+    "ppe_categories": ["呼吸防护 (NIOSH)", "防护服", "安全鞋 (ASTM F2413)"],
+    "website": "https://www.ul.com",
+    "status": "active",
+    "verification_source": {
+      "name": "FDA认可实验室列表",
+      "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRL/rl.cfm",
+      "last_verified": "2026-05-06"
+    }
+  },
+  {
+    "id": "nmpa-cnca-lab-cepra",
+    "name": "中纺标检验认证股份有限公司 (CTTC)",
+    "name_zh": "中纺标检验认证股份有限公司",
+    "country": "CN",
+    "scope": "CNCA批准实验室，NMPA注册检测",
+    "ppe_categories": ["医用口罩", "医用防护服", "医用检查手套"],
+    "website": "https://www.cttc.net.cn",
+    "status": "active",
+    "verification_source": {
+      "name": "国家认证认可监督管理委员会 (CNCA)",
+      "url": "https://www.cnca.gov.cn/",
+      "last_verified": "2026-05-06"
+    }
+  }
+]

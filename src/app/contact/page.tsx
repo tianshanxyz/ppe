@@ -51,7 +51,7 @@ export default function ContactPage() {
       setFormData({ name: '', email: '', subject: '', message: '' })
     } catch (err) {
       console.error('Email send failed:', err)
-      setError('Failed to send your message through our email service. You can use the direct email link below instead.')
+      setError(locale === 'zh' ? '邮件发送失败，请使用下方的直接邮件链接。' : 'Failed to send your message through our email service. You can use the direct email link below instead.')
     } finally {
       setSubmitting(false)
     }
@@ -179,7 +179,7 @@ export default function ContactPage() {
                 <>
                   <h2 className="text-2xl font-bold text-gray-900 mb-2">{locale === 'zh' ? '给我们留言' : 'Send Us a Message'}</h2>
                   <p className="text-gray-600 mb-4">
-                    Fill out the form below and we&apos;ll get back to you as soon as possible.
+                    {locale === 'zh' ? '请填写以下表单，我们会尽快回复您。' : "Fill out the form below and we'll get back to you as soon as possible."}
                   </p>
                   <p className="text-gray-500 text-sm mb-8">
                     {t.preferEmail}{' '}
@@ -278,7 +278,7 @@ export default function ContactPage() {
                         rows={6}
                         value={formData.message}
                         onChange={handleChange}
-                        placeholder="Tell us how we can help you..."
+                        placeholder={locale === 'zh' ? '告诉我们如何帮助您...' : 'Tell us how we can help you...'}
                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/10 outline-none transition-all text-gray-900 placeholder-gray-400 resize-vertical"
                       />
                     </div>

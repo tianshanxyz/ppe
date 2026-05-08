@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Input } from '@/components/ui';
 import { Key, Plus, Trash2, Copy, Check, Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
+import { useLocale } from '@/lib/i18n/LocaleProvider';
 
 interface ApiKey {
   id: string;
@@ -33,6 +34,7 @@ interface NewKeyResponse {
 }
 
 export default function ApiKeysPage() {
+  const locale = useLocale();
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -105,7 +107,7 @@ export default function ApiKeysPage() {
   };
 
   const handleDeleteKey = async (id: string) => {
-    if (!confirm('Are you sure you want to revoke this API key? This action cannot be undone.')) {
+    if (!confirm(locale === 'zh' ? '确定要撤销此API密钥吗？此操作无法撤销。' : 'Are you sure you want to revoke this API key? This action cannot be undone.')) {
       return;
     }
 
@@ -179,8 +181,8 @@ export default function ApiKeysPage() {
       <div className="max-w-4xl mx-auto px-4 md:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">API Keys</h1>
-          <p className="text-gray-500">Manage your API access keys for programmatic access to MDLooker data</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{locale === 'zh' ? 'API密钥' : 'API Keys'}</h1>
+          <p className="text-gray-500">{locale === 'zh' ? '管理您的API访问密钥' : 'Manage your API access keys for programmatic access to MDLooker data'}</p>
         </div>
 
         {/* Error Alert */}
@@ -192,7 +194,7 @@ export default function ApiKeysPage() {
               onClick={() => setError(null)}
               className="ml-auto text-sm underline hover:no-underline"
             >
-              Dismiss
+              {locale === 'zh' ? '关闭' : 'Dismiss'}
             </button>
           </div>
         )}
@@ -203,9 +205,9 @@ export default function ApiKeysPage() {
             <div className="flex items-start gap-3">
               <Check className="w-5 h-5 text-green-600 mt-0.5" />
               <div className="flex-1">
-                <h3 className="font-semibold text-green-900 mb-2">API Key Created Successfully</h3>
+                <h3 className="font-semibold text-green-900 mb-2">{locale === 'zh' ? 'API密钥创建成功' : 'API Key Created Successfully'}</h3>
                 <p className="text-sm text-green-700 mb-4">
-                  Copy your API key now. For security reasons, you won&apos;t be able to see it again.
+                  {locale === 'zh' ? '请立即复制您的API密钥。出于安全考虑，您将无法再次查看。' : "Copy your API key now. For security reasons, you won't be able to see it again."}
                 </p>
                 <div className="flex items-center gap-2 mb-4">
                   <code className="flex-1 bg-white px-4 py-3 rounded-lg text-sm font-mono text-gray-800 break-all border">
@@ -223,7 +225,7 @@ export default function ApiKeysPage() {
                   onClick={() => setNewKey(null)}
                   className="text-green-700 border-green-300 hover:bg-green-100"
                 >
-                  I&apos;ve copied my key
+                  {locale === 'zh' ? '我已复制密钥' : "I've copied my key"}
                 </Button>
               </div>
             </div>
@@ -237,19 +239,19 @@ export default function ApiKeysPage() {
             onClick={() => setShowCreateForm(true)}
           >
             <Plus className="w-4 h-4 mr-2" />
-            Create New Key
+            {locale === 'zh' ? '创建新密钥' : 'Create New Key'}
           </Button>
         )}
 
         {/* Create Form */}
         {showCreateForm && (
           <Card className="p-6 mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Create New API Key</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">{locale === 'zh' ? '创建新API密钥' : 'Create New API Key'}</h2>
             <div className="flex gap-4">
               <Input
                 value={newKeyName}
                 onChange={(e) => setNewKeyName(e.target.value)}
-                placeholder="Enter key name (e.g., Production, Development)"
+                placeholder={locale === 'zh' ? '输入密钥名称（如：生产、开发）' : 'Enter key name (e.g., Production, Development)'}
                 className="flex-1"
                 disabled={creating}
               />
@@ -258,14 +260,14 @@ export default function ApiKeysPage() {
                 className="bg-[#339999] hover:bg-[#2a7a7a]"
                 disabled={creating || !newKeyName.trim()}
               >
-                {creating ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create'}
+                {creating ? <Loader2 className="w-4 h-4 animate-spin" /> : locale === 'zh' ? '创建' : 'Create'}
               </Button>
               <Button 
                 variant="secondary" 
                 onClick={() => setShowCreateForm(false)}
                 disabled={creating}
               >
-                Cancel
+                {locale === 'zh' ? '取消' : 'Cancel'}
               </Button>
             </div>
           </Card>
@@ -275,14 +277,14 @@ export default function ApiKeysPage() {
         {apiKeys.length === 0 ? (
           <Card className="p-12 text-center">
             <Key className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No API Keys</h3>
-            <p className="text-gray-500 mb-4">Create your first API key to start using the MDLooker API</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">{locale === 'zh' ? '暂无API密钥' : 'No API Keys'}</h3>
+            <p className="text-gray-500 mb-4">{locale === 'zh' ? '创建您的第一个API密钥以开始使用MDLooker API' : 'Create your first API key to start using the MDLooker API'}</p>
             <Button
               className="bg-[#339999] hover:bg-[#2a7a7a]"
               onClick={() => setShowCreateForm(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Create API Key
+              {locale === 'zh' ? '创建API密钥' : 'Create API Key'}
             </Button>
           </Card>
         ) : (
@@ -316,30 +318,30 @@ export default function ApiKeysPage() {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
-                        <p className="text-gray-400">Created</p>
+                        <p className="text-gray-400">{locale === 'zh' ? '创建时间' : 'Created'}</p>
                         <p className="text-gray-700">{new Date(apiKey.createdAt).toLocaleDateString()}</p>
                       </div>
                       <div>
-                        <p className="text-gray-400">Last Used</p>
+                        <p className="text-gray-400">{locale === 'zh' ? '最后使用' : 'Last Used'}</p>
                         <p className="text-gray-700">
                           {apiKey.lastUsedAt 
                             ? new Date(apiKey.lastUsedAt).toLocaleDateString()
-                            : 'Never'
+                            : (locale === 'zh' ? '从未' : 'Never')
                           }
                         </p>
                       </div>
                       <div>
-                        <p className="text-gray-400">Total Requests</p>
+                        <p className="text-gray-400">{locale === 'zh' ? '总请求数' : 'Total Requests'}</p>
                         <p className="text-gray-700">{apiKey.usage?.totalRequests?.toLocaleString() || 0}</p>
                       </div>
                       <div>
-                        <p className="text-gray-400">This Month</p>
+                        <p className="text-gray-400">{locale === 'zh' ? '本月' : 'This Month'}</p>
                         <p className="text-gray-700">{apiKey.usage?.requestsThisMonth?.toLocaleString() || 0}</p>
                       </div>
                     </div>
 
                     <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
-                      <span>Rate Limit: {apiKey.rateLimit?.requestsPerMinute || 60}/min</span>
+                      <span>{locale === 'zh' ? '速率限制' : 'Rate Limit'}: {apiKey.rateLimit?.requestsPerMinute || 60}/min</span>
                       <span>•</span>
                       <span>{apiKey.rateLimit?.requestsPerHour || 1000}/hour</span>
                       <span>•</span>
@@ -368,31 +370,31 @@ export default function ApiKeysPage() {
 
         {/* Info */}
         <Card className="p-6 mt-6 bg-[#339999]/5 border-[#339999]/20">
-          <h3 className="font-semibold text-[#339999] mb-3">API Usage Instructions</h3>
+          <h3 className="font-semibold text-[#339999] mb-3">{locale === 'zh' ? 'API使用说明' : 'API Usage Instructions'}</h3>
           <ul className="text-sm text-gray-600 space-y-2">
             <li className="flex items-start gap-2">
               <span className="text-[#339999]">•</span>
-              <span>Include your API key in the <code className="bg-gray-100 px-1 rounded">Authorization</code> header: <code className="bg-gray-100 px-1 rounded">Bearer YOUR_API_KEY</code></span>
+              <span>{locale === 'zh' ? '在请求头中包含API密钥' : 'Include your API key in the'} <code className="bg-gray-100 px-1 rounded">Authorization</code> {locale === 'zh' ? '' : 'header'}: <code className="bg-gray-100 px-1 rounded">Bearer YOUR_API_KEY</code></span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-[#339999]">•</span>
-              <span>Each key has rate limits. Upgrade your plan for higher limits.</span>
+              <span>{locale === 'zh' ? '每个密钥都有速率限制。升级您的计划以获得更高的限制。' : 'Each key has rate limits. Upgrade your plan for higher limits.'}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-[#339999]">•</span>
-              <span>Keep your keys secure. Never expose them in client-side code.</span>
+              <span>{locale === 'zh' ? '请妥善保管您的密钥。切勿在客户端代码中暴露。' : 'Keep your keys secure. Never expose them in client-side code.'}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-[#339999]">•</span>
-              <span>If a key is compromised, revoke it immediately and create a new one.</span>
+              <span>{locale === 'zh' ? '如果密钥泄露，请立即撤销并创建新密钥。' : 'If a key is compromised, revoke it immediately and create a new one.'}</span>
             </li>
           </ul>
           <div className="mt-4 pt-4 border-t border-[#339999]/10">
             <a 
-              href="/docs/api" 
+              href="/api-docs" 
               className="text-sm text-[#339999] hover:underline font-medium"
             >
-              View API Documentation →
+              {locale === 'zh' ? '查看API文档 →' : 'View API Documentation →'}
             </a>
           </div>
         </Card>

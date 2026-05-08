@@ -5,8 +5,10 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Lock, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react'
 import { updatePassword } from '@/lib/auth/supabase-auth'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 export default function ResetPasswordPage() {
+  const locale = useLocale()
   const router = useRouter()
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -22,12 +24,12 @@ export default function ResetPasswordPage() {
 
     // Validation
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
+      setError(locale === 'zh' ? '两次输入的密码不一致' : 'Passwords do not match')
       return
     }
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters long')
+      setError(locale === 'zh' ? '密码至少需要8个字符' : 'Password must be at least 8 characters long')
       return
     }
 
@@ -42,14 +44,13 @@ export default function ResetPasswordPage() {
         return
       }
 
-      setSuccess('Password updated successfully! Redirecting to login...')
-      
-      // 3秒后跳转到登录页面
+      setSuccess(locale === 'zh' ? '密码更新成功！正在跳转到登录页面...' : 'Password updated successfully! Redirecting to login...')
+
       setTimeout(() => {
         router.push('/auth/login')
       }, 3000)
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.')
+      setError(locale === 'zh' ? '发生意外错误，请重试。' : 'An unexpected error occurred. Please try again.')
       setIsLoading(false)
     }
   }
@@ -65,10 +66,10 @@ export default function ResetPasswordPage() {
             </div>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Set New Password
+            {locale === 'zh' ? '设置新密码' : 'Set New Password'}
           </h1>
           <p className="text-gray-600">
-            Enter your new password below
+            {locale === 'zh' ? '请在下方输入新密码' : 'Enter your new password below'}
           </p>
         </div>
 
@@ -92,7 +93,7 @@ export default function ResetPasswordPage() {
             {/* New Password */}
             <div>
               <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
-                New Password
+                {locale === 'zh' ? '新密码' : 'New Password'}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -104,7 +105,7 @@ export default function ResetPasswordPage() {
                   required
                   minLength={8}
                   className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-transparent"
-                  placeholder="At least 8 characters"
+                  placeholder={locale === 'zh' ? '至少8个字符' : 'At least 8 characters'}
                 />
                 <button
                   type="button"
@@ -119,7 +120,7 @@ export default function ResetPasswordPage() {
             {/* Confirm Password */}
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700 mb-2">
-                Confirm New Password
+                {locale === 'zh' ? '确认新密码' : 'Confirm New Password'}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -130,7 +131,7 @@ export default function ResetPasswordPage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-transparent"
-                  placeholder="Re-enter new password"
+                  placeholder={locale === 'zh' ? '再次输入新密码' : 'Re-enter new password'}
                 />
               </div>
             </div>
@@ -146,10 +147,10 @@ export default function ResetPasswordPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Updating...
+                  {locale === 'zh' ? '更新中...' : 'Updating...'}
                 </span>
               ) : (
-                'Update Password'
+                locale === 'zh' ? '更新密码' : 'Update Password'
               )}
             </button>
           </form>

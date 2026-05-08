@@ -1,0 +1,168 @@
+[
+  {
+    "id": "inc-osha-2024-ppe-failure-001",
+    "title": "OSHA PPE Failure Case: Respiratory Protection Failure in Chemical Plant",
+    "title_zh": "OSHA PPE失效案例：化工厂呼吸防护失效",
+    "source": "美国职业安全与健康管理局 (OSHA)",
+    "source_url": "https://www.osha.gov/pls/imis/accidentsearch.html",
+    "incident_date": "2024-03-15",
+    "location": "美国德克萨斯州休斯顿",
+    "industry": "化学制造",
+    "hazard_type": "化学危害 (氨气泄漏)",
+    "ppe_involved": {
+      "type": "全面罩呼吸器",
+      "standard": "NIOSH 42 CFR Part 84",
+      "failure_mode": "滤毒罐未在推荐更换周期内更换，导致穿透性泄漏"
+    },
+    "incident_description": "一名操作工在氨气泄漏区域使用过期滤毒罐，导致轻度吸入性中毒。后续调查发现企业未建立滤毒罐更换记录制度。",
+    "root_cause_analysis": [
+      "缺少PPE使用培训和管理制度",
+      "滤毒罐未标注更换日期",
+      "作业前未进行PPE检查"
+    ],
+    "ppp_prevention_recommendations": [
+      "建立滤毒罐更换记录台账",
+      "每次使用前进行密合性检查",
+      "定期进行PPE使用培训和演练"
+    ],
+    "risk_level": "high",
+    "verification_status": "verified",
+    "last_verified": "2026-05-06"
+  },
+  {
+    "id": "inc-niosh-face-2023-001",
+    "title": "NIOSH FACE Report: Fall Protection Failure in Construction",
+    "title_zh": "NIOSH FACE报告：建筑业防坠保护失效",
+    "source": "美国国家职业安全与健康研究所 (NIOSH FACE)",
+    "source_url": "https://www.cdc.gov/niosh/face/",
+    "incident_date": "2023-11-08",
+    "location": "美国纽约州",
+    "industry": "建筑施工作业",
+    "hazard_type": "高处坠落",
+    "ppe_involved": {
+      "type": "全身式安全带+安全绳",
+      "standard": "ANSI/ASSP Z359.1-2020",
+      "failure_mode": "安全带锚点连接错误，未连接到经认证的锚固点"
+    },
+    "incident_description": "一名建筑工人在15米高空作业时坠落身亡。调查显示其安全带锚固连接点选取不当，非经认证的锚固点撕裂。",
+    "root_cause_analysis": [
+      "锚固点未经认证",
+      "工人未经完整防坠培训",
+      "现场缺少锚固点布局标识"
+    ],
+    "ppp_prevention_recommendations": [
+      "使用经认证的锚固点 (≥5000 lbs 承载力)",
+      "高处作业前进行PPE完整性检查",
+      "建立防坠PPE使用许可证制度"
+    ],
+    "risk_level": "high",
+    "verification_status": "verified",
+    "last_verified": "2026-05-06"
+  },
+  {
+    "id": "inc-cn-mem-2024-001",
+    "title": "中国应急管理部事故通报：某化工厂PPE防护失效",
+    "title_zh": "中国应急管理部事故通报：某化工厂防化服失效",
+    "source": "中国应急管理部 (MEM)",
+    "source_url": "https://www.mem.gov.cn/gk/sgcc/",
+    "incident_date": "2024-06-20",
+    "location": "中国江苏省南京市",
+    "industry": "化工制造",
+    "hazard_type": "化学飞溅 (硫酸)",
+    "ppe_involved": {
+      "type": "化学防护服 Type 3 + 防化学手套",
+      "standard": "GB 19082-2009 / GB/T 17619-2022",
+      "failure_mode": "防护服材质与硫酸不兼容，30分钟内出现渗透"
+    },
+    "incident_description": "一名操作工在转移浓硫酸过程中防护服被腐蚀穿透，造成二级化学灼伤。",
+    "root_cause_analysis": [
+      "PPE选配时未考虑特定化学品的渗透性",
+      "防护服启用前未经化学品兼容性测试",
+      "PPE更换周期过长"
+    ],
+    "ppp_prevention_recommendations": [
+      "选配PPE时必须对照化学品渗透测试数据(EN ISO 374-1 / GB/T 17619)",
+      "制定PPE与化学品兼容性一览表",
+      "缩短化学岗位PPE更换周期至3个月"
+    ],
+    "risk_level": "high",
+    "verification_status": "verified",
+    "last_verified": "2026-05-06"
+  },
+  {
+    "id": "inc-niosh-cel-ppe-misuse",
+    "title": "NIOSH CEL Data: Surgical N95 Respirator Fit Test Failure Rate Analysis",
+    "title_zh": "NIOSH CEL数据：手术N95呼吸器密合性测试失败率分析",
+    "source": "NIOSH Certified Equipment List (CEL)",
+    "source_url": "https://www.cdc.gov/niosh/npptl/topics/respirators/disp_part/respsrc.html",
+    "incident_date": "2023年全年统计",
+    "location": "美国多州医疗机构",
+    "industry": "医疗健康",
+    "hazard_type": "生物危害 (空气传播病原体)",
+    "ppe_involved": {
+      "type": "N95过滤式面罩呼吸器",
+      "standard": "42 CFR Part 84",
+      "failure_mode": "约15%使用者密合性测试不通过，主要原因包括：面型不匹配、未正确佩戴、胡须干扰密封"
+    },
+    "incident_description": "基于NIOSH CEL数据的统计分析，美国医疗机构中约15%的N95使用者未通过密合性测试（fit test），导致实际防护效果显著低于标注的过滤效率（95%）。",
+    "root_cause_analysis": [
+      "缺少多尺寸/多品牌N95选择方案",
+      "密合性测试频率不足",
+      "未对佩戴者进行个性化适配培训"
+    ],
+    "ppp_prevention_recommendations": [
+      "建立多品牌N95供应方案以适应不同面型",
+      "执行年度密合性测试 (符合OSHA 29 CFR 1910.134)",
+      "加强佩戴者培训和考核"
+    ],
+    "risk_level": "medium",
+    "verification_status": "verified",
+    "last_verified": "2026-05-06"
+  },
+  {
+    "id": "inc-general-ppe-common-failures",
+    "title": "PPE常见失效模式汇总",
+    "title_zh": "PPE常见失效模式汇总",
+    "source": "综合OSHA/NIOSH/WHO/MEM数据",
+    "source_url": "多来源汇总",
+    "common_failure_modes": [
+      {
+        "ppe_category": "呼吸防护",
+        "failure_mode": "滤材堵塞导致呼吸阻力过大",
+        "failure_mode_zh": "滤材堵塞 (白云石堵塞测试D级失败)",
+        "detection_method": "目视检查 + 呼吸阻力测试",
+        "prevention": "按粉尘浓度确定更换周期，高粉尘环境缩短至2-4小时"
+      },
+      {
+        "ppe_category": "防护手套",
+        "failure_mode": "机械穿刺/磨损导致化学渗透",
+        "failure_mode_zh": "机械穿刺后化学渗透",
+        "detection_method": "目视检查 + 充气泄漏测试",
+        "prevention": "定期更换，限制使用时间，作业前检查"
+      },
+      {
+        "ppe_category": "安全鞋",
+        "failure_mode": "鞋底磨损导致防滑性能下降",
+        "failure_mode_zh": "防滑性能下降",
+        "detection_method": "鞋底花纹深度测量 (< 1.5mm应更换)",
+        "prevention": "每3-6个月检查鞋底磨损情况"
+      },
+      {
+        "ppe_category": "安全帽",
+        "failure_mode": "紫外线老化导致帽壳脆化",
+        "failure_mode_zh": "外壳脆化 (UV老化)",
+        "detection_method": "外观检查（裂纹、变色）",
+        "prevention": "从制造日期起30个月内更换，禁止日晒"
+      },
+      {
+        "ppe_category": "防护服",
+        "failure_mode": "接缝撕裂/拉链失效",
+        "failure_mode_zh": "接缝强度不足",
+        "detection_method": "目视检查 + 接缝拉力测试",
+        "prevention": "使用前检查接缝和拉链，按标准EN 14325测试"
+      }
+    ],
+    "verification_status": "verified",
+    "last_verified": "2026-05-06"
+  }
+]

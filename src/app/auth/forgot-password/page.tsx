@@ -4,8 +4,10 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Mail, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react'
 import { resetPassword } from '@/lib/auth/supabase-auth'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 export default function ForgotPasswordPage() {
+  const locale = useLocale()
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
@@ -26,10 +28,10 @@ export default function ForgotPasswordPage() {
         return
       }
 
-      setSuccess('Password reset link has been sent to your email. Please check your inbox.')
+      setSuccess(locale === 'zh' ? '密码重置链接已发送到您的邮箱，请查收。' : 'Password reset link has been sent to your email. Please check your inbox.')
       setIsLoading(false)
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.')
+      setError(locale === 'zh' ? '发生意外错误，请重试。' : 'An unexpected error occurred. Please try again.')
       setIsLoading(false)
     }
   }
@@ -38,12 +40,12 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#339999]/10 via-white to-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
         {/* Back Link */}
-        <Link 
-          href="/auth/login" 
+        <Link
+          href="/auth/login"
           className="inline-flex items-center gap-2 text-gray-600 hover:text-[#339999] mb-6 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to login
+          {locale === 'zh' ? '返回登录' : 'Back to login'}
         </Link>
 
         {/* Logo */}
@@ -54,10 +56,10 @@ export default function ForgotPasswordPage() {
             </div>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Reset Password
+            {locale === 'zh' ? '重置密码' : 'Reset Password'}
           </h1>
           <p className="text-gray-600">
-            Enter your email and we'll send you a reset link
+            {locale === 'zh' ? '输入您的邮箱，我们将发送重置链接' : "Enter your email and we'll send you a reset link"}
           </p>
         </div>
 
@@ -80,7 +82,7 @@ export default function ForgotPasswordPage() {
 
             <div>
               <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                Email Address
+                {locale === 'zh' ? '邮箱地址' : 'Email Address'}
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -107,18 +109,18 @@ export default function ForgotPasswordPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Sending...
+                  {locale === 'zh' ? '发送中...' : 'Sending...'}
                 </span>
               ) : (
-                'Send Reset Link'
+                locale === 'zh' ? '发送重置链接' : 'Send Reset Link'
               )}
             </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-600">
-            Remember your password?{' '}
+            {locale === 'zh' ? '记得密码？' : 'Remember your password?'}{' '}
             <Link href="/auth/login" className="text-[#339999] font-semibold hover:underline">
-              Sign in
+              {locale === 'zh' ? '登录' : 'Sign in'}
             </Link>
           </p>
         </div>

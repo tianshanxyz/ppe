@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { DollarSign, TrendingUp, TrendingDown, RefreshCw } from 'lucide-react';
+import { useLocale } from '@/lib/i18n/LocaleProvider';
 
 interface ExchangeRate {
   currency: string;
@@ -42,6 +43,7 @@ const mockRates: Record<string, number> = {
 };
 
 export default function CurrencyConverter() {
+  const locale = useLocale();
   const [amount, setAmount] = useState<number>(1000);
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('CNY');
@@ -102,10 +104,10 @@ export default function CurrencyConverter() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <DollarSign className="w-8 h-8 text-primary-600" />
-            <h1 className="text-3xl font-bold text-slate-900">汇率计算器</h1>
+            <h1 className="text-3xl font-bold text-slate-900">{locale === 'zh' ? '汇率计算器' : 'Currency Calculator'}</h1>
           </div>
           <p className="text-slate-600">
-            实时汇率转换，支持国际贸易主要货币
+            {locale === 'zh' ? '实时汇率转换，支持国际贸易主要货币' : 'Real-time currency conversion for major international trade currencies'}
           </p>
         </div>
 
@@ -114,14 +116,14 @@ export default function CurrencyConverter() {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow-lg border border-slate-200 p-8">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-slate-900">货币转换</h2>
+                <h2 className="text-xl font-semibold text-slate-900">{locale === 'zh' ? '货币转换' : 'Currency Conversion'}</h2>
                 <button
                   onClick={loadRates}
                   disabled={loading}
                   className="flex items-center gap-2 px-4 py-2 text-sm text-primary-600 hover:bg-primary-50 rounded-lg transition-colors disabled:opacity-50"
                 >
                   <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-                  刷新汇率
+                  {locale === 'zh' ? '刷新汇率' : 'Refresh Rates'}
                 </button>
               </div>
 
@@ -129,7 +131,7 @@ export default function CurrencyConverter() {
                 {/* 金额输入 */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    金额
+                    {locale === 'zh' ? '金额' : 'Amount'}
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500">$</span>
@@ -146,7 +148,7 @@ export default function CurrencyConverter() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
-                      从
+                      {locale === 'zh' ? '从' : 'From'}
                     </label>
                     <select
                       value={fromCurrency}
@@ -174,7 +176,7 @@ export default function CurrencyConverter() {
 
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
-                      到
+                      {locale === 'zh' ? '到' : 'To'}
                     </label>
                     <select
                       value={toCurrency}
@@ -192,7 +194,7 @@ export default function CurrencyConverter() {
 
                 {/* 转换结果 */}
                 <div className="bg-gradient-to-r from-primary-50 to-indigo-50 rounded-lg p-6 mt-6">
-                  <div className="text-sm text-slate-600 mb-2">转换结果</div>
+                  <div className="text-sm text-slate-600 mb-2">{locale === 'zh' ? '转换结果' : 'Conversion Result'}</div>
                   <div className="text-4xl font-bold text-slate-900 mb-2">
                     {convertedAmount.toLocaleString('en-US', { 
                       minimumFractionDigits: 2, 
@@ -200,10 +202,10 @@ export default function CurrencyConverter() {
                     })} {toCurrency}
                   </div>
                   <div className="text-sm text-slate-600">
-                    汇率：1 {fromCurrency} = {exchangeRate.toFixed(6)} {toCurrency}
+                    {locale === 'zh' ? '汇率' : 'Exchange Rate'}：1 {fromCurrency} = {exchangeRate.toFixed(6)} {toCurrency}
                   </div>
                   <div className="text-xs text-slate-500 mt-2">
-                    最后更新：{lastUpdated?.toLocaleString('zh-CN') || '-'}
+                    {locale === 'zh' ? '最后更新' : 'Last Updated'}：{lastUpdated?.toLocaleString('zh-CN') || '-'}
                   </div>
                 </div>
               </div>
@@ -213,7 +215,7 @@ export default function CurrencyConverter() {
           {/* 汇率列表 */}
           <div>
             <div className="bg-white rounded-lg shadow-lg border border-slate-200 p-6">
-              <h2 className="text-xl font-semibold text-slate-900 mb-4">热门汇率</h2>
+              <h2 className="text-xl font-semibold text-slate-900 mb-4">{locale === 'zh' ? '热门汇率' : 'Popular Rates'}</h2>
               
               <div className="space-y-3">
                 {rates.map(rate => {
@@ -251,7 +253,7 @@ export default function CurrencyConverter() {
               </div>
 
               <div className="mt-4 text-xs text-slate-500 text-center">
-                数据仅供参考，实际交易以银行汇率为准
+                {locale === 'zh' ? '数据仅供参考，实际交易以银行汇率为准' : 'Data for reference only. Actual rates may vary.'}
               </div>
             </div>
           </div>

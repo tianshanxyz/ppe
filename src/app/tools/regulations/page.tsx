@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FileText, ExternalLink, Download, Search, Filter } from 'lucide-react'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 interface RegulationFile {
   id: string
@@ -69,6 +70,7 @@ const regulations: RegulationFile[] = [
 ]
 
 export default function RegulationsPage() {
+  const locale = useLocale()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedMarket, setSelectedMarket] = useState<string>('all')
   const [selectedType, setSelectedType] = useState<string>('all')
@@ -87,8 +89,8 @@ export default function RegulationsPage() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900">Regulatory Documents</h1>
-          <p className="mt-2 text-gray-600">Access official regulations, guidance documents, and compliance resources</p>
+          <h1 className="text-3xl font-bold text-gray-900">{locale === 'zh' ? '法规文件' : 'Regulatory Documents'}</h1>
+          <p className="mt-2 text-gray-600">{locale === 'zh' ? '访问官方法规、指导文件和合规资源' : 'Access official regulations, guidance documents, and compliance resources'}</p>
         </div>
       </div>
 
@@ -103,7 +105,7 @@ export default function RegulationsPage() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search regulations and guidance..."
+                  placeholder={locale === 'zh' ? '搜索法规和指导...' : 'Search regulations and guidance...'}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 />
               </div>
@@ -114,9 +116,9 @@ export default function RegulationsPage() {
                 onChange={(e) => setSelectedMarket(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               >
-                <option value="all">All Markets</option>
-                <option value="US">United States (FDA)</option>
-                <option value="EU">European Union</option>
+                <option value="all">{locale === 'zh' ? '所有市场' : 'All Markets'}</option>
+                <option value="US">{locale === 'zh' ? '美国 (FDA)' : 'United States (FDA)'}</option>
+                <option value="EU">{locale === 'zh' ? '欧盟' : 'European Union'}</option>
               </select>
             </div>
             <div className="md:w-48">
@@ -125,9 +127,9 @@ export default function RegulationsPage() {
                 onChange={(e) => setSelectedType(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               >
-                <option value="all">All Types</option>
-                <option value="PDF">PDF Document</option>
-                <option value="HTML">Web Page</option>
+                <option value="all">{locale === 'zh' ? '所有类型' : 'All Types'}</option>
+                <option value="PDF">{locale === 'zh' ? 'PDF文件' : 'PDF Document'}</option>
+                <option value="HTML">{locale === 'zh' ? '网页' : 'Web Page'}</option>
               </select>
             </div>
           </div>
@@ -137,7 +139,7 @@ export default function RegulationsPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">
-              Documents ({filteredRegulations.length})
+              {locale === 'zh' ? '文件' : 'Documents'} ({filteredRegulations.length})
             </h2>
           </div>
 
@@ -165,8 +167,8 @@ export default function RegulationsPage() {
                   <h3 className="text-lg font-semibold text-gray-900">{reg.title}</h3>
                   <p className="text-gray-600 mt-2 text-sm">{reg.description}</p>
                   <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
-                    <span>Updated: {reg.updatedAt}</span>
-                    <span>Size: {reg.fileSize}</span>
+                    <span>{locale === 'zh' ? '更新' : 'Updated'}: {reg.updatedAt}</span>
+                    <span>{locale === 'zh' ? '大小' : 'Size'}: {reg.fileSize}</span>
                   </div>
                 </div>
                 <a
@@ -176,7 +178,7 @@ export default function RegulationsPage() {
                   className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  View
+                  {locale === 'zh' ? '查看' : 'View'}
                 </a>
               </div>
             </motion.div>
@@ -185,8 +187,8 @@ export default function RegulationsPage() {
           {filteredRegulations.length === 0 && (
             <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
               <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900">No documents found</h3>
-              <p className="text-gray-500 mt-1">Try adjusting your search or filters</p>
+              <h3 className="text-lg font-medium text-gray-900">{locale === 'zh' ? '未找到文件' : 'No documents found'}</h3>
+              <p className="text-gray-500 mt-1">{locale === 'zh' ? '请尝试调整搜索或筛选条件' : 'Try adjusting your search or filters'}</p>
             </div>
           )}
         </div>

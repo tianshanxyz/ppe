@@ -26,6 +26,7 @@ import {
   RefreshCw
 } from 'lucide-react'
 import { Button, Badge, Card } from '@/components/ui'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 // Company data interface
 interface Company {
@@ -73,6 +74,7 @@ const industries = ['All', 'Cardiovascular', 'Orthopedics', 'Diagnostic Imaging'
 const riskLevels = ['All', 'Low', 'Medium', 'High']
 
 export default function CompaniesPage() {
+  const locale = useLocale()
   // Search and filter state
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCountry, setSelectedCountry] = useState('All')
@@ -121,8 +123,8 @@ export default function CompaniesPage() {
         const formattedCompanies = result.data.companies.map((c: any) => ({
           id: c.id,
           name: c.name,
-          country: c.country || 'Unknown',
-          industry: c.industry || 'Medical Devices',
+          country: c.country || (locale === 'zh' ? '未知' : 'Unknown'),
+          industry: c.industry || (locale === 'zh' ? '医疗器械' : 'Medical Devices'),
           productCount: c.product_count || 0,
           marketCoverage: c.market_coverage || 0,
           riskLevel: c.risk_level || 'low',
@@ -145,7 +147,7 @@ export default function CompaniesPage() {
         updatedToday: result.meta?.updatedToday || 0
       })
     } catch (err) {
-      setError('Failed to load companies. Please try again.')
+      setError(locale === 'zh' ? '加载企业数据失败，请重试。' : 'Failed to load companies. Please try again.')
       console.error('Failed to fetch companies:', err)
     } finally {
       setLoading(false)
@@ -258,7 +260,7 @@ export default function CompaniesPage() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Search companies, products, or registration numbers..."
+              placeholder={locale === 'zh' ? '搜索企业、产品或注册号...' : 'Search companies, products, or registration numbers...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && fetchCompanies()}
@@ -270,7 +272,7 @@ export default function CompaniesPage() {
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-2 text-sm text-gray-500">
               <Filter className="w-4 h-4" />
-              <span>Filters:</span>
+              <span>{locale === 'zh' ? '筛选：' : 'Filters:'}</span>
             </div>
 
             {/* Country filter */}
@@ -304,7 +306,7 @@ export default function CompaniesPage() {
                 onChange={(e) => setSelectedRisk(e.target.value)}
                 className="appearance-none h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#339999] focus:border-[#339999] outline-none bg-white cursor-pointer"
               >
-                {riskLevels.map(r => <option key={r} value={r}>{r} Risk</option>)}
+                {riskLevels.map(r => <option key={r} value={r}>{r === 'All' ? (locale === 'zh' ? '所有风险' : 'All') : (locale === 'zh' ? (r === 'Low' ? '低' : r === 'Medium' ? '中' : '高') : r) + (locale === 'zh' ? '风险' : ' Risk')}</option>)}
               </select>
               <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
             </div>
@@ -325,10 +327,10 @@ export default function CompaniesPage() {
                 onChange={(e) => setSortBy(e.target.value)}
                 className="appearance-none h-9 pl-3 pr-8 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#339999] focus:border-[#339999] outline-none bg-white cursor-pointer"
               >
-                <option value="trustScore">Sort by Trust Score</option>
-                <option value="productCount">Sort by Products</option>
-                <option value="marketCoverage">Sort by Markets</option>
-                <option value="name">Sort by Name</option>
+                <option value="trustScore">{locale === 'zh' ? '按信任评分排序' : 'Sort by Trust Score'}</option>
+                <option value="productCount">{locale === 'zh' ? '按产品数排序' : 'Sort by Products'}</option>
+                <option value="marketCoverage">{locale === 'zh' ? '按市场数排序' : 'Sort by Markets'}</option>
+                <option value="name">{locale === 'zh' ? '按名称排序' : 'Sort by Name'}</option>
               </select>
               <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
             </div>
@@ -367,7 +369,7 @@ export default function CompaniesPage() {
           <Card className="p-4 border-l-4 border-l-[#339999]">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Total Companies</p>
+                <p className="text-sm text-gray-500">{locale === 'zh' ? '企业总数' : 'Total Companies'}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.totalCompanies.toLocaleString()}</p>
               </div>
               <Building2 className="w-8 h-8 text-[#339999]" />
@@ -377,7 +379,7 @@ export default function CompaniesPage() {
           <Card className="p-4 border-l-4 border-l-green-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">New This Week</p>
+                <p className="text-sm text-gray-500">{locale === 'zh' ? '本周新增' : 'New This Week'}</p>
                 <p className="text-2xl font-bold text-gray-900">+{stats.newThisWeek}</p>
               </div>
               <TrendingUp className="w-8 h-8 text-green-500" />
@@ -387,7 +389,7 @@ export default function CompaniesPage() {
           <Card className="p-4 border-l-4 border-l-red-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">High Risk</p>
+                <p className="text-sm text-gray-500">{locale === 'zh' ? '高风险' : 'High Risk'}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.highRisk}</p>
               </div>
               <AlertTriangle className="w-8 h-8 text-red-500" />
@@ -397,7 +399,7 @@ export default function CompaniesPage() {
           <Card className="p-4 border-l-4 border-l-blue-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Active Markets</p>
+                <p className="text-sm text-gray-500">{locale === 'zh' ? '活跃市场' : 'Active Markets'}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.activeMarkets}</p>
               </div>
               <Globe className="w-8 h-8 text-blue-500" />
@@ -418,7 +420,7 @@ export default function CompaniesPage() {
             <div className="bg-gray-900 text-white rounded-xl shadow-2xl px-6 py-4 flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <BarChart3 className="w-5 h-5" />
-                <span className="font-medium">{compareList.length} companies selected</span>
+                <span className="font-medium">{compareList.length} {locale === 'zh' ? '家企业已选择' : 'companies selected'}</span>
               </div>
               <div className="h-6 w-px bg-gray-700" />
               <button
@@ -429,7 +431,7 @@ export default function CompaniesPage() {
                 {compareLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
-                  'Compare Now'
+                  locale === 'zh' ? '立即对比' : 'Compare Now'
                 )}
               </button>
               <button
@@ -453,11 +455,11 @@ export default function CompaniesPage() {
 
         <div className="flex items-center justify-between mb-4">
           <p className="text-sm text-gray-500">
-            {loading ? 'Loading...' : `Showing ${sortedCompanies.length} companies`}
+            {loading ? (locale === 'zh' ? '加载中...' : 'Loading...') : (locale === 'zh' ? `显示 ${sortedCompanies.length} 家企业` : `Showing ${sortedCompanies.length} companies`)}
           </p>
           {compareList.length > 0 && (
             <p className="text-sm text-[#339999] font-medium">
-              {compareList.length} selected for comparison
+              {compareList.length} {locale === 'zh' ? '家已选对比' : 'selected for comparison'}
             </p>
           )}
         </div>
@@ -469,7 +471,7 @@ export default function CompaniesPage() {
         ) : sortedCompanies.length === 0 ? (
           <div className="text-center py-20">
             <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No companies found</p>
+            <p className="text-gray-500">{locale === 'zh' ? '未找到企业' : 'No companies found'}</p>
           </div>
         ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -531,14 +533,14 @@ export default function CompaniesPage() {
                     <div className="bg-gray-50 rounded-lg p-2.5">
                       <div className="flex items-center gap-1 text-xs text-gray-500 mb-1">
                         <Package className="w-3 h-3" />
-                        Products
+                        {locale === 'zh' ? '产品' : 'Products'}
                       </div>
                       <p className="font-semibold text-gray-900">{company.productCount || 0}</p>
                     </div>
                     <div className="bg-gray-50 rounded-lg p-2.5">
                       <div className="flex items-center gap-1 text-xs text-gray-500 mb-1">
                         <Globe className="w-3 h-3" />
-                        Markets
+                        {locale === 'zh' ? '市场' : 'Markets'}
                       </div>
                       <p className="font-semibold text-gray-900">{company.marketCoverage || 0}</p>
                     </div>
@@ -547,7 +549,7 @@ export default function CompaniesPage() {
                   {/* Footer: Risk + Trust */}
                   <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                     <Badge className={`text-xs ${getRiskStyle(company.riskLevel)}`}>
-                      {(company.riskLevel || 'Low').charAt(0).toUpperCase() + (company.riskLevel || 'Low').slice(1)} Risk
+                      {locale === 'zh' ? ((company.riskLevel || 'Low') === 'low' ? '低' : (company.riskLevel || 'Low') === 'medium' ? '中' : '高') + '风险' : `${(company.riskLevel || 'Low').charAt(0).toUpperCase() + (company.riskLevel || 'Low').slice(1)} Risk`}
                     </Badge>
                     <div className="flex items-center gap-1 text-sm">
                       <BadgeCheck className="w-4 h-4 text-[#339999]" />
@@ -559,7 +561,7 @@ export default function CompaniesPage() {
                   {company.recentChanges && company.recentChanges > 0 && (
                     <div className="flex items-center gap-1 mt-3 text-xs text-[#339999]">
                       <Activity className="w-3 h-3" />
-                      <span>{company.recentChanges} updates recently</span>
+                      <span>{company.recentChanges} {locale === 'zh' ? '项近期更新' : 'updates recently'}</span>
                     </div>
                   )}
                 </Card>
@@ -595,19 +597,19 @@ export default function CompaniesPage() {
                         {company.recentChanges && company.recentChanges > 0 && (
                           <span className="text-xs text-[#339999] flex items-center gap-1">
                             <Activity className="w-3 h-3" />
-                            {company.recentChanges} updates
+                            {company.recentChanges} {locale === 'zh' ? '项更新' : 'updates'}
                           </span>
                         )}
                       </div>
                       <p className="text-sm text-gray-500">
-                        {company.country} · {company.industry || 'Medical Devices'} · {company.productCount || 0} products · {company.marketCoverage || 0} markets
+                        {company.country} · {company.industry || (locale === 'zh' ? '医疗器械' : 'Medical Devices')} · {company.productCount || 0} {locale === 'zh' ? '个产品' : 'products'} · {company.marketCoverage || 0} {locale === 'zh' ? '个市场' : 'markets'}
                       </p>
                     </div>
 
                     <div className="flex items-center gap-6 text-sm">
                       <div className="text-center">
                         <p className="font-semibold text-gray-900">{company.trustScore || 0}</p>
-                        <p className="text-xs text-gray-500">Trust Score</p>
+                        <p className="text-xs text-gray-500">{locale === 'zh' ? '信任评分' : 'Trust Score'}</p>
                       </div>
                     </div>
 
@@ -660,7 +662,7 @@ export default function CompaniesPage() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-900">Company Comparison</h2>
+                <h2 className="text-xl font-bold text-gray-900">{locale === 'zh' ? '企业对比' : 'Company Comparison'}</h2>
                 <button
                   onClick={() => setShowCompareModal(false)}
                   className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -685,17 +687,17 @@ export default function CompaniesPage() {
                     </div>
 
                     <div className="mt-8 space-y-4">
-                      {['Trust Score', 'Products', 'Markets', 'Risk Level'].map((metric) => (
+                      {[(locale === 'zh' ? '信任评分' : 'Trust Score'), (locale === 'zh' ? '产品' : 'Products'), (locale === 'zh' ? '市场' : 'Markets'), (locale === 'zh' ? '风险等级' : 'Risk Level')].map((metric, metricIndex) => (
                         <div key={metric} className="grid gap-4 items-center py-3 border-b border-gray-100">
                           <div className="text-sm font-medium text-gray-500">{metric}</div>
                           <div className={`grid gap-4 ${compareData.length === 2 ? 'grid-cols-2' : compareData.length === 3 ? 'grid-cols-3' : 'grid-cols-4'}`}>
                             {compareData.map(company => {
                               let value = ''
-                              switch (metric) {
-                                case 'Trust Score': value = `${company.trustScore || 0}%`; break
-                                case 'Products': value = (company.productCount || 0).toString(); break
-                                case 'Markets': value = (company.marketCoverage || 0).toString(); break
-                                case 'Risk Level': value = (company.riskLevel || 'Low').charAt(0).toUpperCase() + (company.riskLevel || 'Low').slice(1); break
+                              switch (metricIndex) {
+                                case 0: value = `${company.trustScore || 0}%`; break
+                                case 1: value = (company.productCount || 0).toString(); break
+                                case 2: value = (company.marketCoverage || 0).toString(); break
+                                case 3: value = locale === 'zh' ? ((company.riskLevel || 'Low') === 'low' ? '低' : (company.riskLevel || 'Low') === 'medium' ? '中' : '高') : (company.riskLevel || 'Low').charAt(0).toUpperCase() + (company.riskLevel || 'Low').slice(1); break
                               }
                               return (
                                 <div key={company.id} className="text-center font-semibold text-gray-900">
@@ -710,17 +712,17 @@ export default function CompaniesPage() {
                   </>
                 ) : (
                   <div className="text-center py-10 text-gray-500">
-                    No comparison data available
+                    {locale === 'zh' ? '暂无对比数据' : 'No comparison data available'}
                   </div>
                 )}
 
                 <div className="mt-6 flex justify-center gap-3">
                   <Button className="bg-[#339999] hover:bg-[#2a7a7a]">
                     <Download className="w-4 h-4 mr-2" />
-                    Export Comparison
+                    {locale === 'zh' ? '导出对比' : 'Export Comparison'}
                   </Button>
                   <Button variant="outline" onClick={() => setShowCompareModal(false)}>
-                    Close
+                    {locale === 'zh' ? '关闭' : 'Close'}
                   </Button>
                 </div>
               </div>

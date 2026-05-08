@@ -145,8 +145,24 @@ export default function PPEHomePage() {
                 {!aiMode ? (
                   <form
                     className="relative"
-                    action="/search"
-                    method="GET"
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      console.log('[Home] Form submitted with query:', searchQuery)
+                      if (!searchQuery.trim()) {
+                        console.log('[Home] Empty query, not submitting')
+                        return
+                      }
+                      const params = new URLSearchParams({
+                        q: searchQuery.trim(),
+                        type: 'all'
+                      })
+                      if (locale !== 'en') {
+                        params.set('lang', locale)
+                      }
+                      const url = `/search?${params.toString()}`
+                      console.log('[Home] Redirecting to:', url)
+                      window.location.href = url
+                    }}
                   >
                     <input type="hidden" name="type" value="all" />
                     {locale !== 'en' && (

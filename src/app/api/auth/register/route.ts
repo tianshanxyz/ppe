@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 
 const USERS_FILE = path.join(process.cwd(), 'src', 'data', 'users.json');
 
-function hashPassword(password: string): string {
-  return crypto.createHash('sha256').update(password + 'ppe_salt_2026').digest('hex');
+async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 12);
 }
 
 function readUsers(): any[] {
@@ -26,29 +26,36 @@ export async function POST(request: NextRequest) {
   try {
     const { email, password, name, company } = await request.json();
     
-    // Validation
     if (!email || !password || !name) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
-    
+
     if (password.length < 6) {
       return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
     }
-    
+
+    if (password.length > 128) {
+      return NextResponse.json({ error: 'Password too long' }, { status: 400 });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+    }
+
     const users = readUsers();
     
-    // Check if email exists
     if (users.find((u: any) => u.email.toLowerCase() === email.toLowerCase())) {
       return NextResponse.json({ error: 'Email already registered' }, { status: 409 });
     }
     
-    // Create user
+    const hashedPassword = await hashPassword(password);
     const newUser = {
       id: 'user_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 9),
-      email: email.toLowerCase(),
-      passwordHash: hashPassword(password),
-      name,
-      company: company || '',
+      email: email.toLowerCase().trim(),
+      passwordHash: hashedPassword,
+      name: name.trim().substring(0, 100),
+      company: (company || '').trim().substring(0, 200),
       role: 'user',
       membership: 'free',
       createdAt: new Date().toISOString(),
@@ -57,7 +64,6 @@ export async function POST(request: NextRequest) {
     users.push(newUser);
     writeUsers(users);
     
-    // Return user without password
     const { passwordHash, ...userWithoutPassword } = newUser;
     return NextResponse.json({ user: userWithoutPassword }, { status: 201 });
   } catch (error) {

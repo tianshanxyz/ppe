@@ -4,8 +4,10 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, AlertTriangle, Clock, Globe, FileText, CheckCircle2, ExternalLink, Bell } from 'lucide-react'
 import { REGULATORY_ALERTS } from '../page'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 export default function RegulatoryAlertDetailPage() {
+  const locale = useLocale()
   const params = useParams()
   const alertId = params.id as string
 
@@ -16,10 +18,10 @@ export default function RegulatoryAlertDetailPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <AlertTriangle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Alert Not Found</h1>
-          <p className="text-gray-500 mb-6">The regulatory alert you are looking for does not exist.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">{locale === 'zh' ? '提醒未找到' : 'Alert Not Found'}</h1>
+          <p className="text-gray-500 mb-6">{locale === 'zh' ? '您查找的法规提醒不存在。' : 'The regulatory alert you are looking for does not exist.'}</p>
           <Link href="/regulatory-alerts" className="text-[#339999] hover:underline">
-            Back to Regulatory Alerts
+            {locale === 'zh' ? '返回法规提醒' : 'Back to Regulatory Alerts'}
           </Link>
         </div>
       </div>
@@ -57,7 +59,7 @@ export default function RegulatoryAlertDetailPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link href="/regulatory-alerts" className="inline-flex items-center text-sm text-[#339999] hover:underline mb-4">
             <ArrowLeft className="w-4 h-4 mr-1" />
-            Back to Regulatory Alerts
+            {locale === 'zh' ? '返回法规提醒' : 'Back to Regulatory Alerts'}
           </Link>
 
           <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -85,7 +87,7 @@ export default function RegulatoryAlertDetailPage() {
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
           <div className="flex items-center gap-2 mb-4">
             <FileText className="w-5 h-5 text-[#339999]" />
-            <h2 className="text-xl font-bold text-gray-900">Summary</h2>
+            <h2 className="text-xl font-bold text-gray-900">{locale === 'zh' ? '摘要' : 'Summary'}</h2>
           </div>
           <p className="text-gray-700 leading-relaxed">{alert.summary}</p>
         </div>
@@ -94,7 +96,7 @@ export default function RegulatoryAlertDetailPage() {
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
           <div className="flex items-center gap-2 mb-4">
             <FileText className="w-5 h-5 text-[#339999]" />
-            <h2 className="text-xl font-bold text-gray-900">Full Details</h2>
+            <h2 className="text-xl font-bold text-gray-900">{locale === 'zh' ? '完整详情' : 'Full Details'}</h2>
           </div>
           <div className="text-gray-700 leading-relaxed space-y-4">
             {alert.fullText.split('\n\n').map((paragraph, idx) => (
@@ -107,7 +109,7 @@ export default function RegulatoryAlertDetailPage() {
         <div className={`rounded-2xl shadow-lg border-l-4 p-8 ${getSeverityBg(alert.severity)}`}>
           <div className="flex items-center gap-2 mb-4">
             <CheckCircle2 className="w-5 h-5 text-[#339999]" />
-            <h2 className="text-xl font-bold text-gray-900">Required Action</h2>
+            <h2 className="text-xl font-bold text-gray-900">{locale === 'zh' ? '需要采取的行动' : 'Required Action'}</h2>
           </div>
           <p className="text-gray-700 leading-relaxed">{alert.action}</p>
         </div>
@@ -116,7 +118,7 @@ export default function RegulatoryAlertDetailPage() {
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
           <div className="flex items-center gap-2 mb-4">
             <ExternalLink className="w-5 h-5 text-[#339999]" />
-            <h2 className="text-xl font-bold text-gray-900">Reference</h2>
+            <h2 className="text-xl font-bold text-gray-900">{locale === 'zh' ? '参考' : 'Reference'}</h2>
           </div>
           <p className="text-gray-700">{alert.reference}</p>
           {alert.sourceUrl && (
@@ -127,7 +129,7 @@ export default function RegulatoryAlertDetailPage() {
               className="inline-flex items-center gap-2 mt-4 px-4 py-2.5 bg-[#339999]/10 text-[#339999] rounded-lg hover:bg-[#339999]/20 transition-colors text-sm font-medium"
             >
               <ExternalLink className="w-4 h-4" />
-              View Official Source
+              {locale === 'zh' ? '查看官方来源' : 'View Official Source'}
             </a>
           )}
         </div>
@@ -137,7 +139,7 @@ export default function RegulatoryAlertDetailPage() {
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
             <div className="flex items-center gap-2 mb-6">
               <Bell className="w-5 h-5 text-[#339999]" />
-              <h2 className="text-xl font-bold text-gray-900">Related Alerts in {alert.market}</h2>
+              <h2 className="text-xl font-bold text-gray-900">{locale === 'zh' ? `相关提醒 - ${alert.market}` : `Related Alerts in ${alert.market}`}</h2>
             </div>
             <div className="space-y-4">
               {relatedAlerts.map(related => (

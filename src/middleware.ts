@@ -1,13 +1,10 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PROTECTED_ROUTES = ['/dashboard', '/profile', '/settings', '/api-keys', '/subscription']
+const PROTECTED_ROUTES = ['/dashboard']
 const AUTH_ROUTES = ['/auth/login', '/auth/signup', '/auth/callback']
 const PROTECTED_API_ROUTES = [
-  '/api/compare',
-  '/api/export',
   '/api/api-keys',
-  '/api/subscription',
   '/api/credit-score/compare',
   '/api/ai/chat',
   '/api/ai/extract',
@@ -55,8 +52,25 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
-  // Check for demo_session cookie - this covers both demo accounts and local auth users
+  // CSRF protection: verify Origin header for state-changing requests
+  if (request.method !== 'GET' && request.method !== 'HEAD' && request.method !== 'OPTIONS') {
+    const origin = request.headers.get('origin')
+    const host = request.headers.get('host')
+    if (origin && host) {
+      try {
+        const originHost = new URL(origin).host
+        if (originHost !== host) {
+          return NextResponse.json({ error: 'Invalid origin' }, { status: 403 })
+        }
+      } catch {
+        return NextResponse.json({ error: 'Invalid origin' }, { status: 403 })
+      }
+    }
+  }
+
+  // Check for session cookies
   const isDemoSession = request.cookies.get('demo_session')?.value === 'true'
+  const hasPpeSession = request.cookies.get('ppe_session')?.value
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -64,29 +78,32 @@ export async function middleware(request: NextRequest) {
   let supabaseUser = null
 
   if (supabaseUrl && supabaseAnonKey) {
-    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
+    try {
+      const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll()
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) =>
+              request.cookies.set(name, value)
+            )
+            supabaseResponse = NextResponse.next({ request })
+            cookiesToSet.forEach(({ name, value, options }) =>
+              supabaseResponse.cookies.set(name, value, options)
+            )
+          },
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          )
-          supabaseResponse = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    })
+      })
 
-    const { data: { user } } = await supabase.auth.getUser()
-    supabaseUser = user
+      const { data: { user } } = await supabase.auth.getUser()
+      supabaseUser = user
+    } catch (error) {
+      console.error('Supabase auth error:', error)
+    }
   }
 
-  // User is authenticated if either Supabase user exists or demo_session cookie is set
-  const isAuthenticated = !!supabaseUser || isDemoSession
+  const isAuthenticated = !!supabaseUser || (isDemoSession && hasPpeSession)
 
   const isProtectedRoute = PROTECTED_ROUTES.some(route => pathname.startsWith(route))
   const isProtectedApiRoute = PROTECTED_API_ROUTES.some(route => pathname.startsWith(route))
@@ -102,7 +119,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
-  // Redirect logged-in users away from auth pages
   if (isAuthRoute && isAuthenticated) {
     const redirectUrl = request.nextUrl.clone()
     redirectUrl.pathname = '/dashboard'

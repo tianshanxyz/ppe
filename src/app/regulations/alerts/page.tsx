@@ -15,6 +15,7 @@ import {
   RegulationAlertStats,
   RegulationAlertSummary
 } from '@/components/regulations/RegulationAlertComponents'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 // 市场图标
 const getMarketFlag = (jurisdiction: string) => {
@@ -32,7 +33,8 @@ const getMarketFlag = (jurisdiction: string) => {
 }
 
 export default function RegulationAlertsPage() {
-  const [alerts, setAlerts] = useState<RegulationAlert[]>([])
+  const locale = useLocale()
+  const [alerts, setAlerts] = useState<RegulationAlert[]>([]);
   const [loading, setLoading] = useState(true)
   const [highPriorityOnly, setHighPriorityOnly] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -128,14 +130,14 @@ export default function RegulationAlertsPage() {
       {/* 页面标题 */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">法规更新提醒</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{locale === 'zh' ? '法规更新提醒' : 'Regulation Update Alerts'}</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">
-            实时监控全球法规更新，及时掌握合规动态
+            {locale === 'zh' ? '实时监控全球法规更新，及时掌握合规动态' : 'Real-time monitoring of global regulation updates'}
           </p>
         </div>
         <Button onClick={handleTriggerDetection} disabled={loading}>
           <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-          {loading ? '检测中...' : '手动检测'}
+          {loading ? (locale === 'zh' ? '检测中...' : 'Checking...') : (locale === 'zh' ? '手动检测' : 'Manual Check')}
         </Button>
       </div>
 
@@ -153,7 +155,7 @@ export default function RegulationAlertsPage() {
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
-                placeholder="搜索法规标题或内容..."
+                placeholder={locale === 'zh' ? '搜索法规标题或内容...' : 'Search regulation title or content...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -167,7 +169,7 @@ export default function RegulationAlertsPage() {
                 className="cursor-pointer"
                 onClick={() => setSelectedMarket(null)}
               >
-                全部市场
+                {locale === 'zh' ? '全部市场' : 'All Markets'}
               </Badge>
               {['US', 'EU', 'CN', 'JP', 'UK', 'AU', 'CA', 'SG'].map(market => (
                 <Badge 
@@ -187,7 +189,7 @@ export default function RegulationAlertsPage() {
               onClick={() => setHighPriorityOnly(!highPriorityOnly)}
             >
               <AlertTriangle className="w-4 h-4 mr-2" />
-              {highPriorityOnly ? '仅显示高优先级' : '显示全部'}
+              {highPriorityOnly ? (locale === 'zh' ? '仅显示高优先级' : 'High Priority Only') : (locale === 'zh' ? '显示全部' : 'Show All')}
             </Button>
           </div>
         </CardContent>
@@ -198,7 +200,7 @@ export default function RegulationAlertsPage() {
         {loading && filteredAlerts.length === 0 ? (
           <div className="text-center py-12">
             <RefreshCw className="w-12 h-12 mx-auto text-gray-400 animate-spin mb-4" />
-            <p className="text-gray-500 dark:text-gray-400">正在加载提醒数据...</p>
+            <p className="text-gray-500 dark:text-gray-400">{locale === 'zh' ? '正在加载提醒数据...' : 'Loading alerts...'}</p>
           </div>
         ) : filteredAlerts.length === 0 ? (
           <Card>
@@ -206,13 +208,13 @@ export default function RegulationAlertsPage() {
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 mb-4">
                 <AlertCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">暂无法规更新提醒</h3>
+              <h3 className="text-lg font-semibold mb-2">{locale === 'zh' ? '暂无法规更新提醒' : 'No Regulation Alerts'}</h3>
               <p className="text-gray-500 dark:text-gray-400 mb-4">
-                当前没有需要关注的法规更新
+                {locale === 'zh' ? '当前没有需要关注的法规更新' : 'No regulation updates require attention at this time'}
               </p>
               <Button onClick={handleTriggerDetection}>
                 <RefreshCw className="w-4 h-4 mr-2" />
-                立即检测
+                {locale === 'zh' ? '立即检测' : 'Check Now'}
               </Button>
             </CardContent>
           </Card>
@@ -226,7 +228,7 @@ export default function RegulationAlertsPage() {
                     {getMarketFlag(market)} {market} ({marketAlerts.length})
                   </h3>
                   <Badge variant="secondary">
-                    {marketAlerts.filter(a => a.severity === 'HIGH' || a.severity === 'CRITICAL').length} 高优先级
+                    {marketAlerts.filter(a => a.severity === 'HIGH' || a.severity === 'CRITICAL').length} {locale === 'zh' ? '高优先级' : 'High Priority'}
                   </Badge>
                 </div>
                 <RegulationAlertList alerts={marketAlerts} />
@@ -239,8 +241,8 @@ export default function RegulationAlertsPage() {
       {/* 页脚 */}
       <div className="border-t pt-6 mt-6">
         <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-          <span>最后更新: {lastUpdated}</span>
-          <span>数据来源: FDA, EU MDCG, NMPA, PMDA, HSA, TGA, Health Canada, MHRA</span>
+          <span>{locale === 'zh' ? '最后更新' : 'Last Updated'}: {lastUpdated}</span>
+          <span>{locale === 'zh' ? '数据来源' : 'Data Source'}: FDA, EU MDCG, NMPA, PMDA, HSA, TGA, Health Canada, MHRA</span>
         </div>
       </div>
     </div>

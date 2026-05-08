@@ -1073,14 +1073,14 @@ export function CompanyDetail({ company, products, alerts, history, sources }: C
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Organization',
-            name: company.name,
-            alternateName: company.name_zh,
+            name: (company.name || '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c] || c)),
+            alternateName: (company.name_zh || '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c] || c)),
             address: company.address ? {
               '@type': 'PostalAddress',
-              streetAddress: company.address,
-              addressCountry: company.country
+              streetAddress: (company.address || '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c] || c)),
+              addressCountry: (company.country || '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c] || c))
             } : undefined,
-            description: `${company.name} - Medical device manufacturer with ${totalProducts} registered devices`
+            description: `${(company.name || '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c] || c))} - Medical device manufacturer with ${totalProducts} registered devices`
           })
         }}
       />

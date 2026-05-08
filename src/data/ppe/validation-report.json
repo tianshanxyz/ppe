@@ -1,0 +1,906 @@
+{
+  "validation_timestamp": "2026-05-07T13:38:33.964Z",
+  "validator": "mdlooker PPE Data Quality System",
+  "summary": {
+    "total_products": 28827,
+    "total_manufacturers": 10942,
+    "overall_completeness": "89.6%",
+    "duplicate_count": 2881,
+    "standard_issues": 4,
+    "expired_registrations": 0,
+    "expiring_soon": 0,
+    "missing_categories": 5,
+    "market_coverage_gaps": 3
+  },
+  "field_completeness": {
+    "name": {
+      "filled": 28827,
+      "total": 28827,
+      "pct": 100
+    },
+    "product_name": {
+      "filled": 28827,
+      "total": 28827,
+      "pct": 100
+    },
+    "model": {
+      "filled": 21827,
+      "total": 28827,
+      "pct": 75.7
+    },
+    "category": {
+      "filled": 28827,
+      "total": 28827,
+      "pct": 100
+    },
+    "subcategory": {
+      "filled": 10243,
+      "total": 28827,
+      "pct": 35.5
+    },
+    "manufacturer_name": {
+      "filled": 28795,
+      "total": 28827,
+      "pct": 99.9
+    },
+    "country_of_origin": {
+      "filled": 28827,
+      "total": 28827,
+      "pct": 100
+    },
+    "product_code": {
+      "filled": 27489,
+      "total": 28827,
+      "pct": 95.4
+    },
+    "registration_number": {
+      "filled": 10388,
+      "total": 28827,
+      "pct": 36
+    },
+    "registration_authority": {
+      "filled": 28826,
+      "total": 28827,
+      "pct": 100
+    },
+    "registration_valid_until": {
+      "filled": 20559,
+      "total": 28827,
+      "pct": 71.3
+    },
+    "risk_level": {
+      "filled": 28827,
+      "total": 28827,
+      "pct": 100
+    },
+    "certifications": {
+      "filled": 28827,
+      "total": 28827,
+      "pct": 100
+    },
+    "related_standards": {
+      "filled": 28827,
+      "total": 28827,
+      "pct": 100
+    },
+    "data_source": {
+      "filled": 28827,
+      "total": 28827,
+      "pct": 100
+    },
+    "data_source_url": {
+      "filled": 28553,
+      "total": 28827,
+      "pct": 99
+    },
+    "last_verified": {
+      "filled": 28826,
+      "total": 28827,
+      "pct": 100
+    },
+    "data_confidence_level": {
+      "filled": 28827,
+      "total": 28827,
+      "pct": 100
+    }
+  },
+  "standard_validity_issues": [
+    {
+      "standard": "EN ISO 20345:2022",
+      "latest_version": "EN ISO 20345:2022+A1:2024",
+      "status": "amended",
+      "note": "",
+      "in_database": false
+    },
+    {
+      "standard": "GB 19083-2010",
+      "latest_version": "GB 19083-2023",
+      "status": "superseded",
+      "note": "",
+      "in_database": false
+    },
+    {
+      "standard": "GB 14866-2006",
+      "latest_version": "GB 14866-2023",
+      "status": "superseded",
+      "note": "",
+      "in_database": false
+    },
+    {
+      "standard": "ANSI S3.19-1974",
+      "latest_version": "ANSI/ASA S12.6-2016",
+      "status": "superseded",
+      "note": "",
+      "in_database": false
+    }
+  ],
+  "registration_expiry": {
+    "expired": 0,
+    "expiring_soon": 0,
+    "no_validity_data": 8268
+  },
+  "market_coverage": {
+    "US": 13876,
+    "MY": 1428,
+    "VN": 50,
+    "ID": 144,
+    "CA": 6112,
+    "CN": 2007,
+    "GB": 1105,
+    "IE": 47,
+    "TH": 155,
+    "ML": 16,
+    "TW": 468,
+    "IN": 142,
+    "LK": 18,
+    "HK": 110,
+    "KR": 205,
+    "IL": 50,
+    "NL": 215,
+    "AU": 167,
+    "IR": 1,
+    "DE": 326,
+    "SE": 74,
+    "NZ": 49,
+    "FR": 190,
+    "JP": 306,
+    "IT": 198,
+    "PH": 44,
+    "SA": 98,
+    "BE": 66,
+    "TR": 158,
+    "SI": 3,
+    "DK": 17,
+    "SG": 15,
+    "AE": 3,
+    "ES": 41,
+    "BR": 134,
+    "MG": 9,
+    "MX": 4,
+    "CH": 82,
+    "GW": 2,
+    "NO": 58,
+    "AT": 11,
+    "PL": 36,
+    "AR": 3,
+    "SK": 2,
+    "IO": 1,
+    "EU": 16,
+    "FI": 228,
+    "UK": 67,
+    "CZ": 19,
+    "EG": 58,
+    "BM": 1,
+    "ZA": 4,
+    "MK": 1,
+    "RS": 2,
+    "HR": 32,
+    "CO": 1,
+    "KZ": 10,
+    "PK": 50,
+    "GR": 5,
+    "LT": 4,
+    "RO": 16,
+    "PT": 3,
+    "BG": 10,
+    "XI": 6,
+    "MM": 30,
+    "TN": 1,
+    "KH": 3,
+    "DZ": 1,
+    "MT": 2,
+    "LI": 4,
+    "AD": 4,
+    "CL": 1,
+    "PE": 1,
+    "MA": 1
+  },
+  "market_coverage_gaps": [
+    {
+      "market": "AE",
+      "current": 3,
+      "target": 100
+    },
+    {
+      "market": "SG",
+      "current": 15,
+      "target": 100
+    },
+    {
+      "market": "ES",
+      "current": 41,
+      "target": 100
+    }
+  ],
+  "data_source_distribution": {
+    "FDA 510(k) Database": 10057,
+    "FDA 510(k)": 4778,
+    "Health Canada MDALL": 6054,
+    "FDA Recall Database": 1889,
+    "PMDA Japan": 264,
+    "TGA Australia": 4,
+    "MFDS Korea": 85,
+    "FDA Philippines": 2,
+    "Health Canada": 3,
+    "SFDA Saudi Arabia": 3,
+    "EUDAMED API": 4099,
+    "MHRA UK": 4,
+    "PPE Industry Registry - BE": 2,
+    "PPE Industry Registry - FR": 2,
+    "PPE Industry Registry - DE": 5,
+    "FDA 510(k) Database / EUDAMED / NMPA": 23,
+    "NMPA": 10,
+    "HSA Singapore Database": 3,
+    "ESMA UAE Database": 3,
+    "AEMPS Spain Database": 2,
+    "TGA Australia Database": 4,
+    "CAEPI/MTE Database": 5,
+    "MFDS Korea Database": 2,
+    "KOSHA Database": 1,
+    "PMDA Japan Database": 4,
+    "CDSCO India Database": 3,
+    "Pure Global AI - 菲律宾": 30,
+    "Pure Global AI - 沙特": 39,
+    "Pure Global AI - 印度": 34,
+    "NIOSH CEL": 263,
+    "NMPA UDI Full": 28,
+    "Pure Global AI API": 113,
+    "EU PPE Regulation 2016/425": 15,
+    "NMPA China": 5,
+    "EUDAMED": 96,
+    "ANVISA Brazil": 4,
+    "FDA Recall API": 14,
+    "CDSCO India": 3,
+    "TGA ARTG": 76,
+    "Brazil CAEPI": 106,
+    "PPE Industry Registry - IN": 5,
+    "FDA 510k API": 1,
+    "MHRA UK PPE Directory": 680,
+    "PPE Industry Registry - GB": 4
+  },
+  "missing_data_categories": [
+    {
+      "category": "风险场景数据",
+      "description": "行业危害因素与PPE配备规范",
+      "required_standards": [
+        "GB 39800.1-2020",
+        "GB 39800.2-2020",
+        "GB 39800.3-2020",
+        "GB 39800.4-2020"
+      ],
+      "current_status": "完全缺失",
+      "verification_sources": [
+        "中国国家标准全文公开系统 https://openstd.samr.gov.cn/"
+      ],
+      "priority": "high"
+    },
+    {
+      "category": "使用反馈/事故数据",
+      "description": "PPE失效案例与事故调查报告",
+      "required_data": [
+        "OSHA事故调查报告",
+        "NIOSH FACE报告",
+        "中国应急管理部事故通报"
+      ],
+      "current_status": "完全缺失",
+      "verification_sources": [
+        "OSHA Accident Database https://www.osha.gov/pls/imis/accidentsearch.html",
+        "NIOSH FACE Reports https://www.cdc.gov/niosh/face/",
+        "中国应急管理部 https://www.mem.gov.cn/"
+      ],
+      "priority": "high"
+    },
+    {
+      "category": "WHO指南数据",
+      "description": "全球医用PPE使用指导原则",
+      "required_data": [
+        "WHO Infection Prevention and Control Guidelines",
+        "WHO PPE Use Recommendations"
+      ],
+      "current_status": "完全缺失",
+      "verification_sources": [
+        "WHO https://www.who.int/teams/integrated-health-services/infection-prevention-control"
+      ],
+      "priority": "medium"
+    },
+    {
+      "category": "认证机构详细数据",
+      "description": "CE公告机构(NB)资质、NANDO编号",
+      "required_data": [
+        "NB编号",
+        "NB名称",
+        "NB认证范围",
+        "NB有效期"
+      ],
+      "current_status": "部分缺失（无结构化NB数据）",
+      "verification_sources": [
+        "NANDO https://ec.europa.eu/growth/tools-databases/nando/"
+      ],
+      "priority": "high"
+    },
+    {
+      "category": "化学危害阈值数据",
+      "description": "NIOSH化学物质暴露限值与PPE防护等级对应",
+      "required_data": [
+        "NIOSH Pocket Guide化学物质列表",
+        "OSHA PEL限值",
+        "ACGIH TLV限值"
+      ],
+      "current_status": "完全缺失",
+      "verification_sources": [
+        "NIOSH Pocket Guide https://www.cdc.gov/niosh/npg/",
+        "OSHA PEL https://www.osha.gov/chemicaldata/"
+      ],
+      "priority": "medium"
+    }
+  ],
+  "duplicates": [
+    {
+      "id": "71135357-814b-4074-a9c2-06f76ea75fad",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "a1796cd7-1565-4ed0-8d1a-1d86d76ee673",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "592897a4-7a7a-47ea-8240-f2bbb89fe569",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "a4061b9c-f3ab-44cc-ba6d-98f5e88cd616",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "146eba48-efb5-4a8c-8288-9755e41de58e",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "b720fbe6-43f0-49ce-83a6-8eba4027eb03",
+      "dupeOf": "b356b902-b432-4dfe-b204-544d5200a735",
+      "name": "PATIENT EXAMINATION GLOVE (LATEX)"
+    },
+    {
+      "id": "3fafd7f0-ec5f-4558-bf47-2740d8948825",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "8a4dd1cb-19c2-46be-bd00-9d919de3b125",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "0a2ee33f-53c6-4a21-ad35-0f1536dcb646",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "440833db-2a81-4771-bf35-a2916e57aabe",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "8b462bae-0983-4257-aa23-b0ed1a26a9ff",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "cbd98500-a6a6-4e40-9b58-5fc040565aa7",
+      "dupeOf": "e075d411-f2ae-40b6-b1d2-4d2342b30468",
+      "name": "LATEX PATIENT EXAMINATION GLOVES"
+    },
+    {
+      "id": "27cbff25-c80a-4b5e-84bb-8fc2eae1c8b5",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "da045ce6-527f-40d9-bb47-c390d507821a",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "35c5bbfe-4146-405d-872d-b5355ab56b17",
+      "dupeOf": "b356b902-b432-4dfe-b204-544d5200a735",
+      "name": "PATIENT EXAMINATION GLOVE (LATEX)"
+    },
+    {
+      "id": "0c468f77-8b4a-4081-a6d0-556d5069438b",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "324fae76-4fef-4597-95f3-03e5416fbb71",
+      "dupeOf": "74b35933-010c-496e-9480-d810d3dc9088",
+      "name": "PATIENT EXAMINATION GLOVES"
+    },
+    {
+      "id": "b420985b-75c4-4ceb-8cbd-cd78415d7b4c",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "6d108584-6013-45c7-94bc-e981695fa234",
+      "dupeOf": "b356b902-b432-4dfe-b204-544d5200a735",
+      "name": "PATIENT EXAMINATION GLOVE (LATEX)"
+    },
+    {
+      "id": "28506202-d75e-4a7a-919e-5f595a8808ca",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "64a64faf-5ed8-4913-b92a-e1aac8b3e573",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "34c40902-2767-4dd6-b618-06f214d7501f",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "06bf0421-1f1f-4bcc-8eb4-617e84411e41",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "d2d1905d-e998-402c-a593-6b91f5feb31c",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "253e937a-e7c0-48e3-a9c9-9a73ab8a6ec0",
+      "dupeOf": "74b35933-010c-496e-9480-d810d3dc9088",
+      "name": "PATIENT EXAMINATION GLOVES"
+    },
+    {
+      "id": "02a80e0b-c7fd-4e58-8c04-5761c1266176",
+      "dupeOf": "74b35933-010c-496e-9480-d810d3dc9088",
+      "name": "PATIENT EXAMINATION GLOVES"
+    },
+    {
+      "id": "167730e0-29d9-4ab7-936b-dae6a1471161",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "b34c83e1-0e1e-4d98-9cd3-6321b7d0a8c6",
+      "dupeOf": "8c55fd33-c33d-4a4d-a79c-6fbd1c46cf06",
+      "name": "LATEX EXAMINATION GLOVES"
+    },
+    {
+      "id": "eab0cd90-6776-406f-8c62-bb775810cc91",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "00fc4aee-1e38-49bc-b57f-38eb1b99a2a0",
+      "dupeOf": "b356b902-b432-4dfe-b204-544d5200a735",
+      "name": "PATIENT EXAMINATION GLOVE (LATEX)"
+    },
+    {
+      "id": "73e73733-5251-413d-bd42-d647c8c4a1e6",
+      "dupeOf": "0debd9f5-4a87-4d22-94e5-9f10eedc9eee",
+      "name": "Disposable Surgical Mask"
+    },
+    {
+      "id": "ec51a36a-de83-4be8-bc26-e1166dc95593",
+      "dupeOf": "da4fe4a6-3042-4adc-b612-9873e1d99788",
+      "name": "SURGICAL FACE MASK"
+    },
+    {
+      "id": "176dbc76-4fd3-4f19-b219-b6059481c0e0",
+      "dupeOf": "9476bb96-2af0-4571-bf91-357aba915801",
+      "name": "Medical Face Mask"
+    },
+    {
+      "id": "d8f98b52-fff3-4c47-88ff-f8dbfb44b86f",
+      "dupeOf": "da4fe4a6-3042-4adc-b612-9873e1d99788",
+      "name": "Surgical face mask"
+    },
+    {
+      "id": "7b63db55-96a3-4e91-9736-35cdefe556ee",
+      "dupeOf": "67118ecd-13ca-415e-b381-fe5331ae3d52",
+      "name": "Disposable medical mask"
+    },
+    {
+      "id": "bce980bb-f666-4069-8101-37afa2f5fc9f",
+      "dupeOf": "9476bb96-2af0-4571-bf91-357aba915801",
+      "name": "Medical Face mask"
+    },
+    {
+      "id": "57722705-0ece-4c2f-86c3-c06b7ecef537",
+      "dupeOf": "2526256a-db95-4b4a-bc75-504575382b41",
+      "name": "Medical Surgical Mask"
+    },
+    {
+      "id": "d5208c8b-35cd-44c9-83b5-9dc0f917f513",
+      "dupeOf": "da4fe4a6-3042-4adc-b612-9873e1d99788",
+      "name": "SURGICAL FACE MASK"
+    },
+    {
+      "id": "b36368c6-8aac-4f03-ae4f-330971ffe5a2",
+      "dupeOf": "c9ccb7fe-c214-45c5-8089-31200033bfd0",
+      "name": "Disposable Surgical Face Mask"
+    },
+    {
+      "id": "4f750803-84c3-45be-acf8-4153148c91f4",
+      "dupeOf": "c9ccb7fe-c214-45c5-8089-31200033bfd0",
+      "name": "Disposable Surgical Face Mask"
+    },
+    {
+      "id": "6cdc6863-b7be-4b20-b2b2-3e0fa39ff753",
+      "dupeOf": "2526256a-db95-4b4a-bc75-504575382b41",
+      "name": "Medical surgical mask"
+    },
+    {
+      "id": "8ba568db-d059-41a4-a649-d756a7cea68e",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "f208065e-43ca-4a38-a81c-1d7ddd4280a2",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "26bc3925-fdee-4793-9c1c-584cc7156b77",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "771ba914-38db-41c9-bac6-fd5fdda1f1a6",
+      "dupeOf": "8c55fd33-c33d-4a4d-a79c-6fbd1c46cf06",
+      "name": "LATEX EXAMINATION GLOVES"
+    },
+    {
+      "id": "a30f7102-b409-4b13-897a-1ca321f75c85",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "0dcb3fd3-d4a7-47b1-af18-1224b53e931f",
+      "dupeOf": "67118ecd-13ca-415e-b381-fe5331ae3d52",
+      "name": "Disposable Medical Mask"
+    },
+    {
+      "id": "cfb4a9f6-b217-493e-ab0b-cfb24dabbd78",
+      "dupeOf": "74b35933-010c-496e-9480-d810d3dc9088",
+      "name": "PATIENT EXAMINATION GLOVES"
+    },
+    {
+      "id": "c27e1621-505b-49f5-b114-b4737bddbeb8",
+      "dupeOf": "b356b902-b432-4dfe-b204-544d5200a735",
+      "name": "PATIENT EXAMINATION GLOVE (LATEX)"
+    },
+    {
+      "id": "12d3d779-eac9-448e-88b8-6d7fd3087c99",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "c0972c61-132a-4999-99c3-11e6fb3de585",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "4c8322fd-1cac-4c52-a19b-ae7370b391c3",
+      "dupeOf": "b5121fc1-52b9-42ef-ba82-fe906d4c0d83",
+      "name": "PATIENT EXAMINATION GLOVE"
+    },
+    {
+      "id": "490a1afe-e2ea-44f8-a4e8-c6d4a4b690ff",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "18544d83-a842-4ef9-86dc-43163a1f3577",
+      "dupeOf": "74b35933-010c-496e-9480-d810d3dc9088",
+      "name": "PATIENT EXAMINATION GLOVES"
+    },
+    {
+      "id": "74dc8167-2049-4be7-82fd-aae90f7dcf55",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "684e6573-4350-434e-98fc-175f0f404956",
+      "dupeOf": "e075d411-f2ae-40b6-b1d2-4d2342b30468",
+      "name": "LATEX PATIENT EXAMINATION GLOVES"
+    },
+    {
+      "id": "222d9310-2595-4609-adb2-96db32629706",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "68dde1f9-bf1e-41ea-a467-6e69d5528370",
+      "dupeOf": "b5121fc1-52b9-42ef-ba82-fe906d4c0d83",
+      "name": "PATIENT EXAMINATION GLOVE"
+    },
+    {
+      "id": "4125c494-8eb6-4816-8075-1360d18eed2b",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "a25b0951-71ff-45fb-ab5a-3584d6f5a3ed",
+      "dupeOf": "e075d411-f2ae-40b6-b1d2-4d2342b30468",
+      "name": "LATEX PATIENT EXAMINATION GLOVES"
+    },
+    {
+      "id": "00a1d7ed-22e3-436a-91d3-c438ede16c6c",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "4dd212aa-8792-44ad-b66f-ba641c74d235",
+      "dupeOf": "9d82d066-5101-4254-90e1-26bcecb4ff54",
+      "name": "POWDERED LATEX EXAMINATION GLOVES"
+    },
+    {
+      "id": "6ac76c24-5543-4958-89e3-740dd4b6515c",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "4eeb3c8e-5f3d-4841-b5d1-aa574a5109a9",
+      "dupeOf": "882b0329-ac39-4911-abc3-343d11bd2819",
+      "name": "POWDER FREE LATEX EXAMINATION GLOVES"
+    },
+    {
+      "id": "1e5f694f-47e0-4023-ada8-8319ede3c2b7",
+      "dupeOf": "8c55fd33-c33d-4a4d-a79c-6fbd1c46cf06",
+      "name": "LATEX EXAMINATION GLOVES"
+    },
+    {
+      "id": "9095c1e5-8906-4fca-9df3-a9a6aac8e396",
+      "dupeOf": "3dd5d5d6-c0da-4244-963e-bea05939448a",
+      "name": "PATIENT EXAMINATION GLOVES (LATEX)"
+    },
+    {
+      "id": "5a342fbe-05e8-4acd-b5ae-fc12372c00ce",
+      "dupeOf": "e6e6e8c8-06c3-48c2-ba60-fd07dd2c54c3",
+      "name": "840 VENTILATOR SYSTEM - RESPIRATORY MECHANICS OPTION KIT"
+    },
+    {
+      "id": "d13b6fdc-6c1d-48ba-9013-6c94d337bac2",
+      "dupeOf": "87a506a1-b9d6-4a8c-815e-65639ca5f1c8",
+      "name": "ASSURETOUCH DEFEND STERILE POLYCHLOROPRENE SURGICAL GLOVES"
+    },
+    {
+      "id": "ddb232e6-a289-4028-8dfc-9ab125039889",
+      "dupeOf": "00a4406c-d69a-424f-8b3b-5c1a2ec5c129",
+      "name": "ASSURETOUCH GUARD MICRO STERILE POLYCHLOROPRENE SURGICAL GLOVES"
+    },
+    {
+      "id": "1d2374aa-3972-4d7b-bf32-cda246717537",
+      "dupeOf": "2a948ed3-acbb-4770-9803-2b4a36b51fe8",
+      "name": "CRANBERRY CONTOUR PLUS POWDER FREE NITRILE EXAMINATION GLOVES"
+    },
+    {
+      "id": "1b242667-a8e5-450e-8d4a-ee9bde84fedd",
+      "dupeOf": "e4592e56-f5a8-4780-b78e-9349b7f7ab75",
+      "name": "ABENA CLASSIC NITRILE POWDER FREE MEDICAL EXAMINATION GLOVES"
+    },
+    {
+      "id": "309f8a47-b96e-45a5-8548-fccd3f6877e0",
+      "dupeOf": "95301e9f-62ef-4afe-9ca0-4f07683e81b4",
+      "name": "ACCELERATOR-FREE NITRILE EXAM GLOVES"
+    },
+    {
+      "id": "ba22e3d3-8521-4198-8171-3ef2964c9986",
+      "dupeOf": "850b5d26-a99e-4adc-a2ff-61331a4891dd",
+      "name": "ACCELERATOR-FREE NITRILE POWDER FREE EXAMINATION GLOVES WITH COLLOIDAL OATMEAL TESTED FOR USE WITH CHEMOTHERAPY DRUGS AND FENTANYL CITRATE"
+    },
+    {
+      "id": "2431ce0f-69cc-4d35-9edd-a7c57d67772e",
+      "dupeOf": "7d7d82c6-d547-4caa-9aa1-11404d502cb5",
+      "name": "CRANBERRY CHERISH LATEX POWDER FREE EXAM GLOVES"
+    },
+    {
+      "id": "c6b48a12-9956-4167-8a3c-4ad7a0f73108",
+      "dupeOf": "b0b85a3b-92e2-4806-bc37-a1655c8ed47f",
+      "name": "ADSAFE FACE SHIELD"
+    },
+    {
+      "id": "05ed3c16-6321-4be6-94a8-1ca9974ea53a",
+      "dupeOf": "b0280a5f-f313-4fc3-bcbd-87973268e465",
+      "name": "ACCUTOUCH POWDER-FREE SYNTHETIC EXAM GLOVES"
+    },
+    {
+      "id": "4f519b81-e0e7-4c02-ac58-7ad1d0f3372d",
+      "dupeOf": "b4bcf255-1336-4143-8251-c5e76a86709d",
+      "name": "ALOETOUCH 3G POWDER-FREE STRETCH SYNTHETIC EXAM GLOVES"
+    },
+    {
+      "id": "88ce6dd3-a3bd-44a8-baf2-95e02b2a4303",
+      "dupeOf": "9c5a2258-8c21-49ee-aa77-10d57628549c",
+      "name": "ALOETOUCH ULTRA POWDER-FREE STRETCH SYNTHETIC EXAM GLOVES"
+    },
+    {
+      "id": "372d0d2b-eaca-4bf8-9ff4-0e834041db4b",
+      "dupeOf": "4ab540e4-2912-4a4c-95a9-cb998d936878",
+      "name": "F&P SIMPLUS FULL FACE MASK - FIT PACK S/M/L"
+    },
+    {
+      "id": "a797606f-446c-48cd-82ef-3d3883849878",
+      "dupeOf": "8a86aa12-715a-4907-a216-c2f74d19ec2f",
+      "name": "F&P EVORA FULL FACE PAP THERAPY MASK"
+    },
+    {
+      "id": "8af37289-a85b-4df7-baae-ebe8c1eb6425",
+      "dupeOf": "d569d365-1a2f-4e0f-8e51-d165aeeceb1d",
+      "name": "ACCUCARE POWDER-FREE LATEX EXAM GLOVES"
+    },
+    {
+      "id": "0fd41d7a-5ed6-4ae7-9e9e-e960208f5379",
+      "dupeOf": "c57aaa29-6e9f-4b15-8def-6f6babe79ea7",
+      "name": "ASAP THICK LATEX POWDER FREE EXAMINATION GLOVES"
+    },
+    {
+      "id": "866747a1-f2bb-4eb1-b9ce-318f27a47c5c",
+      "dupeOf": "bc0ea6d7-2ce8-42da-94ca-f04c1f1a3f25",
+      "name": "AIRLIFE ISOTHERMAL PEDIATRIC RESPIRATORY BREATHING CIRCUIT"
+    },
+    {
+      "id": "56adc4d0-8082-40c3-bdbf-22b56c0af4bb",
+      "dupeOf": "398933c2-9ab8-415a-98be-050409ce6cd0",
+      "name": "COBALT ULTRA NITRILE EXAMINATION GLOVES"
+    },
+    {
+      "id": "1caae3ff-214a-4904-8f02-534479aa88ff",
+      "dupeOf": "7b389919-cb2a-4c1c-b639-e5784cff285e",
+      "name": "ALOETOUCH ICE POWDER-FREE NITRILE EXAM GLOVES"
+    },
+    {
+      "id": "312088fe-3e21-4aa4-b453-c924e2c63390",
+      "dupeOf": "89af6870-bf64-4df2-8e6c-fc4d4e4ca3db",
+      "name": "CS PRO POWDER-FREE NITRILE EXAM GLOVES EXTENDED CUFF"
+    },
+    {
+      "id": "38257d83-8e2f-4c98-ad78-fcf6221ce49a",
+      "dupeOf": "12086b20-9edb-4d2a-b22d-5376a7431440",
+      "name": "CURAD BLACK NITRILE EXAM GLOVE"
+    },
+    {
+      "id": "3df28bf3-f6d1-4f46-95fc-c67a9925e0d8",
+      "dupeOf": "34eac669-3db8-4126-ab89-f0cc73b01eea",
+      "name": "CURAD EXTENDED CUFF NITRILE POWDER FREE NITRILE EXAM GLOVES"
+    },
+    {
+      "id": "40b7aeae-ccd8-4f50-81b1-d3c19ab21468",
+      "dupeOf": "33f5cb7b-2df4-4bf6-8ca4-f909a704921f",
+      "name": "CURAD POWDER-FREE TEXTURED NITRILE EXAM GLOVES"
+    },
+    {
+      "id": "48465c8a-0858-47d0-8fba-f25f45a41e4c",
+      "dupeOf": "43e5910c-8db9-4835-9c1f-b7d75d9e7236",
+      "name": "CURAD NITRILE EXAM GLOVE2"
+    },
+    {
+      "id": "4fab1361-7af9-4093-9fa9-5e54fdac5b31",
+      "dupeOf": "46758c5e-9c38-452f-8e0c-6b691c4291f6",
+      "name": "ALOETOUCH POWDER-FREE NITRILE EXAM GLOVES"
+    },
+    {
+      "id": "583d03cf-a90c-4c86-91da-1194b2d6d976",
+      "dupeOf": "2029454c-0ade-4fab-953c-8f9b38db43df",
+      "name": "ALOETOUCH STERILE NITRILE POWDER-FREE EXAM GLOVES"
+    },
+    {
+      "id": "5e53814c-0484-4537-8eb6-c8483b33f403",
+      "dupeOf": "b9ecd24e-e8c5-42cb-9f90-6e3763b43005",
+      "name": "CURAD FLEX NITRILE POWDER FREE NITRILE EXAM GLOVES"
+    },
+    {
+      "id": "819b6d77-02ec-4cc3-9bed-f4880ba85e58",
+      "dupeOf": "4fd28b37-910c-4381-ba82-0eb1f9930531",
+      "name": "CURAD DURABLE NITRILE EXAM GLOVES"
+    },
+    {
+      "id": "8766cf02-afcd-44ce-8537-7722061ce9ff",
+      "dupeOf": "ae036227-a70e-42f0-971c-82247a09dbf3",
+      "name": "PROFESSIONAL NITRILE EXTENDED CUFF POWDER-FREE TEXTURED EXAM GLOVE WITH ALOE"
+    },
+    {
+      "id": "88909368-876e-4b48-960e-0cf803b5c82e",
+      "dupeOf": "9f4a3eeb-b843-4656-bc85-ceac3d53e1c7",
+      "name": "FITGUARD TOUCH POWDER-FREE NITRILE EXAM GLOVES"
+    },
+    {
+      "id": "8c123138-b39b-4c86-a5d5-30c0cb9d9c88",
+      "dupeOf": "43bf72a5-9b51-4764-a1e4-cf55ca5dff0a",
+      "name": "FITGUARD PRIME POWDER-FREE NITRILE EXAM GLOVES"
+    },
+    {
+      "id": "95bb1e7a-9eeb-4a8a-8c5b-3da1e20f1298",
+      "dupeOf": "b0157cfa-037a-4b79-ab43-b8475ffe6752",
+      "name": "CURAD POWDER-FREE NITRILE EXAM GLOVES"
+    },
+    {
+      "id": "e808173f-b217-47c6-a97a-4835ab9b4b20",
+      "dupeOf": "50ac14c6-0da6-4205-b0f4-99fc34506e7f",
+      "name": "CURAD WHITE NITRILE EXAM GLOVE"
+    },
+    {
+      "id": "9296721a-5d35-4cc8-b027-90d05d6984f3",
+      "dupeOf": "508f91e1-0a94-4529-b322-b27ca7653065",
+      "name": "CURAD 3G VINYL POWDER-FREE EXAM GLOVES"
+    }
+  ],
+  "recommendations": [
+    {
+      "action": "补全model字段",
+      "detail": "从product_code或description中提取型号信息，目标覆盖率>80%",
+      "priority": "high"
+    },
+    {
+      "action": "补全registration_valid_until字段",
+      "detail": "从FDA 510(k)数据库、EUDAMED、NMPA获取注册有效期",
+      "priority": "high"
+    },
+    {
+      "action": "补全data_source_url字段",
+      "detail": "为每条记录添加原始来源URL，确保可追溯",
+      "priority": "high"
+    },
+    {
+      "action": "更新过期标准引用",
+      "detail": "GB 19083-2010→GB 19083-2023, GB 14866-2006→GB 14866-2023, ANSI S3.19-1974→ANSI/ASA S12.6-2016",
+      "priority": "high"
+    },
+    {
+      "action": "新增风险场景数据模块",
+      "detail": "创建risk-scenarios.json，包含GB 39800系列、NIOSH化学危害等数据",
+      "priority": "high"
+    },
+    {
+      "action": "新增使用反馈/事故数据模块",
+      "detail": "创建incident-data.json，整合OSHA/NIOSH/中国应急管理部事故记录",
+      "priority": "high"
+    },
+    {
+      "action": "新增认证机构数据模块",
+      "detail": "创建certification-bodies.json，包含NANDO NB列表、FDA认可实验室等",
+      "priority": "medium"
+    },
+    {
+      "action": "创建manufacturer_id关联",
+      "detail": "建立ppe_products.manufacturer_id与ppe_manufacturers.id的外键关联",
+      "priority": "medium"
+    },
+    {
+      "action": "扩展市场覆盖",
+      "detail": "重点补充JP/KR/IN/BR/AU/DE/FR/IT/ES等市场数据",
+      "priority": "medium"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+[
+  {
+    "id": "who-ipc-ppe-guidelines",
+    "title": "WHO Infection Prevention and Control (IPC) Guidelines for PPE Use",
+    "title_zh": "WHO感染预防与控制（IPC）PPE使用指南",
+    "source": "世界卫生组织 (WHO)",
+    "source_url": "https://www.who.int/teams/integrated-health-services/infection-prevention-control",
+    "document_type": "guideline",
+    "effective_date": "2023-01-01",
+    "status": "active",
+    "summary": "WHO针对医疗机构中PPE使用的综合指南，涵盖标准预防措施、基于传播途径的预防措施、以及疫情期间的PPE优化使用策略。",
+    "verification_source": {
+      "name": "WHO IPC Hub",
+      "url": "https://www.who.int/publications/i/item/WHO-2019-nCoV-IPC-PPE_use-2023.1",
+      "last_verified": "2026-05-06"
+    },
+    "ppe_levels": [
+      {
+        "level": "标准预防",
+        "level_en": "Standard Precautions",
+        "scenario": "所有患者常规接触",
+        "required_ppe": ["医用口罩", "手套"],
+        "conditional_ppe": ["隔离衣", "护目镜"],
+        "applicable_standards": {
+          "mask": "EN 14683:2019+AC:2019 / ASTM F2100-21 / YY 0469-2011",
+          "gloves": "EN 455 / ASTM D3578-19 / GB 10213-2006"
+        }
+      },
+      {
+        "level": "接触传播预防",
+        "level_en": "Contact Precautions",
+        "scenario": "多重耐药菌感染或定植患者",
+        "required_ppe": ["手套", "隔离衣/防护服"],
+        "conditional_ppe": ["医用口罩"],
+        "applicable_standards": {
+          "gown": "EN 13795 / AAMI PB70 / GB 19082-2009",
+          "gloves": "EN 455 / ASTM D3578-19 / GB 10213-2006"
+        }
+      },
+      {
+        "level": "飞沫传播预防",
+        "level_en": "Droplet Precautions",
+        "scenario": "流感、COVID-19等飞沫传播疾病",
+        "required_ppe": ["医用外科口罩", "手套"],
+        "conditional_ppe": ["护目镜/面罩"],
+        "applicable_standards": {
+          "mask": "EN 14683:2019+AC:2019 Type IIR / ASTM F2100-21 Level 2 / YY 0469-2011",
+          "eye_protection": "EN 166:2001 / ANSI Z87.1-2020 / GB 14866-2023"
+        }
+      },
+      {
+        "level": "空气传播预防",
+        "level_en": "Airborne Precautions",
+        "scenario": "结核病、麻疹、水痘等空气传播疾病",
+        "required_ppe": ["N95/FFP2/FFP3呼吸器", "手套", "防护服"],
+        "conditional_ppe": ["护目镜/面罩", "鞋套"],
+        "applicable_standards": {
+          "respirator": "EN 149:2001+A1:2009 FFP2 / 42 CFR Part 84 N95 / GB 19083-2010",
+          "gown": "EN 13795 / AAMI PB70 Level 4 / GB 19082-2009"
+        }
+      }
+    ],
+    "ppe_donning_sequence": [
+      {"step": 1, "item": "手部卫生 (Hand Hygiene)", "note": "使用含酒精洗手液或肥皂水"},
+      {"step": 2, "item": "防护服/隔离衣 (Gown)", "note": "完全覆盖躯干，在背后系紧"},
+      {"step": 3, "item": "口罩/呼吸器 (Mask/Respirator)", "note": "N95呼吸器需执行密合性检查"},
+      {"step": 4, "item": "护目镜/面罩 (Eye Protection)", "note": "调整至适当位置无间隙"},
+      {"step": 5, "item": "手套 (Gloves)", "note": "手套应覆盖隔离衣袖口"}
+    ],
+    "ppe_doffing_sequence": [
+      {"step": 1, "item": "手套 (Gloves)", "note": "外表面为污染面，卷起脱除"},
+      {"step": 2, "item": "手部卫生 (Hand Hygiene)", "note": ""},
+      {"step": 3, "item": "防护服/隔离衣 (Gown)", "note": "从内向外卷起脱除"},
+      {"step": 4, "item": "手部卫生 (Hand Hygiene)", "note": ""},
+      {"step": 5, "item": "护目镜/面罩 (Eye Protection)", "note": "从头部后方摘除"},
+      {"step": 6, "item": "手部卫生 (Hand Hygiene)", "note": ""},
+      {"step": 7, "item": "口罩/呼吸器 (Mask/Respirator)", "note": "从后方松开系带，不触碰前部"},
+      {"step": 8, "item": "手部卫生 (Hand Hygiene)", "note": ""}
+    ]
+  }
+]

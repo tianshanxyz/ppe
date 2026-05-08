@@ -9,6 +9,7 @@ import {
 import Link from 'next/link'
 import { BatchQueryUpload, BatchQueryItem, QueryType } from '@/components/batch'
 import { Badge } from '@/components/ui/Badge'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 // 模拟批量查询处理
 async function mockBatchProcess(
@@ -69,7 +70,8 @@ function downloadTemplate(type: QueryType) {
 }
 
 export default function BatchQueryPage() {
-  const [items, setItems] = useState<BatchQueryItem[]>([])
+  const locale = useLocale()
+  const [items, setItems] = useState<BatchQueryItem[]>([]);
   const [status, setStatus] = useState<'idle' | 'uploading' | 'processing' | 'completed' | 'error'>('idle')
   const [progress, setProgress] = useState(0)
 
@@ -135,17 +137,17 @@ export default function BatchQueryPage() {
             className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
-            返回工具箱
+            {locale === 'zh' ? '返回工具箱' : 'Back to Tools'}
           </Link>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">批量查询</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{locale === 'zh' ? '批量查询' : 'Batch Query'}</h1>
               <p className="mt-1 text-gray-600">
-                上传Excel文件批量查询企业或产品信息
+                {locale === 'zh' ? '上传Excel文件批量查询企业或产品信息' : 'Upload Excel files to batch query company or product information'}
               </p>
             </div>
             <Badge variant="outline" className="border-green-200 text-green-600 bg-green-50">
-              New
+              {locale === 'zh' ? '新增' : 'New'}
             </Badge>
           </div>
         </div>
@@ -174,29 +176,29 @@ export default function BatchQueryPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mt-6 bg-white rounded-xl border border-gray-200 p-6"
               >
-                <h3 className="font-semibold text-gray-900 mb-4">查询摘要</h3>
+                <h3 className="font-semibold text-gray-900 mb-4">{locale === 'zh' ? '查询摘要' : 'Query Summary'}</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
                     <p className="text-2xl font-bold text-gray-900">{items.length}</p>
-                    <p className="text-sm text-gray-500">总查询数</p>
+                    <p className="text-sm text-gray-500">{locale === 'zh' ? '总查询数' : 'Total Queries'}</p>
                   </div>
                   <div className="text-center p-4 bg-green-50 rounded-lg">
                     <p className="text-2xl font-bold text-green-600">
                       {items.filter(i => i.result?.found).length}
                     </p>
-                    <p className="text-sm text-gray-500">找到结果</p>
+                    <p className="text-sm text-gray-500">{locale === 'zh' ? '找到结果' : 'Found'}</p>
                   </div>
                   <div className="text-center p-4 bg-red-50 rounded-lg">
                     <p className="text-2xl font-bold text-red-600">
                       {items.filter(i => !i.result?.found).length}
                     </p>
-                    <p className="text-sm text-gray-500">未找到</p>
+                    <p className="text-sm text-gray-500">{locale === 'zh' ? '未找到' : 'Not Found'}</p>
                   </div>
                   <div className="text-center p-4 bg-yellow-50 rounded-lg">
                     <p className="text-2xl font-bold text-yellow-600">
                       {items.filter(i => i.result?.riskLevel === 'high').length}
                     </p>
-                    <p className="text-sm text-gray-500">高风险</p>
+                    <p className="text-sm text-gray-500">{locale === 'zh' ? '高风险' : 'High Risk'}</p>
                   </div>
                 </div>
               </motion.div>
@@ -207,38 +209,38 @@ export default function BatchQueryPage() {
           <div className="space-y-6">
             {/* 使用说明 */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">使用说明</h3>
+              <h3 className="font-semibold text-gray-900 mb-4">{locale === 'zh' ? '使用说明' : 'Instructions'}</h3>
               <ol className="space-y-3 text-sm text-gray-600">
                 <li className="flex items-start gap-2">
                   <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center text-xs font-medium flex-shrink-0">
                     1
                   </span>
-                  <span>选择查询类型（企业或产品）</span>
+                  <span>{locale === 'zh' ? '选择查询类型（企业或产品）' : 'Select query type (company or product)'}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center text-xs font-medium flex-shrink-0">
                     2
                   </span>
-                  <span>下载对应模板文件</span>
+                  <span>{locale === 'zh' ? '下载对应模板文件' : 'Download the template file'}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center text-xs font-medium flex-shrink-0">
                     3
                   </span>
-                  <span>填写数据并保存为Excel或CSV</span>
+                  <span>{locale === 'zh' ? '填写数据并保存为Excel或CSV' : 'Fill in data and save as Excel or CSV'}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center text-xs font-medium flex-shrink-0">
                     4
                   </span>
-                  <span>上传文件等待处理完成</span>
+                  <span>{locale === 'zh' ? '上传文件等待处理完成' : 'Upload file and wait for processing'}</span>
                 </li>
               </ol>
             </div>
 
             {/* 支持的市场 */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">支持的市场</h3>
+              <h3 className="font-semibold text-gray-900 mb-4">{locale === 'zh' ? '支持的市场' : 'Supported Markets'}</h3>
               <div className="space-y-2">
                 {[
                   { flag: '🇺🇸', name: '美国 FDA', count: '150万+' },
@@ -265,12 +267,12 @@ export default function BatchQueryPage() {
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h3 className="font-medium text-yellow-900 mb-1">注意事项</h3>
+                  <h3 className="font-medium text-yellow-900 mb-1">{locale === 'zh' ? '注意事项' : 'Notes'}</h3>
                   <ul className="text-sm text-yellow-800 space-y-1">
-                    <li>• 单次最多支持1000条查询</li>
-                    <li>• 文件大小不超过10MB</li>
-                    <li>• 支持 .xlsx, .xls, .csv 格式</li>
-                    <li>• 查询结果保留7天</li>
+                    <li>• {locale === 'zh' ? '单次最多支持1000条查询' : 'Maximum 1000 queries per batch'}</li>
+                    <li>• {locale === 'zh' ? '文件大小不超过10MB' : 'File size limit: 10MB'}</li>
+                    <li>• {locale === 'zh' ? '支持 .xlsx, .xls, .csv 格式' : 'Supports .xlsx, .xls, .csv formats'}</li>
+                    <li>• {locale === 'zh' ? '查询结果保留7天' : 'Results retained for 7 days'}</li>
                   </ul>
                 </div>
               </div>

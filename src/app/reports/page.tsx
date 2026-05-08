@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button, Card, Input } from '@/components/ui';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
 import { FileText, Download, Loader2, Search, CheckCircle } from 'lucide-react';
+import { useLocale } from '@/lib/i18n/LocaleProvider';
 
 const reportTypes = [
   { value: 'market_analysis', label: 'Market Access Analysis' },
@@ -18,6 +19,7 @@ const languages = [
 ];
 
 export default function ReportsPage() {
+  const locale = useLocale();
   const [companyName, setCompanyName] = useState('');
   const [reportType, setReportType] = useState('market_analysis');
   const [language, setLanguage] = useState('en');
@@ -123,8 +125,8 @@ Based on the analysis above, we recommend:
     <div className="min-h-[calc(100vh-64px)] py-8 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">AI Report Generator</h1>
-          <p className="text-gray-500">Generate professional medical device compliance analysis reports with AI</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{locale === 'zh' ? 'AI报告生成器' : 'AI Report Generator'}</h1>
+          <p className="text-gray-500">{locale === 'zh' ? '使用AI生成专业医疗器械合规分析报告' : 'Generate professional medical device compliance analysis reports with AI'}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -132,20 +134,20 @@ Based on the analysis above, we recommend:
             <Card className="p-6 sticky top-24">
               <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <FileText className="w-5 h-5 text-[#339999]" />
-                Settings
+                {locale === 'zh' ? '设置' : 'Settings'}
               </h2>
 
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Target Company
+                    {locale === 'zh' ? '目标企业' : 'Target Company'}
                   </label>
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <Input
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder="Enter company name"
+                      placeholder={locale === 'zh' ? '输入企业名称' : 'Enter company name'}
                       className="pl-10"
                     />
                   </div>
@@ -192,24 +194,24 @@ Based on the analysis above, we recommend:
                   {loading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Generating...
+                      {locale === 'zh' ? '生成中...' : 'Generating...'}
                     </>
                   ) : (
                     <>
                       <FileText className="w-4 h-4 mr-2" />
-                      Generate Report
+                      {locale === 'zh' ? '生成报告' : 'Generate Report'}
                     </>
                   )}
                 </Button>
               </div>
 
               <div className="mt-6 p-4 bg-[#339999]/5 rounded-lg">
-                <h3 className="text-sm font-medium text-[#339999] mb-2">Report includes:</h3>
+                <h3 className="text-sm font-medium text-[#339999] mb-2">{locale === 'zh' ? '报告包含：' : 'Report includes:'}</h3>
                 <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Global market analysis</li>
-                  <li>• Registration statistics</li>
-                  <li>• Compliance risk assessment</li>
-                  <li>• Professional recommendations</li>
+                  <li>• {locale === 'zh' ? '全球市场分析' : 'Global market analysis'}</li>
+                  <li>• {locale === 'zh' ? '注册统计' : 'Registration statistics'}</li>
+                  <li>• {locale === 'zh' ? '合规风险评估' : 'Compliance risk assessment'}</li>
+                  <li>• {locale === 'zh' ? '专业建议' : 'Professional recommendations'}</li>
                 </ul>
               </div>
             </Card>
@@ -222,11 +224,11 @@ Based on the analysis above, we recommend:
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-5 h-5 text-green-500" />
-                      <span className="font-medium text-gray-900">Report Generated</span>
+                      <span className="font-medium text-gray-900">{locale === 'zh' ? '报告已生成' : 'Report Generated'}</span>
                     </div>
                     <Button variant="outline" onClick={handleDownload}>
                       <Download className="w-4 h-4 mr-2" />
-                      Download
+                      {locale === 'zh' ? '下载' : 'Download'}
                     </Button>
                   </div>
                   <div className="prose prose-gray max-w-none">
@@ -238,8 +240,8 @@ Based on the analysis above, we recommend:
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-gray-400">
                   <FileText className="w-16 h-16 mb-4" />
-                  <p className="text-lg">Report Preview</p>
-                  <p className="text-sm">Fill the form to generate a report</p>
+                  <p className="text-lg">{locale === 'zh' ? '报告预览' : 'Report Preview'}</p>
+                  <p className="text-sm">{locale === 'zh' ? '填写表单以生成报告' : 'Fill the form to generate a report'}</p>
                 </div>
               )}
             </Card>

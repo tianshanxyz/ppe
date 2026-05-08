@@ -1,18 +1,22 @@
+'use client'
+
 import { Card } from '@/components/ui';
 import { Code, Key, Search, FileText, AlertCircle } from 'lucide-react';
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
-const endpoints = [
-  {
-    method: 'GET',
-    path: '/api/search',
-    description: '搜索医疗器械注册信息',
-    parameters: [
-      { name: 'q', type: 'string', required: true, description: '搜索关键词' },
-      { name: 'market', type: 'string', required: false, description: '市场筛选 (all/fda/nmpa/eudamed)' },
-      { name: 'page', type: 'number', required: false, description: '页码，默认1' },
-      { name: 'limit', type: 'number', required: false, description: '每页数量，默认20' },
-    ],
-    response: `{
+const endpoints = {
+  en: [
+    {
+      method: 'GET',
+      path: '/api/search',
+      description: 'Search medical device registration information',
+      parameters: [
+        { name: 'q', type: 'string', required: true, description: 'Search keyword' },
+        { name: 'market', type: 'string', required: false, description: 'Market filter (all/fda/nmpa/eudamed)' },
+        { name: 'page', type: 'number', required: false, description: 'Page number, default 1' },
+        { name: 'limit', type: 'number', required: false, description: 'Items per page, default 20' },
+      ],
+      response: `{
   "data": [...],
   "pagination": {
     "page": 1,
@@ -21,21 +25,57 @@ const endpoints = [
     "totalPages": 5
   }
 }`
-  },
-  {
-    method: 'GET',
-    path: '/api/companies/{id}',
-    description: '获取企业详细信息',
-    parameters: [
-      { name: 'id', type: 'string', required: true, description: '企业ID' },
-    ],
-    response: `{
+    },
+    {
+      method: 'GET',
+      path: '/api/companies/{id}',
+      description: 'Get company details',
+      parameters: [
+        { name: 'id', type: 'string', required: true, description: 'Company ID' },
+      ],
+      response: `{
   "company": { ... },
   "products": [...],
   "fdaRegistrations": [...]
 }`
-  },
-];
+    },
+  ],
+  zh: [
+    {
+      method: 'GET',
+      path: '/api/search',
+      description: '搜索医疗器械注册信息',
+      parameters: [
+        { name: 'q', type: 'string', required: true, description: '搜索关键词' },
+        { name: 'market', type: 'string', required: false, description: '市场筛选 (all/fda/nmpa/eudamed)' },
+        { name: 'page', type: 'number', required: false, description: '页码，默认1' },
+        { name: 'limit', type: 'number', required: false, description: '每页数量，默认20' },
+      ],
+      response: `{
+  "data": [...],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 100,
+    "totalPages": 5
+  }
+}`
+    },
+    {
+      method: 'GET',
+      path: '/api/companies/{id}',
+      description: '获取企业详细信息',
+      parameters: [
+        { name: 'id', type: 'string', required: true, description: '企业ID' },
+      ],
+      response: `{
+  "company": { ... },
+  "products": [...],
+  "fdaRegistrations": [...]
+}`
+    },
+  ]
+};
 
 const codeExamples = [
   {
@@ -69,15 +109,18 @@ data = response.json()`
 ];
 
 export default function ApiDocsPage() {
+  const locale = useLocale()
+  const currentEndpoints = locale === 'zh' ? endpoints.zh : endpoints.en;
+
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 py-8 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">API 文档</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-4">{locale === 'zh' ? 'API 文档' : 'API Documentation'}</h1>
             <p className="text-gray-500 max-w-2xl mx-auto">
-              使用MDLooker API将医疗器械合规数据集成到您的应用程序中
+              {locale === 'zh' ? '使用MDLooker API将医疗器械合规数据集成到您的应用程序中' : 'Integrate MDLooker medical device compliance data into your applications'}
             </p>
           </div>
 
@@ -86,11 +129,11 @@ export default function ApiDocsPage() {
             <div className="flex items-start gap-4">
               <Key className="w-8 h-8 text-medical flex-shrink-0" />
               <div>
-                <h2 className="text-xl font-semibold text-medical-800 mb-2">快速开始</h2>
+                <h2 className="text-xl font-semibold text-medical-800 mb-2">{locale === 'zh' ? '快速开始' : 'Quick Start'}</h2>
                 <p className="text-medical-700 mb-4">
-                  1. 登录您的账户并前往用户中心的API密钥管理页面<br/>
-                  2. 创建新的API密钥<br/>
-                  3. 在请求头中添加 Authorization: Bearer YOUR_API_KEY
+                  {locale === 'zh'
+                    ? '1. 登录您的账户并前往用户中心的API密钥管理页面\n2. 创建新的API密钥\n3. 在请求头中添加 Authorization: Bearer YOUR_API_KEY'
+                    : '1. Log in to your account and go to the API Keys management page\n2. Create a new API key\n3. Add Authorization: Bearer YOUR_API_KEY to your request headers'}
                 </p>
                 <div className="bg-gray-900 rounded-lg p-4">
                   <code className="text-green-400 text-sm">
@@ -106,10 +149,11 @@ export default function ApiDocsPage() {
             <div className="flex items-start gap-4">
               <AlertCircle className="w-6 h-6 text-yellow-500 flex-shrink-0" />
               <div>
-                <h2 className="text-lg font-semibold text-gray-800 mb-2">速率限制</h2>
+                <h2 className="text-lg font-semibold text-gray-800 mb-2">{locale === 'zh' ? '速率限制' : 'Rate Limits'}</h2>
                 <p className="text-gray-600">
-                  免费用户：每分钟100次请求<br/>
-                  付费用户：根据套餐享有更高额度
+                  {locale === 'zh'
+                    ? '免费用户：每分钟100次请求\n付费用户：根据套餐享有更高额度'
+                    : 'Free users: 100 requests per minute\nPaid users: Higher quotas based on plan'}
                 </p>
               </div>
             </div>
@@ -117,9 +161,9 @@ export default function ApiDocsPage() {
 
           {/* Endpoints */}
           <div className="space-y-6 mb-12">
-            <h2 className="text-2xl font-bold text-gray-800">API 端点</h2>
-            
-            {endpoints.map((endpoint, index) => (
+            <h2 className="text-2xl font-bold text-gray-800">{locale === 'zh' ? 'API 端点' : 'API Endpoints'}</h2>
+
+            {currentEndpoints.map((endpoint, index) => (
               <Card key={index} className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${
@@ -131,18 +175,18 @@ export default function ApiDocsPage() {
                   </span>
                   <code className="text-lg font-mono text-gray-800">{endpoint.path}</code>
                 </div>
-                
+
                 <p className="text-gray-600 mb-4">{endpoint.description}</p>
 
                 <div className="mb-4">
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">参数</h3>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-2">{locale === 'zh' ? '参数' : 'Parameters'}</h3>
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left py-2">参数名</th>
-                        <th className="text-left py-2">类型</th>
-                        <th className="text-left py-2">必需</th>
-                        <th className="text-left py-2">描述</th>
+                        <th className="text-left py-2">{locale === 'zh' ? '参数名' : 'Name'}</th>
+                        <th className="text-left py-2">{locale === 'zh' ? '类型' : 'Type'}</th>
+                        <th className="text-left py-2">{locale === 'zh' ? '必需' : 'Required'}</th>
+                        <th className="text-left py-2">{locale === 'zh' ? '描述' : 'Description'}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -150,7 +194,7 @@ export default function ApiDocsPage() {
                         <tr key={pIndex} className="border-b">
                           <td className="py-2 font-mono">{param.name}</td>
                           <td className="py-2">{param.type}</td>
-                          <td className="py-2">{param.required ? '是' : '否'}</td>
+                          <td className="py-2">{param.required ? (locale === 'zh' ? '是' : 'Yes') : (locale === 'zh' ? '否' : 'No')}</td>
                           <td className="py-2 text-gray-600">{param.description}</td>
                         </tr>
                       ))}
@@ -159,7 +203,7 @@ export default function ApiDocsPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">响应示例</h3>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-2">{locale === 'zh' ? '响应示例' : 'Response Example'}</h3>
                   <pre className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
                     <code className="text-green-400 text-sm">{endpoint.response}</code>
                   </pre>
@@ -170,8 +214,8 @@ export default function ApiDocsPage() {
 
           {/* Code Examples */}
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">代码示例</h2>
-            
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">{locale === 'zh' ? '代码示例' : 'Code Examples'}</h2>
+
             <div className="space-y-6">
               {codeExamples.map((example, index) => (
                 <Card key={index} className="p-6">
@@ -189,9 +233,9 @@ export default function ApiDocsPage() {
             <div className="flex items-center gap-4">
               <FileText className="w-6 h-6 text-medical" />
               <div>
-                <h3 className="font-semibold text-gray-800">需要帮助？</h3>
+                <h3 className="font-semibold text-gray-800">{locale === 'zh' ? '需要帮助？' : 'Need Help?'}</h3>
                 <p className="text-gray-600">
-                  如有API使用问题，请联系 support@mdlooker.com
+                  {locale === 'zh' ? '如有API使用问题，请联系 support@mdlooker.com' : 'For API support, contact support@mdlooker.com'}
                 </p>
               </div>
             </div>

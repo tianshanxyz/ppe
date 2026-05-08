@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-05-06T16:07:35.250Z",
+  "stats": {
+    "fixed": 31732,
+    "skipped": 0,
+    "errors": 10431
+  },
+  "fixes": [
+    "P1-1:model",
+    "P1-2:expiry",
+    "P1-3:url",
+    "P1-4:risk",
+    "P1-5:incidents",
+    "P2-1:standards",
+    "P2-2:cert-bodies",
+    "P2-3:dedup",
+    "P2-4:mfr-link",
+    "P3-1:who",
+    "P3-2:chem",
+    "P3-3:coverage"
+  ]
+}

@@ -1,0 +1,177 @@
+[
+  {
+    "id": "chem-h2s-hydrogen-sulfide",
+    "chemical_name": "Hydrogen Sulfide",
+    "chemical_name_zh": "硫化氢",
+    "cas_number": "7783-06-4",
+    "formula": "H₂S",
+    "exposure_limits": {
+      "NIOSH_REL": { "value": 10, "unit": "ppm", "time": "10-min ceiling" },
+      "OSHA_PEL": { "value": 20, "unit": "ppm", "time": "ceiling (50 ppm peak/10 min)" },
+      "ACGIH_TLV": { "value": 1, "unit": "ppm", "time": "TWA (8h)" },
+      "GBZ_2.1": { "value": 10, "unit": "mg/m³", "time": "MAC (最高容许浓度)" }
+    },
+    "ppe_requirements": [
+      {
+        "concentration_range": "0-10 ppm",
+        "ppe_level": "Level D (basic)",
+        "required_ppe": ["安全眼镜", "工作服", "安全鞋"],
+        "respiratory_protection": "无需特殊呼吸防护"
+      },
+      {
+        "concentration_range": "10-100 ppm",
+        "ppe_level": "Level C",
+        "required_ppe": ["化学防护服", "防化学手套", "防化靴"],
+        "respiratory_protection": "全面罩+酸性气体滤毒罐 (NIOSH approved)"
+      },
+      {
+        "concentration_range": ">100 ppm / IDLH",
+        "ppe_level": "Level A / B",
+        "required_ppe": ["全封闭化学防护服 (Level A)", "正压式SCBA"],
+        "respiratory_protection": "正压式自给式呼吸器 (SCBA)"
+      }
+    ],
+    "hazard_classification": "高毒/剧毒，易燃气体 (爆炸下限4.0%)",
+    "immediately_dangerous_to_life_health": 100,
+    "idlh_unit": "ppm",
+    "verification_source": {
+      "name": "NIOSH Pocket Guide to Chemical Hazards",
+      "url": "https://www.cdc.gov/niosh/npg/npgd0337.html",
+      "last_verified": "2026-05-06"
+    }
+  },
+  {
+    "id": "chem-benzene",
+    "chemical_name": "Benzene",
+    "chemical_name_zh": "苯",
+    "cas_number": "71-43-2",
+    "formula": "C₆H₆",
+    "exposure_limits": {
+      "NIOSH_REL": { "value": 0.1, "unit": "ppm", "time": "TWA (8h)" },
+      "OSHA_PEL": { "value": 1, "unit": "ppm", "time": "TWA (5 ppm STEL)" },
+      "ACGIH_TLV": { "value": 0.5, "unit": "ppm", "time": "TWA (8h)" },
+      "GBZ_2.1": { "value": 6, "unit": "mg/m³", "time": "PC-TWA" }
+    },
+    "ppe_requirements": [
+      {
+        "concentration_range": "0-0.5 ppm",
+        "ppe_level": "基本防护",
+        "required_ppe": ["防护眼镜", "防化学品手套", "防护服"],
+        "respiratory_protection": "有机蒸气滤毒盒半面罩 (OV cartridge)"
+      },
+      {
+        "concentration_range": ">0.5 ppm",
+        "ppe_level": "高级防护",
+        "required_ppe": ["化学防护服 (Type 3)", "防化学品手套"],
+        "respiratory_protection": "全面罩+有机蒸气滤毒盒 或 供气式呼吸器"
+      }
+    ],
+    "hazard_classification": "确认人类致癌物 (IARC Group 1)，易燃液体",
+    "immediately_dangerous_to_life_health": 500,
+    "idlh_unit": "ppm",
+    "verification_source": {
+      "name": "NIOSH Pocket Guide to Chemical Hazards",
+      "url": "https://www.cdc.gov/niosh/npg/npgd0049.html",
+      "last_verified": "2026-05-06"
+    }
+  },
+  {
+    "id": "chem-ammonia",
+    "chemical_name": "Ammonia",
+    "chemical_name_zh": "氨",
+    "cas_number": "7664-41-7",
+    "formula": "NH₃",
+    "exposure_limits": {
+      "NIOSH_REL": { "value": 25, "unit": "ppm", "time": "TWA (8h)" },
+      "OSHA_PEL": { "value": 50, "unit": "ppm", "time": "TWA (8h)" },
+      "ACGIH_TLV": { "value": 25, "unit": "ppm", "time": "TWA (8h)" },
+      "GBZ_2.1": { "value": 20, "unit": "mg/m³", "time": "PC-TWA" }
+    },
+    "ppe_requirements": [
+      {
+        "concentration_range": "0-25 ppm",
+        "ppe_level": "基本防护",
+        "required_ppe": ["安全眼镜", "防化学品手套"],
+        "respiratory_protection": "氨气滤毒罐半面罩 (AM cartridge)"
+      },
+      {
+        "concentration_range": "25-300 ppm",
+        "ppe_level": "Level C",
+        "required_ppe": ["化学围裙", "防化学品手套"],
+        "respiratory_protection": "全面罩+氨气滤毒罐 (AM cartridge)"
+      }
+    ],
+    "hazard_classification": "腐蚀性气体，有毒性",
+    "immediately_dangerous_to_life_health": 300,
+    "idlh_unit": "ppm",
+    "verification_source": {
+      "name": "NIOSH Pocket Guide to Chemical Hazards",
+      "url": "https://www.cdc.gov/niosh/npg/npgd0028.html",
+      "last_verified": "2026-05-06"
+    }
+  },
+  {
+    "id": "chem-sulfuric-acid",
+    "chemical_name": "Sulfuric Acid",
+    "chemical_name_zh": "硫酸",
+    "cas_number": "7664-93-9",
+    "formula": "H₂SO₄",
+    "exposure_limits": {
+      "NIOSH_REL": { "value": 1, "unit": "mg/m³", "time": "TWA (8h)" },
+      "OSHA_PEL": { "value": 1, "unit": "mg/m³", "time": "TWA (8h)" },
+      "ACGIH_TLV": { "value": 0.2, "unit": "mg/m³", "time": "TWA (8h) (thoracic fraction)" },
+      "GBZ_2.1": { "value": 1, "unit": "mg/m³", "time": "PC-TWA" }
+    },
+    "ppe_requirements": [
+      {
+        "concentration_range": "液体接触",
+        "ppe_level": "基本防护",
+        "required_ppe": ["防酸护目镜", "防护面罩", "耐酸手套 (丁基/氯丁橡胶)", "耐酸围裙"],
+        "respiratory_protection": "通常不需要呼吸防护"
+      },
+      {
+        "concentration_range": "蒸气/酸雾",
+        "ppe_level": "高级防护",
+        "required_ppe": ["全封闭化学防护服", "耐酸手套", "耐酸靴"],
+        "respiratory_protection": "全面罩+酸性气体滤毒罐"
+      }
+    ],
+    "hazard_classification": "强腐蚀性 (UN 2796)，吸入有毒",
+    "immediately_dangerous_to_life_health": 15,
+    "idlh_unit": "mg/m³",
+    "verification_source": {
+      "name": "NIOSH Pocket Guide to Chemical Hazards",
+      "url": "https://www.cdc.gov/niosh/npg/npgd0577.html",
+      "last_verified": "2026-05-06"
+    }
+  },
+  {
+    "id": "chem-silica-dust",
+    "chemical_name": "Silica, Crystalline (as respirable dust)",
+    "chemical_name_zh": "矽尘（可吸入性结晶硅）",
+    "cas_number": "14808-60-7",
+    "formula": "SiO₂",
+    "exposure_limits": {
+      "NIOSH_REL": { "value": 0.05, "unit": "mg/m³", "time": "TWA (8h), respirable dust" },
+      "OSHA_PEL": { "value": 0.05, "unit": "mg/m³", "time": "TWA (8h), respirable dust" },
+      "ACGIH_TLV": { "value": 0.025, "unit": "mg/m³", "time": "TWA (8h), respirable fraction" },
+      "GBZ_2.1": { "value": 0.5, "unit": "mg/m³", "time": "PC-TWA (总尘)" }
+    },
+    "ppe_requirements": [
+      {
+        "concentration_range": "任何粉尘暴露",
+        "ppe_level": "工程控制+PPE",
+        "required_ppe": ["防尘护目镜", "防尘服"],
+        "respiratory_protection": "N95/KN95级别防颗粒物口罩(低浓度) / P100/KN100密封式面罩(高浓度)"
+      }
+    ],
+    "hazard_classification": "确认人类致癌物 (IARC Group 1)，长期吸入导致矽肺",
+    "immediately_dangerous_to_life_health": 25,
+    "idlh_unit": "mg/m³",
+    "verification_source": {
+      "name": "NIOSH Pocket Guide to Chemical Hazards",
+      "url": "https://www.cdc.gov/niosh/npg/npgd0684.html",
+      "last_verified": "2026-05-06"
+    }
+  }
+]

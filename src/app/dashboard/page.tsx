@@ -2407,7 +2407,7 @@ export default function DashboardPage() {
           </ul>
           <div className="mt-4 pt-4 border-t border-[#339999]/10">
             <a
-              href="/docs/api"
+              href="/api-docs"
               className="text-sm text-[#339999] hover:underline font-medium"
             >
               {locale === 'zh' ? '查看API文档' : 'View API Documentation'} &rarr;

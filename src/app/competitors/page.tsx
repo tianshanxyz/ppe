@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react'
 import { BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, ResponsiveContainer, Cell, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 import { Building, TrendingUp, Award, Target, Users, Globe, Trophy, Zap } from 'lucide-react'
 import { getCompetitors } from '@/lib/ppe-database-client'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 const COLORS = ['#339999', '#2d8b8b', '#267a7a', '#1f6969', '#185858']
 
 export default function CompetitorAnalysisPage() {
+  const locale = useLocale()
   const [competitors, setCompetitors] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -162,7 +164,7 @@ export default function CompetitorAnalysisPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#339999]"></div>
-          <p className="mt-4 text-gray-600">Loading competitor analysis...</p>
+          <p className="mt-4 text-gray-600">{locale === 'zh' ? '正在加载竞争分析...' : 'Loading competitor analysis...'}</p>
         </div>
       </div>
     )
@@ -180,10 +182,10 @@ export default function CompetitorAnalysisPage() {
               </div>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Competitive Landscape Analysis
+              {locale === 'zh' ? '竞争格局分析' : 'Competitive Landscape Analysis'}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprehensive analysis of key players in the global PPE market
+              {locale === 'zh' ? '全球PPE市场主要参与者的综合分析' : 'Comprehensive analysis of key players in the global PPE market'}
             </p>
           </div>
         </div>
@@ -195,7 +197,7 @@ export default function CompetitorAnalysisPage() {
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
             <div className="flex items-center mb-6">
               <TrendingUp className="w-6 h-6 text-[#339999] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Global Market Share by Region</h2>
+              <h2 className="text-xl font-bold text-gray-900">{locale === 'zh' ? '各地区全球市场份额' : 'Global Market Share by Region'}</h2>
             </div>
             <ResponsiveContainer width="100%" height={400}>
               <BarChart data={marketShareData}>
@@ -216,7 +218,7 @@ export default function CompetitorAnalysisPage() {
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
             <div className="flex items-center mb-6">
               <Award className="w-6 h-6 text-[#339999] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Product Category Coverage</h2>
+              <h2 className="text-xl font-bold text-gray-900">{locale === 'zh' ? '产品类别覆盖' : 'Product Category Coverage'}</h2>
             </div>
             <ResponsiveContainer width="100%" height={400}>
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={categoryData}>
@@ -258,7 +260,7 @@ export default function CompetitorAnalysisPage() {
                     <div className="text-3xl font-bold text-[#339999]">
                       #{index + 1}
                     </div>
-                    <div className="text-sm text-gray-500">Ranking</div>
+                    <div className="text-sm text-gray-500">{locale === 'zh' ? '排名' : 'Ranking'}</div>
                   </div>
                 </div>
 
@@ -266,7 +268,7 @@ export default function CompetitorAnalysisPage() {
                   <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center mb-2">
                       <Globe className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-600">Headquarters</span>
+                      <span className="text-sm text-gray-600">{locale === 'zh' ? '总部' : 'Headquarters'}</span>
                     </div>
                     <div className="text-lg font-semibold text-gray-900">
                       {competitor.country}
@@ -275,7 +277,7 @@ export default function CompetitorAnalysisPage() {
                   <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center mb-2">
                       <Building className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-600">Business Type</span>
+                      <span className="text-sm text-gray-600">{locale === 'zh' ? '业务类型' : 'Business Type'}</span>
                     </div>
                     <div className="text-lg font-semibold text-gray-900 capitalize">
                       {competitor.business_type}
@@ -284,7 +286,7 @@ export default function CompetitorAnalysisPage() {
                   <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center mb-2">
                       <Users className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-600">Employees</span>
+                      <span className="text-sm text-gray-600">{locale === 'zh' ? '员工数' : 'Employees'}</span>
                     </div>
                     <div className="text-lg font-semibold text-gray-900">
                       {competitor.employees || 'N/A'}
@@ -293,7 +295,7 @@ export default function CompetitorAnalysisPage() {
                   <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center mb-2">
                       <Award className="w-4 h-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-600">Revenue</span>
+                      <span className="text-sm text-gray-600">{locale === 'zh' ? '营收' : 'Revenue'}</span>
                     </div>
                     <div className="text-lg font-semibold text-gray-900">
                       {competitor.revenue || 'N/A'}
@@ -303,7 +305,7 @@ export default function CompetitorAnalysisPage() {
 
                 <div className="mb-6">
                   <h4 className="text-lg font-semibold text-gray-900 mb-3">
-                    Product Categories
+                    {locale === 'zh' ? '产品类别' : 'Product Categories'}
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {competitor.product_categories?.map((category: string, index: number) => (
@@ -321,7 +323,7 @@ export default function CompetitorAnalysisPage() {
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <Trophy className="w-5 h-5 text-green-500 mr-2" />
-                      Strengths
+                      {locale === 'zh' ? '优势' : 'Strengths'}
                     </h4>
                     <ul className="space-y-2">
                       {competitor.strengths?.map((strength: string, index: number) => (
@@ -335,7 +337,7 @@ export default function CompetitorAnalysisPage() {
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <Zap className="w-5 h-5 text-orange-500 mr-2" />
-                      Weaknesses
+                      {locale === 'zh' ? '劣势' : 'Weaknesses'}
                     </h4>
                     <ul className="space-y-2">
                       {competitor.weaknesses?.map((weakness: string, index: number) => (
@@ -350,7 +352,7 @@ export default function CompetitorAnalysisPage() {
 
                 <div className="mt-6 pt-6 border-t border-gray-200">
                   <h4 className="text-lg font-semibold text-gray-900 mb-3">
-                    Key Markets
+                    {locale === 'zh' ? '主要市场' : 'Key Markets'}
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {competitor.key_markets?.map((market: string, index: number) => (

@@ -6,9 +6,15 @@ import { sendCertificateExpiryReminder } from '@/lib/email/service'
 // 这个路由应该由定时任务调用（如 Vercel Cron）
 export async function GET(request: Request) {
   try {
-    // 验证 cron secret
+    const cronSecret = process.env.CRON_SECRET
+    if (!cronSecret) {
+      return NextResponse.json(
+        { error: 'Cron service not configured' },
+        { status: 503 }
+      )
+    }
     const authHeader = request.headers.get('authorization')
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    if (authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

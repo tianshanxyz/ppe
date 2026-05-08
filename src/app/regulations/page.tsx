@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { Search, Filter, BookOpen, ExternalLink, Globe, Scale, FileText, CheckCircle, ChevronDown, ChevronUp, X, Eye } from 'lucide-react'
 import { getPPECategories, getTargetMarkets } from '@/lib/ppe-data'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 interface Regulation {
   id: string
@@ -21,6 +22,7 @@ interface Regulation {
 }
 
 export default function RegulationsPage() {
+  const locale = useLocale()
   const categories = getPPECategories()
   const markets = getTargetMarkets()
   
@@ -82,10 +84,10 @@ export default function RegulationsPage() {
 
   const getDocumentTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
-      'regulation': 'Regulation',
-      'standard': 'Standard',
-      'guidance': 'Guidance',
-      'directive': 'Directive'
+      'regulation': locale === 'zh' ? '法规' : 'Regulation',
+      'standard': locale === 'zh' ? '标准' : 'Standard',
+      'guidance': locale === 'zh' ? '指南' : 'Guidance',
+      'directive': locale === 'zh' ? '指令' : 'Directive'
     }
     return labels[type] || type
   }
@@ -121,10 +123,10 @@ export default function RegulationsPage() {
               </div>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              PPE Regulation Knowledge Base
+              {locale === 'zh' ? 'PPE法规知识库' : 'PPE Regulation Knowledge Base'}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprehensive database of global PPE regulations, standards, and compliance requirements with full-text search
+              {locale === 'zh' ? '全球PPE法规综合数据库，支持全文检索，涵盖标准与合规要求' : 'Comprehensive database of global PPE regulations, standards, and compliance requirements with full-text search'}
             </p>
           </div>
         </div>
@@ -136,19 +138,19 @@ export default function RegulationsPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="text-3xl font-bold text-[#339999] mb-1">{totalCount}</div>
-              <div className="text-gray-600 text-sm">Total Regulations</div>
+              <div className="text-gray-600 text-sm">{locale === 'zh' ? '法规总数' : 'Total Regulations'}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-[#339999] mb-1">{markets.length}</div>
-              <div className="text-gray-600 text-sm">Markets Covered</div>
+              <div className="text-gray-600 text-sm">{locale === 'zh' ? '覆盖市场' : 'Markets Covered'}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-[#339999] mb-1">{categories.length}</div>
-              <div className="text-gray-600 text-sm">Product Categories</div>
+              <div className="text-gray-600 text-sm">{locale === 'zh' ? '产品类别' : 'Product Categories'}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-[#339999] mb-1">4</div>
-              <div className="text-gray-600 text-sm">Document Types</div>
+              <div className="text-gray-600 text-sm">{locale === 'zh' ? '文档类型' : 'Document Types'}</div>
             </div>
           </div>
         </div>
@@ -164,7 +166,7 @@ export default function RegulationsPage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search regulations by title, number, authority, or keywords..."
+                  placeholder={locale === 'zh' ? '搜索法规标题、编号、机构或关键词...' : 'Search regulations by title, number, authority, or keywords...'}
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value)
@@ -188,14 +190,14 @@ export default function RegulationsPage() {
                 className="w-4 h-4 text-[#339999] rounded focus:ring-[#339999]"
               />
               <label htmlFor="fulltext-search" className="text-sm text-gray-700 cursor-pointer">
-                Search in full regulation text (includes all articles, requirements, and technical details)
+                {locale === 'zh' ? '在法规全文中搜索（包含所有条款、要求和技术细节）' : 'Search in full regulation text (includes all articles, requirements, and technical details)'}
               </label>
             </div>
 
             {/* Filters */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Market</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '市场' : 'Market'}</label>
                 <select
                   value={selectedMarket}
                   onChange={(e) => {
@@ -204,7 +206,7 @@ export default function RegulationsPage() {
                   }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999]"
                 >
-                  <option value="all">All Markets</option>
+                  <option value="all">{locale === 'zh' ? '所有市场' : 'All Markets'}</option>
                   {markets.map((m) => (
                     <option key={m.code} value={m.code}>
                       {m.flag_emoji} {m.name}
@@ -214,7 +216,7 @@ export default function RegulationsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '类别' : 'Category'}</label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => {
@@ -223,7 +225,7 @@ export default function RegulationsPage() {
                   }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999]"
                 >
-                  <option value="all">All Categories</option>
+                  <option value="all">{locale === 'zh' ? '所有类别' : 'All Categories'}</option>
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.icon} {cat.name}
@@ -233,7 +235,7 @@ export default function RegulationsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Document Type</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '文档类型' : 'Document Type'}</label>
                 <select
                   value={selectedType}
                   onChange={(e) => {
@@ -242,11 +244,11 @@ export default function RegulationsPage() {
                   }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999]"
                 >
-                  <option value="all">All Types</option>
-                  <option value="regulation">Regulation</option>
-                  <option value="standard">Standard</option>
-                  <option value="guidance">Guidance</option>
-                  <option value="directive">Directive</option>
+                  <option value="all">{locale === 'zh' ? '所有类型' : 'All Types'}</option>
+                  <option value="regulation">{locale === 'zh' ? '法规' : 'Regulation'}</option>
+                  <option value="standard">{locale === 'zh' ? '标准' : 'Standard'}</option>
+                  <option value="guidance">{locale === 'zh' ? '指南' : 'Guidance'}</option>
+                  <option value="directive">{locale === 'zh' ? '指令' : 'Directive'}</option>
                 </select>
               </div>
 
@@ -262,7 +264,7 @@ export default function RegulationsPage() {
                   }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
                 >
-                  Clear All Filters
+                  {locale === 'zh' ? '清除筛选' : 'Clear All Filters'}
                 </button>
               </div>
             </div>
@@ -271,7 +273,7 @@ export default function RegulationsPage() {
             {(selectedCategory !== 'all' || selectedMarket !== 'all' || selectedType !== 'all' || searchQuery) && (
               <div className="mt-4 flex items-center gap-2 flex-wrap">
                 <Filter className="w-4 h-4 text-gray-500" />
-                <span className="text-sm text-gray-600">Active filters:</span>
+                <span className="text-sm text-gray-600">{locale === 'zh' ? '当前筛选：' : 'Active filters:'}</span>
                 {selectedCategory !== 'all' && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-[#339999]/10 text-[#339999]">
                     {categories.find(c => c.id === selectedCategory)?.icon} {getCategoryName(selectedCategory)}
@@ -298,7 +300,7 @@ export default function RegulationsPage() {
                 )}
                 {searchInFulltext && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-700">
-                    Full-text search enabled
+                    {locale === 'zh' ? '全文搜索已启用' : 'Full-text search enabled'}
                   </span>
                 )}
               </div>
@@ -312,11 +314,11 @@ export default function RegulationsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-2xl font-bold text-gray-900">
-              {loading ? 'Searching...' : `${totalCount} Regulation${totalCount !== 1 ? 's' : ''} Found`}
+              {loading ? (locale === 'zh' ? '搜索中...' : 'Searching...') : `${totalCount} ${locale === 'zh' ? '条法规' : `Regulation${totalCount !== 1 ? 's' : ''}`} ${locale === 'zh' ? '已找到' : 'Found'}`}
             </h2>
             {totalPages > 1 && (
               <div className="text-sm text-gray-500">
-                Page {page} of {totalPages}
+                {locale === 'zh' ? `第 ${page} 页，共 ${totalPages} 页` : `Page ${page} of ${totalPages}`}
               </div>
             )}
           </div>
@@ -324,15 +326,15 @@ export default function RegulationsPage() {
           {loading ? (
             <div className="text-center py-20">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#339999]"></div>
-              <p className="mt-4 text-gray-600">Searching regulations...</p>
+              <p className="mt-4 text-gray-600">{locale === 'zh' ? '正在搜索法规...' : 'Searching regulations...'}</p>
             </div>
           ) : regulations.length === 0 ? (
             <div className="text-center py-20 bg-white rounded-xl border border-gray-200">
               <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-6">
                 <Search className="w-10 h-10 text-gray-400" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">No regulations found</h3>
-              <p className="text-gray-600 mb-6">Try adjusting your filters or search query</p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">{locale === 'zh' ? '未找到法规' : 'No regulations found'}</h3>
+              <p className="text-gray-600 mb-6">{locale === 'zh' ? '请尝试调整筛选条件或搜索关键词' : 'Try adjusting your filters or search query'}</p>
               <button
                 onClick={() => {
                   setSelectedCategory('all')
@@ -344,7 +346,7 @@ export default function RegulationsPage() {
                 }}
                 className="px-6 py-3 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors"
               >
-                Clear All Filters
+                {locale === 'zh' ? '清除筛选' : 'Clear All Filters'}
               </button>
             </div>
           ) : (
@@ -403,7 +405,7 @@ export default function RegulationsPage() {
                         className="flex-1 py-2.5 bg-[#339999] text-white font-semibold rounded-lg hover:bg-[#2d8b8b] transition-colors flex items-center justify-center gap-2"
                       >
                         <Eye className="w-4 h-4" />
-                        View Full Text
+                        {locale === 'zh' ? '查看全文' : 'View Full Text'}
                       </button>
                     </div>
                   </div>
@@ -420,7 +422,7 @@ export default function RegulationsPage() {
                 disabled={page === 1}
                 className="px-4 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
               >
-                Previous
+                {locale === 'zh' ? '上一页' : 'Previous'}
               </button>
               
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -454,7 +456,7 @@ export default function RegulationsPage() {
                 disabled={page === totalPages}
                 className="px-4 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
               >
-                Next
+                {locale === 'zh' ? '下一页' : 'Next'}
               </button>
             </div>
           )}
@@ -503,25 +505,25 @@ export default function RegulationsPage() {
               <div className="px-6 py-4 max-h-[70vh] overflow-y-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                   <div className="bg-gray-50 rounded-lg p-3">
-                    <div className="text-xs text-gray-500 mb-1">Regulation Number</div>
+                    <div className="text-xs text-gray-500 mb-1">{locale === 'zh' ? '法规编号' : 'Regulation Number'}</div>
                     <div className="font-semibold text-gray-900">{selectedRegulation.regulation_number}</div>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3">
-                    <div className="text-xs text-gray-500 mb-1">Issuing Authority</div>
+                    <div className="text-xs text-gray-500 mb-1">{locale === 'zh' ? '发布机构' : 'Issuing Authority'}</div>
                     <div className="font-semibold text-gray-900">{selectedRegulation.issuing_authority}</div>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3">
-                    <div className="text-xs text-gray-500 mb-1">Effective Date</div>
+                    <div className="text-xs text-gray-500 mb-1">{locale === 'zh' ? '生效日期' : 'Effective Date'}</div>
                     <div className="font-semibold text-gray-900">{selectedRegulation.effective_date}</div>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3">
-                    <div className="text-xs text-gray-500 mb-1">Category</div>
+                    <div className="text-xs text-gray-500 mb-1">{locale === 'zh' ? '类别' : 'Category'}</div>
                     <div className="font-semibold text-gray-900">{getCategoryName(selectedRegulation.category_id)}</div>
                   </div>
                 </div>
 
                 <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-2">Summary</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">{locale === 'zh' ? '摘要' : 'Summary'}</h4>
                   <p className="text-gray-700">{selectedRegulation.summary}</p>
                   {selectedRegulation.summary_zh && (
                     <p className="text-gray-700 mt-2">{selectedRegulation.summary_zh}</p>
@@ -529,7 +531,7 @@ export default function RegulationsPage() {
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-3">Full Text</h4>
+                  <h4 className="font-semibold text-gray-900 mb-3">{locale === 'zh' ? '全文' : 'Full Text'}</h4>
                   <div className="bg-gray-50 rounded-lg p-4 overflow-x-auto">
                     <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono leading-relaxed">
                       {selectedRegulation.full_text}
@@ -544,7 +546,7 @@ export default function RegulationsPage() {
                   onClick={closeModal}
                   className="px-6 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
                 >
-                  Close
+                  {locale === 'zh' ? '关闭' : 'Close'}
                 </button>
               </div>
             </div>

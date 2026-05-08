@@ -1,14 +1,8 @@
-import { Metadata } from 'next'
+'use client'
+
 import { CheckCircle, Clock, AlertCircle, Database, ExternalLink } from 'lucide-react'
 import { DataSourceList } from '@/components/data/DataSourceList'
-
-export const metadata: Metadata = {
-  title: 'Data Sources - MDLooker Medical Device Database',
-  description: 'Learn about our data sources including FDA, EUDAMED, NMPA, and other global medical device regulatory databases. Transparent data collection practices.',
-  alternates: {
-    canonical: '/data-sources'
-  }
-}
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 const dataSources = [
   {
@@ -92,14 +86,15 @@ const dataSources = [
 ]
 
 export default function DataSourcesPage() {
+  const locale = useLocale()
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900">Data Sources</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{locale === 'zh' ? '数据来源' : 'Data Sources'}</h1>
           <p className="mt-2 text-gray-600">
-            Transparent information about our data sources and collection practices
+            {locale === 'zh' ? '关于数据来源的透明信息' : 'Transparent information about our data sources and collection practices'}
           </p>
         </div>
       </div>
@@ -107,11 +102,9 @@ export default function DataSourcesPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Overview */}
         <div className="bg-primary-50 border border-primary-200 rounded-xl p-6 mb-8">
-          <h2 className="text-lg font-semibold text-primary-900 mb-2">Data Collection Policy</h2>
+          <h2 className="text-lg font-semibold text-primary-900 mb-2">{locale === 'zh' ? '数据收集政策' : 'Data Collection Policy'}</h2>
           <p className="text-primary-700">
-            MDLooker aggregates data from official regulatory databases worldwide. All data is sourced 
-            directly from regulatory authorities through official APIs or public databases. We maintain 
-            transparent practices and provide clear attribution for all data sources.
+            {locale === 'zh' ? 'MDLooker汇总全球官方监管数据库的数据。所有数据均直接来源于监管机构的官方API或公开数据库。我们保持透明的做法，并为所有数据来源提供明确的归属。' : 'MDLooker aggregates data from official regulatory databases worldwide. All data is sourced directly from regulatory authorities through official APIs or public databases. We maintain transparent practices and provide clear attribution for all data sources.'}
           </p>
         </div>
 
@@ -119,25 +112,25 @@ export default function DataSourcesPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-xl border border-gray-200 p-6 text-center">
             <p className="text-3xl font-bold text-primary-600">43K+</p>
-            <p className="text-sm text-gray-600 mt-1">Total Records</p>
+            <p className="text-sm text-gray-600 mt-1">{locale === 'zh' ? '总记录数' : 'Total Records'}</p>
           </div>
           <div className="bg-white rounded-xl border border-gray-200 p-6 text-center">
             <p className="text-3xl font-bold text-primary-600">6</p>
-            <p className="text-sm text-gray-600 mt-1">Data Sources</p>
+            <p className="text-sm text-gray-600 mt-1">{locale === 'zh' ? '数据来源' : 'Data Sources'}</p>
           </div>
           <div className="bg-white rounded-xl border border-gray-200 p-6 text-center">
             <p className="text-3xl font-bold text-primary-600">3</p>
-            <p className="text-sm text-gray-600 mt-1">Active Markets</p>
+            <p className="text-sm text-gray-600 mt-1">{locale === 'zh' ? '活跃市场' : 'Active Markets'}</p>
           </div>
           <div className="bg-white rounded-xl border border-gray-200 p-6 text-center">
-            <p className="text-3xl font-bold text-primary-600">Daily</p>
-            <p className="text-sm text-gray-600 mt-1">Update Frequency</p>
+            <p className="text-3xl font-bold text-primary-600">{locale === 'zh' ? '每日' : 'Daily'}</p>
+            <p className="text-sm text-gray-600 mt-1">{locale === 'zh' ? '更新频率' : 'Update Frequency'}</p>
           </div>
         </div>
 
         {/* Data Sources List */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900">Available Data Sources</h2>
+          <h2 className="text-xl font-semibold text-gray-900">{locale === 'zh' ? '可用数据来源' : 'Available Data Sources'}</h2>
           {dataSources.map((source) => (
             <div key={source.id} className="bg-white rounded-xl border border-gray-200 p-6">
               <div className="flex items-start justify-between">
@@ -145,21 +138,21 @@ export default function DataSourcesPage() {
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-2xl">{source.flag}</span>
                     <h3 className="text-lg font-semibold text-gray-900">{source.name}</h3>
-                    <StatusBadge status={source.status} />
+                    <StatusBadge status={source.status} locale={locale} />
                   </div>
                   <p className="text-gray-600 mb-4">{source.description}</p>
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     <div>
-                      <span className="text-gray-500">Regulator:</span>
+                      <span className="text-gray-500">{locale === 'zh' ? '监管机构：' : 'Regulator:'}</span>
                       <p className="font-medium text-gray-900">{source.regulator}</p>
                     </div>
                     <div>
-                      <span className="text-gray-500">Records:</span>
+                      <span className="text-gray-500">{locale === 'zh' ? '记录：' : 'Records:'}</span>
                       <p className="font-medium text-gray-900">{source.recordCount}</p>
                     </div>
                     <div>
-                      <span className="text-gray-500">Updates:</span>
+                      <span className="text-gray-500">{locale === 'zh' ? '更新：' : 'Updates:'}</span>
                       <p className="font-medium text-gray-900">{source.updateFrequency}</p>
                     </div>
                     <div>
@@ -176,7 +169,7 @@ export default function DataSourcesPage() {
                   className="flex items-center gap-1 text-primary-600 hover:text-primary-700 text-sm font-medium"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Visit
+                  {locale === 'zh' ? '访问' : 'Visit'}
                 </a>
               </div>
             </div>
@@ -185,23 +178,23 @@ export default function DataSourcesPage() {
 
         {/* Data Quality */}
         <div className="mt-12 bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Data Quality & Validation</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{locale === 'zh' ? '数据质量与验证' : 'Data Quality & Validation'}</h2>
           <ul className="space-y-3">
             <li className="flex items-start gap-3">
               <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">All data is sourced directly from official regulatory databases</span>
+              <span className="text-gray-700">{locale === 'zh' ? '所有数据均直接来源于官方监管数据库' : 'All data is sourced directly from official regulatory databases'}</span>
             </li>
             <li className="flex items-start gap-3">
               <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">Automated daily synchronization ensures data freshness</span>
+              <span className="text-gray-700">{locale === 'zh' ? '自动每日同步确保数据新鲜度' : 'Automated daily synchronization ensures data freshness'}</span>
             </li>
             <li className="flex items-start gap-3">
               <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">Data validation checks identify and flag inconsistencies</span>
+              <span className="text-gray-700">{locale === 'zh' ? '数据验证检查识别并标记不一致之处' : 'Data validation checks identify and flag inconsistencies'}</span>
             </li>
             <li className="flex items-start gap-3">
               <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">Clear attribution and source links for all records</span>
+              <span className="text-gray-700">{locale === 'zh' ? '所有记录均有明确的归属和来源链接' : 'Clear attribution and source links for all records'}</span>
             </li>
           </ul>
         </div>
@@ -210,11 +203,11 @@ export default function DataSourcesPage() {
   )
 }
 
-function StatusBadge({ status }: { status: string }) {
+function StatusBadge({ status, locale }: { status: string; locale: string }) {
   const config = {
-    active: { icon: CheckCircle, color: 'bg-green-100 text-green-700', label: 'Active' },
-    planned: { icon: Clock, color: 'bg-amber-100 text-amber-700', label: 'Planned' },
-    maintenance: { icon: AlertCircle, color: 'bg-red-100 text-red-700', label: 'Maintenance' }
+    active: { icon: CheckCircle, color: 'bg-green-100 text-green-700', label: locale === 'zh' ? '活跃' : 'Active' },
+    planned: { icon: Clock, color: 'bg-amber-100 text-amber-700', label: locale === 'zh' ? '计划中' : 'Planned' },
+    maintenance: { icon: AlertCircle, color: 'bg-red-100 text-red-700', label: locale === 'zh' ? '维护中' : 'Maintenance' }
   }
   
   const { icon: Icon, color, label } = config[status as keyof typeof config] || config.planned

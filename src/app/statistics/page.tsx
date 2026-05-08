@@ -4,10 +4,12 @@ import { useState, useEffect, useMemo } from 'react'
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { getPPECategories, getTargetMarkets, getPPEStats, getComplianceData } from '@/lib/ppe-data'
 import { Package, FileText, Building, TrendingUp, Globe, BarChart3 } from 'lucide-react'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 const COLORS = ['#339999', '#2d8b8b', '#267d7d', '#1f6f6f', '#186161', '#115353', '#0a4545', '#033737', '#002929', '#001b1b']
 
 export default function StatisticsPage() {
+  const locale = useLocale()
   const categories = getPPECategories()
   const markets = getTargetMarkets()
   
@@ -131,10 +133,10 @@ export default function StatisticsPage() {
               </div>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              PPE Market Statistics
+              {locale === 'zh' ? 'PPE市场统计' : 'PPE Market Statistics'}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprehensive insights into global PPE compliance landscape
+              {locale === 'zh' ? '全球PPE合规格局的综合洞察' : 'Comprehensive insights into global PPE compliance landscape'}
             </p>
           </div>
         </div>
@@ -145,13 +147,13 @@ export default function StatisticsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-4 items-center justify-center">
             <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">Product Category:</label>
+              <label className="text-sm font-medium text-gray-700">{locale === 'zh' ? '产品类别：' : 'Product Category:'}</label>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-[#339999]"
               >
-                <option value="all">All Categories</option>
+                <option value="all">{locale === 'zh' ? '所有类别' : 'All Categories'}</option>
                 {categories.map(cat => (
                   <option key={cat.id} value={cat.name}>{cat.name}</option>
                 ))}
@@ -159,13 +161,13 @@ export default function StatisticsPage() {
             </div>
             
             <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">Market:</label>
+              <label className="text-sm font-medium text-gray-700">{locale === 'zh' ? '市场：' : 'Market:'}</label>
               <select
                 value={selectedMarket}
                 onChange={(e) => setSelectedMarket(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#339999] focus:border-[#339999]"
               >
-                <option value="all">All Markets</option>
+                <option value="all">{locale === 'zh' ? '所有市场' : 'All Markets'}</option>
                 {markets.map(market => (
                   <option key={market.code} value={market.name}>{market.flag_emoji} {market.name}</option>
                 ))}
@@ -173,7 +175,7 @@ export default function StatisticsPage() {
             </div>
             
             <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">Timeframe:</label>
+              <label className="text-sm font-medium text-gray-700">{locale === 'zh' ? '时间范围：' : 'Timeframe:'}</label>
               <select
                 value={selectedTimeframe}
                 onChange={(e) => setSelectedTimeframe(e.target.value)}
@@ -203,7 +205,7 @@ export default function StatisticsPage() {
               <h3 className="text-4xl font-bold text-gray-900 mb-2">
                 {stats.totalProducts}
               </h3>
-              <p className="text-gray-600">Total PPE Products</p>
+              <p className="text-gray-600">{locale === 'zh' ? 'PPE产品总数' : 'Total PPE Products'}</p>
             </div>
 
             <div className="bg-white rounded-2xl shadow-xl p-8">
@@ -216,7 +218,7 @@ export default function StatisticsPage() {
               <h3 className="text-4xl font-bold text-gray-900 mb-2">
                 {stats.totalRegulations}
               </h3>
-              <p className="text-gray-600">Regulations & Standards</p>
+              <p className="text-gray-600">{locale === 'zh' ? '法规与标准' : 'Regulations & Standards'}</p>
             </div>
 
             <div className="bg-white rounded-2xl shadow-xl p-8">
@@ -229,7 +231,7 @@ export default function StatisticsPage() {
               <h3 className="text-4xl font-bold text-gray-900 mb-2">
                 {stats.totalManufacturers}
               </h3>
-              <p className="text-gray-600">Manufacturers</p>
+              <p className="text-gray-600">{locale === 'zh' ? '制造商' : 'Manufacturers'}</p>
             </div>
           </div>
         </div>
@@ -243,7 +245,7 @@ export default function StatisticsPage() {
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                 <Package className="w-6 h-6 text-[#339999] mr-3" />
-                Product Category Distribution
+                {locale === 'zh' ? '产品类别分布' : 'Product Category Distribution'}
               </h3>
               <ResponsiveContainer width="100%" height={400}>
                 <PieChart>
@@ -270,7 +272,7 @@ export default function StatisticsPage() {
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                 <Globe className="w-6 h-6 text-[#339999] mr-3" />
-                Target Market Distribution
+                {locale === 'zh' ? '目标市场分布' : 'Target Market Distribution'}
               </h3>
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={filteredMarketData}>
@@ -287,7 +289,7 @@ export default function StatisticsPage() {
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                 <BarChart3 className="w-6 h-6 text-[#339999] mr-3" />
-                Compliance Complexity by Category
+                {locale === 'zh' ? '各类别合规复杂度' : 'Compliance Complexity by Category'}
               </h3>
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={complianceComplexityData}>
@@ -296,8 +298,8 @@ export default function StatisticsPage() {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="EU" fill="#339999" name="EU Requirements" />
-                  <Bar dataKey="US" fill="#2d8b8b" name="US Requirements" />
+                  <Bar dataKey="EU" fill="#339999" name={locale === 'zh' ? '欧盟要求' : 'EU Requirements'} />
+                  <Bar dataKey="US" fill="#2d8b8b" name={locale === 'zh' ? '美国要求' : 'US Requirements'} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -306,7 +308,7 @@ export default function StatisticsPage() {
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                 <TrendingUp className="w-6 h-6 text-[#339999] mr-3" />
-                Certification Timeline Comparison (months)
+                {locale === 'zh' ? '认证时间对比（月）' : 'Certification Timeline Comparison (months)'}
               </h3>
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={timelineData}>
@@ -326,7 +328,7 @@ export default function StatisticsPage() {
             <div className="bg-white rounded-2xl shadow-xl p-8 lg:col-span-2">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                 <TrendingUp className="w-6 h-6 text-[#339999] mr-3" />
-                Certification Cost Comparison (USD thousands)
+                {locale === 'zh' ? '认证费用对比（千美元）' : 'Certification Cost Comparison (USD thousands)'}
               </h3>
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={costData}>
@@ -351,29 +353,29 @@ export default function StatisticsPage() {
           {/* Category Details */}
           <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              Category Details
+              {locale === 'zh' ? '类别详情' : 'Category Details'}
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-200">
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                      Category
+                      {locale === 'zh' ? '类别' : 'Category'}
                     </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
-                      Products
+                      {locale === 'zh' ? '产品' : 'Products'}
                     </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
-                      EU Timeline
+                      {locale === 'zh' ? '欧盟时间' : 'EU Timeline'}
                     </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
-                      EU Cost
+                      {locale === 'zh' ? '欧盟费用' : 'EU Cost'}
                     </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
-                      US Timeline
+                      {locale === 'zh' ? '美国时间' : 'US Timeline'}
                     </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
-                      US Cost
+                      {locale === 'zh' ? '美国费用' : 'US Cost'}
                     </th>
                   </tr>
                 </thead>
@@ -428,23 +430,23 @@ export default function StatisticsPage() {
           {/* Market Details */}
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              Market Details
+              {locale === 'zh' ? '市场详情' : 'Market Details'}
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-200">
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                      Market
+                      {locale === 'zh' ? '市场' : 'Market'}
                     </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
-                      Products
+                      {locale === 'zh' ? '产品' : 'Products'}
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                      Main Regulation
+                      {locale === 'zh' ? '主要法规' : 'Main Regulation'}
                     </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
-                      Certification
+                      {locale === 'zh' ? '认证' : 'Certification'}
                     </th>
                   </tr>
                 </thead>

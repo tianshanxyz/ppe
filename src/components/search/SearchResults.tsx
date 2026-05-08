@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { EmptyState } from './EmptyState'
 import { ProductFamilyCard } from './ProductFamilyCard'
 import { groupProductsByFamily } from '@/lib/product-family'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 interface SearchResultItem {
   id: string
@@ -91,6 +92,7 @@ function getTypeLabel(resultType: 'product' | 'company' | 'regulation'): string 
 }
 
 export function SearchResults({ results, type = 'all' }: SearchResultsProps) {
+  const locale = useLocale()
   // 分离产品、公司和法规
   const { products, companies, regulations, productFamilies } = useMemo(() => {
     const products: SearchResultItem[] = []
@@ -125,12 +127,95 @@ export function SearchResults({ results, type = 'all' }: SearchResultsProps) {
 
   return (
     <div className="space-y-6">
-      {/* 产品家族聚合展示 */}
-      {productFamilies.length > 0 && (
+      {/* Products section */}
+      {products.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-medium text-gray-500">
-              Products ({productFamilies.length} families, {products.length} registrations)
+              Products ({products.length})
+            </h3>
+          </div>
+          <div className="space-y-4">
+            {products.map((result) => {
+              const resultType = 'product'
+              const Icon = getTypeIcon(resultType)
+              const detailLink = getDetailLink(result, resultType)
+              const typeLabel = getTypeLabel(resultType)
+
+              return (
+                <Card key={`product-${result.id}`} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-2 flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <Icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                          <Link 
+                            href={detailLink}
+                            className="text-xl font-semibold hover:text-primary transition-colors truncate"
+                          >
+                            {result.name || 'Unknown Product'}
+                          </Link>
+                          <Badge variant="outline" className="bg-gray-50 text-gray-600 border-gray-200 flex-shrink-0 text-xs">
+                            {typeLabel}
+                          </Badge>
+                        </div>
+                        
+                        {result.company_name && (
+                          <p className="text-sm text-muted-foreground">
+                            {locale === 'zh' ? '制造商' : 'Manufacturer'}: {result.company_name}
+                          </p>
+                        )}
+                        
+                        <div className="flex items-center gap-2 flex-wrap text-sm text-muted-foreground">
+                          {result.market && (
+                            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                              {result.market}
+                            </Badge>
+                          )}
+                          {result.device_class && (
+                            <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
+                              {result.device_class}
+                            </Badge>
+                          )}
+                          {result.registration_number && (
+                            <span className="font-mono text-xs">{result.registration_number}</span>
+                          )}
+                        </div>
+                        
+                        <div className="flex items-center gap-2 pt-2">
+                          {typeof result.data_source === 'string' && result.data_source && (
+                            <DataSourceBadge source={result.data_source as any} />
+                          )}
+                          {result.updated_at && typeof result.updated_at === 'string' && (
+                            <LastUpdateTime 
+                              timestamp={result.updated_at}
+                              showNextUpdate={false}
+                            />
+                          )}
+                        </div>
+                      </div>
+                      
+                      <Link href={detailLink} className="flex-shrink-0 ml-4">
+                        <Button variant="outline" size="sm" className="flex items-center gap-1">
+                          More
+                          <ArrowRight className="w-3 h-3" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Product Family grouping (for products with multiple registrations) */}
+      {productFamilies.length > 1 && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-medium text-gray-500">
+              Product Families ({productFamilies.length} groups)
             </h3>
             {productFamilies.some(f => f.registrations.length > 1) && (
               <Badge variant="outline" className="bg-blue-50 text-blue-700">

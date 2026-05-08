@@ -1,0 +1,51 @@
+{
+  "ppe_products": {
+    "id": "UUID主键",
+    "name": "产品名称",
+    "model": "型号",
+    "category": "产品分类（呼吸/手部/身体/眼面部/头部/足部/躯干/听觉/其他）",
+    "subcategory": "子分类",
+    "description": "产品描述",
+    "manufacturer_name": "制造商名称",
+    "manufacturer_id": "制造商UUID外键",
+    "country_of_origin": "原产国（ISO 3166-1 alpha-2）",
+    "product_code": "产品代码",
+    "risk_level": "风险等级（low/medium/high）",
+    "registration_number": "注册证号",
+    "registration_authority": "注册机构",
+    "registration_date": "注册日期",
+    "expiry_date": "有效期至",
+    "status": "状态",
+    "certifications": "认证信息（JSON）",
+    "specifications": "规格参数（JSON）",
+    "data_source": "数据来源",
+    "data_source_url": "数据源URL",
+    "last_verified": "最后验证日期",
+    "data_confidence_level": "数据可信度（low/medium/high）",
+    "created_at": "创建时间",
+    "updated_at": "更新时间"
+  },
+  "ppe_manufacturers": {
+    "id": "UUID主键",
+    "name": "制造商名称",
+    "country": "国家",
+    "address": "地址",
+    "website": "网站",
+    "contact_info": "联系信息（JSON）",
+    "certifications": "认证信息（JSON）",
+    "data_source": "数据来源",
+    "company_profile": "公司简介",
+    "created_at": "创建时间",
+    "updated_at": "更新时间"
+  },
+  "ppe_regulations": {
+    "id": "UUID主键",
+    "name": "法规/标准名称",
+    "code": "法规/标准编号",
+    "region": "适用地区",
+    "description": "描述",
+    "effective_date": "生效日期",
+    "document_url": "文档URL",
+    "created_at": "创建时间"
+  }
+}

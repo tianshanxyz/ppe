@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react'
 import { useParams } from 'next/navigation'
 import { CompanyDetail } from './CompanyDetail'
 import { Loader2 } from 'lucide-react'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 interface CompanyData {
   company: {
@@ -74,6 +75,7 @@ interface CompanyData {
 }
 
 export default function CompanyDetailPage() {
+  const locale = useLocale()
   const params = useParams()
   const id = (params as any).id as string
 
@@ -116,7 +118,7 @@ export default function CompanyDetailPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-[#339999] mx-auto mb-4" />
-          <p className="text-gray-500">Loading company data...</p>
+          <p className="text-gray-500">{locale === 'zh' ? '加载企业数据...' : 'Loading company data...'}</p>
         </div>
       </div>
     )
@@ -129,7 +131,7 @@ export default function CompanyDetailPage() {
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl text-red-600">!</span>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Error</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">{locale === 'zh' ? '错误' : 'Error'}</h2>
           <p className="text-gray-500">{error}</p>
         </div>
       </div>
@@ -140,8 +142,8 @@ export default function CompanyDetailPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Company Not Found</h2>
-          <p className="text-gray-500">The requested company could not be found.</p>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">{locale === 'zh' ? '未找到企业' : 'Company Not Found'}</h2>
+          <p className="text-gray-500">{locale === 'zh' ? '无法找到请求的企业。' : 'The requested company could not be found.'}</p>
         </div>
       </div>
     )

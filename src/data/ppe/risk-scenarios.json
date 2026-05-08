@@ -1,0 +1,237 @@
+[
+  {
+    "id": "risk-petroleum-gb39800-2",
+    "title": "石油行业个体防护装备配备规范 - GB 39800.2-2020",
+    "title_zh": "GB 39800.2-2020 个体防护装备配备规范 第2部分：石油",
+    "standard_number": "GB 39800.2-2020",
+    "document_type": "standard",
+    "issuing_authority": "国家市场监督管理总局 (SAMR)",
+    "effective_date": "2022-01-01",
+    "status": "active",
+    "industry": "石油、化工",
+    "industry_zh": "Petroleum, Chemical",
+    "summary": "规定了石油、化工行业作业过程中个体防护装备的配备要求，涵盖典型危害因素识别及对应PPE选配方案。",
+    "verification_source": {
+      "name": "中国国家标准全文公开系统",
+      "url": "https://openstd.samr.gov.cn/bzgk/gb/std?tid=GB 39800.2-2020",
+      "last_verified": "2026-05-06"
+    },
+    "hazards": [
+      {
+        "hazard_id": "HZ-PE-001",
+        "hazard_category": "化学危害",
+        "hazard_name": "硫化氢 (H₂S)",
+        "hazard_name_zh": "硫化氢",
+        "exposure_limit": 10,
+        "exposure_unit": "mg/m³",
+        "exposure_type": "MAC (最高容许浓度)",
+        "ppe_required": ["呼吸防护装备", "防护手套", "防护服"],
+        "ppe_specs": {
+          "respiratory": { "type": "正压式空气呼吸器", "standard": "GB 2890-2009" },
+          "gloves": { "type": "防化学品手套", "standard": "GB/T 17619-2022" },
+          "clothing": { "type": "化学防护服", "standard": "GB/T 39264-2020" },
+          "eye_face": { "type": "防化学品护目镜", "standard": "GB 14866-2023" }
+        },
+        "risk_level": "high"
+      },
+      {
+        "hazard_id": "HZ-PE-002",
+        "hazard_category": "物理危害",
+        "hazard_name": "高处坠物",
+        "hazard_name_zh": "高处坠物",
+        "ppe_required": ["头部防护", "足部防护"],
+        "ppe_specs": {
+          "head": { "type": "安全帽 T3型(耐极高温)", "standard": "GB 2811-2019" },
+          "footwear": { "type": "防砸安全鞋 S3级", "standard": "GB 21148-2020" }
+        },
+        "risk_level": "high"
+      },
+      {
+        "hazard_id": "HZ-PE-003",
+        "hazard_category": "化学危害",
+        "hazard_name": "苯 (C₆H₆)",
+        "hazard_name_zh": "苯",
+        "exposure_limit": 6,
+        "exposure_unit": "mg/m³",
+        "exposure_type": "PC-TWA (时间加权平均容许浓度)",
+        "ppe_required": ["呼吸防护装备", "防护服", "防护手套"],
+        "ppe_specs": {
+          "respiratory": { "type": "全面罩+防有机气体滤毒盒", "standard": "GB 2890-2009" },
+          "gloves": { "type": "防化学品手套 Type A", "standard": "GB/T 17619-2022" },
+          "clothing": { "type": "化学防护服 Type 3", "standard": "GB/T 39264-2020" }
+        },
+        "risk_level": "high"
+      },
+      {
+        "hazard_id": "HZ-PE-004",
+        "hazard_category": "物理危害",
+        "hazard_name": "噪声 (≥85 dB)",
+        "hazard_name_zh": "噪声",
+        "exposure_limit": 85,
+        "exposure_unit": "dB(A)",
+        "exposure_type": "LEX,8h (8小时等效声级)",
+        "ppe_required": ["听力防护"],
+        "ppe_specs": {
+          "hearing": { "type": "SNR ≥ 25 dB 耳罩", "standard": "GB/T 31401-2015" }
+        },
+        "risk_level": "medium"
+      },
+      {
+        "hazard_id": "HZ-PE-005",
+        "hazard_category": "物理危害",
+        "hazard_name": "高温热源 (≥60°C)",
+        "hazard_name_zh": "高温热源",
+        "ppe_required": ["防护服装", "防护手套"],
+        "ppe_specs": {
+          "clothing": { "type": "阻燃防护服", "standard": "GB/T 33536-2017" },
+          "gloves": { "type": "耐热手套 Level 3", "standard": "GB/T 17619-2022" }
+        },
+        "risk_level": "medium"
+      }
+    ],
+    "ppe_allocation_table": [
+      {
+        "job_position": "钻井平台操作工",
+        "mandatory_ppe": ["安全帽", "防砸安全鞋", "防护手套", "工作服"],
+        "conditional_ppe": ["防护眼镜", "耳塞/耳罩", "防毒面具"],
+        "replacement_cycle_months": { "安全帽": 30, "安全鞋": 12, "手套": 1, "工作服": 6 }
+      },
+      {
+        "job_position": "化验分析员",
+        "mandatory_ppe": ["防护眼镜", "防护手套", "实验服"],
+        "conditional_ppe": ["防毒面具", "面罩"],
+        "replacement_cycle_months": { "防护眼镜": 12, "手套": 0.5, "实验服": 6 }
+      }
+    ]
+  },
+  {
+    "id": "risk-metal-gb39800-3",
+    "title": "冶金行业个体防护装备配备规范 - GB 39800.3-2020",
+    "title_zh": "GB 39800.3-2020 个体防护装备配备规范 第3部分：冶金",
+    "standard_number": "GB 39800.3-2020",
+    "document_type": "standard",
+    "issuing_authority": "国家市场监督管理总局 (SAMR)",
+    "effective_date": "2022-01-01",
+    "status": "active",
+    "industry": "冶金、有色金属",
+    "industry_zh": "Metallurgy, Non-ferrous Metals",
+    "verification_source": {
+      "name": "中国国家标准全文公开系统",
+      "url": "https://openstd.samr.gov.cn/bzgk/gb/std?tid=GB 39800.3-2020",
+      "last_verified": "2026-05-06"
+    },
+    "hazards": [
+      {
+        "hazard_id": "HZ-ML-001",
+        "hazard_category": "热危害",
+        "hazard_name": "熔融金属飞溅",
+        "hazard_name_zh": "熔融金属飞溅",
+        "ppe_required": ["防护服", "防护面罩", "防护手套", "安全鞋"],
+        "ppe_specs": {
+          "clothing": { "type": "阻燃防护服 / 防熔融金属飞溅服", "standard": "GB/T 33536-2017" },
+          "face_shield": { "type": "防热面罩", "standard": "GB 14866-2023" },
+          "gloves": { "type": "耐高温手套 Level 4", "standard": "GB/T 17619-2022" },
+          "footwear": { "type": "耐热安全鞋 S3+HI", "standard": "GB 21148-2020" }
+        },
+        "risk_level": "high"
+      },
+      {
+        "hazard_id": "HZ-ML-002",
+        "hazard_category": "粉尘危害",
+        "hazard_name": "金属粉尘 (铝粉、锌粉等)",
+        "hazard_name_zh": "金属粉尘",
+        "exposure_limit": 4,
+        "exposure_unit": "mg/m³",
+        "exposure_type": "PC-TWA",
+        "ppe_required": ["呼吸防护", "防护眼镜"],
+        "ppe_specs": {
+          "respiratory": { "type": "KN95级别防颗粒物口罩", "standard": "GB 2626-2019" },
+          "eye": { "type": "防尘护目镜", "standard": "GB 14866-2023" }
+        },
+        "risk_level": "medium"
+      },
+      {
+        "hazard_id": "HZ-ML-003",
+        "hazard_category": "物理危害",
+        "hazard_name": "高温炉壁 (>100°C)",
+        "hazard_name_zh": "高温炉壁",
+        "ppe_required": ["防护服", "防护手套", "安全鞋"],
+        "ppe_specs": {
+          "clothing": { "type": "隔热防护服", "standard": "GB/T 33536-2017" },
+          "gloves": { "type": "隔热手套 Level 5", "standard": "GB/T 17619-2022" },
+          "footwear": { "type": "耐热安全靴 S3+HI", "standard": "GB 21148-2020" }
+        },
+        "risk_level": "high"
+      }
+    ]
+  },
+  {
+    "id": "risk-chemical-gb39800-4",
+    "title": "非煤矿山行业个体防护装备配备规范 - GB 39800.4-2020",
+    "title_zh": "GB 39800.4-2020 个体防护装备配备规范 第4部分：非煤矿山",
+    "standard_number": "GB 39800.4-2020",
+    "document_type": "standard",
+    "issuing_authority": "国家市场监督管理总局 (SAMR)",
+    "effective_date": "2022-01-01",
+    "status": "active",
+    "industry": "非煤矿山",
+    "industry_zh": "Non-coal Mining",
+    "verification_source": {
+      "name": "中国国家标准全文公开系统",
+      "url": "https://openstd.samr.gov.cn/bzgk/gb/std?tid=GB 39800.4-2020",
+      "last_verified": "2026-05-06"
+    },
+    "hazards": [
+      {
+        "hazard_id": "HZ-MN-001",
+        "hazard_category": "物理危害",
+        "hazard_name": "岩层塌方/落石",
+        "hazard_name_zh": "岩层塌方/落石",
+        "ppe_required": ["头部防护", "足部防护"],
+        "ppe_specs": {
+          "head": { "type": "安全帽 T4型(耐侧向刚性)", "standard": "GB 2811-2019" },
+          "footwear": { "type": "防砸安全鞋 S3+AN(踝保护)", "standard": "GB 21148-2020" }
+        },
+        "risk_level": "high"
+      },
+      {
+        "hazard_id": "HZ-MN-002",
+        "hazard_category": "粉尘危害",
+        "hazard_name": "矽尘 (SiO₂含量>10%)",
+        "hazard_name_zh": "矽尘",
+        "exposure_limit": 0.7,
+        "exposure_unit": "mg/m³",
+        "exposure_type": "PC-TWA (总尘)",
+        "ppe_required": ["呼吸防护"],
+        "ppe_specs": {
+          "respiratory": { "type": "KN100级别防颗粒物口罩", "standard": "GB 2626-2019" }
+        },
+        "risk_level": "high"
+      }
+    ]
+  },
+  {
+    "id": "risk-construction-gb39800-1",
+    "title": "个体防护装备配备规范 第1部分：总则 - GB 39800.1-2020",
+    "title_zh": "GB 39800.1-2020 个体防护装备配备规范 第1部分：总则",
+    "standard_number": "GB 39800.1-2020",
+    "document_type": "standard",
+    "issuing_authority": "国家市场监督管理总局 (SAMR)",
+    "effective_date": "2022-01-01",
+    "status": "active",
+    "industry": "通用（所有行业）",
+    "industry_zh": "General (All Industries)",
+    "verification_source": {
+      "name": "中国国家标准全文公开系统",
+      "url": "https://openstd.samr.gov.cn/bzgk/gb/std?tid=GB 39800.1-2020",
+      "last_verified": "2026-05-06"
+    },
+    "description": "规定了PPE配备的通用原则、危害因素识别方法、PPE选择、使用和维护的基本要求。",
+    "ppe_selection_principles": [
+      "应根据作业类别和危害因素进行PPE选配",
+      "PPE不应引入新的危害",
+      "同岗位多个PPE应兼容使用",
+      "PPE应满足国家相关标准的技术要求"
+    ]
+  }
+]

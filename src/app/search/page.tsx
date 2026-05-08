@@ -12,7 +12,6 @@ import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 function SearchContent() {
   const locale = useLocale()
-  const [searchParams, setSearchParams] = useState<URLSearchParams>(new URLSearchParams())
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState<any[]>([])
   const [searchType, setSearchType] = useState<'all' | 'product' | 'company' | 'regulation'>('all')
@@ -20,40 +19,43 @@ function SearchContent() {
   const [deviceClass, setDeviceClass] = useState('')
   const [showFilters, setShowFilters] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
+  const [query, setQuery] = useState('')
 
   useEffect(() => {
-    try {
-      if (typeof window !== 'undefined' && window.location) {
-        setSearchParams(new URLSearchParams(window.location.search))
-      }
-    } catch (e) {
-      console.error('Failed to parse search params:', e)
+    console.log('[Search] Component mounted')
+    console.log('[Search] window.location.search:', window.location.search)
+    console.log('[Search] window.location.href:', window.location.href)
+
+    const params = new URLSearchParams(window.location.search)
+    const q = params.get('q') || ''
+    const type = (params.get('type') as 'all' | 'product' | 'company' | 'regulation') || 'all'
+
+    console.log('[Search] Parsed params:', { q, type })
+
+    setQuery(q)
+    setSearchType(type)
+
+    if (q) {
+      console.log('[Search] Will search for:', q)
+      performSearch(q, type)
+    } else {
+      console.log('[Search] No query, showing initial state')
+      setLoading(false)
+      setHasSearched(false)
     }
   }, [])
 
-  useEffect(() => {
-    const query = searchParams.get('q') || ''
-    const type = (searchParams.get('type') as 'all' | 'product' | 'company' | 'regulation') || 'all'
-    
-    setSearchType(type)
-    
-    if (query) {
-      performSearch(query, type)
-    } else {
-      setLoading(false)
-    }
-  }, [searchParams])
-
-  const performSearch = async (query: string, type: 'all' | 'product' | 'company' | 'regulation') => {
+  const performSearch = async (searchQuery: string, type: 'all' | 'product' | 'company' | 'regulation') => {
+    console.log('[Search] performSearch called:', { searchQuery, type })
     setLoading(true)
     setHasSearched(true)
+
     try {
       const allResults: any[] = []
 
-      // Fetch products and companies from the main search API
       if (type === 'all' || type === 'product' || type === 'company') {
         const params = new URLSearchParams({
-          q: query,
+          q: searchQuery,
           type,
           limit: '50'
         })
@@ -66,26 +68,30 @@ function SearchContent() {
           params.append('deviceClass', deviceClass)
         }
 
+        console.log('[Search] Fetching:', `/api/search?${params}`)
         const response = await fetch(`/api/search?${params}`)
+        console.log('[Search] Response status:', response.status)
         const data = await response.json()
-        
+        console.log('[Search] API data:', data)
+
         if (!response.ok) {
           console.error('Search API error:', data)
         } else if (data.data) {
-          if (data.data.products) {
+          if (data.data.products && Array.isArray(data.data.products)) {
+            console.log('[Search] Products found:', data.data.products.length)
             allResults.push(...data.data.products.map((p: any) => ({ ...p, _resultType: 'product' })))
           }
-          if (data.data.companies) {
+          if (data.data.companies && Array.isArray(data.data.companies)) {
+            console.log('[Search] Companies found:', data.data.companies.length)
             allResults.push(...data.data.companies.map((c: any) => ({ ...c, _resultType: 'company' })))
           }
         }
       }
 
-      // Fetch regulations from the regulations search API
       if (type === 'all' || type === 'regulation') {
         try {
           const regParams = new URLSearchParams({
-            q: query,
+            q: searchQuery,
             limit: '50'
           })
 
@@ -95,7 +101,7 @@ function SearchContent() {
 
           const regResponse = await fetch(`/api/regulations/search?${regParams}`)
           const regData = await regResponse.json()
-          
+
           if (regData.success && regData.data) {
             allResults.push(...regData.data.map((r: any) => ({ ...r, _resultType: 'regulation' })))
           }
@@ -104,6 +110,7 @@ function SearchContent() {
         }
       }
 
+      console.log('[Search] Total results:', allResults.length)
       setResults(allResults)
     } catch (error) {
       console.error('Search error:', error)
@@ -114,8 +121,8 @@ function SearchContent() {
   }
 
   const handleMarketToggle = (market: string) => {
-    setSelectedMarkets(prev => 
-      prev.includes(market) 
+    setSelectedMarkets(prev =>
+      prev.includes(market)
         ? prev.filter(m => m !== market)
         : [...prev, market]
     )
@@ -124,16 +131,13 @@ function SearchContent() {
   const clearFilters = () => {
     setSelectedMarkets([])
     setDeviceClass('')
-    const query = searchParams.get('q') || ''
-    const type = searchParams.get('type') || 'all'
-    window.location.href = `/search?q=${query}&type=${type}`
+    window.location.href = `/search?q=${query}&type=${searchType}`
   }
 
   // 初始状态 - 没有搜索词
   if (!hasSearched && !loading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
         <div className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="text-center mb-8">
@@ -147,16 +151,14 @@ function SearchContent() {
                 {locale === 'zh' ? '搜索FDA、NMPA和EUDAMED数据库中的产品、制造商和合规法规' : 'Search for products, manufacturers, and compliance regulations across FDA, NMPA, and EUDAMED databases'}
               </p>
             </div>
-            
-            {/* Search Bar */}
+
             <div className="max-w-3xl mx-auto">
-              <SearchBar 
+              <SearchBar
                 initialQuery=""
                 placeholder={locale === 'zh' ? '搜索产品、企业或法规...' : 'Search products, companies, or regulations...'}
               />
             </div>
 
-            {/* Quick Filters */}
             <div className="mt-6 flex justify-center gap-2">
               <Link href="/search?type=product">
                 <Button variant="outline" size="sm" className="border-gray-200">
@@ -186,7 +188,6 @@ function SearchContent() {
           </div>
         </div>
 
-        {/* Empty State with suggestions */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <EmptyState type="initial" />
         </div>
@@ -194,12 +195,8 @@ function SearchContent() {
     )
   }
 
-  const query = searchParams.get('q') || ''
-  const currentType = (searchParams.get('type') as 'all' | 'product' | 'company' | 'regulation') || 'all'
-
   return (
     <>
-      {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -211,7 +208,7 @@ function SearchContent() {
                 {loading ? (locale === 'zh' ? '搜索中...' : 'Searching...') : (locale === 'zh' ? `找到 ${results.length} 条结果` : `Found ${results.length} results`)}
               </p>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
@@ -227,30 +224,28 @@ function SearchContent() {
             </div>
           </div>
 
-          {/* Search Bar */}
           <div className="mt-4">
-            <SearchBar 
+            <SearchBar
               initialQuery={query}
               placeholder={locale === 'zh' ? '搜索产品、企业、法规...' : 'Search products, companies, regulations...'}
             />
           </div>
 
-          {/* Quick Filters */}
           <div className="mt-4 flex items-center gap-2">
             <Link href={`/search?q=${query}&type=all`}>
               <Button
-                variant={currentType === 'all' ? 'outline' : 'ghost'}
+                variant={searchType === 'all' ? 'outline' : 'ghost'}
                 size="sm"
-                className={currentType === 'all' ? 'border-[#339999] text-[#339999]' : ''}
+                className={searchType === 'all' ? 'border-[#339999] text-[#339999]' : ''}
               >
                 {locale === 'zh' ? '全部' : 'All'}
               </Button>
             </Link>
             <Link href={`/search?q=${query}&type=product`}>
               <Button
-                variant={currentType === 'product' ? 'outline' : 'ghost'}
+                variant={searchType === 'product' ? 'outline' : 'ghost'}
                 size="sm"
-                className={currentType === 'product' ? 'border-[#339999] text-[#339999]' : ''}
+                className={searchType === 'product' ? 'border-[#339999] text-[#339999]' : ''}
               >
                 <Package className="w-4 h-4 mr-1" />
                 {locale === 'zh' ? '产品' : 'Products'}
@@ -258,9 +253,9 @@ function SearchContent() {
             </Link>
             <Link href={`/search?q=${query}&type=company`}>
               <Button
-                variant={currentType === 'company' ? 'outline' : 'ghost'}
+                variant={searchType === 'company' ? 'outline' : 'ghost'}
                 size="sm"
-                className={currentType === 'company' ? 'border-[#339999] text-[#339999]' : ''}
+                className={searchType === 'company' ? 'border-[#339999] text-[#339999]' : ''}
               >
                 <Building2 className="w-4 h-4 mr-1" />
                 {locale === 'zh' ? '企业' : 'Companies'}
@@ -268,9 +263,9 @@ function SearchContent() {
             </Link>
             <Link href={`/search?q=${query}&type=regulation`}>
               <Button
-                variant={currentType === 'regulation' ? 'outline' : 'ghost'}
+                variant={searchType === 'regulation' ? 'outline' : 'ghost'}
                 size="sm"
-                className={currentType === 'regulation' ? 'border-[#339999] text-[#339999]' : ''}
+                className={searchType === 'regulation' ? 'border-[#339999] text-[#339999]' : ''}
               >
                 <Scale className="w-4 h-4 mr-1" />
                 {locale === 'zh' ? '法规' : 'Regulations'}
@@ -280,7 +275,6 @@ function SearchContent() {
         </div>
       </div>
 
-      {/* Filters Panel */}
       {showFilters && (
         <div className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -289,8 +283,7 @@ function SearchContent() {
                 <h3 className="text-sm font-semibold text-gray-700 mb-3">
                   {locale === 'zh' ? '筛选' : 'Filters'}
                 </h3>
-                
-                {/* Market Filters */}
+
                 <div className="mb-4">
                   <label className="text-xs font-medium text-gray-500 mb-2 block">
                     {locale === 'zh' ? '市场' : 'Market'}
@@ -312,7 +305,6 @@ function SearchContent() {
                   </div>
                 </div>
 
-                {/* Device Class Filter */}
                 <div className="mb-4">
                   <label className="text-xs font-medium text-gray-500 mb-2 block">
                     {locale === 'zh' ? '器械类别' : 'Device Class'}
@@ -353,19 +345,18 @@ function SearchContent() {
         </div>
       )}
 
-      {/* Results */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
           <LoadingState />
         ) : results.length === 0 ? (
-          <EmptyState 
-            type="no-results" 
+          <EmptyState
+            type="no-results"
             searchQuery={query}
             message={locale === 'zh' ? '请尝试调整搜索词，或浏览以下热门搜索' : 'Try adjusting your search terms or browse our popular searches below'}
             onReset={() => { window.location.href = '/search' }}
           />
         ) : (
-          <SearchResults results={results} type={currentType} />
+          <SearchResults results={results} type={searchType} />
         )}
       </div>
     </>

@@ -775,7 +775,7 @@ export async function getPPEManufacturersClient({
 
     if (search) {
       const term = escapeIlikeSearch(search.trim())
-      query = query.or(`name.ilike.%${term}%,country.ilike.%${term}%,address.ilike.%${term}%,province.ilike.%${term}%,city.ilike.%${term}%,business_scope.ilike.%${term}%`)
+      query = query.or(`name.ilike.%${term}%,country.ilike.%${term}%`)
     }
     
     const from = (page - 1) * limit

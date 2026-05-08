@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs'
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 // 同步阶段配置
 const SYNC_PHASES = {
@@ -93,6 +94,7 @@ export interface SyncConfig {
 }
 
 export default function RegulationSyncPage() {
+  const locale = useLocale()
   const [currentConfig, setCurrentConfig] = useState<SyncConfig>(SYNC_PHASES.mvp)
   const [syncLogs, setSyncLogs] = useState<SyncLog[]>([])
   const [loading, setLoading] = useState(true)
@@ -197,14 +199,14 @@ export default function RegulationSyncPage() {
       {/* 页面标题 */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">法规数据智能同步</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{locale === 'zh' ? '法规数据智能同步' : 'Smart Regulation Data Sync'}</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">
-            配置和管理法规数据的智能增量同步
+            {locale === 'zh' ? '配置和管理法规数据的智能增量同步' : 'Configure and manage smart incremental sync of regulation data'}
           </p>
         </div>
         <Button onClick={handleTriggerSync} disabled={isSyncing}>
           <RefreshCw className={`w-4 h-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
-          {isSyncing ? '同步中...' : '立即同步'}
+          {isSyncing ? (locale === 'zh' ? '同步中...' : 'Syncing...') : (locale === 'zh' ? '立即同步' : 'Sync Now')}
         </Button>
       </div>
 
@@ -213,14 +215,14 @@ export default function RegulationSyncPage() {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Settings className="w-5 h-5 mr-2" />
-            同步配置
+            {locale === 'zh' ? '同步配置' : 'Sync Configuration'}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* 阶段选择 */}
             <div className="space-y-4">
-              <Label>同步阶段</Label>
+              <Label>{locale === 'zh' ? '同步阶段' : 'Sync Phase'}</Label>
               <div className="grid grid-cols-3 gap-2">
                 {(['mvp', 'growth', 'full'] as const).map(phase => (
                   <Button
@@ -241,7 +243,7 @@ export default function RegulationSyncPage() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>最大记录数</Label>
+                  <Label>{locale === 'zh' ? '最大记录数' : 'Max Records'}</Label>
                   <Input
                     type="number"
                     value={currentConfig.maxRecords}
@@ -252,7 +254,7 @@ export default function RegulationSyncPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>年份范围</Label>
+                  <Label>{locale === 'zh' ? '年份范围' : 'Year Range'}</Label>
                   <Input
                     type="number"
                     value={currentConfig.yearRange}
@@ -263,7 +265,7 @@ export default function RegulationSyncPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>批次大小</Label>
+                  <Label>{locale === 'zh' ? '批次大小' : 'Batch Size'}</Label>
                   <Input
                     type="number"
                     value={currentConfig.batchSize}
@@ -274,7 +276,7 @@ export default function RegulationSyncPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>延迟 (ms)</Label>
+                  <Label>{locale === 'zh' ? '延迟 (ms)' : 'Delay (ms)'}</Label>
                   <Input
                     type="number"
                     value={currentConfig.delayMs}
@@ -296,7 +298,7 @@ export default function RegulationSyncPage() {
                     incremental: e.target.checked
                   })}
                 />
-                <Label htmlFor="incremental">启用增量同步</Label>
+                <Label htmlFor="incremental">{locale === 'zh' ? '启用增量同步' : 'Enable Incremental Sync'}</Label>
               </div>
             </div>
           </div>
@@ -316,11 +318,11 @@ export default function RegulationSyncPage() {
             <CardContent>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-500 dark:text-gray-400">更新频率</span>
+                  <span className="text-gray-500 dark:text-gray-400">{locale === 'zh' ? '更新频率' : 'Update Frequency'}</span>
                   <Badge variant="secondary">{source.updateFrequency}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-500 dark:text-gray-400">优先级</span>
+                  <span className="text-gray-500 dark:text-gray-400">{locale === 'zh' ? '优先级' : 'Priority'}</span>
                   <Badge variant="outline">{source.priority}</Badge>
                 </div>
                 <div className="pt-2 border-t">
@@ -330,7 +332,7 @@ export default function RegulationSyncPage() {
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline text-xs"
                   >
-                    官方网站 →
+                    {locale === 'zh' ? '官方网站 →' : 'Official Website →'}
                   </a>
                 </div>
               </div>
@@ -344,19 +346,19 @@ export default function RegulationSyncPage() {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Activity className="w-5 h-5 mr-2" />
-            同步日志
+            {locale === 'zh' ? '同步日志' : 'Sync Logs'}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="text-center py-8">
               <RefreshCw className="w-8 h-8 mx-auto text-gray-400 animate-spin" />
-              <p className="text-gray-500 dark:text-gray-400 mt-2">正在加载同步日志...</p>
+              <p className="text-gray-500 dark:text-gray-400 mt-2">{locale === 'zh' ? '正在加载同步日志...' : 'Loading sync logs...'}</p>
             </div>
           ) : syncLogs.length === 0 ? (
             <div className="text-center py-8">
               <FileText className="w-8 h-8 mx-auto text-gray-400" />
-              <p className="text-gray-500 dark:text-gray-400 mt-2">暂无同步日志</p>
+              <p className="text-gray-500 dark:text-gray-400 mt-2">{locale === 'zh' ? '暂无同步日志' : 'No sync logs yet'}</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -385,8 +387,8 @@ export default function RegulationSyncPage() {
       {/* 页脚 */}
       <div className="border-t pt-6 mt-6">
         <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-          <span>当前配置: {currentConfig.phase.toUpperCase()} 阶段</span>
-          <span>智能增量同步: {currentConfig.incremental ? '已启用' : '未启用'}</span>
+          <span>{locale === 'zh' ? `当前配置: ${currentConfig.phase.toUpperCase()} 阶段` : `Current Config: ${currentConfig.phase.toUpperCase()} Phase`}</span>
+          <span>{locale === 'zh' ? `智能增量同步: ${currentConfig.incremental ? '已启用' : '未启用'}` : `Incremental Sync: ${currentConfig.incremental ? 'Enabled' : 'Disabled'}`}</span>
         </div>
       </div>
     </div>

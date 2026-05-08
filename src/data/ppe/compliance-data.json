@@ -129,7 +129,7 @@
         "url": "https://www.gov.cn/fuwu/zt/2020-03/09/content_5488589.htm"
       },
       {
-        "name": "GB 19083-2010",
+        "name": "GB 19083-2023",
         "title": "Technical requirements for protective face mask for medical use",
         "url": "https://www.nmpa.gov.cn"
       }
@@ -202,7 +202,7 @@
     "classification": "Category II",
     "standards": [
       {
-        "name": "EN ISO 20345:2022",
+        "name": "EN ISO 20345:2022+A1:2024",
         "title": "Personal protective equipment - Safety footwear",
         "url": "https://www.iso.org/standard/72505.html"
       },
@@ -279,7 +279,7 @@
     "classification": "Category II",
     "standards": [
       {
-        "name": "BS EN ISO 20345:2022",
+        "name": "BS EN ISO 20345:2022+A1:2024",
         "title": "Personal protective equipment - Safety footwear",
         "url": "https://shop.bsigroup.com/ProductDetail?pid=000000000030366077"
       },
@@ -361,7 +361,7 @@
         "url": "https://www.gso.org.sa"
       },
       {
-        "name": "EN ISO 20345:2022",
+        "name": "EN ISO 20345:2022+A1:2024",
         "title": "Personal protective equipment - Safety footwear",
         "url": "https://www.iso.org/standard/72505.html"
       }
@@ -1004,7 +1004,7 @@
     "classification": "Class I",
     "standards": [
       {
-        "name": "ANSI S3.19-1974",
+        "name": "ANSI/ASA S12.6-2016",
         "title": "Method for the Measurement of Real-Ear Protection of Hearing Protectors",
         "url": "https://webstore.ansi.org/standard/acs/ansis3191974"
       },

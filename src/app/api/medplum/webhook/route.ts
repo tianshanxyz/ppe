@@ -18,24 +18,29 @@ export async function POST(request: NextRequest) {
     const signature = request.headers.get('x-medplum-signature')
     const webhookSecret = process.env.MEDPLUM_WEBHOOK_SECRET
     
-    if (webhookSecret) {
-      if (!signature) {
-        return NextResponse.json(
-          { error: 'Missing webhook signature' },
-          { status: 401 }
-        )
-      }
-      
-      const expectedSignature = createHmac('sha256', webhookSecret)
-        .update(body)
-        .digest('hex')
-      
-      if (signature !== expectedSignature) {
-        return NextResponse.json(
-          { error: 'Invalid webhook signature' },
-          { status: 401 }
-        )
-      }
+    if (!webhookSecret) {
+      return NextResponse.json(
+        { error: 'Webhook service not configured' },
+        { status: 503 }
+      )
+    }
+
+    if (!signature) {
+      return NextResponse.json(
+        { error: 'Missing webhook signature' },
+        { status: 401 }
+      )
+    }
+    
+    const expectedSignature = createHmac('sha256', webhookSecret)
+      .update(body)
+      .digest('hex')
+    
+    if (signature !== expectedSignature) {
+      return NextResponse.json(
+        { error: 'Invalid webhook signature' },
+        { status: 401 }
+      )
     }
 
     const payload = JSON.parse(body)

@@ -33,7 +33,7 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <h1 className="text-4xl font-bold text-gray-900">{t.aboutMDLooker}</h1>
           <p className="mt-4 text-xl text-gray-600">
-            AI-Powered PPE Compliance & Data Platform
+            {locale === 'zh' ? 'AI驱动的PPE合规与数据平台' : 'AI-Powered PPE Compliance & Data Platform'}
           </p>
           <p className="mt-2 text-gray-500 max-w-2xl mx-auto">
             {locale === 'zh'

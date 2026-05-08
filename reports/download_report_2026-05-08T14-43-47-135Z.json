@@ -1,0 +1,455 @@
+{
+  "download_time": "2026-05-08T14:44:27.412Z",
+  "statistics": {
+    "total_products": 66722,
+    "total_manufacturers": 10982,
+    "total_regulations": 640
+  },
+  "data_sources": [
+    {
+      "name": "NMPA UDID Database",
+      "count": 20871,
+      "percentage": "31.28%"
+    },
+    {
+      "name": "Unknown",
+      "count": 15647,
+      "percentage": "23.45%"
+    },
+    {
+      "name": "FDA 510(k) Database",
+      "count": 10057,
+      "percentage": "15.07%"
+    },
+    {
+      "name": "Health Canada MDALL",
+      "count": 6054,
+      "percentage": "9.07%"
+    },
+    {
+      "name": "FDA 510(k)",
+      "count": 4778,
+      "percentage": "7.16%"
+    },
+    {
+      "name": "EUDAMED API",
+      "count": 4099,
+      "percentage": "6.14%"
+    },
+    {
+      "name": "FDA Recall Database",
+      "count": 1889,
+      "percentage": "2.83%"
+    },
+    {
+      "name": "NMPA",
+      "count": 1285,
+      "percentage": "1.93%"
+    },
+    {
+      "name": "MHRA UK PPE Directory",
+      "count": 680,
+      "percentage": "1.02%"
+    },
+    {
+      "name": "PMDA Japan",
+      "count": 266,
+      "percentage": "0.40%"
+    },
+    {
+      "name": "NIOSH CEL",
+      "count": 263,
+      "percentage": "0.39%"
+    },
+    {
+      "name": "Brazil CAEPI",
+      "count": 118,
+      "percentage": "0.18%"
+    },
+    {
+      "name": "Pure Global AI API",
+      "count": 113,
+      "percentage": "0.17%"
+    },
+    {
+      "name": "EUDAMED",
+      "count": 96,
+      "percentage": "0.14%"
+    },
+    {
+      "name": "EU PPE Industry Registry",
+      "count": 87,
+      "percentage": "0.13%"
+    },
+    {
+      "name": "MFDS Korea",
+      "count": 86,
+      "percentage": "0.13%"
+    },
+    {
+      "name": "TGA ARTG",
+      "count": 76,
+      "percentage": "0.11%"
+    },
+    {
+      "name": "Pure Global AI - 沙特",
+      "count": 39,
+      "percentage": "0.06%"
+    },
+    {
+      "name": "Pure Global AI - 印度",
+      "count": 34,
+      "percentage": "0.05%"
+    },
+    {
+      "name": "Pure Global AI - 菲律宾",
+      "count": 30,
+      "percentage": "0.04%"
+    },
+    {
+      "name": "NMPA UDI Full",
+      "count": 28,
+      "percentage": "0.04%"
+    },
+    {
+      "name": "FDA 510(k) Database / EUDAMED / NMPA",
+      "count": 23,
+      "percentage": "0.03%"
+    },
+    {
+      "name": "EU PPE Regulation 2016/425",
+      "count": 15,
+      "percentage": "0.02%"
+    },
+    {
+      "name": "FDA Recall API",
+      "count": 14,
+      "percentage": "0.02%"
+    },
+    {
+      "name": "PPE Industry Registry - DE",
+      "count": 5,
+      "percentage": "0.01%"
+    },
+    {
+      "name": "CAEPI/MTE Database",
+      "count": 5,
+      "percentage": "0.01%"
+    },
+    {
+      "name": "NMPA China",
+      "count": 5,
+      "percentage": "0.01%"
+    },
+    {
+      "name": "PPE Industry Registry - IN",
+      "count": 5,
+      "percentage": "0.01%"
+    },
+    {
+      "name": "TGA Australia",
+      "count": 4,
+      "percentage": "0.01%"
+    },
+    {
+      "name": "MHRA UK",
+      "count": 4,
+      "percentage": "0.01%"
+    },
+    {
+      "name": "TGA Australia Database",
+      "count": 4,
+      "percentage": "0.01%"
+    },
+    {
+      "name": "PMDA Japan Database",
+      "count": 4,
+      "percentage": "0.01%"
+    },
+    {
+      "name": "ANVISA Brazil",
+      "count": 4,
+      "percentage": "0.01%"
+    },
+    {
+      "name": "PPE Industry Registry - GB",
+      "count": 4,
+      "percentage": "0.01%"
+    },
+    {
+      "name": "Health Canada",
+      "count": 3,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "SFDA Saudi Arabia",
+      "count": 3,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "HSA Singapore Database",
+      "count": 3,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "ESMA UAE Database",
+      "count": 3,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "CDSCO India Database",
+      "count": 3,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "CDSCO India",
+      "count": 3,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "FDA Philippines",
+      "count": 2,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "PPE Industry Registry - BE",
+      "count": 2,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "PPE Industry Registry - FR",
+      "count": 2,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "AEMPS Spain Database",
+      "count": 2,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "MFDS Korea Database",
+      "count": 2,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "KOSHA Database",
+      "count": 1,
+      "percentage": "0.00%"
+    },
+    {
+      "name": "FDA 510k API",
+      "count": 1,
+      "percentage": "0.00%"
+    }
+  ],
+  "countries": [
+    {
+      "name": "US",
+      "count": 29523,
+      "percentage": "44.25%"
+    },
+    {
+      "name": "CN",
+      "count": 24153,
+      "percentage": "36.20%"
+    },
+    {
+      "name": "CA",
+      "count": 6112,
+      "percentage": "9.16%"
+    },
+    {
+      "name": "MY",
+      "count": 1428,
+      "percentage": "2.14%"
+    },
+    {
+      "name": "GB",
+      "count": 1116,
+      "percentage": "1.67%"
+    },
+    {
+      "name": "TW",
+      "count": 468,
+      "percentage": "0.70%"
+    },
+    {
+      "name": "DE",
+      "count": 360,
+      "percentage": "0.54%"
+    },
+    {
+      "name": "JP",
+      "count": 308,
+      "percentage": "0.46%"
+    },
+    {
+      "name": "FI",
+      "count": 228,
+      "percentage": "0.34%"
+    },
+    {
+      "name": "NL",
+      "count": 218,
+      "percentage": "0.33%"
+    },
+    {
+      "name": "KR",
+      "count": 206,
+      "percentage": "0.31%"
+    },
+    {
+      "name": "FR",
+      "count": 204,
+      "percentage": "0.31%"
+    },
+    {
+      "name": "IT",
+      "count": 198,
+      "percentage": "0.30%"
+    },
+    {
+      "name": "AU",
+      "count": 170,
+      "percentage": "0.25%"
+    },
+    {
+      "name": "TR",
+      "count": 158,
+      "percentage": "0.24%"
+    },
+    {
+      "name": "TH",
+      "count": 155,
+      "percentage": "0.23%"
+    },
+    {
+      "name": "BR",
+      "count": 146,
+      "percentage": "0.22%"
+    },
+    {
+      "name": "ID",
+      "count": 144,
+      "percentage": "0.22%"
+    },
+    {
+      "name": "IN",
+      "count": 142,
+      "percentage": "0.21%"
+    },
+    {
+      "name": "HK",
+      "count": 110,
+      "percentage": "0.16%"
+    }
+  ],
+  "categories": [
+    {
+      "name": "手部防护装备",
+      "count": 20902,
+      "percentage": "31.33%"
+    },
+    {
+      "name": "呼吸防护装备",
+      "count": 20491,
+      "percentage": "30.71%"
+    },
+    {
+      "name": "身体防护装备",
+      "count": 10748,
+      "percentage": "16.11%"
+    },
+    {
+      "name": "其他",
+      "count": 9613,
+      "percentage": "14.41%"
+    },
+    {
+      "name": "足部防护装备",
+      "count": 1536,
+      "percentage": "2.30%"
+    },
+    {
+      "name": "眼面部防护装备",
+      "count": 1318,
+      "percentage": "1.98%"
+    },
+    {
+      "name": "头部防护装备",
+      "count": 1195,
+      "percentage": "1.79%"
+    },
+    {
+      "name": "躯干防护装备",
+      "count": 474,
+      "percentage": "0.71%"
+    },
+    {
+      "name": "听觉防护装备",
+      "count": 445,
+      "percentage": "0.67%"
+    }
+  ],
+  "risk_levels": [
+    {
+      "name": "medium",
+      "count": 31965,
+      "percentage": "47.91%"
+    },
+    {
+      "name": "Unknown",
+      "count": 15647,
+      "percentage": "23.45%"
+    },
+    {
+      "name": "low",
+      "count": 10942,
+      "percentage": "16.40%"
+    },
+    {
+      "name": "high",
+      "count": 8168,
+      "percentage": "12.24%"
+    }
+  ],
+  "field_completeness": {
+    "name": {
+      "filled": 66722,
+      "total": 66722
+    },
+    "category": {
+      "filled": 66722,
+      "total": 66722
+    },
+    "manufacturer_name": {
+      "filled": 51043,
+      "total": 66722
+    },
+    "country_of_origin": {
+      "filled": 66722,
+      "total": 66722
+    },
+    "risk_level": {
+      "filled": 51075,
+      "total": 66722
+    },
+    "product_code": {
+      "filled": 48360,
+      "total": 66722
+    },
+    "registration_number": {
+      "filled": 31259,
+      "total": 66722
+    }
+  },
+  "notes": [
+    "FDA数据通过openFDA API获取，覆盖510(k)、Classification、Recall、Adverse Events等端点",
+    "NMPA数据基于中国主要PPE制造商和产品生成",
+    "巴西CAEPI数据通过gov.br官方CSV获取（当前数据源为空文件，使用备用制造商数据）",
+    "日韩数据通过collect-jp-br-kr.js采集",
+    "EUDAMED公开API需要注册，当前使用欧盟主要制造商补充数据",
+    "法规标准数据已存在于数据库中（640条）",
+    "风险数据为结构化示例数据，实际数据需从BLS/OSHA官方获取"
+  ]
+}
