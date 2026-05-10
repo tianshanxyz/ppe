@@ -6,11 +6,64 @@ import { Info, Database, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
 interface DataSourceBadgeProps {
-  source: 'medplum' | 'local' | 'fda' | 'eudamed' | 'nmpa' | 'other';
+  source?: string;
   className?: string;
   showTooltip?: boolean;
   url?: string;
 }
+
+const sourceConfig: Record<string, { label: string; variant: string; icon: React.ReactNode; description: string; url?: string }> = {
+  medplum: {
+    label: 'Medplum',
+    variant: 'primary',
+    icon: <Database className="w-3 h-3 mr-1" />,
+    description: '数据来源：Medplum 医疗合规标准库',
+    url: 'https://medplum.com'
+  },
+  local: {
+    label: 'MDLooker',
+    variant: 'secondary',
+    icon: <Database className="w-3 h-3 mr-1" />,
+    description: '数据来源：MDLooker 本地数据库',
+    url: 'https://mdlooker.com'
+  },
+  fda: {
+    label: 'FDA',
+    variant: 'info',
+    icon: <ExternalLink className="w-3 h-3 mr-1" />,
+    description: '数据来源：FDA 数据库',
+    url: 'https://www.fda.gov'
+  },
+  eudamed: {
+    label: 'EUDAMED',
+    variant: 'info',
+    icon: <ExternalLink className="w-3 h-3 mr-1" />,
+    description: '数据来源：EUDAMED 数据库',
+    url: 'https://ec.europa.eu/health/documents/community-register/html/'
+  },
+  nmpa: {
+    label: 'NMPA',
+    variant: 'info',
+    icon: <ExternalLink className="w-3 h-3 mr-1" />,
+    description: '数据来源：NMPA 数据库',
+    url: 'https://www.nmpa.gov.cn'
+  },
+  other: {
+    label: 'Other',
+    variant: 'gray',
+    icon: <Info className="w-3 h-3 mr-1" />,
+    description: '数据来源：其他',
+    url: undefined
+  }
+};
+
+const defaultConfig = {
+  label: 'Unknown',
+  variant: 'gray' as const,
+  icon: <Info className="w-3 h-3 mr-1" />,
+  description: '数据来源：未知',
+  url: undefined
+};
 
 export function DataSourceBadge({ 
   source, 
@@ -18,76 +71,36 @@ export function DataSourceBadge({
   showTooltip = true,
   url 
 }: DataSourceBadgeProps) {
-  const sourceConfig = {
-    medplum: {
-      label: 'Medplum',
-      variant: 'primary' as const,
-      icon: <Database className="w-3 h-3 mr-1" />,
-      description: '数据来源：Medplum 医疗合规标准库',
-      url: 'https://medplum.com'
-    },
-    local: {
-      label: 'MDLooker',
-      variant: 'secondary' as const,
-      icon: <Database className="w-3 h-3 mr-1" />,
-      description: '数据来源：MDLooker 本地数据库',
-      url: 'https://mdlooker.com'
-    },
-    fda: {
-      label: 'FDA',
-      variant: 'info' as const,
-      icon: <ExternalLink className="w-3 h-3 mr-1" />,
-      description: '数据来源：FDA 数据库',
-      url: 'https://www.fda.gov'
-    },
-    eudamed: {
-      label: 'EUDAMED',
-      variant: 'info' as const,
-      icon: <ExternalLink className="w-3 h-3 mr-1" />,
-      description: '数据来源：EUDAMED 数据库',
-      url: 'https://ec.europa.eu/health/documents/community-register/html/'
-    },
-    nmpa: {
-      label: 'NMPA',
-      variant: 'info' as const,
-      icon: <ExternalLink className="w-3 h-3 mr-1" />,
-      description: '数据来源：NMPA 数据库',
-      url: 'https://www.nmpa.gov.cn'
-    },
-    other: {
-      label: 'Other',
-      variant: 'gray' as const,
-      icon: <Info className="w-3 h-3 mr-1" />,
-      description: '数据来源：其他',
-      url: undefined
-    }
-  };
-
-  const config = sourceConfig[source];
-  const linkUrl = url || config.url;
+  // Safely get config, fallback to default for unknown sources
+  const config = source ? sourceConfig[source.toLowerCase()] : null;
+  const safeConfig = config || defaultConfig;
+  
+  console.log('[DataSourceBadge] source:', source, 'config:', safeConfig?.label);
+  
+  const linkUrl = url || safeConfig.url;
 
   return linkUrl ? (
     <Link href={linkUrl} target="_blank" rel="noopener noreferrer">
       <Badge 
-        variant={config.variant}
+        variant={safeConfig.variant as any}
         className={`flex items-center cursor-pointer hover:opacity-80 ${className}`}
       >
-        {config.icon}
-        {config.label}
+        {safeConfig.icon}
+        {safeConfig.label}
         {showTooltip && (
-          <span className="sr-only">{config.description}</span>
+          <span className="sr-only">{safeConfig.description}</span>
         )}
       </Badge>
     </Link>
   ) : (
     <Badge 
-      variant={config.variant}
+      variant={safeConfig.variant as any}
       className={`flex items-center ${className}`}
     >
-      {config.icon}
-      {config.label}
+      {safeConfig.icon}
+      {safeConfig.label}
       {showTooltip && (
-        <span className="sr-only">{config.description}</span>
+        <span className="sr-only">{safeConfig.description}</span>
       )}
     </Badge>
   );
