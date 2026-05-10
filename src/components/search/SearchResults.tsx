@@ -59,7 +59,7 @@ function getResultType(result: SearchResultItem, propType?: string): 'product' |
 }
 
 function getDetailLink(result: SearchResultItem, resultType: 'product' | 'company' | 'regulation'): string {
-  const id = result.id || 'unknown'
+  const id = result?.id || 'unknown'
   switch (resultType) {
     case 'product':
       return `/products/${id}`
@@ -95,9 +95,21 @@ function getTypeLabel(resultType: 'product' | 'company' | 'regulation'): string 
 export function SearchResults({ results, type = 'all' }: SearchResultsProps) {
   const locale = useLocale()
   
+  // Debug: Log incoming results
+  console.log('[SearchResults] Received', results.length, 'total results')
+  console.log('[SearchResults] Results sample:', results.slice(0, 3))
+  
   // Filter out results without valid IDs
   const validResults = useMemo(() => {
-    return results.filter(result => result.id && typeof result.id === 'string' && result.id !== 'undefined')
+    const filtered = results.filter(result => {
+      if (!result || typeof result !== 'object') return false
+      if (!result.id || typeof result.id !== 'string') return false
+      if (result.id === 'undefined' || result.id === 'null' || result.id.trim() === '') return false
+      return true
+    })
+    console.log('[SearchResults] After filtering: ', filtered.length, 'valid results')
+    console.log('[SearchResults] Sample valid results:', filtered.slice(0, 3).map(r => ({ id: r.id, name: r.name, company: r.company_name })))
+    return filtered
   }, [results])
   
   // 分离产品、公司和法规
@@ -117,8 +129,11 @@ export function SearchResults({ results, type = 'all' }: SearchResultsProps) {
       }
     })
 
+    console.log('[SearchResults] Separated:', products.length, 'products,', companies.length, 'companies,', regulations.length, 'regulations')
+
     // 将产品聚合成产品家族
     const productFamilies = groupProductsByFamily(products)
+    console.log('[SearchResults] Product families:', productFamilies.length)
 
     return { products, companies, regulations, productFamilies }
   }, [validResults, type])
@@ -148,6 +163,12 @@ export function SearchResults({ results, type = 'all' }: SearchResultsProps) {
               const Icon = getTypeIcon(resultType)
               const detailLink = getDetailLink(result, resultType)
               const typeLabel = getTypeLabel(resultType)
+
+              // Skip if no valid ID (should not happen after filtering, but just in case)
+              if (!result.id || result.id === 'undefined') {
+                console.warn('[SearchResults] Skipping product with invalid ID:', result)
+                return null
+              }
 
               return (
                 <Card key={`product-${result.id}`} className="hover:shadow-md transition-shadow">
@@ -251,6 +272,12 @@ export function SearchResults({ results, type = 'all' }: SearchResultsProps) {
               const detailLink = getDetailLink(result, resultType)
               const typeLabel = getTypeLabel(resultType)
 
+              // Skip if no valid ID
+              if (!result.id || result.id === 'undefined') {
+                console.warn('[SearchResults] Skipping company with invalid ID:', result)
+                return null
+              }
+
               return (
                 <Card key={`${resultType}-${result.id}`} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
@@ -318,6 +345,12 @@ export function SearchResults({ results, type = 'all' }: SearchResultsProps) {
               const Icon = getTypeIcon(resultType)
               const detailLink = getDetailLink(result, resultType)
               const typeLabel = getTypeLabel(resultType)
+
+              // Skip if no valid ID
+              if (!result.id || result.id === 'undefined') {
+                console.warn('[SearchResults] Skipping regulation with invalid ID:', result)
+                return null
+              }
 
               return (
                 <Card key={`${resultType}-${result.id}`} className="hover:shadow-md transition-shadow">
