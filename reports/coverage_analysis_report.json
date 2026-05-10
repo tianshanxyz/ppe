@@ -1,30 +1,32 @@
 {
-  "analysis_time": "2026-05-08T22:44:23.576Z",
+  "analysis_time": "2026-05-09T01:35:14.585Z",
   "summary": {
-    "total_products": 66722,
-    "total_manufacturers": 12765,
-    "total_regulations": 640,
-    "coverage_percent": 44.5,
-    "countries_covered": 78,
-    "data_sources": 47
+    "total_products": 77862,
+    "total_manufacturers": 13218,
+    "total_regulations": 668,
+    "coverage_percent": 51.9,
+    "countries_covered": 82,
+    "data_sources": 70
   },
   "categories": {
-    "呼吸防护装备": 20491,
-    "手部防护装备": 20902,
-    "听觉防护装备": 445,
-    "其他": 9613,
-    "眼面部防护装备": 1318,
-    "身体防护装备": 10748,
-    "头部防护装备": 1195,
-    "足部防护装备": 1536,
-    "躯干防护装备": 474
+    "呼吸防护装备": 21039,
+    "手部防护装备": 21521,
+    "听觉防护装备": 606,
+    "其他": 17644,
+    "眼面部防护装备": 1699,
+    "身体防护装备": 11245,
+    "头部防护装备": 1419,
+    "足部防护装备": 1757,
+    "躯干防护装备": 616,
+    "坠落防护装备": 316
   },
   "sources": {
-    "FDA 510(k) Database": 10057,
+    "FDA 510(k) Database": 16971,
     "FDA 510(k)": 4778,
     "Unknown": 15647,
     "Health Canada MDALL": 6054,
-    "FDA Recall Database": 1889,
+    "FDA MAUDE": 1256,
+    "FDA Recall Database": 3113,
     "NMPA UDID Database": 20871,
     "PMDA Japan": 266,
     "TGA Australia": 4,
@@ -34,9 +36,9 @@
     "SFDA Saudi Arabia": 3,
     "EUDAMED API": 4099,
     "MHRA UK": 4,
-    "PPE Industry Registry - BE": 2,
-    "PPE Industry Registry - FR": 2,
-    "PPE Industry Registry - DE": 5,
+    "PPE Industry Registry - BE": 20,
+    "PPE Industry Registry - FR": 48,
+    "PPE Industry Registry - DE": 75,
     "FDA 510(k) Database / EUDAMED / NMPA": 23,
     "NMPA": 1285,
     "HSA Singapore Database": 3,
@@ -65,129 +67,176 @@
     "PPE Industry Registry - IN": 5,
     "FDA 510k API": 1,
     "MHRA UK PPE Directory": 680,
-    "PPE Industry Registry - GB": 4,
-    "EU PPE Industry Registry": 87
+    "PPE Industry Registry - GB": 35,
+    "EU PPE Industry Registry": 87,
+    "TGA ARTG Industry Registry": 151,
+    "PMDA Japan Industry Registry": 133,
+    "MFDS Korea Industry Registry": 109,
+    "CDSCO India Industry Registry": 154,
+    "CAEPI Brazil Industry Registry": 132,
+    "MHRA UK Industry Registry": 108,
+    "EUDAMED Industry Registry": 22,
+    "EAEU Russia Industry Registry": 82,
+    "Fall Protection Industry Registry": 112,
+    "Hearing Protection Industry Registry": 54,
+    "Eye/Face Protection Industry Registry": 79,
+    "PPE Industry Registry - IT": 41,
+    "PPE Industry Registry - CH": 2,
+    "PPE Industry Registry - NL": 29,
+    "PPE Industry Registry - SE": 34,
+    "PPE Industry Registry - PL": 30,
+    "PPE Industry Registry - ES": 31,
+    "PPE Industry Registry - AT": 20,
+    "PPE Industry Registry - DK": 17,
+    "PPE Industry Registry - FI": 22,
+    "PPE Industry Registry - IE": 20,
+    "FDA Classification Database": 199
   },
   "countries": [
     {
       "country": "US",
-      "products": 29523,
-      "manufacturers": 5746
+      "products": 38281,
+      "manufacturers": 6690
     },
     {
       "country": "CN",
-      "products": 24153,
-      "manufacturers": 3560
+      "products": 24428,
+      "manufacturers": 2956
     },
     {
       "country": "CA",
-      "products": 6112,
-      "manufacturers": 195
+      "products": 6166,
+      "manufacturers": 306
     },
     {
       "country": "MY",
-      "products": 1428,
-      "manufacturers": 740
+      "products": 1501,
+      "manufacturers": 511
     },
     {
       "country": "GB",
-      "products": 1116,
-      "manufacturers": 62
+      "products": 1363,
+      "manufacturers": 105
     },
     {
       "country": "TW",
-      "products": 468,
-      "manufacturers": 257
+      "products": 549,
+      "manufacturers": 195
     },
     {
       "country": "DE",
-      "products": 360,
-      "manufacturers": 62
+      "products": 511,
+      "manufacturers": 78
     },
     {
       "country": "JP",
-      "products": 308,
-      "manufacturers": 556
-    },
-    {
-      "country": "FI",
-      "products": 228,
-      "manufacturers": 19
-    },
-    {
-      "country": "NL",
-      "products": 218,
-      "manufacturers": 27
+      "products": 464,
+      "manufacturers": 513
     },
     {
       "country": "KR",
-      "products": 206,
-      "manufacturers": 57
-    },
-    {
-      "country": "FR",
-      "products": 204,
-      "manufacturers": 32
-    },
-    {
-      "country": "IT",
-      "products": 198,
-      "manufacturers": 70
+      "products": 333,
+      "manufacturers": 79
     },
     {
       "country": "AU",
-      "products": 170,
-      "manufacturers": 21
-    },
-    {
-      "country": "TR",
-      "products": 158,
-      "manufacturers": 38
-    },
-    {
-      "country": "TH",
-      "products": 155,
-      "manufacturers": 159
-    },
-    {
-      "country": "BR",
-      "products": 146,
-      "manufacturers": 14
-    },
-    {
-      "country": "ID",
-      "products": 144,
-      "manufacturers": 121
+      "products": 333,
+      "manufacturers": 60
     },
     {
       "country": "IN",
-      "products": 142,
-      "manufacturers": 135
+      "products": 329,
+      "manufacturers": 147
+    },
+    {
+      "country": "FR",
+      "products": 294,
+      "manufacturers": 46
+    },
+    {
+      "country": "BR",
+      "products": 279,
+      "manufacturers": 72
+    },
+    {
+      "country": "NL",
+      "products": 269,
+      "manufacturers": 27
+    },
+    {
+      "country": "FI",
+      "products": 263,
+      "manufacturers": 21
+    },
+    {
+      "country": "IT",
+      "products": 259,
+      "manufacturers": 61
+    },
+    {
+      "country": "TR",
+      "products": 171,
+      "manufacturers": 47
+    },
+    {
+      "country": "TH",
+      "products": 164,
+      "manufacturers": 92
+    },
+    {
+      "country": "ID",
+      "products": 151,
+      "manufacturers": 59
+    },
+    {
+      "country": "SE",
+      "products": 135,
+      "manufacturers": 14
     },
     {
       "country": "HK",
-      "products": 110,
-      "manufacturers": 92
+      "products": 114,
+      "manufacturers": 73
+    },
+    {
+      "country": "CH",
+      "products": 112,
+      "manufacturers": 18
     },
     {
       "country": "SA",
       "products": 98,
-      "manufacturers": 59
-    },
-    {
-      "country": "CH",
-      "products": 86,
-      "manufacturers": 22
-    },
-    {
-      "country": "SE",
-      "products": 74,
-      "manufacturers": 13
+      "manufacturers": 47
     },
     {
       "country": "BE",
-      "products": 74,
-      "manufacturers": 8
+      "products": 98,
+      "manufacturers": 18
+    },
+    {
+      "country": "IL",
+      "products": 95,
+      "manufacturers": 20
+    },
+    {
+      "country": "IE",
+      "products": 84,
+      "manufacturers": 14
+    },
+    {
+      "country": "RU",
+      "products": 82,
+      "manufacturers": 24
+    },
+    {
+      "country": "ES",
+      "products": 75,
+      "manufacturers": 13
+    },
+    {
+      "country": "PL",
+      "products": 67,
+      "manufacturers": 15
     },
     {
       "country": "UK",
@@ -196,103 +245,88 @@
     },
     {
       "country": "NO",
-      "products": 58,
-      "manufacturers": 4
+      "products": 65,
+      "manufacturers": 3
     },
     {
       "country": "EG",
       "products": 58,
-      "manufacturers": 7
+      "manufacturers": 6
     },
     {
-      "country": "IE",
-      "products": 53,
-      "manufacturers": 20
+      "country": "NZ",
+      "products": 56,
+      "manufacturers": 8
     },
     {
       "country": "VN",
-      "products": 50,
-      "manufacturers": 65
-    },
-    {
-      "country": "IL",
-      "products": 50,
-      "manufacturers": 35
+      "products": 53,
+      "manufacturers": 36
     },
     {
       "country": "PK",
       "products": 50,
-      "manufacturers": 7
-    },
-    {
-      "country": "NZ",
-      "products": 49,
-      "manufacturers": 4
+      "manufacturers": 8
     },
     {
       "country": "PH",
       "products": 44,
-      "manufacturers": 67
+      "manufacturers": 71
     },
     {
-      "country": "ES",
-      "products": 41,
-      "manufacturers": 13
+      "country": "DK",
+      "products": 44,
+      "manufacturers": 8
     },
     {
-      "country": "PL",
-      "products": 36,
-      "manufacturers": 18
+      "country": "EU",
+      "products": 38,
+      "manufacturers": 9
+    },
+    {
+      "country": "AT",
+      "products": 37,
+      "manufacturers": 4
     },
     {
       "country": "HR",
       "products": 32,
-      "manufacturers": 3
+      "manufacturers": 2
     },
     {
       "country": "MM",
       "products": 30,
-      "manufacturers": 2
+      "manufacturers": 0
+    },
+    {
+      "country": "SG",
+      "products": 23,
+      "manufacturers": 5
     },
     {
       "country": "CZ",
-      "products": 19,
-      "manufacturers": 8
+      "products": 23,
+      "manufacturers": 9
     },
     {
       "country": "LK",
       "products": 18,
-      "manufacturers": 9
-    },
-    {
-      "country": "DK",
-      "products": 17,
-      "manufacturers": 9
+      "manufacturers": 4
     },
     {
       "country": "ML",
       "products": 16,
-      "manufacturers": 3
-    },
-    {
-      "country": "EU",
-      "products": 16,
-      "manufacturers": 0
+      "manufacturers": 2
     },
     {
       "country": "RO",
       "products": 16,
-      "manufacturers": 4
+      "manufacturers": 6
     },
     {
-      "country": "SG",
-      "products": 15,
-      "manufacturers": 7
-    },
-    {
-      "country": "AT",
+      "country": "MG",
       "products": 11,
-      "manufacturers": 11
+      "manufacturers": 4
     },
     {
       "country": "KZ",
@@ -305,9 +339,24 @@
       "manufacturers": 4
     },
     {
-      "country": "MG",
-      "products": 9,
-      "manufacturers": 5
+      "country": "CR",
+      "products": 8,
+      "manufacturers": 1
+    },
+    {
+      "country": "MX",
+      "products": 7,
+      "manufacturers": 3
+    },
+    {
+      "country": "AR",
+      "products": 6,
+      "manufacturers": 2
+    },
+    {
+      "country": "GR",
+      "products": 6,
+      "manufacturers": 1
     },
     {
       "country": "XI",
@@ -315,24 +364,19 @@
       "manufacturers": 2
     },
     {
-      "country": "GR",
-      "products": 5,
-      "manufacturers": 1
-    },
-    {
-      "country": "MX",
-      "products": 4,
-      "manufacturers": 2
-    },
-    {
       "country": "ZA",
-      "products": 4,
+      "products": 5,
+      "manufacturers": 0
+    },
+    {
+      "country": "KN",
+      "products": 5,
       "manufacturers": 0
     },
     {
       "country": "LT",
       "products": 4,
-      "manufacturers": 1
+      "manufacturers": 2
     },
     {
       "country": "LI",
@@ -347,42 +391,42 @@
     {
       "country": "LU",
       "products": 4,
-      "manufacturers": 0
+      "manufacturers": 2
     },
     {
       "country": "SI",
       "products": 3,
-      "manufacturers": 1
+      "manufacturers": 3
     },
     {
       "country": "AE",
       "products": 3,
-      "manufacturers": 0
+      "manufacturers": 1
     },
     {
-      "country": "AR",
+      "country": "GW",
       "products": 3,
-      "manufacturers": 2
+      "manufacturers": 1
     },
     {
       "country": "PT",
       "products": 3,
-      "manufacturers": 3
+      "manufacturers": 4
     },
     {
       "country": "KH",
       "products": 3,
-      "manufacturers": 5
+      "manufacturers": 6
     },
     {
-      "country": "GW",
-      "products": 2,
+      "country": "MT",
+      "products": 3,
       "manufacturers": 4
     },
     {
       "country": "SK",
       "products": 2,
-      "manufacturers": 4
+      "manufacturers": 2
     },
     {
       "country": "RS",
@@ -390,14 +434,9 @@
       "manufacturers": 1
     },
     {
-      "country": "MT",
-      "products": 2,
-      "manufacturers": 1
-    },
-    {
       "country": "IR",
       "products": 1,
-      "manufacturers": 2
+      "manufacturers": 1
     },
     {
       "country": "IO",
@@ -422,17 +461,17 @@
     {
       "country": "TN",
       "products": 1,
-      "manufacturers": 2
+      "manufacturers": 3
     },
     {
       "country": "DZ",
       "products": 1,
-      "manufacturers": 2
+      "manufacturers": 3
     },
     {
       "country": "CL",
       "products": 1,
-      "manufacturers": 1
+      "manufacturers": 2
     },
     {
       "country": "PE",
@@ -442,59 +481,54 @@
     {
       "country": "MA",
       "products": 1,
+      "manufacturers": 2
+    },
+    {
+      "country": "KM",
+      "products": 1,
       "manufacturers": 0
     },
     {
-      "country": "USA",
-      "products": 0,
-      "manufacturers": 10
-    },
-    {
-      "country": "CR",
-      "products": 0,
-      "manufacturers": 2
+      "country": "PR",
+      "products": 1,
+      "manufacturers": 0
     },
     {
       "country": "Multi",
       "products": 0,
-      "manufacturers": 334
+      "manufacturers": 632
+    },
+    {
+      "country": "USA",
+      "products": 0,
+      "manufacturers": 15
     }
   ],
   "missing_data": [
     {
-      "type": "FDA MAUDE不良事件",
-      "severity": "高",
-      "description": "无PPE相关不良事件数据"
-    },
-    {
       "type": "EUDAMED完整设备数据",
       "severity": "高",
-      "description": "当前仅4218条，需API注册获取完整数据"
+      "description": "当前仅4240条，需API注册获取完整数据"
     },
     {
       "type": "巴西CAEPI数据",
       "severity": "高",
-      "description": "当前仅146条，官方CSV为空"
+      "description": "当前仅279条，官方CSV为空"
     },
     {
       "type": "澳大利亚TGA数据",
       "severity": "高",
-      "description": "当前仅170条"
+      "description": "当前仅333条"
     },
     {
       "type": "印度BIS数据",
       "severity": "高",
-      "description": "当前仅142条"
+      "description": "当前仅329条"
     },
     {
       "type": "俄罗斯EAEU数据",
       "severity": "中",
-      "description": "当前仅0条"
-    },
-    {
-      "type": "坠落防护PPE数据",
-      "severity": "中",
-      "description": "当前仅0条"
+      "description": "当前仅82条"
     },
     {
       "type": "BLS职业伤害统计",

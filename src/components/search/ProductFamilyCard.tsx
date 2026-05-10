@@ -15,6 +15,11 @@ export function ProductFamilyCard({ family }: ProductFamilyCardProps) {
   const hasMultipleRegistrations = family.registrations.length > 1
   const primaryProductId = family.registrations[0]?.id
 
+  // Skip rendering if no valid product ID
+  if (!primaryProductId || primaryProductId === 'undefined') {
+    return null
+  }
+
   return (
     <Card className="hover:shadow-md transition-shadow border-l-4 border-l-[#339999]">
       <CardContent className="p-6">

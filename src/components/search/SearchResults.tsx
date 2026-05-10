@@ -12,8 +12,8 @@ import { groupProductsByFamily } from '@/lib/product-family'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 
 interface SearchResultItem {
-  id: string
-  name: string
+  id?: string
+  name?: string
   company_name?: string
   manufacturer_name?: string
   market?: string
@@ -59,13 +59,14 @@ function getResultType(result: SearchResultItem, propType?: string): 'product' |
 }
 
 function getDetailLink(result: SearchResultItem, resultType: 'product' | 'company' | 'regulation'): string {
+  const id = result.id || 'unknown'
   switch (resultType) {
     case 'product':
-      return `/products/${result.id}`
+      return `/products/${id}`
     case 'company':
-      return `/company/${result.id}`
+      return `/company/${id}`
     case 'regulation':
-      return `/regulations/${result.id}`
+      return `/regulations/${id}`
   }
 }
 
@@ -93,13 +94,19 @@ function getTypeLabel(resultType: 'product' | 'company' | 'regulation'): string 
 
 export function SearchResults({ results, type = 'all' }: SearchResultsProps) {
   const locale = useLocale()
+  
+  // Filter out results without valid IDs
+  const validResults = useMemo(() => {
+    return results.filter(result => result.id && typeof result.id === 'string' && result.id !== 'undefined')
+  }, [results])
+  
   // 分离产品、公司和法规
   const { products, companies, regulations, productFamilies } = useMemo(() => {
     const products: SearchResultItem[] = []
     const companies: SearchResultItem[] = []
     const regulations: SearchResultItem[] = []
 
-    results.forEach(result => {
+    validResults.forEach(result => {
       const resultType = getResultType(result, type)
       if (resultType === 'product') {
         products.push(result)
@@ -114,9 +121,9 @@ export function SearchResults({ results, type = 'all' }: SearchResultsProps) {
     const productFamilies = groupProductsByFamily(products)
 
     return { products, companies, regulations, productFamilies }
-  }, [results, type])
+  }, [validResults, type])
 
-  if (results.length === 0) {
+  if (validResults.length === 0) {
     return (
       <EmptyState 
         type="no-results" 
