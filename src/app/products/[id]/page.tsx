@@ -14,6 +14,7 @@ import { getPPEProduct } from '@/lib/ppe-database-client'
 import { createClient } from '@/lib/supabase/client'
 import { DataSourceBadge } from '@/components/DataSourceBadge'
 import { FavoriteButton } from '@/components/FavoriteButton'
+import { AuditNotes } from '@/components/data/AuditNotes'
 
 export default function ProductDetailPage() {
   const params = useParams()
@@ -679,6 +680,7 @@ export default function ProductDetailPage() {
               original regulatory authority for the most current and accurate data. The expiration date is
               calculated as registration date plus 5 years and may differ from the actual expiration.
             </p>
+            <AuditNotes targetType="product" targetId={id} />
           </div>
         </div>
       </section>

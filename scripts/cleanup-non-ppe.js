@@ -35,26 +35,16 @@ function isNotPPE(name) {
     /\b(defibrillat|pacemaker|ventilat.*machine|anesthesi|monitor.*system)\b/i,
     /\b(suture|staple.*skin|wound.*clos|tissue.*adhes)\b/i,
     /\b(drill.*bit|reamer|saw.*blade|osteotom|chisel|curett|elevat|rasp)\b/i,
-    /\b(handpiece.*dental|handpiece.*surgical|ultrasonic.*scaler)\b/i,
+    /\b(myringotom|tonsillectom|rhinoplast|septoplast|sinus.*dilat)\b/i,
+    /\b(handpiece.*dental|handpiece.*surgical|ultrasonic.*scaler|polishing)\b/i,
     /\b(orthognath|maxillofacial|craniofacial|mandibul)\b/i,
+    /\b(flowmeter.*medical|gas.*anesthesi|breathing.*circuit.*anesthesi)\b/i,
     /\b(navigation.*system|robotic.*surg|image.*guid)\b/i,
     /\b(steriliz|autoclav|disinfect.*device)\b/i,
     /\b(patient.*lift|hospital.*bed|wheelchair|stretcher|crutch|walker)\b/i,
     /\b(test.*kit|diagnostic|assay|sample.*collect|swab.*test|rapid.*test)\b/i,
     /\b(suction.*machine|aspirat.*surgical|irrigat.*surgical)\b/i,
     /\b(laser.*surgical|rf.*ablat|cryotherap|hypertherm)\b/i,
-    /\b(myringotom|tonsillectom|rhinoplast|septoplast)\b/i,
-    /\b(flowmeter.*medical|gas.*anesthesi)\b/i,
-    /\b(breast.*implant|penile|prostate)\b/i,
-    /\b(otologic|neurolog|cardio.*device|vascular.*device)\b/i,
-    /\b(ophthalm|intraocul|corneal|retinal|cataract)\b/i,
-    /\b(transfusion|blood.*bank|apheresis)\b/i,
-    /\b(scalpel|retract|forcep|clamp.*surgical|scissor.*surgical)\b/i,
-    /\b(trocar|cannula|speculum|dilat.*surgical)\b/i,
-    /\b(drain.*surgical|shunt|port.*implant)\b/i,
-    /\b(aortic|cardiac.*valve|stent.*vascular)\b/i,
-    /\b(hernia.*mesh|sling.*pelvic)\b/i,
-    /\b(cosmetic|plastic.*surg|augment)\b/i,
   ];
   for (const pattern of nonPPEPatterns) {
     if (pattern.test(n)) return true;
@@ -94,6 +84,7 @@ function classifyPPE(name) {
   if (/\b(hi.?vis.*vest|safety.*vest|reflective.*vest|high.?visibility.*vest|high.?visibility.*jacket|safety.*rainwear|protective.*jacket|safety.*coat|rain.*suit.*protect|surveyor.*vest|mesh.*vest|flagger.*vest|breakaway.*vest|construction.*vest|class.*[123].*vest|fluorescent|neon.*vest|visibility|conspicuity)\b/i.test(n)) return '躯干防护装备';
   if (/反光衣|反光背心|安全背心|高可见|荧光服|警示服|防雨服/i.test(original)) return '躯干防护装备';
 
+  // 次级
   if (/\b(mask|filter|cartridge|breath|air.*purif|dust|fume|vapor|gas.*protect)\b/i.test(n)) return '呼吸防护装备';
   if (/\b(glove|hand|finger|palm|grip|nitrile|latex|vinyl|wrist.*protect)\b/i.test(n)) return '手部防护装备';
   if (/\b(eye|goggle|shield|visor|lens|spectacle|face.*protect|weld|splash|laser.*protect)\b/i.test(n)) return '眼面部防护装备';
@@ -101,7 +92,7 @@ function classifyPPE(name) {
   if (/\b(boot|shoe|foot|toe.*protect|sole|heel|ankle.*protect|clog|overshoe)\b/i.test(n)) return '足部防护装备';
   if (/\b(ear|hear|noise|sound|decibel|acoustic)\b/i.test(n)) return '听觉防护装备';
   if (/\b(fall|harness|lanyard|anchor|srl|lifeline|arrest|climb|suspend|retract|descend|rescue|carabiner)\b/i.test(n)) return '坠落防护装备';
-  if (/\b(suit|gown|coverall|apron|sleeve|arm.*guard|knee.*pad|overall|coat|smock|jumpsuit|flame|fire.*fight|thermal|chemical.*protect|radiation|arc.*flash|isolation|lab|cleanroom|disposable|bio.*hazard)\b/i.test(n)) return '身体防护装备';
+  if (/\b(suit|gown|coverall|apron|sleeve|arm.*guard|knee.*pad|overall|coat|smock|jumpsuit|flame|fire.*fight|thermal|chemical.*protect|radiation|arc.*flash|isolation|surgical.*gown|lab|cleanroom|disposable|bio.*hazard)\b/i.test(n)) return '身体防护装备';
   if (/\b(vest|jacket|rainwear|parka|poncho|hi.*vis|reflective|visibility)\b/i.test(n)) return '躯干防护装备';
 
   if (/罩|滤|尘|毒|气.*防护/i.test(original)) return '呼吸防护装备';
@@ -119,46 +110,33 @@ function classifyPPE(name) {
 
 async function main() {
   console.log('========================================');
-  console.log('深度清理非PPE + 最终分类');
+  console.log('清理非PPE产品 + 最终分类优化');
   console.log('========================================');
 
-  const allProducts = await fetchAll('ppe_products', 'id,name,category');
-  const otherProducts = allProducts.filter(p => p.category === '其他');
-  console.log(`"其他"类产品: ${otherProducts.length} 条`);
+  // ===== 1. 删除明显非PPE产品 =====
+  console.log('\n--- 1. 识别并删除非PPE产品 ---');
+  const otherProducts = await fetchAll('ppe_products', 'id,name,category,data_source');
+  const stillOther = otherProducts.filter(p => p.category === '其他');
+  console.log(`  当前"其他"类产品: ${stillOther.length} 条`);
 
-  // 分析"其他"类产品名称模式
-  const wordFreq = {};
-  otherProducts.forEach(p => {
-    const words = (p.name || '').split(/\s+/).filter(w => w.length > 3);
-    words.forEach(w => {
-      const lw = w.toLowerCase();
-      wordFreq[lw] = (wordFreq[lw] || 0) + 1;
-    });
-  });
-  console.log('\n"其他"类产品高频词（前30）:');
-  Object.entries(wordFreq).sort((a, b) => b[1] - a[1]).slice(0, 30).forEach(([w, c]) => {
-    console.log(`  ${w}: ${c}`);
-  });
-
-  // 分类
   const nonPPEIds = [];
-  const classifyBatches = {};
-  otherProducts.forEach(p => {
+  const canClassifyIds = {};
+  stillOther.forEach(p => {
     if (isNotPPE(p.name)) {
       nonPPEIds.push(p.id);
     } else {
       const newCat = classifyPPE(p.name);
       if (newCat) {
-        if (!classifyBatches[newCat]) classifyBatches[newCat] = [];
-        classifyBatches[newCat].push(p.id);
+        if (!canClassifyIds[newCat]) canClassifyIds[newCat] = [];
+        canClassifyIds[newCat].push(p.id);
       }
     }
   });
 
-  console.log(`\n非PPE产品: ${nonPPEIds.length} 条`);
-  console.log(`可分类PPE产品: ${Object.values(classifyBatches).reduce((a, b) => a + b.length, 0)} 条`);
+  console.log(`  非PPE产品: ${nonPPEIds.length} 条`);
+  console.log(`  可分类PPE产品: ${Object.values(canClassifyIds).reduce((a, b) => a + b.length, 0)} 条`);
 
-  // 删除非PPE
+  // 删除非PPE产品
   let nonPPEDeleted = 0;
   for (let i = 0; i < nonPPEIds.length; i += 500) {
     const batch = nonPPEIds.slice(i, i + 500);
@@ -166,11 +144,11 @@ async function main() {
     if (!error) nonPPEDeleted += batch.length;
     await sleep(100);
   }
-  console.log(`删除非PPE: ${nonPPEDeleted} 条`);
+  console.log(`  删除非PPE产品: ${nonPPEDeleted} 条`);
 
-  // 分类
+  // 分类剩余PPE产品
   let reclassified = 0;
-  for (const [cat, ids] of Object.entries(classifyBatches)) {
+  for (const [cat, ids] of Object.entries(canClassifyIds)) {
     for (let i = 0; i < ids.length; i += 500) {
       const batch = ids.slice(i, i + 500);
       const { error } = await supabase.from('ppe_products').update({ category: cat }).in('id', batch);
@@ -179,24 +157,25 @@ async function main() {
     }
     console.log(`  ${cat}: ${ids.length} 条`);
   }
-  console.log(`重新分类: ${reclassified} 条`);
+  console.log(`  重新分类: ${reclassified} 条`);
 
-  // 检查所有分类中的非PPE
-  console.log('\n--- 检查所有分类中的非PPE ---');
-  const allClassified = await fetchAll('ppe_products', 'id,name,category');
-  const allNonPPE = allClassified.filter(p => isNotPPE(p.name));
-  console.log(`  所有分类中的非PPE: ${allNonPPE.length} 条`);
-  let allNonPPEDeleted = 0;
-  const allNonPPEIds = allNonPPE.map(p => p.id);
-  for (let i = 0; i < allNonPPEIds.length; i += 500) {
-    const batch = allNonPPEIds.slice(i, i + 500);
+  // ===== 2. 修正误分类 - 检查已分类产品中是否有非PPE =====
+  console.log('\n--- 2. 检查已分类产品中的非PPE ---');
+  const classifiedProducts = await fetchAll('ppe_products', 'id,name,category');
+  const misclassifiedNonPPE = classifiedProducts.filter(p => p.category !== '其他' && isNotPPE(p.name));
+  console.log(`  已分类中的非PPE: ${misclassifiedNonPPE.length} 条`);
+
+  let misDeleted = 0;
+  const misIds = misclassifiedNonPPE.map(p => p.id);
+  for (let i = 0; i < misIds.length; i += 500) {
+    const batch = misIds.slice(i, i + 500);
     const { error } = await supabase.from('ppe_products').delete().in('id', batch);
-    if (!error) allNonPPEDeleted += batch.length;
+    if (!error) misDeleted += batch.length;
     await sleep(100);
   }
-  console.log(`  删除所有非PPE: ${allNonPPEDeleted} 条`);
+  console.log(`  删除已分类非PPE: ${misDeleted} 条`);
 
-  // 最终验证
+  // ===== 3. 最终验证 =====
   console.log('\n========== 最终验证 ==========\n');
   const { count: totalProducts } = await supabase.from('ppe_products').select('*', { count: 'exact', head: true });
   const { count: totalMfrs } = await supabase.from('ppe_manufacturers').select('*', { count: 'exact', head: true });
@@ -212,7 +191,12 @@ async function main() {
   });
 
   const otherCount = catStats['其他'] || 0;
-  console.log(`\n  精确分类率: ${((totalProducts - otherCount) / totalProducts * 100).toFixed(1)}%`);
+  const preciseCount = totalProducts - otherCount;
+  console.log(`\n  精确分类率: ${preciseCount}/${totalProducts} (${((preciseCount/totalProducts)*100).toFixed(1)}%)`);
+
+  console.log('\n========================================');
+  console.log('清理与分类完成');
+  console.log('========================================');
 }
 
 main().catch(console.error);

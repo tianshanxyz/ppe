@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "admin_freeman",
+    "email": "freeman@h-guardian.com",
+    "passwordHash": "$2b$12$Desa/pgMYKOwh8lmDk/mJeWDbB2bAPfZeAlDvnVTUHw9W1IUeHErm",
+    "name": "Freeman",
+    "company": "H-Guardian",
+    "role": "admin",
+    "membership": "enterprise",
+    "createdAt": "2026-05-12T00:00:00.000Z"
+  }
+]

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { AuditNotes } from '@/components/data/AuditNotes'
 import {
   Building2,
   MapPin,
@@ -387,6 +388,7 @@ export function CompanyDetail({ company }: CompanyDetailProps) {
           )}
         </motion.div>
       </div>
+      <AuditNotes targetType="company" targetId={company.id} />
     </div>
   )
 }
