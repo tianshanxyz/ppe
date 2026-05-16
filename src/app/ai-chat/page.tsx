@@ -2,10 +2,13 @@
 
 import { useState, useRef, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { Sparkles, Send, ArrowLeft, Trash2, ExternalLink, AlertCircle, RotateCcw, Copy, Check } from 'lucide-react'
+import { Sparkles, Send, ArrowLeft, Trash2, ExternalLink, AlertCircle, RotateCcw, Copy, Check, Lock, Shield, Zap } from 'lucide-react'
 import Link from 'next/link'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getTranslations } from '@/lib/i18n/translations'
+import { usePermission } from '@/lib/permissions/use-permission'
+import { getClientUserRole, getClientVipTier } from '@/lib/permissions'
+import { ROLE_CONFIG } from '@/lib/permissions/config'
 
 interface ChatMessage {
   role: 'user' | 'assistant'
@@ -16,9 +19,39 @@ interface ChatMessage {
 }
 
 const CHAT_HISTORY_KEY = 'mdlooker_ai_chat_history'
+const AI_CHAT_QUOTA_KEY = 'mdlooker_ai_chat_quota'
+
+function getDayKey(): string {
+  return new Date().toISOString().split('T')[0]
+}
+
+function getAiChatUsage(): { used: number; date: string } {
+  if (typeof window === 'undefined') return { used: 0, date: '' }
+  try {
+    const stored = localStorage.getItem(AI_CHAT_QUOTA_KEY)
+    if (!stored) return { used: 0, date: getDayKey() }
+    const data = JSON.parse(stored)
+    if (data.date !== getDayKey()) return { used: 0, date: getDayKey() }
+    return data
+  } catch {
+    return { used: 0, date: getDayKey() }
+  }
+}
+
+function incrementAiChatUsage(): { used: number; limit: number } {
+  const usage = getAiChatUsage()
+  const newUsed = usage.used + 1
+  localStorage.setItem(AI_CHAT_QUOTA_KEY, JSON.stringify({ used: newUsed, date: getDayKey() }))
+  const role = getClientUserRole()
+  const vipTier = getClientVipTier()
+  const config = ROLE_CONFIG[role === 'vip' && vipTier ? `vip_${vipTier}` as keyof typeof ROLE_CONFIG : role as keyof typeof ROLE_CONFIG] || ROLE_CONFIG.guest
+  return { used: newUsed, limit: config.quotas.aiChat.limit }
+}
 
 function AiChatContent() {
   const locale = useLocale()
+  const { isGuest, isUser, isProfessional, isEnterprise, canAccess, role, vipTier } = usePermission()
+
   const ct = getTranslations(
     {
       en: {
@@ -41,6 +74,15 @@ function AiChatContent() {
         copied: 'Copied!',
         copyFailed: 'Copy failed',
         disclaimer: 'AI responses are for reference only. Please verify with official sources for compliance decisions.',
+        guestTitle: 'Sign In Required',
+        guestMessage: 'AI Chat Assistant is available for registered users and VIP members. Please sign in or create a free account to get started.',
+        signUp: 'Sign Up Free',
+        signIn: 'Sign In',
+        quotaExceededTitle: 'Daily AI Chat Limit Reached',
+        quotaExceededMessage: 'You have used all {limit} AI chat messages for today. Upgrade to VIP Professional for 50 messages/day or VIP Enterprise for unlimited access.',
+        quotaRemaining: '{remaining} messages remaining today',
+        upgradeToVip: 'Upgrade to VIP',
+        viewPricing: 'View Pricing',
       },
       zh: {
         title: 'PPE AI助手',
@@ -62,6 +104,15 @@ function AiChatContent() {
         copied: '已复制！',
         copyFailed: '复制失败',
         disclaimer: 'AI回复仅供参考，请以官方来源为准做出合规决策。',
+        guestTitle: '请先登录',
+        guestMessage: 'AI聊天助手仅对注册用户和VIP会员开放。请登录或创建免费账户以开始使用。',
+        signUp: '免费注册',
+        signIn: '登录',
+        quotaExceededTitle: '今日AI对话次数已用完',
+        quotaExceededMessage: '您今日已使用完{limit}次AI对话。升级至VIP专业版可享50次/天，VIP企业版无限使用。',
+        quotaRemaining: '今日剩余{remaining}次对话',
+        upgradeToVip: '升级VIP',
+        viewPricing: '查看定价',
       },
     },
     locale
@@ -74,16 +125,27 @@ function AiChatContent() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null)
+  const [chatUsage, setChatUsage] = useState(getAiChatUsage())
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+
+  const roleConfig = ROLE_CONFIG[role === 'vip' && vipTier ? `vip_${vipTier}` as keyof typeof ROLE_CONFIG : role as keyof typeof ROLE_CONFIG] || ROLE_CONFIG.guest
+  const aiChatLimit = roleConfig.quotas.aiChat.limit
+  const aiChatAllowed = canAccess('aiChat')
+  const isQuotaExceeded = aiChatLimit !== -1 && chatUsage.used >= aiChatLimit
+  const remaining = aiChatLimit === -1 ? -1 : Math.max(0, aiChatLimit - chatUsage.used)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, loading])
 
   useEffect(() => {
-    if (initialQuery) {
+    setChatUsage(getAiChatUsage())
+  }, [])
+
+  useEffect(() => {
+    if (initialQuery && aiChatAllowed && !isQuotaExceeded) {
       handleSend(initialQuery)
     }
   }, [])
@@ -91,6 +153,12 @@ function AiChatContent() {
   const handleSend = useCallback(async (queryOverride?: string) => {
     const userMessage = (queryOverride || input).trim()
     if (!userMessage || loading) return
+
+    if (isGuest) return
+    if (!aiChatAllowed || isQuotaExceeded) return
+
+    const { used, limit } = incrementAiChatUsage()
+    setChatUsage({ used, date: getDayKey() })
 
     setInput('')
     const userMsg: ChatMessage = { role: 'user', content: userMessage, timestamp: Date.now() }
@@ -141,7 +209,7 @@ function AiChatContent() {
     } finally {
       setLoading(false)
     }
-  }, [input, loading, messages, ct])
+  }, [input, loading, messages, ct, isGuest, aiChatAllowed, isQuotaExceeded])
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -171,16 +239,56 @@ function AiChatContent() {
     handleSend(example)
   }, [handleSend])
 
+  if (isGuest) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center gap-3">
+            <Link href="/" className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#339999] rounded-lg flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+              <h1 className="text-sm font-semibold text-gray-900">{ct.title}</h1>
+            </div>
+          </div>
+        </header>
+        <div className="flex-1 flex items-center justify-center px-4">
+          <div className="text-center max-w-md">
+            <div className="w-20 h-20 bg-[#339999]/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <Lock className="w-10 h-10 text-[#339999]" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">{ct.guestTitle}</h2>
+            <p className="text-gray-600 mb-8">{ct.guestMessage}</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/auth/register"
+                className="inline-flex items-center justify-center px-6 py-3 bg-[#339999] text-white rounded-lg hover:bg-[#2d8b8b] transition-colors font-semibold"
+              >
+                <Shield className="w-5 h-5 mr-2" />
+                {ct.signUp}
+              </Link>
+              <Link
+                href="/auth/login"
+                className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
+              >
+                {ct.signIn}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
+            <Link href="/" className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div className="flex items-center gap-2">
@@ -193,20 +301,56 @@ function AiChatContent() {
               </div>
             </div>
           </div>
-          <button
-            onClick={handleNewChat}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            {ct.newChat}
-          </button>
+          <div className="flex items-center gap-3">
+            {aiChatLimit !== -1 && (
+              <div className={`text-xs font-medium px-3 py-1.5 rounded-full ${
+                isQuotaExceeded ? 'bg-red-100 text-red-700' : remaining <= 1 ? 'bg-amber-100 text-amber-700' : 'bg-[#339999]/10 text-[#339999]'
+              }`}>
+                {isQuotaExceeded
+                  ? (locale === 'zh' ? '次数已用完' : 'Limit reached')
+                  : ct.quotaRemaining.replace('{remaining}', String(remaining))
+                }
+              </div>
+            )}
+            <button
+              onClick={handleNewChat}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              {ct.newChat}
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Messages */}
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-3xl mx-auto px-4 py-6">
-          {messages.length === 0 && !loading && (
+          {isQuotaExceeded && (
+            <div className="mb-6 p-6 bg-amber-50 border border-amber-200 rounded-2xl text-center">
+              <div className="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Zap className="w-7 h-7 text-amber-600" />
+              </div>
+              <h3 className="text-lg font-bold text-amber-800 mb-2">{ct.quotaExceededTitle}</h3>
+              <p className="text-amber-700 mb-4">{ct.quotaExceededMessage.replace('{limit}', String(aiChatLimit))}</p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center justify-center px-5 py-2.5 bg-[#339999] text-white rounded-lg hover:bg-[#2d8b8b] transition-colors font-semibold"
+                >
+                  <Zap className="w-4 h-4 mr-2" />
+                  {ct.upgradeToVip}
+                </Link>
+                <Link
+                  href="/permissions"
+                  className="inline-flex items-center justify-center px-5 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                >
+                  {ct.viewPricing}
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {messages.length === 0 && !loading && !isQuotaExceeded && (
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
               <div className="w-16 h-16 bg-[#339999]/10 rounded-2xl flex items-center justify-center mb-6">
                 <Sparkles className="w-8 h-8 text-[#339999]" />
@@ -320,7 +464,6 @@ function AiChatContent() {
         </div>
       </main>
 
-      {/* Input */}
       <div className="sticky bottom-0 bg-white border-t border-gray-200 shadow-lg">
         <div className="max-w-3xl mx-auto px-4 py-3">
           <form
@@ -336,8 +479,8 @@ function AiChatContent() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={ct.placeholder}
-                disabled={loading}
+                placeholder={isQuotaExceeded ? (locale === 'zh' ? '今日对话次数已用完' : 'Daily limit reached') : ct.placeholder}
+                disabled={loading || isQuotaExceeded}
                 rows={1}
                 className="w-full px-4 py-3 pr-12 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/10 resize-none disabled:opacity-50 transition-all"
                 style={{ minHeight: '44px', maxHeight: '120px' }}
@@ -350,7 +493,7 @@ function AiChatContent() {
             </div>
             <button
               type="submit"
-              disabled={loading || !input.trim()}
+              disabled={loading || !input.trim() || isQuotaExceeded}
               className="flex-shrink-0 p-3 bg-[#339999] text-white rounded-xl hover:bg-[#2d8b8b] transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
