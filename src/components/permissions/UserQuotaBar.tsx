@@ -58,11 +58,11 @@ export function UserQuotaBar() {
         <button onClick={() => setExpanded(!expanded)} className="flex items-center gap-2 flex-1 text-left">
           <Shield className={`w-4 h-4 ${role === 'vip' ? 'text-amber-500' : role === 'guest' ? 'text-gray-400' : ''}`} />
           <span className="text-sm font-medium">{roleLabel}</span>
-          {sq.limit > 0 && <span className="text-xs ml-2">{locale === 'zh' ? `搜索: ${sq.remaining}/${sq.limit}` : `Search: ${sq.remaining}/${sq.limit}`}</span>}
+          {sq.limit === -1 ? <span className="text-xs ml-2">{locale === 'zh' ? '搜索: 无限' : 'Search: Unlimited'}</span> : sq.limit > 0 && <span className="text-xs ml-2">{locale === 'zh' ? `搜索: ${sq.remaining}/${sq.limit}` : `Search: ${sq.remaining}/${sq.limit}`}</span>}
           <span className="text-xs text-gray-400 ml-auto">{expanded ? '▴' : '▾'}</span>
         </button>
         {role === 'guest' && (
-          <Link href="/login" className="text-xs text-[#339999] hover:underline flex items-center gap-0.5 ml-2 flex-shrink-0">
+          <Link href="/auth/login" className="text-xs text-[#339999] hover:underline flex items-center gap-0.5 ml-2 flex-shrink-0">
             {locale === 'zh' ? '注册/登录' : 'Sign Up'}<ArrowUpRight className="w-3 h-3" />
           </Link>
         )}

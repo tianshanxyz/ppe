@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: 'Global PPE Data Coverage Report | MDLooker',
     description:
       '23,319 certified PPE products from 39 regulatory authorities, 107 data sources, 71 countries. 92.2% high-confidence official data.',
-    url: 'https://mdlooker.com/data-report',
+    url: 'https://mdlooker.com/about/about-data',
     siteName: 'MDLooker',
     type: 'article',
     locale: 'en_US',
@@ -48,11 +48,11 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: 'https://mdlooker.com/data-report',
+    canonical: 'https://mdlooker.com/about/about-data',
   },
 }
 
-export default function DataReportLayout({
+export default function AboutDataLayout({
   children,
 }: {
   children: React.ReactNode
@@ -79,31 +79,11 @@ export default function DataReportLayout({
               name: 'Personal Protective Equipment (PPE) Data',
             },
             statistics: [
-              {
-                '@type': 'PropertyValue',
-                name: 'Certified PPE Products',
-                value: 23319,
-              },
-              {
-                '@type': 'PropertyValue',
-                name: 'Countries Covered',
-                value: 71,
-              },
-              {
-                '@type': 'PropertyValue',
-                name: 'Regulatory Bodies',
-                value: 39,
-              },
-              {
-                '@type': 'PropertyValue',
-                name: 'Data Sources',
-                value: 107,
-              },
-              {
-                '@type': 'PropertyValue',
-                name: 'High-Confidence Data Rate',
-                value: '92.2%',
-              },
+              { '@type': 'PropertyValue', name: 'Certified PPE Products', value: 23319 },
+              { '@type': 'PropertyValue', name: 'Countries Covered', value: 71 },
+              { '@type': 'PropertyValue', name: 'Regulatory Bodies', value: 39 },
+              { '@type': 'PropertyValue', name: 'Data Sources', value: 107 },
+              { '@type': 'PropertyValue', name: 'High-Confidence Data Rate', value: '92.2%' },
             ],
           }).replace(/<\/script>/gi, '<\\/script>'),
         }}

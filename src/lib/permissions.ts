@@ -80,7 +80,7 @@ export async function getQuota(userId: string, role: UserRole, metric: 'searches
   const permissions = getRolePermissions(role)
   const limit = permissions[metric].limit
   const period = permissions[metric].period
-  if (limit === -1) return { used: 0, limit: -1, remaining: Infinity, period: 'unlimited' }
+  if (limit === -1) return { used: 0, limit: -1, remaining: -1, period: 'unlimited' }
 
   const supabase = createServiceClient()
   const { data } = await supabase.from('mdlooker_quotas').select('count, last_reset').eq('user_id', userId).eq('metric', metric).maybeSingle()
@@ -99,7 +99,7 @@ export async function incrementQuota(userId: string, role: UserRole, metric: 'se
   const limit = permissions[metric].limit
   const period = permissions[metric].period
   const periodKey = getPeriodKey(period)
-  if (limit === -1) return { allowed: true, used: 0, limit: -1, remaining: Infinity }
+  if (limit === -1) return { allowed: true, used: 0, limit: -1, remaining: -1 }
 
   const supabase = createServiceClient()
   const { data: existing } = await supabase.from('mdlooker_quotas').select('count, last_reset').eq('user_id', userId).eq('metric', metric).maybeSingle()
@@ -123,7 +123,7 @@ export async function incrementQuota(userId: string, role: UserRole, metric: 'se
 
 export async function checkSearchPermission(userId: string, role: UserRole): Promise<PermissionCheckResult> {
   const limit = getRolePermissions(role).searches.limit
-  if (limit === -1) return { allowed: true, reason: 'Unlimited', quota: { used: 0, limit: -1, remaining: Infinity, period: 'unlimited' } }
+  if (limit === -1) return { allowed: true, reason: 'Unlimited', quota: { used: 0, limit: -1, remaining: -1, period: 'unlimited' } }
   const quota = await getQuota(userId, role, 'searches')
   if (quota.remaining <= 0) return { allowed: false, reason: role === 'guest' ? 'Guest daily search limit (3) reached. Please register.' : 'Monthly limit reached. Upgrade to VIP.', quota: { ...quota, remaining: 0 } }
   return { allowed: true, reason: 'OK', quota }
@@ -131,7 +131,7 @@ export async function checkSearchPermission(userId: string, role: UserRole): Pro
 
 export async function checkDownloadPermission(userId: string, role: UserRole): Promise<PermissionCheckResult> {
   const limit = getRolePermissions(role).downloads.limit
-  if (limit === -1) return { allowed: true, reason: 'Unlimited', quota: { used: 0, limit: -1, remaining: Infinity, period: 'unlimited' } }
+  if (limit === -1) return { allowed: true, reason: 'Unlimited', quota: { used: 0, limit: -1, remaining: -1, period: 'unlimited' } }
   if (limit === 0) return { allowed: false, reason: 'Downloads require registration.', quota: { used: 0, limit: 0, remaining: 0, period: 'none' } }
   const quota = await getQuota(userId, role, 'downloads')
   if (quota.remaining <= 0) return { allowed: false, reason: 'Monthly download limit reached. Upgrade to VIP.', quota: { ...quota, remaining: 0 } }
@@ -140,7 +140,7 @@ export async function checkDownloadPermission(userId: string, role: UserRole): P
 
 export async function checkTrackerPermission(userId: string, role: UserRole): Promise<PermissionCheckResult> {
   const limit = getRolePermissions(role).trackerProducts.limit
-  if (limit === -1) return { allowed: true, reason: 'Unlimited', quota: { used: 0, limit: -1, remaining: Infinity, period: 'unlimited' } }
+  if (limit === -1) return { allowed: true, reason: 'Unlimited', quota: { used: 0, limit: -1, remaining: -1, period: 'unlimited' } }
   if (limit === 0) return { allowed: false, reason: 'Tracker requires registration.', quota: { used: 0, limit: 0, remaining: 0, period: 'none' } }
   const quota = await getQuota(userId, role, 'trackerProducts')
   if (quota.remaining <= 0) return { allowed: false, reason: `Tracker limited to ${limit} products. Upgrade to VIP.`, quota: { ...quota, remaining: 0 } }
@@ -165,8 +165,8 @@ export function getClientUserRole(): UserRole {
   try {
     const stored = localStorage.getItem('mdlooker_user')
     if (!stored) return 'guest'
-    const { user } = JSON.parse(stored)
-    if (!user) return 'guest'
+    const user = JSON.parse(stored)
+    if (!user || !user.id) return 'guest'
     return detectUserRole(user)
   } catch { return 'guest' }
 }

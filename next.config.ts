@@ -54,6 +54,11 @@ const nextConfig: NextConfig = {
         destination: '/search',
         permanent: true,
       },
+      {
+        source: '/data-report',
+        destination: '/about/about-data',
+        permanent: true,
+      },
     ];
   },
 

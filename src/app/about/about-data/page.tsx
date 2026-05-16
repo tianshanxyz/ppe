@@ -3,14 +3,14 @@
 import { useEffect, useState } from 'react'
 import {
   Database, Globe, Shield, TrendingUp, Package, Factory,
-  Scale, BarChart3, MapPin, FileText, Search, CheckCircle,
-  Award, Layers, Clock, Server, Sparkles
+  Scale, BarChart3, MapPin, FileText, Search,
+  Award, Layers, Clock, Sparkles
 } from 'lucide-react'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getTranslations, homeTranslations } from '@/lib/i18n/translations'
 import { getPPEStats } from '@/lib/ppe-api-client'
 
-export default function DataReportPage() {
+export default function AboutDataPage() {
   const locale = useLocale()
   const t = getTranslations(homeTranslations, locale)
   const isZh = locale === 'zh'
@@ -42,7 +42,6 @@ export default function DataReportPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* ===== HERO ===== */}
       <div className="bg-gradient-to-b from-white to-gray-50 border-b border-gray-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <div className="inline-flex items-center gap-2 bg-[#339999]/10 text-[#339999] px-4 py-1.5 rounded-full text-sm font-medium mb-6">
@@ -64,7 +63,6 @@ export default function DataReportPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* ===== KEY METRICS ===== */}
         <section className="mb-20">
           <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
             {isZh ? '平台数据总览' : 'Platform Overview'}
@@ -83,7 +81,6 @@ export default function DataReportPage() {
           </div>
         </section>
 
-        {/* ===== 全球PPE数据覆盖报告 ===== */}
         <section className="mb-20">
           <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
             <div className="bg-gradient-to-r from-[#339999] to-[#257373] px-6 py-5">
@@ -94,7 +91,6 @@ export default function DataReportPage() {
             </div>
 
             <div className="p-6 sm:p-8 space-y-10">
-              {/* 1. 全球市场格局 */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-[#339999]" />
@@ -124,7 +120,6 @@ export default function DataReportPage() {
                 </div>
               </div>
 
-              {/* 2. 品类覆盖 */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Package className="w-5 h-5 text-[#339999]" />
@@ -168,7 +163,6 @@ export default function DataReportPage() {
                 </div>
               </div>
 
-              {/* 3. 国家与区域覆盖 */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Globe className="w-5 h-5 text-[#339999]" />
@@ -216,12 +210,11 @@ export default function DataReportPage() {
                 </div>
                 <p className="text-sm text-gray-500 mt-3">
                   {isZh
-                    ? '前15个国家占总数据的93.9%，集中反映全球PPE制造业和监管的核心区域。'
-                    : 'The top 15 countries account for 93.9% of all data, reflecting the core regions of global PPE manufacturing and regulation.'}
+                    ? '前14个国家占总数据的94.3%，集中反映全球PPE制造业和监管的核心区域。'
+                    : 'The top 14 countries account for 94.3% of all data, reflecting the core regions of global PPE manufacturing and regulation.'}
                 </p>
               </div>
 
-              {/* 4. 监管框架覆盖 */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Scale className="w-5 h-5 text-[#339999]" />
@@ -255,7 +248,6 @@ export default function DataReportPage() {
                 </div>
               </div>
 
-              {/* 5. 数据来源 */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Database className="w-5 h-5 text-[#339999]" />
@@ -263,8 +255,8 @@ export default function DataReportPage() {
                 </h3>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   {isZh
-                    ? `平台数据来源于107个独立渠道，其中92.2%（${STATS.confidence}）为高可信度数据——直接从官方监管机构API或数据库获取。数据来源涵盖：`
-                    : `Our data comes from 107 independent sources, with 92.2% (${STATS.confidence}) classified as high-confidence — obtained directly from official regulatory agency APIs or databases. Sources include:`}
+                    ? `平台数据来源于107个独立渠道，其中92.2%为高可信度数据——直接从官方监管机构API或数据库获取。数据来源涵盖：`
+                    : `Our data comes from 107 independent sources, with 92.2% classified as high-confidence — obtained directly from official regulatory agency APIs or databases. Sources include:`}
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                   {[
@@ -295,7 +287,6 @@ export default function DataReportPage() {
                 </div>
               </div>
 
-              {/* 6. 厂商覆盖 */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Factory className="w-5 h-5 text-[#339999]" />
@@ -333,7 +324,6 @@ export default function DataReportPage() {
                 </div>
               </div>
 
-              {/* 7. 结论 */}
               <div className="bg-[#339999]/5 rounded-xl p-5 border border-[#339999]/20">
                 <h3 className="text-lg font-semibold text-[#339999] mb-3 flex items-center gap-2">
                   <Search className="w-5 h-5" />
@@ -381,7 +371,6 @@ export default function DataReportPage() {
           </div>
         </section>
 
-        {/* ===== 数据质量承诺 ===== */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
             {isZh ? '数据质量承诺' : 'Data Quality Commitment'}
@@ -414,8 +403,6 @@ export default function DataReportPage() {
     </div>
   )
 }
-
-// ========== 子组件 ==========
 
 function MetricCard({ number, label, icon: Icon }: { number: string; label: string; icon: any }) {
   return (

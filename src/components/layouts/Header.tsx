@@ -160,9 +160,12 @@ export function Header() {
       ]
     },
     {
-      href: '/about',
       label: t.about,
       icon: User,
+      children: [
+        { href: '/about/about-us', label: t.aboutUs, icon: User },
+        { href: '/about/about-data', label: t.aboutData, icon: Database },
+      ]
     },
   ];
 
