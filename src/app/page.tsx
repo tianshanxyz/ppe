@@ -523,15 +523,23 @@ export default function PPEHomePage() {
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.threeChecksMonth}</span>
+                  <span className="text-gray-700">Basic search (3/day)</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.regulationKnowledgeBase}</span>
+                  <span className="text-gray-700">Compliance check (1/day)</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.emailNewsletter}</span>
+                  <span className="text-gray-700">Product & manufacturer summary</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Regulation title & abstract</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Market access overview</span>
                 </li>
               </ul>
               <Link
@@ -549,30 +557,31 @@ export default function PPEHomePage() {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">{t.pro}</h3>
               <p className="text-gray-600 mb-6">{t.forSMEsFrequentExporters}</p>
-              <div className="text-4xl font-bold text-gray-900 mb-6">
-                $99
+              <div className="mb-2">
+                <span className="text-4xl font-bold text-gray-900">$99</span>
                 <span className="text-lg text-gray-600 font-normal">/mo</span>
               </div>
+              <p className="text-sm text-green-600 font-medium mb-6">$948/yr — Save 20%</p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.unlimitedComplianceChecks}</span>
+                  <span className="text-gray-700">Unlimited search & compliance checks</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.docGenerator}</span>
+                  <span className="text-gray-700">Semantic search + AI search</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.templateLibrary}</span>
+                  <span className="text-gray-700">AI chat assistant (50/day)</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.pdfDownloads}</span>
+                  <span className="text-gray-700">Report generation (20/mo) + Document generator</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.prioritySupport}</span>
+                  <span className="text-gray-700">API access (1,000/day) + All format export</span>
                 </li>
               </ul>
               <Link
@@ -587,30 +596,31 @@ export default function PPEHomePage() {
             <motion.div variants={fadeInUp} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-200 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">{t.enterprise}</h3>
               <p className="text-gray-600 mb-6">{t.forLargeEnterprises}</p>
-              <div className="text-4xl font-bold text-gray-900 mb-6">
-                $299
+              <div className="mb-2">
+                <span className="text-4xl font-bold text-gray-900">$299</span>
                 <span className="text-lg text-gray-600 font-normal">/mo</span>
               </div>
+              <p className="text-sm text-green-600 font-medium mb-6">$2,868/yr — Save 20%</p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.allProFeatures}</span>
+                  <span className="text-gray-700">All Professional features</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.dedicatedConsultant}</span>
+                  <span className="text-gray-700">Unlimited search/export/reports/AI chat</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.teamCollaboration}</span>
+                  <span className="text-gray-700">White-label reports + Webhook + SSO</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.apiAccess}</span>
+                  <span className="text-gray-700">API access (10,000/day) + Team (10 members)</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700">{t.priority24_7}</span>
+                  <span className="text-gray-700">Priority support + Dedicated account manager</span>
                 </li>
               </ul>
               <Link

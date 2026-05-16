@@ -1,23 +1,13 @@
-/**
- * 会员等级系统 - 中间件
- *
- * B-001: 会员等级系统
- */
-
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { membershipService } from './service'
 import { MembershipPermissions, MembershipLimits } from './types'
 
-/**
- * 检查功能权限的中间件
- */
 export function withPermission(permission: keyof MembershipPermissions) {
   return async function permissionMiddleware(
     request: NextRequest,
     handler: (req: NextRequest) => Promise<NextResponse>
   ): Promise<NextResponse> {
-    // 获取用户ID（从session或token中）
     const userId = await getUserIdFromRequest(request)
 
     if (!userId) {
@@ -49,14 +39,10 @@ export function withPermission(permission: keyof MembershipPermissions) {
       )
     }
 
-    // 继续处理请求
     return handler(request)
   }
 }
 
-/**
- * 检查使用限制的中间件
- */
 export function withLimit(limitType: keyof MembershipLimits, incrementBy: number = 1) {
   return async function limitMiddleware(
     request: NextRequest,
@@ -95,17 +81,12 @@ export function withLimit(limitType: keyof MembershipLimits, incrementBy: number
       )
     }
 
-    // 增加使用量
     await membershipService.incrementUsage(userId, limitType, incrementBy)
 
-    // 继续处理请求
     return handler(request)
   }
 }
 
-/**
- * 从请求中获取用户ID
- */
 async function getUserIdFromRequest(request: NextRequest): Promise<string | null> {
   try {
     const supabase = await createClient()
@@ -116,9 +97,6 @@ async function getUserIdFromRequest(request: NextRequest): Promise<string | null
   }
 }
 
-/**
- * 组合多个中间件
- */
 export function composeMiddleware(...middlewares: Function[]) {
   return async function composedMiddleware(
     request: NextRequest,

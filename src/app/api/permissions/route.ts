@@ -1,5 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getCurrentUser, detectUserRole, getRolePermissions, getQuota, checkSearchPermission, checkDownloadPermission, checkTrackerPermission, getGuestId, setGuestIdCookie, getCurrentUserWithRole } from '@/lib/permissions'
+import {
+  getCurrentUserWithRole,
+  detectUserRole,
+  detectVipTier,
+  getRoleConfig,
+  getQuota,
+  checkSearchPermission,
+  checkDownloadPermission,
+  checkTrackerPermission,
+  checkComplianceCheckPermission,
+  checkAiChatPermission,
+  checkApiPermission,
+  getGuestId,
+  setGuestIdCookie,
+} from '@/lib/permissions'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -7,18 +21,32 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type') || 'search'
 
   const user = await getCurrentUserWithRole(request)
-  const role = detectUserRole(user)
+  const role = user?.role || 'guest'
+  const vipTier = user?.vipTier
   const userId = user?.id || getGuestId(request)
 
   if (action === 'status') {
-    const permissions = getRolePermissions(role)
-    const searchQuota = await getQuota(userId, role, 'searches')
-    const downloadQuota = await getQuota(userId, role, 'downloads')
-    const trackerQuota = await getQuota(userId, role, 'trackerProducts')
+    const config = getRoleConfig(role, vipTier)
+    const searchQuota = await getQuota(userId, role, vipTier, 'searches')
+    const downloadQuota = await getQuota(userId, role, vipTier, 'downloads')
+    const trackerQuota = await getQuota(userId, role, vipTier, 'trackerProducts')
+    const complianceCheckQuota = await getQuota(userId, role, vipTier, 'complianceChecks')
+    const aiChatQuota = await getQuota(userId, role, vipTier, 'aiChat')
+    const apiQuota = await getQuota(userId, role, vipTier, 'apiCalls')
 
     const response = NextResponse.json({
       role,
-      permissions: { searches: searchQuota, downloads: downloadQuota, trackerProducts: trackerQuota, apiAccess: permissions.apiAccess, aiSearch: permissions.aiSearch, complianceTracker: permissions.complianceTracker, favorites: permissions.favorites, reports: permissions.reports },
+      vipTier: vipTier || null,
+      permissions: {
+        searches: searchQuota,
+        downloads: downloadQuota,
+        trackerProducts: trackerQuota,
+        complianceChecks: complianceCheckQuota,
+        aiChat: aiChatQuota,
+        apiCalls: apiQuota,
+        features: config.features,
+        exportFormats: config.exportFormats,
+      },
     })
 
     if (role === 'guest') {
@@ -31,9 +59,12 @@ export async function GET(request: NextRequest) {
   if (action === 'check') {
     let result
     switch (type) {
-      case 'search': result = await checkSearchPermission(userId, role); break
-      case 'download': result = await checkDownloadPermission(userId, role); break
-      case 'tracker': result = await checkTrackerPermission(userId, role); break
+      case 'search': result = await checkSearchPermission(userId, role, vipTier); break
+      case 'download': result = await checkDownloadPermission(userId, role, vipTier); break
+      case 'tracker': result = await checkTrackerPermission(userId, role, vipTier); break
+      case 'compliance': result = await checkComplianceCheckPermission(userId, role, vipTier); break
+      case 'aiChat': result = await checkAiChatPermission(userId, role, vipTier); break
+      case 'api': result = await checkApiPermission(userId, role, vipTier); break
       default: return NextResponse.json({ error: 'Invalid type' }, { status: 400 })
     }
     const response = NextResponse.json(result)

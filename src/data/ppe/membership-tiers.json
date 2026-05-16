@@ -4,40 +4,62 @@
     "name": "Free",
     "name_zh": "免费版",
     "price": 0,
+    "yearly_price": 0,
     "currency": "USD",
     "billing_period": "month",
     "features": [
-      "Basic compliance check",
-      "Limited document templates",
-      "5 searches per day",
-      "Basic AI assistant"
+      "Basic search (3/day)",
+      "Compliance check (1/day)",
+      "Product summary view",
+      "Manufacturer summary view",
+      "Regulation title & abstract",
+      "Market access overview",
+      "Regulatory news",
+      "Knowledge base (basic)",
+      "Case studies (summary)"
     ],
     "limitations": [
-      "No advanced analytics",
+      "No data export",
       "No compliance tracking",
-      "Limited API access"
+      "No certificate alerts",
+      "No AI assistant",
+      "No API access",
+      "No report generation"
     ],
-    "recommended_for": "Individual users and small businesses"
+    "recommended_for": "Individual users exploring PPE compliance"
   },
   {
     "id": "professional",
     "name": "Professional",
     "name_zh": "专业版",
     "price": 99,
+    "yearly_price": 948,
     "currency": "USD",
     "billing_period": "month",
     "features": [
-      "Advanced compliance check",
-      "Full document template library",
-      "Unlimited searches",
-      "Advanced AI assistant",
-      "Compliance tracking (up to 10 products)",
-      "Market comparison tools",
-      "Priority support"
+      "Unlimited basic search",
+      "Unlimited compliance checks",
+      "Semantic search + AI search",
+      "AI chat assistant (50/day)",
+      "Full product/manufacturer/regulation info",
+      "Compliance tracking (50 products)",
+      "Certificate alerts (20 rules)",
+      "Regulatory change alerts (email + in-app)",
+      "Competitor analysis + Market analysis",
+      "Credit score + Price prediction",
+      "Report generation (20/month)",
+      "Document generator (DoC etc.)",
+      "Supply chain tracker",
+      "Batch query (100/query)",
+      "API access (1000/day)",
+      "All format export (2000/month)",
+      "Favorites & search history (90 days)"
     ],
     "limitations": [
-      "Limited API calls (1000/month)",
-      "No white-label options"
+      "No white-label reports",
+      "No Webhook integration",
+      "No SSO",
+      "No team collaboration"
     ],
     "recommended_for": "Compliance managers and medium businesses",
     "popular": true
@@ -47,16 +69,23 @@
     "name": "Enterprise",
     "name_zh": "企业版",
     "price": 299,
+    "yearly_price": 2868,
     "currency": "USD",
     "billing_period": "month",
     "features": [
       "All Professional features",
-      "Unlimited compliance tracking",
-      "Custom API integration",
-      "White-label options",
-      "Dedicated account manager",
-      "Custom reporting",
-      "Team collaboration"
+      "Unlimited search/export/reports",
+      "Unlimited AI chat assistant",
+      "Unlimited compliance tracking & alerts",
+      "White-label reports",
+      "API access (10000/day)",
+      "Webhook integration",
+      "SSO single sign-on",
+      "Team collaboration (10 members)",
+      "Regulatory change Webhook push",
+      "Batch query (1000/query)",
+      "Priority support",
+      "Dedicated account manager"
     ],
     "limitations": [],
     "recommended_for": "Large enterprises and compliance service providers"

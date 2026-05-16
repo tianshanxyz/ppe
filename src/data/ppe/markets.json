@@ -16,7 +16,7 @@
     "authority": "FDA / OSHA"
   },
   {
-    "code": "UK",
+    "code": "GB",
     "name": "United Kingdom",
     "name_zh": "英国",
     "flag_emoji": "🇬🇧",
@@ -48,6 +48,38 @@
     "authority": "MFDS / KOSHA"
   },
   {
+    "code": "AU",
+    "name": "Australia",
+    "name_zh": "澳大利亚",
+    "flag_emoji": "🇦🇺",
+    "regulation_name": "TGA / AS/NZS Standards",
+    "authority": "TGA / Standards Australia"
+  },
+  {
+    "code": "CA",
+    "name": "Canada",
+    "name_zh": "加拿大",
+    "flag_emoji": "🇨🇦",
+    "regulation_name": "Health Canada / CSA Standards",
+    "authority": "Health Canada / SCC"
+  },
+  {
+    "code": "GCC",
+    "name": "Gulf Cooperation Council",
+    "name_zh": "海湾六国",
+    "flag_emoji": "🌍",
+    "regulation_name": "GSO Standards / GCC Technical Regulations",
+    "authority": "GCC Standardization Organization"
+  },
+  {
+    "code": "ASEAN",
+    "name": "ASEAN",
+    "name_zh": "东盟",
+    "flag_emoji": "🌏",
+    "regulation_name": "ASEAN Medical Device Directive",
+    "authority": "ASEAN Secretariat"
+  },
+  {
     "code": "IN",
     "name": "India",
     "name_zh": "印度",
@@ -64,11 +96,43 @@
     "authority": "ANVISA / INMETRO"
   },
   {
-    "code": "GCC",
-    "name": "Gulf Cooperation Council",
-    "name_zh": "海湾六国",
-    "flag_emoji": "🌍",
-    "regulation_name": "GSO Standards / GCC Technical Regulations",
-    "authority": "GCC Standardization Organization"
+    "code": "MY",
+    "name": "Malaysia",
+    "name_zh": "马来西亚",
+    "flag_emoji": "🇲🇾",
+    "regulation_name": "MDA Regulations / MS Standards",
+    "authority": "MDA"
+  },
+  {
+    "code": "SA",
+    "name": "Saudi Arabia",
+    "name_zh": "沙特阿拉伯",
+    "flag_emoji": "🇸🇦",
+    "regulation_name": "SFDA Regulations / SASO Standards",
+    "authority": "SFDA / SASO"
+  },
+  {
+    "code": "PH",
+    "name": "Philippines",
+    "name_zh": "菲律宾",
+    "flag_emoji": "🇵🇭",
+    "regulation_name": "FDA Philippines / PNS Standards",
+    "authority": "FDA Philippines"
+  },
+  {
+    "code": "Global",
+    "name": "Global",
+    "name_zh": "全球",
+    "flag_emoji": "🌐",
+    "regulation_name": "International Standards",
+    "authority": "ISO / IEC"
+  },
+  {
+    "code": "International",
+    "name": "International",
+    "name_zh": "国际",
+    "flag_emoji": "🌐",
+    "regulation_name": "International Standards and Guidelines",
+    "authority": "ISO / IEC / WHO"
   }
 ]

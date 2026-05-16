@@ -1,87 +1,82 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { Button, Input, Card } from '@/components/ui';
-import { Mail, Lock, User, Loader2, Building } from 'lucide-react';
-import { useLocale } from '@/lib/i18n/LocaleProvider';
+import React, { useState } from 'react'
+import Link from 'next/link'
+import { Mail, Lock, User, Loader2, Building, Phone } from 'lucide-react'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { localSignUp } from '@/lib/auth/local-auth'
 
 export default function RegisterPage() {
-  const locale = useLocale();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [company, setCompany] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const locale = useLocale()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [company, setCompany] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+
+    if (!email && !phone) {
+      setError(locale === 'zh' ? '请至少填写邮箱或手机号' : 'Please provide at least email or phone number')
+      setLoading(false)
+      return
+    }
 
     if (password !== confirmPassword) {
-      setError(locale === 'zh' ? '两次输入的密码不一致' : 'Passwords do not match');
-      setLoading(false);
-      return;
+      setError(locale === 'zh' ? '两次输入的密码不一致' : 'Passwords do not match')
+      setLoading(false)
+      return
     }
 
     if (password.length < 8) {
-      setError(locale === 'zh' ? '密码至少需要8个字符' : 'Password must be at least 8 characters');
-      setLoading(false);
-      return;
+      setError(locale === 'zh' ? '密码至少需要8个字符' : 'Password must be at least 8 characters')
+      setLoading(false)
+      return
     }
 
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, name, company }),
-      });
+      const { user, error: signUpError } = await localSignUp(email, password, name, company)
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || 'Registration failed');
-        setLoading(false);
-        return;
+      if (signUpError) {
+        setError(signUpError)
+        setLoading(false)
+        return
       }
 
-      if (data.user && data.token) {
-        const userData = {
-          id: data.user.id,
-          email: data.user.email,
-          name: data.user.name,
-          role: data.user.role || 'user',
-          membership: data.user.membership || 'free',
-          company: data.user.company,
-          token: data.token,
-          created_at: data.user.createdAt,
-        };
-        localStorage.setItem('mdlooker_user', JSON.stringify(userData))
-        sessionStorage.setItem('mdlooker_user', JSON.stringify(userData))
-        const secure = window.location.protocol === 'https:' ? '; Secure' : ''
-        document.cookie = `demo_session=true; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax${secure}`;
-        window.location.href = '/dashboard';
+      if (user) {
+        window.location.href = '/dashboard'
       }
     } catch {
-      setError(locale === 'zh' ? '注册失败，请重试' : 'Registration failed, please try again');
-      setLoading(false);
+      setError(locale === 'zh' ? '注册失败，请重试' : 'Registration failed, please try again')
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center py-12 bg-gray-50">
-      <div className="w-full max-w-md px-4">
-        <Card className="p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">{locale === 'zh' ? '创建账户' : 'Create Account'}</h1>
-            <p className="text-gray-500">{locale === 'zh' ? '开始您的MDLooker之旅' : 'Start your MDLooker journey'}</p>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#339999]/5 to-[#339999]/10 flex items-center justify-center px-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-block">
+            <h1 className="text-3xl font-bold text-[#339999]">MDLooker</h1>
+          </Link>
+          <p className="mt-2 text-gray-600">
+            {locale === 'zh' ? '全球PPE合规信息平台' : 'Global PPE Compliance Platform'}
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            {locale === 'zh' ? '创建账户' : 'Create Account'}
+          </h2>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
               {error}
             </div>
           )}
@@ -93,12 +88,12 @@ export default function RegisterPage() {
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <Input
+                <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={locale === 'zh' ? '您的姓名' : 'Your name'}
-                  className="pl-10"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
                   required
                 />
               </div>
@@ -110,15 +105,37 @@ export default function RegisterPage() {
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <Input
+                <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
-                  className="pl-10"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
                   required
                 />
               </div>
+              <p className="mt-1 text-xs text-gray-500">
+                {locale === 'zh' ? '用于账户恢复和重要通知' : 'Used for account recovery and notifications'}
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {locale === 'zh' ? '手机号' : 'Phone Number'}
+              </label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder={locale === 'zh' ? '+86 138 xxxx xxxx' : '+1 (555) 000-0000'}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
+                />
+              </div>
+              <p className="mt-1 text-xs text-gray-500">
+                {locale === 'zh' ? '建议填写，用于密码找回和安全验证' : 'Recommended for password recovery and security verification'}
+              </p>
             </div>
 
             <div>
@@ -127,12 +144,12 @@ export default function RegisterPage() {
               </label>
               <div className="relative">
                 <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <Input
+                <input
                   type="text"
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
                   placeholder={locale === 'zh' ? '您的公司名称' : 'Your company name'}
-                  className="pl-10"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
                 />
               </div>
             </div>
@@ -143,12 +160,12 @@ export default function RegisterPage() {
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <Input
+                <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={locale === 'zh' ? '至少6个字符' : 'At least 6 characters'}
-                  className="pl-10"
+                  placeholder={locale === 'zh' ? '至少8个字符' : 'At least 8 characters'}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
                   required
                   minLength={8}
                 />
@@ -161,19 +178,19 @@ export default function RegisterPage() {
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <Input
+                <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder={locale === 'zh' ? '再次输入密码' : 'Re-enter password'}
-                  className="pl-10"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none"
                   required
                 />
               </div>
             </div>
 
             <div className="flex items-center text-sm">
-              <input type="checkbox" className="mr-2" required />
+              <input type="checkbox" className="mr-2 rounded" required />
               <span className="text-gray-600">
                 {locale === 'zh' ? '我同意' : 'I agree to the'}{' '}
                 <Link href="/terms" className="text-[#339999] hover:underline">
@@ -186,21 +203,20 @@ export default function RegisterPage() {
               </span>
             </div>
 
-            <Button
+            <button
               type="submit"
-              className="w-full bg-[#339999] hover:bg-[#2a8080]"
-              size="lg"
               disabled={loading}
+              className="w-full py-3 bg-[#339999] text-white rounded-lg hover:bg-[#2a8080] transition-colors font-medium disabled:opacity-50"
             >
               {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <span className="flex items-center justify-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   {locale === 'zh' ? '创建账户中...' : 'Creating account...'}
-                </>
+                </span>
               ) : (
                 locale === 'zh' ? '注册' : 'Sign Up'
               )}
-            </Button>
+            </button>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-500">
@@ -210,13 +226,19 @@ export default function RegisterPage() {
             </Link>
           </div>
 
+          <div className="mt-3 text-center">
+            <Link href="/auth/forgot-password" className="text-sm text-gray-500 hover:text-[#339999] hover:underline">
+              {locale === 'zh' ? '忘记密码？' : 'Forgot password?'}
+            </Link>
+          </div>
+
           <div className="mt-4 p-3 bg-[#339999]/5 text-[#339999] rounded-lg text-sm text-center">
             {locale === 'zh'
               ? '新账户默认为免费计划，可随时在定价页面升级。'
               : 'New accounts start on the Free plan. Upgrade anytime from the Pricing page.'}
           </div>
-        </Card>
+        </div>
       </div>
     </div>
-  );
+  )
 }

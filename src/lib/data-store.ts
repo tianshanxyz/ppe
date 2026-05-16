@@ -37,7 +37,14 @@ export interface UserRecord {
   name: string
   company: string
   role: 'admin' | 'editor' | 'user' | 'vip'
+  vipTier?: 'professional' | 'enterprise'
   membership: 'free' | 'professional' | 'enterprise'
+  subscriptionStatus?: 'none' | 'active' | 'cancelled' | 'expired' | 'trial' | 'past_due'
+  billingCycle?: 'monthly' | 'yearly'
+  autoRenew?: boolean
+  stripeCustomerId?: string
+  stripeSubscriptionId?: string
+  trialEndsAt?: string
   createdAt: string
 }
 

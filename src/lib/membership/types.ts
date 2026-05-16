@@ -1,12 +1,4 @@
-/**
- * 会员等级系统 - 类型定义
- *
- * B-001: 会员等级系统
- */
-
-// ============================================
-// 会员等级定义
-// ============================================
+import type { UserRole, VipTier } from '../permissions/config'
 
 export type MembershipTier = 'free' | 'professional' | 'enterprise'
 
@@ -15,112 +7,97 @@ export interface MembershipConfig {
   name: string
   nameEn: string
   description: string
-  monthlyPrice: number // 美元
-  yearlyPrice: number // 美元，通常有折扣
+  monthlyPrice: number
+  yearlyPrice: number
+  yearlyDiscount: number
   features: string[]
-  limits: MembershipLimits
-  permissions: MembershipPermissions
+  limitations: string[]
+  recommendedFor: string
+  popular?: boolean
 }
 
 export interface MembershipLimits {
-  // 搜索限制
   maxSearchResults: number
   maxSavedSearches: number
   maxSearchHistoryDays: number
-
-  // API限制
   maxApiCallsPerDay: number
   maxApiCallsPerMinute: number
-
-  // 数据导出限制
   maxExportRecordsPerMonth: number
   allowedExportFormats: ('csv' | 'excel' | 'pdf')[]
-
-  // 监控限制
   maxMonitoredProducts: number
   maxMonitoredCompanies: number
   maxAlertRules: number
-
-  // 报告限制
   maxReportsPerMonth: number
   maxReportHistoryDays: number
-
-  // 团队协作
   maxTeamMembers: number
   maxProjects: number
+  maxComplianceChecksPerDay: number
+  maxAiChatPerDay: number
 }
 
 export interface MembershipPermissions {
-  // 数据访问权限
   canAccessBasicData: boolean
   canAccessAdvancedData: boolean
   canAccessHistoricalData: boolean
   canAccessRealTimeData: boolean
-
-  // 功能权限
   canUseSemanticSearch: boolean
   canUseAiAssistant: boolean
   canUseComparisonTool: boolean
   canUseRiskAnalysis: boolean
   canUseMarketTrends: boolean
-
-  // 导出权限
   canExportData: boolean
   canScheduleExports: boolean
-
-  // 监控权限
   canCreateAlerts: boolean
   canCustomizeAlertRules: boolean
-
-  // 报告权限
   canGenerateReports: boolean
   canCustomizeReports: boolean
   canWhiteLabelReports: boolean
-
-  // 集成权限
   canUseApi: boolean
   canUseWebhooks: boolean
   canUseSso: boolean
+  canUseDocumentGenerator: boolean
+  canUseSupplyChainTracker: boolean
+  canUseBatchQuery: boolean
+  canUseCompetitorAnalysis: boolean
+  canUseCreditScore: boolean
+  canUsePricePrediction: boolean
 }
-
-// ============================================
-// 用户会员信息
-// ============================================
 
 export interface UserMembership {
   userId: string
   currentTier: MembershipTier
-
-  // 订阅信息
+  role: UserRole
+  vipTier?: VipTier
   subscription: {
-    status: 'active' | 'cancelled' | 'expired' | 'trial' | 'paused'
+    status: 'active' | 'cancelled' | 'expired' | 'trial' | 'paused' | 'past_due'
     startedAt: string
     expiresAt: string
     billingCycle: 'monthly' | 'yearly'
     autoRenew: boolean
     paymentMethod?: string
+    stripeCustomerId?: string
+    stripeSubscriptionId?: string
   }
-
-  // 使用统计
   usage: {
     apiCallsToday: number
     apiCallsThisMonth: number
     exportsThisMonth: number
     reportsThisMonth: number
     searchesToday: number
+    complianceChecksToday: number
+    aiChatToday: number
     lastResetAt: string
   }
-
-  // 升级/降级历史
   history: MembershipHistoryItem[]
-
-  // 元数据
   metadata: {
     upgradedAt?: string
     downgradedAt?: string
     cancelledAt?: string
     trialStartedAt?: string
     trialEndsAt?: string
+    cancellationReason?: string
+    scheduledDowngradeTier?: MembershipTier
+    scheduledDowngradeAt?: string
   }
 }
 
@@ -128,15 +105,11 @@ export interface MembershipHistoryItem {
   id: string
   fromTier: MembershipTier
   toTier: MembershipTier
-  reason: 'upgrade' | 'downgrade' | 'cancellation' | 'expiration' | 'admin'
+  reason: 'upgrade' | 'downgrade' | 'cancellation' | 'expiration' | 'admin' | 'trial_start' | 'trial_end'
   changedAt: string
   changedBy: string
   notes?: string
 }
-
-// ============================================
-// API请求/响应类型
-// ============================================
 
 export interface GetMembershipResponse {
   success: boolean
@@ -153,13 +126,13 @@ export interface GetMembershipResponse {
 export interface UpgradeRequest {
   targetTier: MembershipTier
   billingCycle: 'monthly' | 'yearly'
-  paymentMethodId: string
+  paymentMethodId?: string
   couponCode?: string
 }
 
 export interface UpgradeResponse {
   success: boolean
-  clientSecret?: string // Stripe client secret
+  clientSecret?: string
   membership?: UserMembership
   error?: string
 }
@@ -173,6 +146,7 @@ export interface DowngradeRequest {
 export interface CancelRequest {
   reason?: string
   feedback?: string
+  effectiveAt?: 'immediately' | 'period_end'
 }
 
 export interface CheckPermissionRequest {
@@ -202,10 +176,6 @@ export interface CheckLimitResponse {
   message?: string
 }
 
-// ============================================
-// 权益检查中间件类型
-// ============================================
-
 export interface FeatureAccessCheck {
   feature: keyof MembershipPermissions
   fallback?: 'deny' | 'redirect' | 'upgrade_prompt'
@@ -218,10 +188,6 @@ export interface LimitCheck {
   errorMessage?: string
 }
 
-// ============================================
-// 会员等级配置
-// ============================================
-
 export const MEMBERSHIP_TIERS: Record<MembershipTier, MembershipConfig> = {
   free: {
     tier: 'free',
@@ -230,171 +196,91 @@ export const MEMBERSHIP_TIERS: Record<MembershipTier, MembershipConfig> = {
     description: '适合个人用户基础查询',
     monthlyPrice: 0,
     yearlyPrice: 0,
+    yearlyDiscount: 0,
     features: [
-      '基础搜索功能',
-      '查看企业基本信息',
-      '查看产品基本信息',
-      '5次/天搜索额度',
-      'CSV导出（10条/月）',
+      '基础搜索功能（3次/天）',
+      '合规检查（1次/天）',
+      '查看产品摘要信息',
+      '查看制造商摘要信息',
+      '法规标题和摘要浏览',
+      '市场准入概览',
+      '法规新闻浏览',
+      '知识库基础内容',
+      '案例分析摘要',
     ],
-    limits: {
-      maxSearchResults: 10,
-      maxSavedSearches: 3,
-      maxSearchHistoryDays: 7,
-      maxApiCallsPerDay: 0,
-      maxApiCallsPerMinute: 0,
-      maxExportRecordsPerMonth: 10,
-      allowedExportFormats: ['csv'],
-      maxMonitoredProducts: 0,
-      maxMonitoredCompanies: 0,
-      maxAlertRules: 0,
-      maxReportsPerMonth: 0,
-      maxReportHistoryDays: 0,
-      maxTeamMembers: 1,
-      maxProjects: 1,
-    },
-    permissions: {
-      canAccessBasicData: true,
-      canAccessAdvancedData: false,
-      canAccessHistoricalData: false,
-      canAccessRealTimeData: false,
-      canUseSemanticSearch: false,
-      canUseAiAssistant: false,
-      canUseComparisonTool: false,
-      canUseRiskAnalysis: false,
-      canUseMarketTrends: false,
-      canExportData: true,
-      canScheduleExports: false,
-      canCreateAlerts: false,
-      canCustomizeAlertRules: false,
-      canGenerateReports: false,
-      canCustomizeReports: false,
-      canWhiteLabelReports: false,
-      canUseApi: false,
-      canUseWebhooks: false,
-      canUseSso: false,
-    },
+    limitations: [
+      '无数据导出',
+      '无合规追踪',
+      '无证书提醒',
+      '无AI助手',
+      '无API访问',
+      '无报告生成',
+    ],
+    recommendedFor: 'Individual users exploring PPE compliance',
   },
   professional: {
     tier: 'professional',
     name: '专业版',
     nameEn: 'Professional',
-    description: '适合专业买手和合规经理',
-    monthlyPrice: 49,
-    yearlyPrice: 468, // 20%折扣
+    description: '适合专业合规人员和中小团队',
+    monthlyPrice: 99,
+    yearlyPrice: 948,
+    yearlyDiscount: 20,
     features: [
-      '所有免费版功能',
-      '语义搜索',
-      'AI助手问答',
-      '竞品对比分析',
-      '风险分析雷达',
-      '100次/天搜索额度',
-      '全格式导出（1000条/月）',
-      '10个监控预警',
-      '5份报告/月',
+      '无限基础搜索',
+      '无限合规检查',
+      '语义搜索 + AI智能搜索',
+      'AI聊天助手（50次/天）',
+      '完整产品/制造商/法规信息',
+      '合规追踪（50个产品）',
+      '证书到期提醒（20条规则）',
+      '法规变更提醒（邮件+站内）',
+      '竞品分析 + 市场分析',
+      '企业信用评分 + 价格预测',
+      '报告生成（20份/月）',
+      '文档生成器（DoC等）',
+      '供应链追踪',
+      '批量查询（100条/次）',
       'API访问（1000次/天）',
+      '全格式导出（2000条/月）',
+      '收藏和搜索历史（90天）',
     ],
-    limits: {
-      maxSearchResults: 100,
-      maxSavedSearches: 20,
-      maxSearchHistoryDays: 90,
-      maxApiCallsPerDay: 1000,
-      maxApiCallsPerMinute: 60,
-      maxExportRecordsPerMonth: 1000,
-      allowedExportFormats: ['csv', 'excel', 'pdf'],
-      maxMonitoredProducts: 10,
-      maxMonitoredCompanies: 10,
-      maxAlertRules: 10,
-      maxReportsPerMonth: 5,
-      maxReportHistoryDays: 365,
-      maxTeamMembers: 1,
-      maxProjects: 5,
-    },
-    permissions: {
-      canAccessBasicData: true,
-      canAccessAdvancedData: true,
-      canAccessHistoricalData: true,
-      canAccessRealTimeData: true,
-      canUseSemanticSearch: true,
-      canUseAiAssistant: true,
-      canUseComparisonTool: true,
-      canUseRiskAnalysis: true,
-      canUseMarketTrends: true,
-      canExportData: true,
-      canScheduleExports: true,
-      canCreateAlerts: true,
-      canCustomizeAlertRules: true,
-      canGenerateReports: true,
-      canCustomizeReports: true,
-      canWhiteLabelReports: false,
-      canUseApi: true,
-      canUseWebhooks: false,
-      canUseSso: false,
-    },
+    limitations: [
+      '无白标报告',
+      '无Webhook集成',
+      '无SSO单点登录',
+      '无团队协作',
+    ],
+    recommendedFor: 'Compliance managers and medium businesses',
+    popular: true,
   },
   enterprise: {
     tier: 'enterprise',
     name: '企业版',
     nameEn: 'Enterprise',
-    description: '适合企业团队和大型组织',
-    monthlyPrice: 199,
-    yearlyPrice: 1908, // 20%折扣
+    description: '适合大型企业和合规服务商',
+    monthlyPrice: 299,
+    yearlyPrice: 2868,
+    yearlyDiscount: 20,
     features: [
       '所有专业版功能',
-      '无限搜索额度',
-      '无限导出',
-      '无限监控预警',
-      '无限报告生成',
+      '无限搜索/导出/报告',
+      '无限AI聊天助手',
+      '无限合规追踪和提醒',
       '白标报告',
       'API访问（10000次/天）',
       'Webhook集成',
       'SSO单点登录',
-      '10个团队成员',
+      '团队协作（10人）',
+      '法规变更Webhook推送',
+      '批量查询（1000条/次）',
       '优先客服支持',
+      '专属客户经理',
     ],
-    limits: {
-      maxSearchResults: 1000,
-      maxSavedSearches: 100,
-      maxSearchHistoryDays: 365,
-      maxApiCallsPerDay: 10000,
-      maxApiCallsPerMinute: 120,
-      maxExportRecordsPerMonth: 10000,
-      allowedExportFormats: ['csv', 'excel', 'pdf'],
-      maxMonitoredProducts: 100,
-      maxMonitoredCompanies: 100,
-      maxAlertRules: 100,
-      maxReportsPerMonth: 100,
-      maxReportHistoryDays: 730,
-      maxTeamMembers: 10,
-      maxProjects: 50,
-    },
-    permissions: {
-      canAccessBasicData: true,
-      canAccessAdvancedData: true,
-      canAccessHistoricalData: true,
-      canAccessRealTimeData: true,
-      canUseSemanticSearch: true,
-      canUseAiAssistant: true,
-      canUseComparisonTool: true,
-      canUseRiskAnalysis: true,
-      canUseMarketTrends: true,
-      canExportData: true,
-      canScheduleExports: true,
-      canCreateAlerts: true,
-      canCustomizeAlertRules: true,
-      canGenerateReports: true,
-      canCustomizeReports: true,
-      canWhiteLabelReports: true,
-      canUseApi: true,
-      canUseWebhooks: true,
-      canUseSso: true,
-    },
+    limitations: [],
+    recommendedFor: 'Large enterprises and compliance service providers',
   },
 }
-
-// ============================================
-// 工具函数
-// ============================================
 
 export function getMembershipConfig(tier: MembershipTier): MembershipConfig {
   return MEMBERSHIP_TIERS[tier]
@@ -417,9 +303,120 @@ export function getRequiredTierForFeature(
   feature: keyof MembershipPermissions
 ): MembershipTier | null {
   for (const tier of ['enterprise', 'professional', 'free'] as MembershipTier[]) {
-    if (MEMBERSHIP_TIERS[tier].permissions[feature]) {
+    const config = MEMBERSHIP_TIERS[tier]
+    if (config && getPermissionForTier(tier)[feature]) {
       return tier
     }
   }
   return null
+}
+
+function getPermissionForTier(tier: MembershipTier): Record<keyof MembershipPermissions, boolean> {
+  const defaults: Record<keyof MembershipPermissions, boolean> = {
+    canAccessBasicData: true,
+    canAccessAdvancedData: false,
+    canAccessHistoricalData: false,
+    canAccessRealTimeData: false,
+    canUseSemanticSearch: false,
+    canUseAiAssistant: false,
+    canUseComparisonTool: false,
+    canUseRiskAnalysis: false,
+    canUseMarketTrends: false,
+    canExportData: false,
+    canScheduleExports: false,
+    canCreateAlerts: false,
+    canCustomizeAlertRules: false,
+    canGenerateReports: false,
+    canCustomizeReports: false,
+    canWhiteLabelReports: false,
+    canUseApi: false,
+    canUseWebhooks: false,
+    canUseSso: false,
+    canUseDocumentGenerator: false,
+    canUseSupplyChainTracker: false,
+    canUseBatchQuery: false,
+    canUseCompetitorAnalysis: false,
+    canUseCreditScore: false,
+    canUsePricePrediction: false,
+  }
+
+  if (tier === 'free') return defaults
+
+  if (tier === 'professional') {
+    return {
+      ...defaults,
+      canAccessBasicData: true,
+      canAccessAdvancedData: true,
+      canAccessHistoricalData: true,
+      canAccessRealTimeData: true,
+      canUseSemanticSearch: true,
+      canUseAiAssistant: true,
+      canUseComparisonTool: true,
+      canUseRiskAnalysis: true,
+      canUseMarketTrends: true,
+      canExportData: true,
+      canScheduleExports: true,
+      canCreateAlerts: true,
+      canCustomizeAlertRules: true,
+      canGenerateReports: true,
+      canCustomizeReports: true,
+      canUseApi: true,
+      canUseDocumentGenerator: true,
+      canUseSupplyChainTracker: true,
+      canUseBatchQuery: true,
+      canUseCompetitorAnalysis: true,
+      canUseCreditScore: true,
+      canUsePricePrediction: true,
+    }
+  }
+
+  if (tier === 'enterprise') {
+    return {
+      ...defaults,
+      canAccessBasicData: true,
+      canAccessAdvancedData: true,
+      canAccessHistoricalData: true,
+      canAccessRealTimeData: true,
+      canUseSemanticSearch: true,
+      canUseAiAssistant: true,
+      canUseComparisonTool: true,
+      canUseRiskAnalysis: true,
+      canUseMarketTrends: true,
+      canExportData: true,
+      canScheduleExports: true,
+      canCreateAlerts: true,
+      canCustomizeAlertRules: true,
+      canGenerateReports: true,
+      canCustomizeReports: true,
+      canWhiteLabelReports: true,
+      canUseApi: true,
+      canUseWebhooks: true,
+      canUseSso: true,
+      canUseDocumentGenerator: true,
+      canUseSupplyChainTracker: true,
+      canUseBatchQuery: true,
+      canUseCompetitorAnalysis: true,
+      canUseCreditScore: true,
+      canUsePricePrediction: true,
+    }
+  }
+
+  return defaults
+}
+
+export function membershipTierToUserRole(tier: MembershipTier): UserRole {
+  switch (tier) {
+    case 'free': return 'user'
+    case 'professional':
+    case 'enterprise': return 'vip'
+    default: return 'guest'
+  }
+}
+
+export function membershipTierToVipTier(tier: MembershipTier): VipTier | undefined {
+  switch (tier) {
+    case 'professional': return 'professional'
+    case 'enterprise': return 'enterprise'
+    default: return undefined
+  }
 }

@@ -21,8 +21,6 @@ const ROLE_COLORS: Record<UserRole, string> = {
   guest: 'text-gray-400 bg-gray-50 border-gray-200',
   user: 'text-blue-600 bg-blue-50 border-blue-200',
   vip: 'text-amber-600 bg-amber-50 border-amber-200',
-  editor: 'text-teal-600 bg-teal-50 border-teal-200',
-  admin: 'text-purple-600 bg-purple-50 border-purple-200',
 }
 
 export function UserQuotaBar() {

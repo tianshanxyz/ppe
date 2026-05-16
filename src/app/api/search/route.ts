@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
       const role = detectUserRole(user)
       const userId = user?.id || getGuestId(request)
 
-      const permCheck = await checkSearchPermission(userId, role)
+      const permCheck = await checkSearchPermission(userId, role, (user as any)?.vipTier)
       if (!permCheck.allowed) {
         const response = NextResponse.json(
           { error: permCheck.reason, quota: permCheck.quota },
@@ -258,7 +258,7 @@ export async function GET(request: NextRequest) {
         deviceClass,
       }, totalResults)
 
-      const quotaResult = await incrementQuota(userId, role, 'searches')
+      const quotaResult = await incrementQuota(userId, role, (user as any)?.vipTier, 'searches')
 
       return NextResponse.json({
         data: results,

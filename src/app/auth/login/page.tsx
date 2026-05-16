@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
+import { localSignIn } from '@/lib/auth/local-auth'
 
 export default function LoginPage() {
   const locale = useLocale()
@@ -21,35 +22,15 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
+      const { user, error: loginError } = await localSignIn(email, password)
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        setError(data.error || 'Invalid email or password')
+      if (loginError) {
+        setError(loginError)
         setIsLoading(false)
         return
       }
 
-      if (data.user && data.token) {
-        const userData = {
-          id: data.user.id,
-          email: data.user.email,
-          name: data.user.name || data.user.email?.split('@')[0] || 'User',
-          role: data.user.role || 'user',
-          membership: data.user.membership || 'free',
-          company: data.user.company,
-          token: data.token,
-          created_at: data.user.createdAt,
-        }
-        localStorage.setItem('mdlooker_user', JSON.stringify(userData))
-        sessionStorage.setItem('mdlooker_user', JSON.stringify(userData))
-        const secure = window.location.protocol === 'https:' ? '; Secure' : ''
-        document.cookie = `demo_session=true; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax${secure}`
+      if (user) {
         window.location.href = '/dashboard'
       }
     } catch (err) {
@@ -122,6 +103,15 @@ export default function LoginPage() {
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
+            </div>
+
+            <div className="flex items-center justify-end">
+              <Link
+                href="/auth/forgot-password"
+                className="text-sm text-[#339999] hover:underline"
+              >
+                {locale === 'zh' ? '忘记密码？' : 'Forgot password?'}
+              </Link>
             </div>
 
             <button

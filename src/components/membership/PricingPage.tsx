@@ -207,34 +207,11 @@ export function PricingPage({ currentTier = 'free', onSelectTier, className = ''
                   <div className="mt-6 pt-6 border-t border-gray-100">
                     <h4 className="text-sm font-medium text-gray-900 mb-4">使用限制</h4>
                     <ul className="space-y-2 text-sm">
-                      <li className="flex justify-between">
-                        <span className="text-gray-500">搜索结果</span>
-                        <span className="font-medium">
-                          {tier.limits.maxSearchResults === -1
-                            ? '无限'
-                            : `${tier.limits.maxSearchResults}条`}
-                        </span>
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="text-gray-500">API 调用</span>
-                        <span className="font-medium">
-                          {tier.limits.maxApiCallsPerDay === 0
-                            ? '不可用'
-                            : `${tier.limits.maxApiCallsPerDay}次/天`}
-                        </span>
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="text-gray-500">监控预警</span>
-                        <span className="font-medium">{tier.limits.maxMonitoredProducts}个</span>
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="text-gray-500">报告下载</span>
-                        <span className="font-medium">{tier.limits.maxReportsPerMonth}份/月</span>
-                      </li>
-                      <li className="flex justify-between">
-                        <span className="text-gray-500">团队成员</span>
-                        <span className="font-medium">{tier.limits.maxTeamMembers}人</span>
-                      </li>
+                      {tier.limitations.map((limitation, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="text-gray-600">{limitation}</span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>

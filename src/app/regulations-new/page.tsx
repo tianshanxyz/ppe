@@ -1,15 +1,14 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Scale, Search, Filter, Globe, ChevronLeft, ChevronRight, ExternalLink, BookOpen } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import regulationsData from '@/data/ppe/regulations-fulltext.json'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { commonTranslations, getTranslations } from '@/lib/i18n/translations'
 import type { Locale } from '@/lib/i18n/config'
 
-interface RegulationFulltext {
+interface Regulation {
   id: string
   category_id: string
   market_code: string
@@ -24,8 +23,6 @@ interface RegulationFulltext {
   summary_zh?: string
   full_text: string
 }
-
-const ALL_REGULATIONS = regulationsData as RegulationFulltext[]
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -45,14 +42,18 @@ const regionNamesEN: Record<string, string> = {
   EU: 'European Union', US: 'United States', CN: 'China', GB: 'United Kingdom',
   JP: 'Japan', KR: 'South Korea', BR: 'Brazil', AU: 'Australia',
   IN: 'India', FR: 'France', DE: 'Germany', IT: 'Italy',
-  ES: 'Spain', NL: 'Netherlands', SE: 'Sweden', CA: 'Canada', Global: 'Global',
+  ES: 'Spain', NL: 'Netherlands', SE: 'Sweden', CA: 'Canada',
+  Global: 'Global', International: 'International', GCC: 'Gulf Cooperation Council',
+  ASEAN: 'ASEAN', MY: 'Malaysia', SA: 'Saudi Arabia', PH: 'Philippines',
 }
 
 const regionNamesZH: Record<string, string> = {
   EU: '欧盟', US: '美国', CN: '中国', GB: '英国',
   JP: '日本', KR: '韩国', BR: '巴西', AU: '澳大利亚',
   IN: '印度', FR: '法国', DE: '德国', IT: '意大利',
-  ES: '西班牙', NL: '荷兰', SE: '瑞典', CA: '加拿大', Global: '全球',
+  ES: '西班牙', NL: '荷兰', SE: '瑞典', CA: '加拿大',
+  Global: '全球', International: '国际', GCC: '海湾六国',
+  ASEAN: '东盟', MY: '马来西亚', SA: '沙特阿拉伯', PH: '菲律宾',
 }
 
 function getRegionName(code: string, locale: Locale): string {
@@ -82,59 +83,58 @@ export default function RegulationsPage() {
   const [selectedRegion, setSelectedRegion] = useState<string>('')
   const [selectedType, setSelectedType] = useState<string>('')
   const [page, setPage] = useState(1)
+  const [regulations, setRegulations] = useState<Regulation[]>([])
+  const [loading, setLoading] = useState(false)
+  const [totalCount, setTotalCount] = useState(0)
+  const [totalPages, setTotalPages] = useState(0)
+  const [allRegions, setAllRegions] = useState<string[]>([])
+  const [allDocTypes, setAllDocTypes] = useState<string[]>([])
 
   const limit = 20
 
-  const regions = useMemo(() => {
-    const set = new Set<string>()
-    ALL_REGULATIONS.forEach(r => { if (r.market_code) set.add(r.market_code) })
-    return Array.from(set).sort()
+  const fetchRegulations = useCallback(async () => {
+    setLoading(true)
+    try {
+      const params = new URLSearchParams({
+        q: appliedSearch,
+        page: page.toString(),
+        limit: limit.toString(),
+        fulltext: 'true',
+        ...(selectedRegion ? { market: selectedRegion } : {}),
+        ...(selectedType ? { type: selectedType } : {}),
+      })
+
+      const response = await fetch(`/api/regulations/search?${params}`)
+      const result = await response.json()
+
+      if (result.success) {
+        setRegulations(result.data)
+        setTotalCount(result.pagination.total)
+        setTotalPages(result.pagination.totalPages)
+      }
+    } catch (error) {
+      console.error('Fetch regulations error:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [appliedSearch, page, selectedRegion, selectedType])
+
+  useEffect(() => {
+    fetchRegulations()
+  }, [fetchRegulations])
+
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const res = await fetch('/api/regulations/search?limit=1')
+        const data = await res.json()
+        if (data.success) {
+          setTotalCount(data.pagination.total)
+        }
+      } catch {}
+    }
+    fetchFilters()
   }, [])
-
-  const docTypes = useMemo(() => {
-    const set = new Set<string>()
-    ALL_REGULATIONS.forEach(r => { if (r.document_type) set.add(r.document_type) })
-    return Array.from(set).sort()
-  }, [])
-
-  const filteredRegulations = useMemo(() => {
-    let result = ALL_REGULATIONS
-
-    if (selectedRegion) {
-      result = result.filter(r => r.market_code === selectedRegion)
-    }
-
-    if (selectedType) {
-      result = result.filter(r => r.document_type === selectedType)
-    }
-
-    if (appliedSearch.trim()) {
-      const s = appliedSearch.toLowerCase().trim()
-      result = result.filter(r =>
-        r.title.toLowerCase().includes(s) ||
-        (r.title_zh && r.title_zh.toLowerCase().includes(s)) ||
-        r.regulation_number.toLowerCase().includes(s) ||
-        r.issuing_authority.toLowerCase().includes(s) ||
-        r.summary.toLowerCase().includes(s) ||
-        (r.summary_zh && r.summary_zh.toLowerCase().includes(s)) ||
-        r.category_id.toLowerCase().includes(s) ||
-        r.document_type.toLowerCase().includes(s) ||
-        r.market_code.toLowerCase().includes(s)
-      )
-    }
-
-    return result
-  }, [selectedRegion, selectedType, appliedSearch])
-
-  const total = filteredRegulations.length
-  const totalPages = Math.ceil(total / limit)
-  const startIndex = total > 0 ? (page - 1) * limit + 1 : 0
-  const endIndex = Math.min(page * limit, total)
-
-  const paginatedRegulations = useMemo(() => {
-    const from = (page - 1) * limit
-    return filteredRegulations.slice(from, from + limit)
-  }, [filteredRegulations, page, limit])
 
   const handleSearch = () => {
     setAppliedSearch(searchQuery)
@@ -163,6 +163,12 @@ export default function RegulationsPage() {
     return pages
   }
 
+  const startIndex = totalCount > 0 ? (page - 1) * limit + 1 : 0
+  const endIndex = Math.min(page * limit, totalCount)
+
+  const regionOptions = Object.keys(regionNamesEN).sort()
+  const docTypeOptions = Object.keys(docTypeLabelsEN)
+
   return (
     <div className="min-h-screen bg-gray-50">
       <motion.section
@@ -182,7 +188,7 @@ export default function RegulationsPage() {
               {t.globalPPERegulations}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {t.regulationsSubtitle} - {ALL_REGULATIONS.length} {locale === 'zh' ? '条' : ''} {t.regulations}
+              {t.regulationsSubtitle} - {totalCount} {locale === 'zh' ? '条' : ''} {t.regulations}
             </p>
           </motion.div>
         </div>
@@ -198,10 +204,10 @@ export default function RegulationsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { value: ALL_REGULATIONS.length, label: t.totalRegulations, icon: Scale },
-              { value: regions.length, label: t.markets, icon: Globe },
-              { value: docTypes.length, label: t.documentTypes, icon: BookOpen },
-              { value: new Set(ALL_REGULATIONS.map(r => r.category_id)).size, label: t.categories, icon: Scale },
+              { value: totalCount, label: t.totalRegulations, icon: Scale },
+              { value: regionOptions.length, label: t.markets, icon: Globe },
+              { value: docTypeOptions.length, label: t.documentTypes, icon: BookOpen },
+              { value: regionOptions.length, label: t.categories, icon: Scale },
             ].map((stat, i) => (
               <motion.div key={i} variants={fadeInUp} className="text-center p-4 rounded-xl hover:bg-gray-50 transition-colors">
                 <div className="flex justify-center mb-2">
@@ -270,7 +276,7 @@ export default function RegulationsPage() {
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
                       <option value="">{t.allRegions}</option>
-                      {regions.map(region => (
+                      {regionOptions.map(region => (
                         <option key={region} value={region}>
                           {getRegionName(region, locale)}
                         </option>
@@ -291,7 +297,7 @@ export default function RegulationsPage() {
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#339999] focus:ring-2 focus:ring-[#339999]/20 focus:outline-none transition-all"
                     >
                       <option value="">{t.allDocumentTypes}</option>
-                      {docTypes.map(type => (
+                      {docTypeOptions.map(type => (
                         <option key={type} value={type}>
                           {getDocTypeLabel(type, locale)}
                         </option>
@@ -316,16 +322,22 @@ export default function RegulationsPage() {
             </motion.div>
 
             <motion.div className="flex-1" variants={fadeInUp}>
-              {paginatedRegulations.length > 0 && (
+              {loading && (
+                <div className="flex items-center justify-center py-20">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#339999]"></div>
+                </div>
+              )}
+
+              {!loading && regulations.length > 0 && (
                 <>
                   <div className="mb-6 flex items-center justify-between bg-white rounded-xl p-4 border border-gray-100">
                     <p className="text-sm text-gray-600 font-medium">
-                      {t.showing} {startIndex}-{endIndex} {t.of} {total} {t.regulations}
+                      {t.showing} {startIndex}-{endIndex} {t.of} {totalCount} {t.regulations}
                     </p>
                   </div>
 
                   <div className="space-y-4">
-                    {paginatedRegulations.map((reg) => (
+                    {regulations.map((reg) => (
                       <div key={reg.id}>
                         <Link
                           href={`/regulations/${reg.id}`}
@@ -412,7 +424,7 @@ export default function RegulationsPage() {
                 </>
               )}
 
-              {paginatedRegulations.length === 0 && (
+              {!loading && regulations.length === 0 && (
                 <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
                   <Scale className="w-20 h-20 text-gray-300 mx-auto mb-6" />
                   <h3 className="text-xl font-bold text-gray-900 mb-3">

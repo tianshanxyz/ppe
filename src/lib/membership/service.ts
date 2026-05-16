@@ -1,9 +1,3 @@
-/**
- * 会员等级系统 - 服务层
- *
- * B-001: 会员等级系统
- */
-
 import { createClient } from '@/lib/supabase/client'
 import {
   MembershipTier,
@@ -18,21 +12,17 @@ import {
   getMembershipConfig,
   getRequiredTierForFeature,
   isHigherTier,
+  membershipTierToUserRole,
+  membershipTierToVipTier,
 } from './types'
-
-// ============================================
-// 会员服务
-// ============================================
+import type { UserRole, VipTier, RoleConfig } from '../permissions/config'
+import { getRoleConfig } from '../permissions/config'
 
 export class MembershipService {
-  /**
-   * 获取用户会员信息
-   */
   async getUserMembership(userId: string): Promise<GetMembershipResponse> {
     const supabase = createClient()
 
     try {
-      // 查询用户会员信息
       const { data: membership, error } = await supabase
         .from('user_memberships')
         .select('*')
@@ -40,68 +30,55 @@ export class MembershipService {
         .single()
 
       if (error) {
-        // 如果没有记录，创建免费版会员
         if (error.code === 'PGRST116') {
           const newMembership = await this.createFreeMembership(userId)
           return {
             success: true,
             membership: newMembership,
             config: getMembershipConfig('free'),
-            usagePercentage: {
-              apiCalls: 0,
-              exports: 0,
-              reports: 0,
-            },
+            usagePercentage: { apiCalls: 0, exports: 0, reports: 0 },
           }
         }
         throw error
       }
 
-      // 检查是否需要重置使用统计
       await this.checkAndResetUsage(userId, membership)
 
-      // 计算使用百分比
       const config = getMembershipConfig(membership.current_tier)
+      const roleConfig = getRoleConfig(
+        membershipTierToUserRole(membership.current_tier),
+        membershipTierToVipTier(membership.current_tier)
+      )
       const usagePercentage = {
-        apiCalls: config.limits.maxApiCallsPerDay > 0
-          ? (membership.usage.api_calls_today / config.limits.maxApiCallsPerDay) * 100
+        apiCalls: roleConfig.quotas.apiCalls.limit > 0
+          ? ((membership.usage?.api_calls_today || 0) / roleConfig.quotas.apiCalls.limit) * 100
           : 0,
-        exports: config.limits.maxExportRecordsPerMonth > 0
-          ? (membership.usage.exports_this_month / config.limits.maxExportRecordsPerMonth) * 100
+        exports: roleConfig.quotas.downloads.limit > 0
+          ? ((membership.usage?.exports_this_month || 0) / roleConfig.quotas.downloads.limit) * 100
           : 0,
-        reports: config.limits.maxReportsPerMonth > 0
-          ? (membership.usage.reports_this_month / config.limits.maxReportsPerMonth) * 100
+        reports: roleConfig.quotas.reports.limit > 0
+          ? ((membership.usage?.reports_this_month || 0) / roleConfig.quotas.reports.limit) * 100
           : 0,
       }
 
-      // 转换数据格式
       const userMembership: UserMembership = {
         userId: membership.user_id,
         currentTier: membership.current_tier,
+        role: membershipTierToUserRole(membership.current_tier),
+        vipTier: membershipTierToVipTier(membership.current_tier),
         subscription: membership.subscription,
         usage: membership.usage,
         history: membership.history || [],
         metadata: membership.metadata || {},
       }
 
-      return {
-        success: true,
-        membership: userMembership,
-        config,
-        usagePercentage,
-      }
+      return { success: true, membership: userMembership, config, usagePercentage }
     } catch (error) {
       console.error('获取会员信息失败:', error)
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : '获取会员信息失败',
-      }
+      return { success: false, error: error instanceof Error ? error.message : '获取会员信息失败' }
     }
   }
 
-  /**
-   * 检查权限
-   */
   async checkPermission(
     userId: string,
     permission: keyof MembershipPermissions
@@ -109,26 +86,21 @@ export class MembershipService {
     const { success, membership } = await this.getUserMembership(userId)
 
     if (!success || !membership) {
-      return {
-        success: false,
-        allowed: false,
-        currentTier: 'free',
-        message: '无法获取会员信息',
-      }
+      return { success: false, allowed: false, currentTier: 'free', message: '无法获取会员信息' }
     }
 
     const config = getMembershipConfig(membership.currentTier)
-    const allowed = config.permissions[permission]
+    const tierOrder: MembershipTier[] = ['free', 'professional', 'enterprise']
+    const currentIdx = tierOrder.indexOf(membership.currentTier)
+    const minIdx = permission.startsWith('canUse') || permission.startsWith('canAccess')
+      ? (permission === 'canAccessBasicData' ? 0 : permission.includes('Advanced') || permission.includes('Historical') || permission.includes('RealTime') ? 1 : 0)
+      : (permission === 'canExportData' || permission === 'canCreateAlerts' || permission === 'canGenerateReports' || permission === 'canUseComparisonTool' ? 1 : 2)
+    const allowed = currentIdx >= minIdx
 
     if (allowed) {
-      return {
-        success: true,
-        allowed: true,
-        currentTier: membership.currentTier,
-      }
+      return { success: true, allowed: true, currentTier: membership.currentTier }
     }
 
-    // 获取需要的最低等级
     const requiredTier = getRequiredTierForFeature(permission)
 
     return {
@@ -140,58 +112,48 @@ export class MembershipService {
     }
   }
 
-  /**
-   * 检查限制
-   */
   async checkLimit(
     userId: string,
     limitType: keyof MembershipLimits,
     requestedAmount: number = 1
   ): Promise<CheckLimitResponse> {
-    const { success, membership, config } = await this.getUserMembership(userId)
+    const { success, membership } = await this.getUserMembership(userId)
 
-    if (!success || !membership || !config) {
-      return {
-        success: false,
-        allowed: false,
-        currentUsage: 0,
-        limit: 0,
-        remaining: 0,
-        message: '无法获取会员信息',
-      }
+    if (!success || !membership) {
+      return { success: false, allowed: false, currentUsage: 0, limit: 0, remaining: 0, message: '无法获取会员信息' }
     }
 
-    const limit = config.limits[limitType]
+    const roleConfig = getRoleConfig(
+      membershipTierToUserRole(membership.currentTier),
+      membershipTierToVipTier(membership.currentTier)
+    )
 
-    // 如果是数组类型（如allowedExportFormats），特殊处理
-    if (Array.isArray(limit)) {
-      return {
-        success: true,
-        allowed: true,
-        currentUsage: 0,
-        limit: limit.length,
-        remaining: limit.length,
-      }
+    const limitMap: Record<string, number> = {
+      maxApiCallsPerDay: roleConfig.quotas.apiCalls.limit,
+      maxExportRecordsPerMonth: roleConfig.quotas.downloads.limit,
+      maxReportsPerMonth: roleConfig.quotas.reports.limit,
+      maxSearchResults: roleConfig.quotas.searches.limit,
+      maxComplianceChecksPerDay: roleConfig.quotas.complianceChecks.limit,
+      maxAiChatPerDay: roleConfig.quotas.aiChat.limit,
+      maxMonitoredProducts: roleConfig.quotas.trackerProducts.limit,
+      maxAlertRules: roleConfig.quotas.alertRules.limit,
+      maxSavedSearches: roleConfig.quotas.savedSearches,
+      maxTeamMembers: roleConfig.quotas.teamMembers,
     }
 
-    // 获取当前使用量
+    const limit = limitMap[limitType] ?? 0
+
+    if (limit === -1) {
+      return { success: true, allowed: true, currentUsage: 0, limit: -1, remaining: -1 }
+    }
+
     let currentUsage = 0
     switch (limitType) {
-      case 'maxApiCallsPerDay':
-        currentUsage = membership.usage.apiCallsToday
-        break
-      case 'maxExportRecordsPerMonth':
-        currentUsage = membership.usage.exportsThisMonth
-        break
-      case 'maxReportsPerMonth':
-        currentUsage = membership.usage.reportsThisMonth
-        break
-      case 'maxSearchResults':
-        currentUsage = membership.usage.searchesToday
-        break
-      default:
-        // 其他限制类型需要从数据库查询
-        currentUsage = await this.getCurrentUsage(userId, limitType)
+      case 'maxApiCallsPerDay': currentUsage = membership.usage?.apiCallsToday || 0; break
+      case 'maxExportRecordsPerMonth': currentUsage = membership.usage?.exportsThisMonth || 0; break
+      case 'maxReportsPerMonth': currentUsage = membership.usage?.reportsThisMonth || 0; break
+      case 'maxSearchResults': currentUsage = membership.usage?.searchesToday || 0; break
+      default: currentUsage = await this.getCurrentUsage(userId, limitType)
     }
 
     const remaining = Math.max(0, (limit as number) - currentUsage)
@@ -208,9 +170,6 @@ export class MembershipService {
     }
   }
 
-  /**
-   * 增加使用量
-   */
   async incrementUsage(
     userId: string,
     limitType: keyof MembershipLimits,
@@ -221,20 +180,11 @@ export class MembershipService {
     try {
       let updateField = ''
       switch (limitType) {
-        case 'maxApiCallsPerDay':
-          updateField = 'usage.api_calls_today'
-          break
-        case 'maxExportRecordsPerMonth':
-          updateField = 'usage.exports_this_month'
-          break
-        case 'maxReportsPerMonth':
-          updateField = 'usage.reports_this_month'
-          break
-        case 'maxSearchResults':
-          updateField = 'usage.searches_today'
-          break
-        default:
-          return false
+        case 'maxApiCallsPerDay': updateField = 'usage.api_calls_today'; break
+        case 'maxExportRecordsPerMonth': updateField = 'usage.exports_this_month'; break
+        case 'maxReportsPerMonth': updateField = 'usage.reports_this_month'; break
+        case 'maxSearchResults': updateField = 'usage.searches_today'; break
+        default: return false
       }
 
       const { error } = await supabase.rpc('increment_membership_usage', {
@@ -244,7 +194,6 @@ export class MembershipService {
       })
 
       if (error) {
-        // 如果RPC不存在，使用直接更新
         const { data: membership } = await supabase
           .from('user_memberships')
           .select('usage')
@@ -270,9 +219,6 @@ export class MembershipService {
     }
   }
 
-  /**
-   * 升级会员
-   */
   async upgradeMembership(
     userId: string,
     targetTier: MembershipTier,
@@ -284,7 +230,6 @@ export class MembershipService {
       return { success: false, error: '无法获取当前会员信息' }
     }
 
-    // 检查是否是升级
     if (!isHigherTier(targetTier, membership.currentTier)) {
       return { success: false, error: '目标等级必须高于当前等级' }
     }
@@ -293,9 +238,6 @@ export class MembershipService {
 
     try {
       const now = new Date()
-      const config = getMembershipConfig(targetTier)
-
-      // 计算到期时间
       const expiresAt = new Date(now)
       if (billingCycle === 'monthly') {
         expiresAt.setMonth(expiresAt.getMonth() + 1)
@@ -303,7 +245,6 @@ export class MembershipService {
         expiresAt.setFullYear(expiresAt.getFullYear() + 1)
       }
 
-      // 更新会员信息
       const { error } = await supabase
         .from('user_memberships')
         .update({
@@ -325,7 +266,6 @@ export class MembershipService {
 
       if (error) throw error
 
-      // 记录历史
       await this.addHistoryItem(userId, {
         id: crypto.randomUUID(),
         fromTier: membership.currentTier,
@@ -339,16 +279,10 @@ export class MembershipService {
       return { success: true }
     } catch (error) {
       console.error('升级会员失败:', error)
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : '升级失败',
-      }
+      return { success: false, error: error instanceof Error ? error.message : '升级失败' }
     }
   }
 
-  /**
-   * 降级会员
-   */
   async downgradeMembership(
     userId: string,
     targetTier: MembershipTier,
@@ -360,7 +294,6 @@ export class MembershipService {
       return { success: false, error: '无法获取当前会员信息' }
     }
 
-    // 检查是否是降级
     if (isHigherTier(targetTier, membership.currentTier)) {
       return { success: false, error: '目标等级必须低于当前等级' }
     }
@@ -371,26 +304,18 @@ export class MembershipService {
       const now = new Date()
 
       if (effectiveAt === 'immediately') {
-        // 立即降级
         const { error } = await supabase
           .from('user_memberships')
           .update({
             current_tier: targetTier,
-            subscription: {
-              ...membership.subscription,
-              status: 'active',
-            },
-            metadata: {
-              ...membership.metadata,
-              downgraded_at: now.toISOString(),
-            },
+            subscription: { ...membership.subscription, status: 'active' },
+            metadata: { ...membership.metadata, downgraded_at: now.toISOString() },
             updated_at: now.toISOString(),
           })
           .eq('user_id', userId)
 
         if (error) throw error
       } else {
-        // 在当前周期结束时降级（通过设置metadata标记）
         const { error } = await supabase
           .from('user_memberships')
           .update({
@@ -406,7 +331,6 @@ export class MembershipService {
         if (error) throw error
       }
 
-      // 记录历史
       await this.addHistoryItem(userId, {
         id: crypto.randomUUID(),
         fromTier: membership.currentTier,
@@ -420,16 +344,10 @@ export class MembershipService {
       return { success: true }
     } catch (error) {
       console.error('降级会员失败:', error)
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : '降级失败',
-      }
+      return { success: false, error: error instanceof Error ? error.message : '降级失败' }
     }
   }
 
-  /**
-   * 取消订阅
-   */
   async cancelMembership(
     userId: string,
     reason?: string
@@ -442,13 +360,8 @@ export class MembershipService {
       const { error } = await supabase
         .from('user_memberships')
         .update({
-          subscription: {
-            status: 'cancelled',
-          },
-          metadata: {
-            cancelled_at: now.toISOString(),
-            cancellation_reason: reason,
-          },
+          subscription: { status: 'cancelled' },
+          metadata: { cancelled_at: now.toISOString(), cancellation_reason: reason },
           updated_at: now.toISOString(),
         })
         .eq('user_id', userId)
@@ -458,20 +371,10 @@ export class MembershipService {
       return { success: true }
     } catch (error) {
       console.error('取消订阅失败:', error)
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : '取消失败',
-      }
+      return { success: false, error: error instanceof Error ? error.message : '取消失败' }
     }
   }
 
-  // ============================================
-  // 私有方法
-  // ============================================
-
-  /**
-   * 创建免费版会员
-   */
   private async createFreeMembership(userId: string): Promise<UserMembership> {
     const supabase = createClient()
     const now = new Date()
@@ -479,6 +382,7 @@ export class MembershipService {
     const membership: UserMembership = {
       userId,
       currentTier: 'free',
+      role: 'user',
       subscription: {
         status: 'active',
         startedAt: now.toISOString(),
@@ -492,6 +396,8 @@ export class MembershipService {
         exportsThisMonth: 0,
         reportsThisMonth: 0,
         searchesToday: 0,
+        complianceChecksToday: 0,
+        aiChatToday: 0,
         lastResetAt: now.toISOString(),
       },
       history: [],
@@ -512,9 +418,6 @@ export class MembershipService {
     return membership
   }
 
-  /**
-   * 检查并重置使用统计
-   */
   private async checkAndResetUsage(userId: string, membership: any): Promise<void> {
     const lastReset = new Date(membership.usage?.last_reset_at || 0)
     const now = new Date()
@@ -523,14 +426,14 @@ export class MembershipService {
     let needsUpdate = false
     const updates: any = { ...membership.usage }
 
-    // 检查是否需要重置日统计
     if (lastReset.getDate() !== now.getDate() || lastReset.getMonth() !== now.getMonth()) {
       updates.api_calls_today = 0
       updates.searches_today = 0
+      updates.compliance_checks_today = 0
+      updates.ai_chat_today = 0
       needsUpdate = true
     }
 
-    // 检查是否需要重置月统计
     if (lastReset.getMonth() !== now.getMonth() || lastReset.getFullYear() !== now.getFullYear()) {
       updates.exports_this_month = 0
       updates.reports_this_month = 0
@@ -540,7 +443,6 @@ export class MembershipService {
 
     if (needsUpdate) {
       updates.last_reset_at = now.toISOString()
-
       await supabase
         .from('user_memberships')
         .update({ usage: updates })
@@ -548,44 +450,35 @@ export class MembershipService {
     }
   }
 
-  /**
-   * 获取当前使用量
-   */
   private async getCurrentUsage(userId: string, limitType: keyof MembershipLimits): Promise<number> {
-    // 这里可以实现具体的查询逻辑
-    // 例如查询监控的产品数量、保存的搜索数量等
     return 0
   }
 
-  /**
-   * 获取重置时间
-   */
   private getResetTime(limitType: keyof MembershipLimits): string | undefined {
     const now = new Date()
 
     switch (limitType) {
       case 'maxApiCallsPerDay':
       case 'maxSearchResults':
-        // 次日零点
+      case 'maxComplianceChecksPerDay':
+      case 'maxAiChatPerDay': {
         const tomorrow = new Date(now)
         tomorrow.setDate(tomorrow.getDate() + 1)
         tomorrow.setHours(0, 0, 0, 0)
         return tomorrow.toISOString()
+      }
 
       case 'maxExportRecordsPerMonth':
-      case 'maxReportsPerMonth':
-        // 下月1号
+      case 'maxReportsPerMonth': {
         const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
         return nextMonth.toISOString()
+      }
 
       default:
         return undefined
     }
   }
 
-  /**
-   * 添加历史记录
-   */
   private async addHistoryItem(userId: string, item: MembershipHistoryItem): Promise<void> {
     const supabase = createClient()
 
@@ -598,7 +491,6 @@ export class MembershipService {
     const history = membership?.history || []
     history.unshift(item)
 
-    // 只保留最近20条记录
     if (history.length > 20) {
       history.pop()
     }
@@ -610,5 +502,4 @@ export class MembershipService {
   }
 }
 
-// 导出单例
 export const membershipService = new MembershipService()
