@@ -97,15 +97,13 @@ export async function POST(request: NextRequest) {
     }
 
     // 构建对比数据
-    const companyData = companies.map(company => {
-      const companyProducts = (products || []).filter(p => p.company_id === company.id)
-      const companyAlerts = (alerts || []).filter(a => a.entity_id === company.id)
+    const companyData = companies.map((company: any) => {
+      const companyProducts = (products || []).filter((p: any) => p.company_id === company.id)
+      const companyAlerts = (alerts || []).filter((a: any) => a.entity_id === company.id)
       
-      // 计算可信度评分
       const trustScore = calculateTrustScore(company, { data: { alerts: companyAlerts } })
       
-      // 统计市场分布
-      const markets = Array.from(new Set(companyProducts.map(p => p.market).filter(Boolean)))
+      const markets = Array.from(new Set(companyProducts.map((p: any) => p.market).filter(Boolean)))
 
       return {
         id: company.id,
@@ -119,24 +117,23 @@ export async function POST(request: NextRequest) {
         trustScore: trustScore.score,
         trustLevel: trustScore.level,
         riskCount: companyAlerts.length,
-        riskAlerts: companyAlerts.map(a => ({
+        riskAlerts: companyAlerts.map((a: any) => ({
           level: a.risk_level,
         })),
         createdAt: company.created_at,
       }
     })
 
-    // 计算整体对比数据
     const allMarkets = Array.from(
-      new Set(companyData.flatMap(c => c.markets))
+      new Set(companyData.flatMap((c: any) => c.markets))
     )
-    const totalProducts = companyData.reduce((sum, c) => sum + c.productCount, 0)
-    const averageTrustScore = companyData.reduce((sum, c) => sum + c.trustScore, 0) / companyData.length
+    const totalProducts = companyData.reduce((sum: number, c: any) => sum + c.productCount, 0)
+    const averageTrustScore = companyData.reduce((sum: number, c: any) => sum + c.trustScore, 0) / companyData.length
     
     // 风险分布统计
     const riskDistribution: Record<string, number> = {}
-    companyData.forEach(c => {
-      c.riskAlerts.forEach(a => {
+    companyData.forEach((c: any) => {
+      c.riskAlerts.forEach((a: any) => {
         riskDistribution[a.level] = (riskDistribution[a.level] || 0) + 1
       })
     })
@@ -144,7 +141,7 @@ export async function POST(request: NextRequest) {
     const comparison: CompanyComparison = {
       companies: companyData,
       comparison: {
-        markets: allMarkets,
+        markets: allMarkets as string[],
         totalProducts,
         averageTrustScore,
         riskDistribution,

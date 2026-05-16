@@ -45,12 +45,12 @@ export async function GET(request: NextRequest) {
     if (query) {
       const lowerQuery = query.toLowerCase();
       filtered = filtered.filter((reg) => {
-        const inTitle = reg.title.toLowerCase().includes(lowerQuery) ||
+        const inTitle = (reg.title || '').toLowerCase().includes(lowerQuery) ||
           (reg.title_zh && reg.title_zh.toLowerCase().includes(lowerQuery));
-        const inSummary = reg.summary.toLowerCase().includes(lowerQuery) ||
+        const inSummary = (reg.summary || '').toLowerCase().includes(lowerQuery) ||
           (reg.summary_zh && reg.summary_zh.toLowerCase().includes(lowerQuery));
-        const inRegNumber = reg.regulation_number.toLowerCase().includes(lowerQuery);
-        const inAuthority = reg.issuing_authority.toLowerCase().includes(lowerQuery);
+        const inRegNumber = (reg.regulation_number || '').toLowerCase().includes(lowerQuery);
+        const inAuthority = (reg.issuing_authority || '').toLowerCase().includes(lowerQuery);
         
         let inFulltext = false;
         if (searchInFulltext && reg.full_text) {

@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 const PROTECTED_ROUTES = ['/dashboard']
-const AUTH_ROUTES = ['/auth/login', '/auth/signup', '/auth/callback']
+const AUTH_ROUTES = ['/auth/login', '/auth/signup', '/auth/register', '/auth/callback']
 const PROTECTED_API_ROUTES = [
   '/api/api-keys',
   '/api/credit-score/compare',

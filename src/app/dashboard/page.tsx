@@ -54,6 +54,7 @@ import {
   AlertCircle,
   Copy,
   Camera,
+  EyeOff,
 } from 'lucide-react';
 
 // --- Toggle Switch Component (must be outside render functions to avoid React Error #310) ---
@@ -194,7 +195,7 @@ interface NewKeyResponse {
 // --- localStorage helpers ---
 
 const STORAGE_KEYS = {
-  USER: 'user',
+  USER: 'mdlooker_user',
   ACTIVITY_STATS: 'ppe_activity_stats',
   ACTIVITY_FEED: 'ppe_activity_feed',
   SAVED_ITEMS: 'ppe_saved_items_v2',
@@ -365,17 +366,13 @@ function getDynamicTypeIcon(type: string) {
   }
 }
 
-function getTrackingStatusLabel(status: string, t: Record<string, string>) {
+function getTrackingStatusLabel(status: string, t: Record<string, string>, isZh: boolean) {
   switch (status) {
     case 'compliant': return { text: t.validStatus || 'Compliant', bg: 'bg-green-100 text-green-700' };
-    case 'pending': return { text: locale_isZh(t) ? '审核中' : 'Under Review', bg: 'bg-yellow-100 text-yellow-700' };
+    case 'pending': return { text: isZh ? '审核中' : 'Under Review', bg: 'bg-yellow-100 text-yellow-700' };
     case 'non_compliant': return { text: t.expiredStatus || 'Non-compliant', bg: 'bg-red-100 text-red-700' };
-    default: return { text: locale_isZh(t) ? '未知' : 'Unknown', bg: 'bg-gray-100 text-gray-600' };
+    default: return { text: isZh ? '未知' : 'Unknown', bg: 'bg-gray-100 text-gray-600' };
   }
-}
-
-function locale_isZh(t: Record<string, string>): boolean {
-  return t.complianceChecks === '合规检查';
 }
 
 // --- Tab type ---
@@ -1339,7 +1336,7 @@ export default function DashboardPage() {
                   </div>
                 ) : (
                   trackingItems.map((item) => {
-                    const statusInfo = getTrackingStatusLabel(item.status, t);
+                    const statusInfo = getTrackingStatusLabel(item.status, t, locale === 'zh');
                     return (
                       <div key={item.id} className="px-5 py-3.5 hover:bg-gray-50/50 transition-colors group">
                         <div className="flex items-center gap-3">
@@ -2327,7 +2324,7 @@ export default function DashboardPage() {
                         {visibleKeys.has(apiKey.id) ? (
                           <Eye className="w-4 h-4 text-gray-500" />
                         ) : (
-                          <Eye className="w-4 h-4 text-gray-500" />
+                          <EyeOff className="w-4 h-4 text-gray-500" />
                         )}
                       </button>
                     </div>

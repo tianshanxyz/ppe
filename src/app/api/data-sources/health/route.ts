@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     
     if (error) throw error
     
-    const healthData = (dataSources || []).map(source => {
+    const healthData = (dataSources || []).map((source: any) => {
       const issues: string[] = []
       let healthScore = 100
       

@@ -237,6 +237,7 @@ export async function getPPEProductsClient({
     country?: string
     category?: string
     search?: string
+    riskLevel?: string
   }
 }) {
   try {

@@ -219,6 +219,7 @@ export default function ProductsPage() {
           search: appliedSearch,
           country: selectedCountry,
           category: selectedCategory,
+          riskLevel: selectedRiskLevel,
         },
       })
 

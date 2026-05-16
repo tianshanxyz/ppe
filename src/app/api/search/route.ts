@@ -116,8 +116,6 @@ export async function GET(request: NextRequest) {
         return response
       }
 
-      const quotaResult = await incrementQuota(userId, role, 'searches')
-      
       const supabase = await createClient()
 
       const results: {
@@ -149,7 +147,7 @@ export async function GET(request: NextRequest) {
           console.error('Product search error:', productsError)
           results.products = []
         } else {
-          results.products = (products || []).map(p => ({
+          results.products = (products || []).map((p: any) => ({
             id: p.id,
             name: p.name,
             company_name: p.manufacturer_name || 'Unknown',
@@ -179,7 +177,7 @@ export async function GET(request: NextRequest) {
           console.error('Company search error:', companiesError)
           results.companies = []
         } else {
-          results.companies = (companies || []).map(c => ({
+          results.companies = (companies || []).map((c: any) => ({
             id: c.id,
             name: c.name,
             legal_name: c.name,
@@ -199,12 +197,12 @@ export async function GET(request: NextRequest) {
           if (type === 'all' || type === 'product') {
             const medplumDevices = await searchMedplumDevices({
               query,
-              limit: limit / 2,
+              limit: Math.floor(limit / 2),
               market: markets.length > 0 ? markets[0] : undefined
             });
             
-            const medplumProductResults = medplumDevices.map(device => {
-              const dev = device as any
+            const medplumProductResults = medplumDevices.map((device: any) => {
+              const dev = device
               return {
                 id: `medplum-device-${dev.id}`,
                 name: dev.deviceName?.[0]?.name || dev.id,
@@ -230,8 +228,8 @@ export async function GET(request: NextRequest) {
               limit: limit / 2
             });
             
-            const medplumCompanyResults = medplumOrganizations.map(org => {
-              const organization = org as any
+            const medplumCompanyResults = medplumOrganizations.map((org: any) => {
+              const organization = org
               return {
                 id: `medplum-org-${organization.id}`,
                 name: organization.name || organization.id,
@@ -259,6 +257,8 @@ export async function GET(request: NextRequest) {
         markets: markets,
         deviceClass,
       }, totalResults)
+
+      const quotaResult = await incrementQuota(userId, role, 'searches')
 
       return NextResponse.json({
         data: results,

@@ -47,9 +47,9 @@ export default function LoginPage() {
           created_at: data.user.createdAt,
         }
         localStorage.setItem('mdlooker_user', JSON.stringify(userData))
-        localStorage.setItem('user', JSON.stringify(userData))
-        sessionStorage.setItem('user', JSON.stringify(userData))
-        document.cookie = `demo_session=true; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure`
+        sessionStorage.setItem('mdlooker_user', JSON.stringify(userData))
+        const secure = window.location.protocol === 'https:' ? '; Secure' : ''
+        document.cookie = `demo_session=true; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax${secure}`
         window.location.href = '/dashboard'
       }
     } catch (err) {

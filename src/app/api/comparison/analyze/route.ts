@@ -58,11 +58,11 @@ export async function POST(request: NextRequest) {
       }
 
       // 构建对比数据
-      const companyData = companies.map(company => {
-        const companyProducts = (products || []).filter(p => p.company_id === company.id)
-        const companyAlerts = (alerts || []).filter(a => a.entity_id === company.id)
+      const companyData = companies.map((company: any) => {
+        const companyProducts = (products || []).filter((p: any) => p.company_id === company.id)
+        const companyAlerts = (alerts || []).filter((a: any) => a.entity_id === company.id)
         
-        const markets = Array.from(new Set(companyProducts.map(p => p.market).filter(Boolean)))
+        const markets = Array.from(new Set(companyProducts.map((p: any) => p.market).filter(Boolean)))
 
         return {
           id: company.id,
@@ -73,14 +73,14 @@ export async function POST(request: NextRequest) {
           markets,
           marketCount: markets.length,
           riskCount: companyAlerts.length,
-          riskAlerts: companyAlerts.map(a => ({
+          riskAlerts: companyAlerts.map((a: any) => ({
             level: a.risk_level,
           })),
         }
       })
 
-      const allMarkets = Array.from(new Set(companyData.flatMap(c => c.markets)))
-      const totalProducts = companyData.reduce((sum, c) => sum + c.productCount, 0)
+      const allMarkets = Array.from(new Set(companyData.flatMap((c: any) => c.markets)))
+      const totalProducts = companyData.reduce((sum: number, c: any) => sum + c.productCount, 0)
 
       comparisonData = {
         companies: companyData,
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
           markets: allMarkets,
           totalProducts,
           averageProductCount: totalProducts / companyData.length,
-          riskDistribution: companyData.reduce((acc: Record<string, number>, c) => {
+          riskDistribution: companyData.reduce((acc: Record<string, number>, c: any) => {
             acc[c.riskCount] = (acc[c.riskCount] || 0) + 1
             return acc
           }, {}),
@@ -111,23 +111,23 @@ export async function POST(request: NextRequest) {
       items = products
 
       // 构建对比数据
-      const markets = Array.from(new Set(products.map(p => p.market).filter(Boolean)))
-      const deviceClasses = Array.from(new Set(products.map(p => p.device_class).filter(Boolean)))
+      const markets = Array.from(new Set(products.map((p: any) => p.market).filter(Boolean)))
+      const deviceClasses = Array.from(new Set(products.map((p: any) => p.device_class).filter(Boolean)))
 
       const statusComparison: Record<string, number> = {}
-      products.forEach(p => {
+      products.forEach((p: any) => {
         const status = p.status || 'active'
         statusComparison[status] = (statusComparison[status] || 0) + 1
       })
 
       const companyComparison: Record<string, number> = {}
-      products.forEach(p => {
+      products.forEach((p: any) => {
         const company = p.company_name || 'Unknown'
         companyComparison[company] = (companyComparison[company] || 0) + 1
       })
 
       comparisonData = {
-        products: products.map(p => ({
+        products: products.map((p: any) => ({
           id: p.id,
           name: p.product_name,
           company: p.company_name,

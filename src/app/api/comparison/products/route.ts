@@ -74,25 +74,23 @@ export async function POST(request: NextRequest) {
     }
 
     // 构建对比数据
-    const markets = Array.from(new Set(products.map(p => p.market).filter(Boolean)))
-    const deviceClasses = Array.from(new Set(products.map(p => p.device_class).filter(Boolean)))
+    const markets = Array.from(new Set(products.map((p: any) => p.market).filter(Boolean)))
+    const deviceClasses = Array.from(new Set(products.map((p: any) => p.device_class).filter(Boolean)))
 
-    // 状态统计
     const statusComparison: Record<string, number> = {}
-    products.forEach(p => {
+    products.forEach((p: any) => {
       const status = p.status || 'active'
       statusComparison[status] = (statusComparison[status] || 0) + 1
     })
 
-    // 公司统计
     const companyComparison: Record<string, number> = {}
-    products.forEach(p => {
+    products.forEach((p: any) => {
       const company = p.company_name || 'Unknown'
       companyComparison[company] = (companyComparison[company] || 0) + 1
     })
 
     const comparison: ProductComparison = {
-      products: products.map(p => ({
+      products: products.map((p: any) => ({
         id: p.id,
         name: p.product_name,
         company: p.company_name,
@@ -105,8 +103,8 @@ export async function POST(request: NextRequest) {
         updatedAt: p.last_updated || p.updated_at,
       })),
       comparison: {
-        markets,
-        deviceClasses,
+        markets: markets as string[],
+        deviceClasses: deviceClasses as string[],
         statusComparison,
         companyComparison,
       },

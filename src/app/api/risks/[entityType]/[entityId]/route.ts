@@ -88,9 +88,9 @@ export async function GET(
         alerts: existingAlerts || [],
         summary: {
           total: existingAlerts?.length || 0,
-          high: existingAlerts?.filter(a => a.risk_level === 'high').length || 0,
-          medium: existingAlerts?.filter(a => a.risk_level === 'medium').length || 0,
-          low: existingAlerts?.filter(a => a.risk_level === 'low').length || 0,
+          high: existingAlerts?.filter((a: any) => a.risk_level === 'high').length || 0,
+          medium: existingAlerts?.filter((a: any) => a.risk_level === 'medium').length || 0,
+          low: existingAlerts?.filter((a: any) => a.risk_level === 'low').length || 0,
         },
       },
     })

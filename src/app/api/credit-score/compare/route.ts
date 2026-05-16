@@ -67,17 +67,16 @@ export async function POST(request: NextRequest) {
     // 计算排名
     const rankings = {
       overall: comparison
-        .sort((a, b) => b.overall_score - a.overall_score)
-        .map((c, index) => ({ manufacturer_id: c.manufacturer_id, rank: index + 1 })),
+        .sort((a: any, b: any) => b.overall_score - a.overall_score)
+        .map((c: any, index: number) => ({ manufacturer_id: c.manufacturer_id, rank: index + 1 })),
       by_dimension: {} as Record<string, { manufacturer_id: string; rank: number }[]>,
     }
 
-    // 各维度排名
     const dimensions = ['compliance_history', 'risk_events', 'activity', 'diversity'] as const
     dimensions.forEach((dim) => {
       rankings.by_dimension[dim] = comparison
-        .sort((a, b) => b.dimension_scores[dim] - a.dimension_scores[dim])
-        .map((c, index) => ({ manufacturer_id: c.manufacturer_id, rank: index + 1 }))
+        .sort((a: any, b: any) => b.dimension_scores[dim] - a.dimension_scores[dim])
+        .map((c: any, index: number) => ({ manufacturer_id: c.manufacturer_id, rank: index + 1 }))
     })
 
     // 生成分析文本

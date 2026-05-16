@@ -10,6 +10,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
 import { Redis } from '@upstash/redis'
+import { timingSafeEqual } from 'crypto'
 
 /**
  * 健康状态接口
@@ -210,15 +211,24 @@ function verifyAuth(request: Request): boolean {
   if (authHeader.startsWith('Bearer ')) {
     const token = authHeader.substring(7)
     if (!expectedToken) return false
-    return token === expectedToken
+    try {
+      const a = Buffer.from(token, 'utf-8')
+      const b = Buffer.from(expectedToken, 'utf-8')
+      if (a.length !== b.length) return false
+      return timingSafeEqual(a, b)
+    } catch { return false }
   }
   
-  // Basic Auth 验证
   if (authHeader.startsWith('Basic ')) {
     const credentials = authHeader.substring(6)
     if (!expectedUser || !expectedPass) return false
-    const expectedCredentials = Buffer.from(`${expectedUser}:${expectedPass}`).toString('base64')
-    return credentials === expectedCredentials
+    try {
+      const expectedCredentials = Buffer.from(`${expectedUser}:${expectedPass}`).toString('base64')
+      const a = Buffer.from(credentials, 'utf-8')
+      const b = Buffer.from(expectedCredentials, 'utf-8')
+      if (a.length !== b.length) return false
+      return timingSafeEqual(a, b)
+    } catch { return false }
   }
   
   return false

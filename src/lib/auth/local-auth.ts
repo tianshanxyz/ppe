@@ -9,16 +9,28 @@ export interface LocalUser {
   created_at: string
 }
 
-const SESSION_KEY = 'ppe_local_session'
+const SESSION_KEY = 'mdlooker_user'
 
 function generateId(): string {
-  return 'user_' + Date.now().toString(36) + Math.random().toString(36).substr(2)
+  return 'user_' + Date.now().toString(36) + Math.random().toString(36).substring(2)
+}
+
+function getSecureFlag(): string {
+  if (typeof window === 'undefined') return ''
+  return window.location.protocol === 'https:' ? '; Secure' : ''
 }
 
 function createSessionCookie(): void {
   const token = generateId() + generateId()
-  document.cookie = `ppe_session=${token}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure`
-  document.cookie = `demo_session=true; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure`
+  const secure = getSecureFlag()
+  document.cookie = `ppe_session=${token}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax${secure}`
+  document.cookie = `demo_session=true; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax${secure}`
+}
+
+export function saveUserSession(userData: Record<string, unknown>): void {
+  localStorage.setItem(SESSION_KEY, JSON.stringify(userData))
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(userData))
+  createSessionCookie()
 }
 
 export async function localSignUp(
@@ -50,12 +62,7 @@ export async function localSignUp(
       created_at: data.user.createdAt,
     }
 
-    localStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser))
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser))
-    localStorage.setItem('user', JSON.stringify(sessionUser))
-    sessionStorage.setItem('user', JSON.stringify(sessionUser))
-    createSessionCookie()
-
+    saveUserSession({ ...sessionUser, token: data.token })
     return { user: sessionUser, error: null }
   } catch (error) {
     return { user: null, error: 'Network error. Please try again.' }
@@ -89,12 +96,7 @@ export async function localSignIn(
       created_at: data.user.createdAt,
     }
 
-    localStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser))
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser))
-    localStorage.setItem('user', JSON.stringify(sessionUser))
-    sessionStorage.setItem('user', JSON.stringify(sessionUser))
-    createSessionCookie()
-
+    saveUserSession({ ...sessionUser, token: data.token })
     return { user: sessionUser, error: null }
   } catch (error) {
     return { user: null, error: 'Network error. Please try again.' }
@@ -106,10 +108,6 @@ export function localGetSession(): LocalUser | null {
   try {
     let data = localStorage.getItem(SESSION_KEY)
     if (!data) data = sessionStorage.getItem(SESSION_KEY)
-    if (!data) {
-      data = localStorage.getItem('user')
-      if (!data) data = sessionStorage.getItem('user')
-    }
     return data ? JSON.parse(data) : null
   } catch {
     return null
@@ -120,9 +118,12 @@ export function localSignOut(): void {
   localStorage.removeItem(SESSION_KEY)
   sessionStorage.removeItem(SESSION_KEY)
   localStorage.removeItem('user')
+  localStorage.removeItem('ppe_local_session')
   sessionStorage.removeItem('user')
-  document.cookie = 'ppe_session=; path=/; max-age=0; SameSite=Lax; Secure'
-  document.cookie = 'demo_session=; path=/; max-age=0; SameSite=Lax; Secure'
+  sessionStorage.removeItem('ppe_local_session')
+  const secure = getSecureFlag()
+  document.cookie = `ppe_session=; path=/; max-age=0; SameSite=Lax${secure}`
+  document.cookie = `demo_session=; path=/; max-age=0; SameSite=Lax${secure}`
 }
 
 export function isSupabaseConfigured(): boolean {

@@ -1,28 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 const ARK_API_URL = 'https://ark.cn-beijing.volces.com/api/v3/chat/completions'
+const DEFAULT_API_KEY = 'ba75b0e2-7406-47d3-a800-86171840a388'
+
+const MODEL_CANDIDATES = [
+  process.env.VOLCENGINE_ARK_MODEL,
+  process.env.VOLCENGINE_ARK_ENDPOINT_ID,
+  'doubao-1.5-pro-32k-250115',
+  'doubao-pro-32k-241215',
+  'doubao-pro-4k-241215',
+  'doubao-lite-32k-240828',
+].filter(Boolean) as string[]
+
+const NON_PPE_INDICATORS = [
+  "i'm specialized in ppe",
+  "i specialize in ppe",
+  "ppe-related question",
+  "ppe related question",
+  "outside the ppe domain",
+  "outside my area",
+  "not related to ppe",
+  "unrelated to ppe",
+  "cannot assist with",
+  "i can only help with ppe",
+  "i focus on ppe",
+  "我专注于ppe",
+  "我专注于个人防护装备",
+  "不属于ppe",
+  "与ppe无关",
+  "请询问ppe相关问题",
+]
+
+function isNonPpeResponse(content: string): boolean {
+  const lower = content.toLowerCase()
+  return NON_PPE_INDICATORS.some(indicator => lower.includes(indicator))
+}
 
 export async function POST(request: NextRequest) {
   try {
-    // 优先使用 VOLCENGINE_ARK_API_KEY（与项目其他模块一致），兼容 ARK_API_KEY
-    const ARK_API_KEY = process.env.VOLCENGINE_ARK_API_KEY || process.env.ARK_API_KEY
-    if (!ARK_API_KEY) {
-      console.warn('VOLCENGINE_ARK_API_KEY not configured, using fallback response')
-      const { query } = await request.json()
-      return NextResponse.json({
-        query,
-        answer: generateFallbackResponse(),
-        suggestions: [
-          'Visit our Regulations Database for detailed information',
-          'Check our Document Templates for compliance requirements',
-          'Use the Market Access Wizard for step-by-step guidance',
-        ],
-        relatedTopics: ['CE Marking', 'FDA 510(k)', 'UKCA Marking', 'NMPA Registration'],
-        confidence: 'low',
-      })
-    }
+    const ARK_API_KEY = process.env.VOLCENGINE_ARK_API_KEY || process.env.ARK_API_KEY || DEFAULT_API_KEY
 
-    const { query, context } = await request.json()
+    const body = await request.json()
+    const { query, context, stream = false, conversationHistory = [] } = body
 
     if (!query || typeof query !== 'string') {
       return NextResponse.json(
@@ -31,7 +50,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 构建系统提示词
     const systemPrompt = `You are an expert PPE (Personal Protective Equipment) compliance assistant specialized in the PPE industry.
 Your task is to help users find information about PPE products, compliance requirements, and market access.
 
@@ -52,106 +70,123 @@ Response format:
 - Include specific standards and regulations when relevant
 - Cite authoritative sources (FDA, NMPA, EU Commission, etc.) when referencing external regulations
 - Suggest next steps or related resources
-- If unsure, acknowledge limitations and suggest contacting experts`
+- If unsure, acknowledge limitations and suggest contacting experts
+- Use English by default; respond in Chinese only when user asks in Chinese`
 
-    // 调用火山方舟 API
-    // 注意：火山方舟API的 temperature、max_tokens、top_p 应直接放在 body 中，而非 parameters 子对象
     const messages: Array<{ role: string; content: string }> = [
-      {
-        role: 'system',
-        content: systemPrompt,
-      },
-      {
-        role: 'user',
-        content: query,
-      },
+      { role: 'system', content: systemPrompt },
     ]
 
-    // 如果有上下文，添加到消息中
     if (context) {
-      messages.splice(1, 0, {
-        role: 'assistant',
-        content: context,
-      })
+      messages.push({ role: 'assistant', content: context })
     }
 
-    const requestBody = {
-      model: 'doubao-pro-32k-241215',
-      messages,
-      temperature: 0.7,
-      max_tokens: 2000,
-      top_p: 0.8,
-    }
-
-    console.log('[AI Search] Sending request to ARK API, model:', requestBody.model, 'query:', query.substring(0, 100))
-
-    const response = await fetch(ARK_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${ARK_API_KEY}`,
-      },
-      body: JSON.stringify(requestBody),
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      let errorData: Record<string, unknown> = {}
-      try {
-        errorData = JSON.parse(errorText)
-      } catch {
-        // errorText is not JSON
+    if (Array.isArray(conversationHistory)) {
+      for (const msg of conversationHistory.slice(-10)) {
+        if (msg.role && msg.content) {
+          messages.push({ role: msg.role, content: msg.content })
+        }
       }
-      console.error('[AI Search] ARK API error:', response.status, response.statusText, errorData)
-      console.error('[AI Search] Request model:', requestBody.model)
-
-      // 返回友好的回退响应，而不是500错误
-      return NextResponse.json({
-        query,
-        answer: generateFallbackResponse(query),
-        suggestions: [
-          'Visit our Regulations Database for detailed information',
-          'Check our Document Templates for compliance requirements',
-          'Use the Market Access Wizard for step-by-step guidance',
-        ],
-        relatedTopics: ['CE Marking', 'FDA 510(k)', 'UKCA Marking', 'NMPA Registration'],
-        confidence: 'low',
-      })
     }
 
-    const data = await response.json()
-    console.log('[AI Search] ARK API response received, finish_reason:', data.choices?.[0]?.finish_reason)
+    messages.push({ role: 'user', content: query })
 
-    const aiResponse = data.choices?.[0]?.message?.content || ''
+    let lastError: unknown = null
+    for (const model of MODEL_CANDIDATES) {
+      const requestBody = {
+        model,
+        messages,
+        temperature: 0.7,
+        max_tokens: 2000,
+        top_p: 0.8,
+        stream,
+      }
 
-    if (!aiResponse) {
-      console.warn('[AI Search] Empty AI response, using fallback')
-      return NextResponse.json({
-        query,
-        answer: generateFallbackResponse(query),
-        suggestions: [
-          'Visit our Regulations Database for detailed information',
-          'Check our Document Templates for compliance requirements',
-        ],
-        relatedTopics: ['CE Marking', 'FDA 510(k)', 'UKCA Marking'],
-        confidence: 'low',
-      })
+      console.log('[AI Search] Trying model:', model, 'stream:', stream, 'query:', query.substring(0, 100))
+
+      try {
+        const response = await fetch(ARK_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ARK_API_KEY}`,
+          },
+          body: JSON.stringify(requestBody),
+        })
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          let errorData: Record<string, unknown> = {}
+          try {
+            errorData = JSON.parse(errorText)
+          } catch {}
+          console.error('[AI Search] ARK API error with model', model, ':', response.status, response.statusText, errorData)
+          lastError = errorData
+          continue
+        }
+
+        if (stream) {
+          return new Response(response.body, {
+            headers: {
+              'Content-Type': 'text/event-stream',
+              'Cache-Control': 'no-cache',
+              'Connection': 'keep-alive',
+            },
+          })
+        }
+
+        const data = await response.json()
+        console.log('[AI Search] ARK API response received with model', model, ', finish_reason:', data.choices?.[0]?.finish_reason)
+
+        const aiResponse = data.choices?.[0]?.message?.content || ''
+
+        if (!aiResponse) {
+          console.warn('[AI Search] Empty AI response with model', model)
+          continue
+        }
+
+        const nonPpe = isNonPpeResponse(aiResponse)
+
+        const searchEngines = nonPpe ? [
+          { name: 'Google', url: `https://www.google.com/search?q=${encodeURIComponent(query)}` },
+          { name: 'Bing', url: `https://www.bing.com/search?q=${encodeURIComponent(query)}` },
+          { name: 'Baidu', url: `https://www.baidu.com/s?wd=${encodeURIComponent(query)}` },
+        ] : undefined
+
+        const structuredResponse = {
+          query,
+          answer: aiResponse,
+          suggestions: extractSuggestions(aiResponse),
+          relatedTopics: extractRelatedTopics(aiResponse),
+          confidence: data.choices?.[0]?.finish_reason === 'stop' ? 'high' : 'medium',
+          isNonPpe: nonPpe,
+          searchEngines,
+        }
+
+        return NextResponse.json(structuredResponse)
+      } catch (fetchError) {
+        console.error('[AI Search] Fetch error with model', model, ':', fetchError)
+        lastError = fetchError
+        continue
+      }
     }
 
-    // 解析AI响应，提取结构化信息
-    const structuredResponse = {
+    console.error('[AI Search] All model candidates failed, returning fallback. Last error:', lastError)
+    return NextResponse.json({
       query,
-      answer: aiResponse,
-      suggestions: extractSuggestions(aiResponse),
-      relatedTopics: extractRelatedTopics(aiResponse),
-      confidence: data.choices?.[0]?.finish_reason === 'stop' ? 'high' : 'medium',
-    }
-
-    return NextResponse.json(structuredResponse)
+      answer: generateFallbackResponse(query),
+      suggestions: [
+        'Visit our Regulations Database for detailed information',
+        'Check our Document Templates for compliance requirements',
+        'Use the Market Access Wizard for step-by-step guidance',
+      ],
+      relatedTopics: ['CE Marking', 'FDA 510(k)', 'UKCA Marking', 'NMPA Registration'],
+      confidence: 'low',
+      isNonPpe: false,
+    })
 
   } catch (error) {
     console.error('[AI Search] API error:', error)
-    // 不返回500错误，而是返回友好的回退响应
     return NextResponse.json({
       query: 'search',
       answer: generateFallbackResponse(),
@@ -162,13 +197,11 @@ Response format:
       ],
       relatedTopics: ['CE Marking', 'FDA 510(k)', 'UKCA Marking', 'NMPA Registration'],
       confidence: 'low',
+      isNonPpe: false,
     })
   }
 }
 
-/**
- * 备用回复（当 AI 服务不可用时）
- */
 function generateFallbackResponse(query?: string): string {
   const queryStr = query ? ` regarding "${query}"` : ''
 
@@ -190,46 +223,38 @@ function generateFallbackResponse(query?: string): string {
 Please try again later. The AI service will be restored shortly.`
 }
 
-/**
- * 从AI响应中提取建议
- */
 function extractSuggestions(response: string): string[] {
   const suggestions: string[] = []
-  
-  // 查找"建议"、"推荐"等关键词后的内容
+
   const suggestionPatterns = [
     /(?:建议|推荐|您可以|请考虑)[：:]\s*([^\n]+)/g,
     /(?:next steps?|recommendations?|suggestions?)[：:]\s*([^\n]+)/gi,
   ]
-  
+
   for (const pattern of suggestionPatterns) {
     let match
     while ((match = pattern.exec(response)) !== null) {
       suggestions.push(match[1].trim())
     }
   }
-  
+
   return suggestions.slice(0, 5)
 }
 
-/**
- * 从AI响应中提取相关主题
- */
 function extractRelatedTopics(response: string): string[] {
   const topics: string[] = []
-  
-  // 查找相关主题
+
   const topicPatterns = [
     /(?:相关|related)[：:]\s*([^\n]+)/g,
     /(?:see also|related topics?)[：:]\s*([^\n]+)/gi,
   ]
-  
+
   for (const pattern of topicPatterns) {
     let match
     while ((match = pattern.exec(response)) !== null) {
       topics.push(...match[1].split(/[,，]/).map(t => t.trim()))
     }
   }
-  
+
   return topics.slice(0, 5)
 }

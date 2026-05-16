@@ -67,7 +67,6 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    // 优先使用 local-auth 的 session 获取，兼容 localStorage 和 sessionStorage
     const sessionUser = localGetSession()
     if (sessionUser && sessionUser.id) {
       setIsLoggedIn(true)
@@ -75,22 +74,6 @@ export function Header() {
         setUserName(sessionUser.name)
       } else if (sessionUser.email) {
         setUserName(sessionUser.email.split('@')[0])
-      }
-    } else {
-      // 兼容旧的 'user' key
-      const userData = localStorage.getItem('user');
-      if (userData) {
-        try {
-          const parsed = JSON.parse(userData);
-          setIsLoggedIn(!!parsed && !!parsed.id);
-          if (parsed.name) {
-            setUserName(parsed.name);
-          } else if (parsed.email) {
-            setUserName(parsed.email.split('@')[0]);
-          }
-        } catch {
-          setIsLoggedIn(false);
-        }
       }
     }
   }, []);

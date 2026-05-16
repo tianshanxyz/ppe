@@ -14,8 +14,8 @@ export async function POST(request: NextRequest) {
     if (!email || !password || !name) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
-    if (password.length < 6) {
-      return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
+    if (password.length < 8) {
+      return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 });
     }
     if (password.length > 128) {
       return NextResponse.json({ error: 'Password too long' }, { status: 400 });

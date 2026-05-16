@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, Globe, Zap, Users, Package, Building, ChevronDown, ClipboardList, Bell, AlertTriangle, Newspaper, BookOpen, Library, Search, Sparkles, Bot, Send, X, Factory, Scale, BarChart3, BadgeCheck, GitCompare, Server } from 'lucide-react';
+import { ArrowRight, CheckCircle, Globe, Zap, Users, Package, Building, ChevronDown, ClipboardList, Bell, AlertTriangle, Newspaper, BookOpen, Library, Sparkles, Factory, Scale, BadgeCheck, GitCompare } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getPPECategories, getTargetMarkets } from '@/lib/ppe-data';
 import { ComplianceCheckTool } from '@/components/ppe/ComplianceCheckTool';
@@ -10,6 +10,7 @@ import { PPEIcon } from '@/components/ppe/PPEIcons';
 import { useLocale } from '@/lib/i18n/LocaleProvider';
 import { ppeTranslations, commonTranslations, getTranslations } from '@/lib/i18n/translations';
 import { getPPEStats } from '@/lib/ppe-api-client';
+import { DualModeSearch } from '@/components/search/DualModeSearch';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -32,11 +33,6 @@ export default function PPEHomePage() {
   const categories = getPPECategories();
   const markets = getTargetMarkets();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [aiMode, setAiMode] = useState(false);
-  const [aiInput, setAiInput] = useState('');
-  const [aiMessages, setAiMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>([]);
-  const [aiLoading, setAiLoading] = useState(false);
   const [dbStats, setDbStats] = useState<any>(null);
 
   useEffect(() => {
@@ -63,30 +59,6 @@ export default function PPEHomePage() {
     loadStats();
     return () => { mounted = false };
   }, []);
-
-  const handleAiSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const query = aiInput.trim();
-    if (!query || aiLoading) return;
-
-    setAiMessages(prev => [...prev, { role: 'user', content: query }]);
-    setAiInput('');
-    setAiLoading(true);
-
-    try {
-      const res = await fetch('/api/ai-search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query }),
-      });
-      const data = await res.json();
-      setAiMessages(prev => [...prev, { role: 'assistant', content: data.answer || data.error || ct.noResponse }]);
-    } catch {
-      setAiMessages(prev => [...prev, { role: 'assistant', content: ct.sorryError }]);
-    } finally {
-      setAiLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -132,142 +104,16 @@ export default function PPEHomePage() {
               </Link>
             </motion.div>
 
-            {/* Global Search with AI Chat */}
+            {/* Smart Search with Auto Classification */}
             <motion.div variants={fadeInUp} className="max-w-xl sm:max-w-2xl mx-auto mb-10 sm:mb-16 px-4 sm:px-0">
-              {/* AI-Powered Search Indicator */}
               <div className="flex items-center justify-center gap-2 mb-2 sm:mb-3">
                 <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#339999]" />
                 <span className="text-xs sm:text-sm font-medium text-[#339999]">{ct.aiPoweredSearch}</span>
+                <span className="text-[10px] sm:text-xs text-gray-400">·</span>
+                <span className="text-[10px] sm:text-xs text-gray-400">{locale === 'zh' ? '智能分类搜索' : 'Smart Classified Search'}</span>
               </div>
 
-              {/* Mode Toggle & Search Box */}
-              <div className="relative">
-                {!aiMode ? (
-                  <form
-                    className="relative"
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      console.log('[Home] Form submitted with query:', searchQuery)
-                      if (!searchQuery.trim()) {
-                        console.log('[Home] Empty query, not submitting')
-                        return
-                      }
-                      const params = new URLSearchParams({
-                        q: searchQuery.trim(),
-                        type: 'all'
-                      })
-                      if (locale !== 'en') {
-                        params.set('lang', locale)
-                      }
-                      const url = `/search?${params.toString()}`
-                      console.log('[Home] Redirecting to:', url)
-                      window.location.href = url
-                    }}
-                  >
-                    <input type="hidden" name="type" value="all" />
-                    {locale !== 'en' && (
-                      <input type="hidden" name="lang" value={locale} />
-                    )}
-                    <Search className="absolute left-3 sm:left-5 top-1/2 transform -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
-                    <input
-                      type="text"
-                      name="q"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder={ct.searchPlaceholder}
-                      className="w-full pl-10 sm:pl-14 pr-28 sm:pr-40 py-3.5 sm:py-5 text-base sm:text-lg bg-white rounded-2xl border-2 border-gray-200 focus:border-[#339999] focus:ring-4 focus:ring-[#339999]/10 shadow-lg transition-all outline-none"
-                    />
-                    <button
-                      type="submit"
-                      disabled={!searchQuery.trim()}
-                      className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 px-3 sm:px-6 py-2 sm:py-2.5 bg-[#339999] text-white text-sm sm:text-base font-semibold rounded-xl hover:bg-[#2d8b8b] transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {ct.search}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setAiMode(true)}
-                      className="absolute right-[60px] sm:right-[110px] top-1/2 transform -translate-y-1/2 p-2 sm:p-2.5 text-gray-400 hover:text-[#339999] hover:bg-[#339999]/5 rounded-lg transition-all"
-                      title={ct.switchToAiChat}
-                    >
-                      <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </button>
-                  </form>
-                ) : (
-                  /* AI Chat Mode */
-                  <form
-                    className="relative"
-                    onSubmit={handleAiSubmit}
-                  >
-                    <Bot className="absolute left-3 sm:left-5 top-1/2 transform -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 text-[#339999]" />
-                    <input
-                      type="text"
-                      value={aiInput}
-                      onChange={(e) => setAiInput(e.target.value)}
-                      placeholder={ct.aiChatPlaceholder}
-                      className="w-full pl-10 sm:pl-14 pr-28 sm:pr-40 py-3.5 sm:py-5 text-base sm:text-lg bg-white rounded-2xl border-2 border-[#339999] focus:ring-4 focus:ring-[#339999]/10 shadow-lg transition-all outline-none"
-                      disabled={aiLoading}
-                    />
-                    <button
-                      type="submit"
-                      disabled={aiLoading || !aiInput.trim()}
-                      className="absolute right-14 top-1/2 transform -translate-y-1/2 p-2 sm:p-2.5 bg-[#339999] text-white rounded-xl hover:bg-[#2d8b8b] transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => { setAiMode(false); setAiMessages([]); setAiInput(''); }}
-                      className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 p-2 sm:p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
-                      title={ct.switchToStandardSearch}
-                    >
-                      <X className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </button>
-                  </form>
-                )}
-              </div>
-
-              {/* AI Chat Messages */}
-              {aiMode && aiMessages.length > 0 && (
-                <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3 max-h-60 sm:max-h-80 overflow-y-auto px-1">
-                  {aiMessages.map((msg, i) => (
-                    <div
-                      key={i}
-                      className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div
-                        className={`max-w-[85%] sm:max-w-[80%] px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-xs sm:text-sm leading-relaxed whitespace-pre-wrap ${
-                          msg.role === 'user'
-                            ? 'bg-[#339999] text-white rounded-br-md'
-                            : 'bg-gray-100 text-gray-800 rounded-bl-md'
-                        }`}
-                      >
-                        {msg.role === 'assistant' && (
-                          <div className="flex items-center gap-1.5 mb-1 pb-1 border-b border-gray-200">
-                            <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#339999]" />
-                            <span className="text-[10px] sm:text-xs font-semibold text-[#339999]">{ct.aiAssistant}</span>
-                          </div>
-                        )}
-                        {msg.content}
-                      </div>
-                    </div>
-                  ))}
-                  {aiLoading && (
-                    <div className="flex justify-start">
-                      <div className="bg-gray-100 text-gray-800 rounded-2xl rounded-bl-md px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm">
-                        <div className="flex items-center gap-2">
-                          <div className="flex space-x-1">
-                            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#339999] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#339999] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#339999] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                          </div>
-                          <span className="text-[10px] sm:text-xs text-gray-500">{ct.thinking}</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
+              <DualModeSearch />
             </motion.div>
 
             {/* Real Database Stats */}
