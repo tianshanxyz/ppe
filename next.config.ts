@@ -73,7 +73,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
-              "connect-src 'self' http://localhost:* http://127.0.0.1:* https://*.supabase.co https://api.medplum.com https://ark.cn-beijing.volces.com https://api.openai.com",
+              "connect-src 'self' https://*.supabase.co https://api.medplum.com https://ark.cn-beijing.volces.com https://api.openai.com",
               "frame-ancestors 'none'",
             ].join('; '),
           },

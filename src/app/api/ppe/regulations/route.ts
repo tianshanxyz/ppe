@@ -15,8 +15,10 @@ export async function GET(request: NextRequest) {
       const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20')))
       const search = searchParams.get('search') || ''
       const region = searchParams.get('region') || ''
-      const sortBy = searchParams.get('sortBy') || 'created_at'
-      const sortOrder = searchParams.get('sortOrder') || 'desc'
+      const sortByRaw = searchParams.get('sortBy') || 'created_at'
+      const sortBy = ['created_at', 'name', 'region', 'code'].includes(sortByRaw) ? sortByRaw : 'created_at'
+      const sortOrderRaw = searchParams.get('sortOrder') || 'desc'
+      const sortOrder = sortOrderRaw === 'asc' ? 'asc' : 'desc'
 
       const supabase = createServiceClient()
 

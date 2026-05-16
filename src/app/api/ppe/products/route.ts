@@ -19,8 +19,10 @@ export async function GET(request: NextRequest) {
       const country = searchParams.get('country') || ''
       const riskLevel = searchParams.get('riskLevel') || ''
       const dataSource = searchParams.get('dataSource') || ''
-      const sortBy = searchParams.get('sortBy') || 'created_at'
-      const sortOrder = searchParams.get('sortOrder') || 'desc'
+      const sortByRaw = searchParams.get('sortBy') || 'created_at'
+      const sortBy = ['created_at', 'name', 'category', 'country_of_origin', 'risk_level', 'manufacturer_name', 'product_code'].includes(sortByRaw) ? sortByRaw : 'created_at'
+      const sortOrderRaw = searchParams.get('sortOrder') || 'desc'
+      const sortOrder = sortOrderRaw === 'asc' ? 'asc' : 'desc'
 
       const supabase = createServiceClient()
 

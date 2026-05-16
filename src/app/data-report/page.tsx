@@ -187,7 +187,7 @@ export default function DataReportPage() {
                     <tbody>
                       {[
                         ['US', isZh ? '美国' : 'United States', '7,704', '33.0%'],
-                        ['CN', isZh ? '中国（含台湾）' : 'China (incl. Taiwan)', '5,958', '60.5%'],
+                        ['CN', isZh ? '中国' : 'China', '5,958', '60.5%'],
                         ['MY', isZh ? '马来西亚' : 'Malaysia', '2,133', '67.9%'],
                         ['EU', isZh ? '欧盟' : 'EU', '1,389', '72.2%'],
                         ['CA', isZh ? '加拿大' : 'Canada', '1,303', '77.8%'],
@@ -313,7 +313,7 @@ export default function DataReportPage() {
                     <tbody>
                       {[
                         [isZh ? '美国' : 'US', '4,727', '53.4%'],
-                        [isZh ? '中国（含台湾）' : 'China (incl. Taiwan)', '2,128', '24.0%'],
+                        [isZh ? '中国' : 'CN', '2,128', '24.0%'],
                         [isZh ? '欧盟' : 'EU', '604', '6.8%'],
                         [isZh ? '马来西亚' : 'MY', '321', '3.6%'],
                         [isZh ? '加拿大' : 'CA', '127', '1.4%'],
