@@ -64,7 +64,7 @@ export default function CertificationComparisonPage() {
         cost: euData.estimated_cost,
         requirements: euData.certification_requirements,
         documents: euData.customs_documents,
-        warnings: euData.risk_warnings,
+        warnings: euData.risk_warnings || [],
       })
     }
 
@@ -79,7 +79,7 @@ export default function CertificationComparisonPage() {
         cost: usData.estimated_cost,
         requirements: usData.certification_requirements,
         documents: usData.customs_documents,
-        warnings: usData.risk_warnings,
+        warnings: usData.risk_warnings || [],
       })
     }
 
@@ -94,7 +94,7 @@ export default function CertificationComparisonPage() {
         cost: ukData.estimated_cost,
         requirements: ukData.certification_requirements,
         documents: ukData.customs_documents,
-        warnings: ukData.risk_warnings,
+        warnings: ukData.risk_warnings || [],
       })
     }
 
@@ -109,7 +109,7 @@ export default function CertificationComparisonPage() {
         cost: cnData.estimated_cost,
         requirements: cnData.certification_requirements,
         documents: cnData.customs_documents,
-        warnings: cnData.risk_warnings,
+        warnings: cnData.risk_warnings || [],
       })
     }
 

@@ -9,7 +9,6 @@ import { SearchResults } from '@/components/search/SearchResults'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { EmptyState, LoadingState } from '@/components/search/EmptyState'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
-import { UserQuotaBar } from '@/components/permissions/UserQuotaBar'
 
 function SearchContent() {
   const locale = useLocale()
@@ -158,9 +157,6 @@ function SearchContent() {
                 initialQuery=""
                 placeholder={locale === 'zh' ? '搜索产品、企业或法规...' : 'Search products, companies, or regulations...'}
               />
-              <div className="mt-3">
-                <UserQuotaBar />
-              </div>
             </div>
 
             <div className="mt-6 flex justify-center gap-2">

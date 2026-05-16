@@ -935,7 +935,7 @@ export default function MarketAccessPage() {
               {expandedSections.warnings && (
                 <div className="px-8 pb-6">
                   <ul className="space-y-4">
-                    {complianceData.risk_warnings.map((warning, index) => (
+                    {(complianceData.risk_warnings || []).map((warning, index) => (
                       <motion.li
                         key={index}
                         initial={{ opacity: 0, x: -20 }}

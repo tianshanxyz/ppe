@@ -55,7 +55,7 @@ export interface ComplianceData {
     unit: string
   }
   customs_documents: string[]
-  risk_warnings: string[]
+  risk_warnings?: string[]
 }
 
 export interface MembershipTier {
@@ -84,13 +84,13 @@ export function getPPECategories(): PPECategory[] {
 }
 
 export function getTargetMarkets(): TargetMarket[] {
-  return marketConfig as unknown as TargetMarket[]
+  return marketConfig
 }
 
 export function getComplianceData(categoryId: string, marketCode: string): ComplianceData | null {
-  return (complianceConfig.find(
+  return complianceConfig.find(
     data => data.category_id === categoryId && data.market_code === marketCode
-  ) || null) as ComplianceData | null
+  ) || null
 }
 
 export function getMembershipTiers(): MembershipTier[] {
@@ -102,7 +102,7 @@ export function getPPECategoryById(id: string): PPECategory | undefined {
 }
 
 export function getTargetMarketByCode(code: string): TargetMarket | undefined {
-  return marketConfig.find(market => market.code === code) as unknown as TargetMarket | undefined
+  return marketConfig.find(market => market.code === code)
 }
 
 export async function getPPEStats(): Promise<PPEStats> {

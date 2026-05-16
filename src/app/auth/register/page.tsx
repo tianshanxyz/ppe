@@ -3,8 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button, Input, Card } from '@/components/ui';
-import { Mail, Lock, User, Loader2, Building, AlertTriangle, Download, Upload } from 'lucide-react';
-import { localSignUp } from '@/lib/auth/local-auth';
+import { Mail, Lock, User, Loader2, Building } from 'lucide-react';
 import { useLocale } from '@/lib/i18n/LocaleProvider';
 
 export default function RegisterPage() {
@@ -16,8 +15,6 @@ export default function RegisterPage() {
   const [company, setCompany] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [showDataModal, setShowDataModal] = useState(false);
-  const [importSuccess, setImportSuccess] = useState('');
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,75 +34,41 @@ export default function RegisterPage() {
     }
 
     try {
-      const { user, error: authError } = await localSignUp(email, password, name, company);
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, name, company }),
+      });
 
-      if (authError) {
-        setError(authError);
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Registration failed');
         setLoading(false);
         return;
       }
 
-      if (user) {
+      if (data.user && data.token) {
+        const userData = {
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.name,
+          role: data.user.role || 'user',
+          membership: data.user.membership || 'free',
+          company: data.user.company,
+          token: data.token,
+          created_at: data.user.createdAt,
+        };
+        localStorage.setItem('mdlooker_user', JSON.stringify(userData));
+        localStorage.setItem('user', JSON.stringify(userData));
+        sessionStorage.setItem('user', JSON.stringify(userData));
+        document.cookie = `demo_session=true; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure`;
         window.location.href = '/dashboard';
       }
     } catch {
       setError(locale === 'zh' ? '注册失败，请重试' : 'Registration failed, please try again');
       setLoading(false);
     }
-  };
-
-  const handleExportData = () => {
-    if (typeof window === 'undefined') return;
-
-    const data = {
-      users: localStorage.getItem('ppe_local_users'),
-      session: localStorage.getItem('ppe_local_session'),
-      user: localStorage.getItem('user'),
-      activityStats: localStorage.getItem('ppe_activity_stats'),
-      activityFeed: localStorage.getItem('ppe_activity_feed'),
-      savedItems: localStorage.getItem('ppe_saved_items_v2'),
-      trackingItems: localStorage.getItem('ppe_tracking_items'),
-      settings: localStorage.getItem('ppe_user_settings'),
-      exportedAt: new Date().toISOString(),
-    };
-
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `mdlooker-data-backup-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const handleImportData = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const data = JSON.parse(event.target?.result as string);
-
-        if (data.users) localStorage.setItem('ppe_local_users', data.users);
-        if (data.session) localStorage.setItem('ppe_local_session', data.session);
-        if (data.user) localStorage.setItem('user', data.user);
-        if (data.activityStats) localStorage.setItem('ppe_activity_stats', data.activityStats);
-        if (data.activityFeed) localStorage.setItem('ppe_activity_feed', data.activityFeed);
-        if (data.savedItems) localStorage.setItem('ppe_saved_items_v2', data.savedItems);
-        if (data.trackingItems) localStorage.setItem('ppe_tracking_items', data.trackingItems);
-        if (data.settings) localStorage.setItem('ppe_user_settings', data.settings);
-
-        setImportSuccess(locale === 'zh' ? '数据导入成功！请刷新页面。' : 'Data imported successfully! Please refresh the page.');
-        setTimeout(() => setImportSuccess(''), 3000);
-      } catch {
-        setError(locale === 'zh' ? '数据导入失败，请检查文件格式。' : 'Failed to import data. Please check the file format.');
-      }
-    };
-    reader.readAsText(file);
-    e.target.value = '';
   };
 
   return (
@@ -117,36 +80,9 @@ export default function RegisterPage() {
             <p className="text-gray-500">{locale === 'zh' ? '开始您的MDLooker之旅' : 'Start your MDLooker journey'}</p>
           </div>
 
-          {/* Local Storage Disclaimer */}
-          <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-            <div className="flex items-start gap-2">
-              <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-amber-800">
-                <p className="font-medium mb-1">{locale === 'zh' ? '当前使用本地存储模式' : 'Current using Local Storage Mode'}</p>
-                <p className="text-amber-700 text-xs">
-                  {locale === 'zh'
-                    ? '您的数据仅存储在浏览器中，不会跨设备同步。如需云端同步，请联系管理员。'
-                    : 'Your data is stored only in your browser. It will not sync across devices. For cloud sync, please contact the administrator.'}
-                </p>
-                <button
-                  onClick={() => setShowDataModal(true)}
-                  className="text-amber-600 underline text-xs mt-2 hover:text-amber-800"
-                >
-                  {locale === 'zh' ? '备份/恢复数据 →' : 'Backup/Restore Data →'}
-                </button>
-              </div>
-            </div>
-          </div>
-
           {error && (
             <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">
               {error}
-            </div>
-          )}
-
-          {importSuccess && (
-            <div className="mb-4 p-3 bg-green-50 text-green-600 rounded-lg text-sm">
-              {importSuccess}
             </div>
           )}
 
@@ -280,84 +216,6 @@ export default function RegisterPage() {
               : 'New accounts start on the Free plan. Upgrade anytime from the Pricing page.'}
           </div>
         </Card>
-
-        {/* Data Backup/Restore Modal */}
-        {showDataModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowDataModal(false)}>
-            <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
-              <h3 className="text-lg font-bold text-gray-900 mb-4">{locale === 'zh' ? '备份与恢复数据' : 'Backup & Restore Data'}</h3>
-
-              <div className="space-y-4">
-                {/* Export Section */}
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-2 flex items-center gap-2">
-                    <Download className="w-4 h-4" />
-                    {locale === 'zh' ? '导出您的数据' : 'Export Your Data'}
-                  </h4>
-                  <p className="text-sm text-gray-500 mb-3">
-                    {locale === 'zh'
-                      ? '下载所有数据的备份（收藏、跟踪项目、设置等）'
-                      : 'Download a backup of all your data (favorites, tracking items, settings, etc.)'}
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleExportData}
-                    className="w-full"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    {locale === 'zh' ? '下载备份' : 'Download Backup'}
-                  </Button>
-                </div>
-
-                {/* Import Section */}
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-2 flex items-center gap-2">
-                    <Upload className="w-4 h-4" />
-                    {locale === 'zh' ? '导入数据' : 'Import Data'}
-                  </h4>
-                  <p className="text-sm text-gray-500 mb-3">
-                    {locale === 'zh'
-                      ? '从之前的备份文件恢复数据'
-                      : 'Restore your data from a previous backup file'}
-                  </p>
-                  <label className="block">
-                    <input
-                      type="file"
-                      accept=".json"
-                      onChange={handleImportData}
-                      className="hidden"
-                    />
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full"
-                      onClick={() => {
-                        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement | null;
-                        fileInput?.click();
-                      }}
-                    >
-                      <Upload className="w-4 h-4 mr-2" />
-                      {locale === 'zh' ? '选择备份文件' : 'Select Backup File'}
-                    </Button>
-                  </label>
-                </div>
-
-                <div className="text-xs text-gray-400 text-center">
-                  {locale === 'zh' ? '注意：导入数据将覆盖当前本地数据。' : 'Note: Importing data will overwrite your current local data.'}
-                </div>
-              </div>
-
-              <Button
-                variant="ghost"
-                className="w-full mt-4"
-                onClick={() => setShowDataModal(false)}
-              >
-                {locale === 'zh' ? '关闭' : 'Close'}
-              </Button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

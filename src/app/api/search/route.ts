@@ -5,7 +5,7 @@ import { validateSearchQuery, validatePagination, validateEnum, validateArrayPar
 import { withRateLimit } from '@/lib/middleware/rateLimit'
 import { searchMedplumDevices, searchMedplumOrganizations } from '@/lib/medplum'
 import { isMedplumEnabled } from '@/lib/medplum/client'
-import { getCurrentUser, detectUserRole, checkSearchPermission, incrementQuota, getGuestId } from '@/lib/permissions-server'
+import { getCurrentUserWithRole, detectUserRole, checkSearchPermission, incrementQuota, getGuestId, setGuestIdCookie } from '@/lib/permissions'
 
 interface SearchHistoryInput {
   query: string
@@ -99,19 +99,25 @@ export async function GET(request: NextRequest) {
       const markets = validateArrayParam(marketFilter ?? undefined)
       const query = queryValidation.sanitized
 
-      // Permission & quota check
-      const user = getCurrentUser(request)
+      const user = await getCurrentUserWithRole(request)
       const role = detectUserRole(user)
       const userId = user?.id || getGuestId(request)
+
       const permCheck = await checkSearchPermission(userId, role)
       if (!permCheck.allowed) {
-        return NextResponse.json(
+        const response = NextResponse.json(
           { error: permCheck.reason, quota: permCheck.quota },
           { status: 429 }
         )
+        if (role === 'guest') {
+          const cookie = setGuestIdCookie(userId)
+          response.cookies.set(cookie.name, cookie.value, { path: '/', maxAge: cookie.maxAge, sameSite: 'lax' })
+        }
+        return response
       }
-      const quotaResult = await incrementQuota(userId, role, 'searches')
 
+      const quotaResult = await incrementQuota(userId, role, 'searches')
+      
       const supabase = await createClient()
 
       const results: {
@@ -265,14 +271,11 @@ export async function GET(request: NextRequest) {
           },
           limit,
           medplumEnabled: isMedplumEnabled(),
-          pagination: {
-            page: 1,
-            limit,
-            total: totalResults,
+          quota: {
+            used: quotaResult.used,
+            limit: quotaResult.limit,
+            remaining: quotaResult.remaining,
           },
-        },
-        quota: {
-          searches: quotaResult,
         },
       })
     } catch (error) {

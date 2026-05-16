@@ -36,7 +36,7 @@ function generateReportHtml(
     .map((doc) => `<li style="margin-bottom:8px;">${doc}</li>`)
     .join('')
 
-  const warnings = complianceData.risk_warnings
+  const warnings = (complianceData.risk_warnings || [])
     .map((warn) => `<li style="margin-bottom:8px;">${warn}</li>`)
     .join('')
 
@@ -442,7 +442,7 @@ export function ComplianceCheckTool() {
                 Risk Warnings
               </h4>
               <ul className="space-y-2">
-                {complianceData.risk_warnings.map((warning, idx) => (
+                {(complianceData.risk_warnings || []).map((warning, idx) => (
                   <li key={idx} className="flex items-start gap-2 text-amber-800">
                     <span className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-2 flex-shrink-0"></span>
                     <span>{warning}</span>

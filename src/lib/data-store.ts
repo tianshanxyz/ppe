@@ -103,8 +103,18 @@ export function getCurrentUser(request: Request): UserRecord | null {
     if (parts.length < 2) return null
     
     const email = parts[0]
-    const users = readDataFile<UserRecord>('users.json')
-    return users.find(u => u.email === email) || null
+    const userId = parts[1]
+    
+    return {
+      id: userId,
+      email: email,
+      passwordHash: '',
+      name: '',
+      company: '',
+      role: 'user',
+      membership: 'free',
+      createdAt: new Date().toISOString(),
+    }
   } catch {
     return null
   }

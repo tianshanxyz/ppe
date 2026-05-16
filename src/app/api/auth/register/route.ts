@@ -27,7 +27,6 @@ export async function POST(request: NextRequest) {
 
     const supabase = createServiceClient();
 
-    // Check if email already exists
     const { data: existing } = await supabase
       .from('mdlooker_users')
       .select('id')
@@ -41,32 +40,30 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await hashPassword(password);
     const userId = generateId('user');
 
-    const newUser = {
-      id: userId,
-      email: email.toLowerCase().trim(),
-      password_hash: hashedPassword,
-      name: name.trim().substring(0, 100),
-      company: (company || '').trim().substring(0, 200),
-      role: 'user',
-      membership: 'free',
-    };
-
     const { error: insertError } = await supabase
       .from('mdlooker_users')
-      .insert(newUser);
+      .insert({
+        id: userId,
+        email: email.toLowerCase().trim(),
+        password_hash: hashedPassword,
+        name: name.trim().substring(0, 100),
+        company: (company || '').trim().substring(0, 200),
+        role: 'user',
+        membership: 'free',
+      });
 
     if (insertError) {
       console.error('Register insert error:', insertError);
-      return NextResponse.json({ error: 'Registration failed' }, { status: 500 });
+      return NextResponse.json({ error: 'Registration failed: ' + insertError.message }, { status: 500 });
     }
 
     const userWithoutPassword = {
       id: userId,
-      email: newUser.email,
-      name: newUser.name,
-      company: newUser.company,
-      role: newUser.role,
-      membership: newUser.membership,
+      email: email.toLowerCase().trim(),
+      name: name.trim().substring(0, 100),
+      company: (company || '').trim().substring(0, 200),
+      role: 'user',
+      membership: 'free',
       createdAt: new Date().toISOString(),
     };
 

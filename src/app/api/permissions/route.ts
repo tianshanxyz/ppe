@@ -1,19 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import {
-  getCurrentUser, detectUserRole, getRolePermissions,
-  getQuota, checkSearchPermission, checkDownloadPermission,
-  checkTrackerPermission, getGuestId, setGuestIdCookie,
-} from '@/lib/permissions-server'
-import type { UserRole } from '@/lib/permissions-server'
+import { getCurrentUser, detectUserRole, getRolePermissions, getQuota, checkSearchPermission, checkDownloadPermission, checkTrackerPermission, getGuestId, setGuestIdCookie, getCurrentUserWithRole } from '@/lib/permissions'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const action = searchParams.get('action') || 'status'
   const type = searchParams.get('type') || 'search'
 
-  const user = getCurrentUser(request)
+  const user = await getCurrentUserWithRole(request)
   const role = detectUserRole(user)
-  let userId = user?.id || getGuestId(request)
+  const userId = user?.id || getGuestId(request)
 
   if (action === 'status') {
     const permissions = getRolePermissions(role)
@@ -23,28 +18,13 @@ export async function GET(request: NextRequest) {
 
     const response = NextResponse.json({
       role,
-      permissions: {
-        searches: searchQuota,
-        downloads: downloadQuota,
-        trackerProducts: trackerQuota,
-        apiAccess: permissions.apiAccess,
-        aiSearch: permissions.aiSearch,
-        complianceTracker: permissions.complianceTracker,
-        favorites: permissions.favorites,
-        reports: permissions.reports,
-      },
-      limits: {
-        searches: permissions.searches,
-        downloads: permissions.downloads,
-        trackerProducts: permissions.trackerProducts,
-      }
+      permissions: { searches: searchQuota, downloads: downloadQuota, trackerProducts: trackerQuota, apiAccess: permissions.apiAccess, aiSearch: permissions.aiSearch, complianceTracker: permissions.complianceTracker, favorites: permissions.favorites, reports: permissions.reports },
     })
 
     if (role === 'guest') {
       const cookie = setGuestIdCookie(userId)
       response.cookies.set(cookie.name, cookie.value, { path: '/', maxAge: cookie.maxAge, sameSite: 'lax' })
     }
-
     return response
   }
 
@@ -56,7 +36,6 @@ export async function GET(request: NextRequest) {
       case 'tracker': result = await checkTrackerPermission(userId, role); break
       default: return NextResponse.json({ error: 'Invalid type' }, { status: 400 })
     }
-
     const response = NextResponse.json(result)
     if (role === 'guest') {
       const cookie = setGuestIdCookie(userId)
