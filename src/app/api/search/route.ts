@@ -5,6 +5,7 @@ import { validateSearchQuery, validatePagination, validateEnum, validateArrayPar
 import { withRateLimit } from '@/lib/middleware/rateLimit'
 import { searchMedplumDevices, searchMedplumOrganizations } from '@/lib/medplum'
 import { isMedplumEnabled } from '@/lib/medplum/client'
+import { getCurrentUser, detectUserRole, checkSearchPermission, incrementQuota, getGuestId } from '@/lib/permissions-server'
 
 interface SearchHistoryInput {
   query: string
@@ -98,7 +99,19 @@ export async function GET(request: NextRequest) {
       const markets = validateArrayParam(marketFilter ?? undefined)
       const query = queryValidation.sanitized
 
-      
+      // Permission & quota check
+      const user = getCurrentUser(request)
+      const role = detectUserRole(user)
+      const userId = user?.id || getGuestId(request)
+      const permCheck = checkSearchPermission(userId, role)
+      if (!permCheck.allowed) {
+        return NextResponse.json(
+          { error: permCheck.reason, quota: permCheck.quota },
+          { status: 429 }
+        )
+      }
+      const quotaResult = incrementQuota(userId, role, 'searches')
+
       const supabase = await createClient()
 
       const results: {
@@ -251,7 +264,15 @@ export async function GET(request: NextRequest) {
             deviceClass,
           },
           limit,
-          medplumEnabled: isMedplumEnabled()
+          medplumEnabled: isMedplumEnabled(),
+          pagination: {
+            page: 1,
+            limit,
+            total: totalResults,
+          },
+        },
+        quota: {
+          searches: quotaResult,
         },
       })
     } catch (error) {

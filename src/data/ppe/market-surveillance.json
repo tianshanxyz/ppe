@@ -1,0 +1,1360 @@
+{
+  "_metadata": {
+    "title": "全球PPE市场监督机制数据库 (Global PPE Market Surveillance Database)",
+    "description": "各主要市场PPE产品的市场监管机制、事后监督要求、召回报程序、违规处罚及消费者保护",
+    "version": "1.0",
+    "last_updated": "2026-05-12",
+    "markets_covered": 32,
+    "includes": ["surveillance_authorities", "post_market_surveillance", "incident_reporting", "recall_procedures", "penalties", "market_sampling", "safeguard_mechanisms"]
+  },
+  "market_surveillance": [
+    {
+      "market": "EU",
+      "market_zh": "欧盟/欧洲经济区",
+      "regulatory_basis": "Regulation (EU) 2019/1020 (Market Surveillance), Regulation (EU) 2016/425 (PPE)",
+      "surveillance_authorities": [
+        {
+          "name": "Member State Market Surveillance Authorities (MSAs)",
+          "role": "各国的市场监管机构负责PPE产品的市场抽检、投诉处理和执法",
+          "examples": ["德国: BAUA/ZLS", "法国: DGCCRF", "荷兰: NVWA", "意大利: Ministero della Salute", "西班牙: AEMPS"]
+        },
+        {
+          "name": "European Commission (DG GROW)",
+          "role": "协调各成员国的市场监管活动,维护欧盟安全门/RAPEX系统"
+        },
+        {
+          "name": "Administrative Cooperation Groups (AdCo)",
+          "role": "PPE AdCo专门负责PPE市场监管的跨国协调"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "制造商必须保留技术文件和EU符合性声明至少10年（产品投放市场后）",
+          "制造商必须建立PMS（上市后监督）体系，持续监控产品质量",
+          "制造商必须对市场抽检不合格的产品立即采取纠正措施",
+          "进口商须验证CE标志和技术文件的完整性",
+          "分销商须确保产品带有CE标志和必要文件"
+        ],
+        "documentation_retention": "10年（自产品投放市场日期起算）",
+        "proactive_monitoring": "制造商必须主动收集和分析产品使用数据、投诉和事故信息"
+      },
+      "incident_reporting": {
+        "system": "Safety Gate / RAPEX (Rapid Alert System for dangerous non-food products)",
+        "reporting_obligation": [
+          "制造商/进口商发现产品存在风险时须立即（无不当延迟）向所有销售国的市场监管机构报告",
+          "报告须包含风险分析、受影响产品范围、已采取的纠正措施"
+        ],
+        "timeframe": "立即（通常要求24-48小时内进行初步通报）",
+        "reporting_channel": "通过Business Gateway向各成员国主管机构提交"
+      },
+      "recall_procedures": {
+        "trigger": "市场监管机构认定产品存在严重风险、或制造商主动发现缺陷",
+        "steps": [
+          "1. 风险评估：制造商或监管机构进行产品风险评估",
+          "2. 通告：通过RAPEX系统向所有成员国通报",
+          "3. 市场撤回：要求分销商立即下架问题产品",
+          "4. 消费者召回：公开发布召回通知（通过媒体、网站等渠道）",
+          "5. 纠正/销毁：修理、更换或销毁不合格产品",
+          "6. 闭环报告：向监管机构提交召回完成报告"
+        ],
+        "cost_bearer": "制造商/进口商承担全部召回费用"
+      },
+      "penalties": {
+        "type": "各成员国自行制定，但须'有效、相称且具有劝诫性'",
+        "examples": {
+          "Germany": "最高€100,000或监禁",
+          "France": "最高€1,500,000或销售额10%",
+          "UK (former EU)": "最高£无上限罚金+监禁"
+        },
+        "enforcement_actions": [
+          "禁止/限制产品投放市场",
+          "责令市场撤回或召回",
+          "行政罚款",
+          "刑事起诉（严重违规或故意违规）",
+          "撤销CE证书"
+        ]
+      },
+      "market_sampling": {
+        "authority": "各成员国市场监管机构定期从市场抽取PPE样品进行独立测试",
+        "frequency": "根据风险评估制定年度抽检计划（高风险产品抽检频率更高）",
+        "test_items": ["与公告机构测试数据比对验证", "关键性能指标复测", "标签标识合规检查"]
+      }
+    },
+    {
+      "market": "US",
+      "market_zh": "美国",
+      "regulatory_basis": "Occupational Safety and Health Act 1970, Consumer Product Safety Act, 21 CFR for medical devices",
+      "surveillance_authorities": [
+        {
+          "name": "OSHA (Occupational Safety and Health Administration)",
+          "role": "工作场所PPE的合规检查，制定PPE使用标准",
+          "enforcement": "工作场所检查（can issue citations and penalties up to $161,323 per violation）"
+        },
+        {
+          "name": "FDA (Food and Drug Administration)",
+          "role": "医疗用途PPE（外科口罩、外科N95等）的全生命周期监管",
+          "enforcement": "检查、警告信(Warning Letter)、扣押、民事罚款、刑事起诉"
+        },
+        {
+          "name": "NIOSH (National Institute for Occupational Safety and Health)",
+          "role": "呼吸防护设备的认证批准和持续合规监督、NPPTL实验室进行市场抽检",
+          "enforcement": "撤销认证(decertification) + FDA联合执法"
+        },
+        {
+          "name": "CPSC (Consumer Product Safety Commission)",
+          "role": "消费品类PPE的市场监督（非工作场所用）",
+          "enforcement": "强制召回、民事罚款"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "FDA要求医疗器械制造商建立QSR (21 CFR Part 820)质量体系，包括CAPA（纠正与预防措施）",
+          "NIOSH定期对已批准产品进行市场抽检和工厂检查",
+          "制造商须及时处理用户投诉并保存投诉记录",
+          "FDA要求提交MDR（医疗器械报告）处理不良事件",
+          "OSHA要求雇主定期评估工作场所PPE的适用性和有效性"
+        ],
+        "documentation_retention": "FDA QSR要求质量记录保存：器械设计寿命+2年或上市后2年（取较长者），最长无上限",
+        "proactive_monitoring": "医疗器械类PPE要求实施MDR报告系统和上市后研究"
+      },
+      "incident_reporting": {
+        "system": "FDA MAUDE Database（医疗器械不良事件报告）",
+        "reporting_obligation": [
+          "制造商须在30个日历日内向FDA报告导致死亡或严重伤害的事件",
+          "导致死亡的事件须在10个工作日内报告",
+          "须在5个工作日内报告需要采取补救措施防止重大公共卫生风险的事件",
+          "NIOSH认证产品出现质量问题须立即报告NPPTL"
+        ],
+        "timeframe": "5-30天（根据事件严重程度分级）",
+        "reporting_channel": "FDA eMDR系统电子提交"
+      },
+      "recall_procedures": {
+        "trigger": "FDA/NIOSH/CPSC发现产品违规或制造商主动发现问题",
+        "steps": [
+          "1. 健康危害评估(Health Hazard Evaluation)：由FDA/NIOSH进行",
+          "2. 召回分类：Class I（严重健康危害）、Class II（暂时可逆）、Class III（无健康危害）",
+          "3. 召回策略：确定召回层级（批发层/零售层/用户层）",
+          "4. 公众通知：通过FDA Enforcement Report、新闻稿、直接通知受影响用户",
+          "5. 有效性检查：制造商须证明召回已达到预期效果",
+          "6. 终止召回：FDA确认召回完成"
+        ],
+        "cost_bearer": "制造商/进口商承担全部召回费用",
+        "special": "NIOSH还可以对问题呼吸器产品直接出具'撤销认证(Decertification)'决定并在官网发布"
+      },
+      "penalties": {
+        "civil_penalties": {
+          "OSHA": "Serious/Other-Than-Serious: $16,131/项; Willful/Repeated: $161,323/项",
+          "FDA": "每次违规最高$5,000，涉及欺诈可达$1,000,000+",
+          "CPSC": "每次违规最高$120,000, 系列违规最高$17,150,000"
+        },
+        "criminal_penalties": "故意违规可导致对个人监禁（OSHA:最高6个月, FDA:最高1年+）",
+        "other": "FDA可发布Import Alert（进口警报）禁止违规产品入境"
+      },
+      "market_sampling": {
+        "authority": "NIOSH NPPTL定期从市场购买已认证呼吸器进行独立测试",
+        "frequency": "产品生命周期内定期抽检（随机+针对性）",
+        "test_items": ["过滤效率", "总向内泄漏", "呼气/吸气阻力", "标签标识合规"]
+      }
+    },
+    {
+      "market": "CN",
+      "market_zh": "中国",
+      "regulatory_basis": "《产品质量法》《特种劳动防护用品安全标志管理规定》《医疗器械监督管理条例》",
+      "surveillance_authorities": [
+        {
+          "name": "国家市场监督管理总局 (SAMR)",
+          "role": "产品市场监督抽检、产品质量监督、不合格产品处置",
+          "enforcement": "发布产品质量国家监督抽查结果公告、责令停产/整改、行政处罚"
+        },
+        {
+          "name": "应急管理部 (MEM)",
+          "role": "特种劳动防护用品安全标志(LA)管理、矿山/危化品场所PPE监督",
+          "enforcement": "撤销LA安全标志证书、通报违规企业"
+        },
+        {
+          "name": "国家药品监督管理局 (NMPA)",
+          "role": "医疗器械类PPE（医用口罩等）的全生命周期监管",
+          "enforcement": "飞行检查、暂停生产/进口/销售、收回注册证"
+        },
+        {
+          "name": "海关总署",
+          "role": "进出口PPE产品的质量检验检疫",
+          "enforcement": "退运/销毁不合格进口产品"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "制造商须建立产品质量追溯体系（批次可追溯至原材料来源）",
+          "LA安全标志获证企业须接受至少每年一次的年检和不定期的飞行检查",
+          "医疗器械制造商须建立上市后不良事件监测和再评价制度（《医疗器械不良事件监测和再评价管理办法》）",
+          "制造商须保存产品技术文件和检验报告备查（医疗器械至少保存至产品有效期后2年）",
+          "抽检不合格产品须立即停止生产和销售，主动召回"
+        ],
+        "documentation_retention": "医疗器械类：产品有效期后2年；特种劳动防护用品：LA证书有效期内",
+        "proactive_monitoring": "医疗器械注册人须主动收集不良事件报告，定期提交定期风险评价报告"
+      },
+      "incident_reporting": {
+        "system": "国家医疗器械不良事件监测信息系统",
+        "reporting_obligation": [
+          "医疗器械制造商须在获知不良事件后及时向监测机构报告",
+          "导致死亡的：7日内报告；导致严重伤害的：20日内报告",
+          "境外发生的事件也须按相同要求报告",
+          "LA标志产品出现质量事故须报告应急管理部"
+        ],
+        "timeframe": "死亡事件7日，严重伤害20日",
+        "reporting_channel": "国家医疗器械不良事件监测信息系统在线申报"
+      },
+      "recall_procedures": {
+        "trigger": "产品存在缺陷/发现安全隐患/监督抽检不合格",
+        "steps": [
+          "1. 风险评估：企业自行评估或由监管机构责令评估",
+          "2. 制定召回计划：包括召回范围、召回级别、通知方式",
+          "3. 召回通知：通过企业官网、媒体公告、直接通知等方式告知用户",
+          "4. 实施召回：回收/修理/更换/销毁",
+          "5. 召回报告：向监管机构提交阶段性报告和召回总结报告"
+        ],
+        "cost_bearer": "制造商/进口商承担全部费用"
+      },
+      "penalties": {
+        "administrative": [
+          "责令停产停业",
+          "没收违法所得和产品",
+          "罚款：货值金额等值以上3倍以下（《产品质量法》）",
+          "撤销/吊销许可证（医疗器械注册证或LA证书）"
+        ],
+        "criminal": "生产销售不符合安全标准的产品罪、生产销售伪劣产品罪 — 最高无期徒刑",
+        "credit": "纳入企业信用信息公示系统（'黑名单'制度）"
+      },
+      "market_sampling": {
+        "authority": "国家市场监督管理总局组织全国产品质量国家监督抽查",
+        "frequency": "每年发布年度抽查计划，覆盖重点产品和高风险品种",
+        "test_items": ["关键性能指标", "标签标识合规", "安全标志使用情况"],
+        "public_disclosure": "抽查结果在SAMR官网公开发布"
+      }
+    },
+    {
+      "market": "UK",
+      "market_zh": "英国",
+      "regulatory_basis": "PPE Regulation 2016/425 (retained), Market Surveillance (EU Exit) Regulations",
+      "surveillance_authorities": [
+        {
+          "name": "OPSS (Office for Product Safety and Standards)",
+          "role": "国家产品安全监管机构，协调PPE市场监督",
+          "enforcement": "全英范围内的市场抽检、执法行动组织"
+        },
+        {
+          "name": "HSE (Health and Safety Executive)",
+          "role": "工作场所PPE使用监管和执法",
+          "enforcement": "工作场所检查、下达整改通知、行政罚款"
+        },
+        {
+          "name": "MHRA (Medicines and Healthcare products Regulatory Agency)",
+          "role": "医疗用途PPE的上市后监管（UKCA/CE/UKNI相关）",
+          "enforcement": "市场撤回、安全警示、吊销注册"
+        },
+        {
+          "name": "Trading Standards (地方贸易标准局)",
+          "role": "地方层面的产品安全执法",
+          "enforcement": "抽查、扣押、起诉"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "制造商须保存技术文件和UKCA DoC至少10年",
+          "制造商须建立上市后监督(PMS)系统",
+          "进口商须确保产品带有UKCA标志（或过渡期接受的CE标志）",
+          "UKCA批准机构可进行突击工厂检查"
+        ],
+        "documentation_retention": "10年",
+        "proactive_monitoring": "同EU框架"
+      },
+      "incident_reporting": {
+        "system": "OPSS Product Safety Database",
+        "reporting_obligation": ["制造商/进口商须立即向OPSS报告存在风险的产品", "通过产品安全报告门户提交"],
+        "timeframe": "立即/无不当延迟",
+        "reporting_channel": "OPSS Product Safety Report Portal"
+      },
+      "recall_procedures": {
+        "trigger": "产品被认定存在安全风险",
+        "steps": ["同EU程序", "通过OPSS发布产品安全警报", "PAS 7100提供产品召回最佳实践指导"],
+        "cost_bearer": "制造商/进口商"
+      },
+      "penalties": {
+        "civil": "PPE违规最高无限额罚金",
+        "criminal": "最高12个月监禁（简易程序）或最高2年监禁（公诉程序）",
+        "enforcement": "禁止销售通知、没收产品、销毁不合格产品"
+      },
+      "market_sampling": {
+        "authority": "OPSS和Trading Standards联合执行",
+        "frequency": "年度计划+风险导向+投诉线索"
+      }
+    },
+    {
+      "market": "JP",
+      "market_zh": "日本",
+      "regulatory_basis": "労働安全衛生法 (Industrial Safety and Health Act), 医薬品医療機器等法 (PMD Act)",
+      "surveillance_authorities": [
+        {
+          "name": "厚生労働省 (MHLW)",
+          "role": "PPE总体监管、医疗器械类PPE上市许可",
+          "enforcement": "行政指导、检查"
+        },
+        {
+          "name": "都道府県労働局 / 労働基準監督署",
+          "role": "工作场所PPE合规检查",
+          "enforcement": "下达整改命令、刑事告发"
+        },
+        {
+          "name": "PMDA (Pharmaceuticals and Medical Devices Agency)",
+          "role": "医疗器械的事后安全对策和市场监督",
+          "enforcement": "安全信息发布、要求召回"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "型式检定合格产品的制造商须保持生产和质量管理体系",
+          "型式检定合格的有效期为5年，到期前须更新",
+          "PMD Act要求制造商保存制造和品质管理记录",
+          "制造商须定期进行产品抽样检测"
+        ],
+        "documentation_retention": "型号检定合格期间",
+        "proactive_monitoring": "企业自主体制 + 行政监督"
+      },
+      "incident_reporting": {
+        "system": "PMDA医疗器械安全信息报告系统",
+        "reporting_obligation": [
+          "医疗器械制造商须在获知重大不良事件后15日内（死亡）或30日内（严重）向PMDA报告",
+          "海外发生的影响安全的事件也须在获知后15日内报告"
+        ],
+        "timeframe": "15日（死亡）/ 30日（严重）",
+        "reporting_channel": "PMDA在线报告系统"
+      },
+      "recall_procedures": {
+        "trigger": "产品被发现安全缺陷或违反规定",
+        "steps": [
+          "1. 企业向PMDA/厚生劳动省提交回收报告书",
+          "2. 企业公开发布回收信息（クラスI/II/III分级）",
+          "3. 实施回收、修理或退款",
+          "4. 向监管机构定期报告进度",
+          "5. 提交回收终了报告"
+        ],
+        "cost_bearer": "制造商/进口商"
+      },
+      "penalties": {
+        "administrative": "撤销型式检定合格证、吊销医疗器械制造销售许可",
+        "criminal": "労働安全衛生法违反：最高6个月惩役或50万円罚金；PMD Act违反：最高3年惩役或300万円罚金"
+      },
+      "market_sampling": {
+        "authority": "厚生劳动省和都道府县定期执行",
+        "frequency": "根据计划和风险提示"
+      }
+    },
+    {
+      "market": "KR",
+      "market_zh": "韩国",
+      "regulatory_basis": "산업안전보건법 (Occupational Safety and Health Act), 의료기기법 (Medical Device Act)",
+      "surveillance_authorities": [
+        {
+          "name": "고용노동부 (MOEL - Ministry of Employment and Labor)",
+          "role": "PPE安全认证发放和市场监管",
+          "enforcement": "撤销安全认证(KCs)、行政罚款、刑事告发"
+        },
+        {
+          "name": "한국산업안전보건공단 (KOSHA)",
+          "role": "PPE产品的性能检验、质量评估和市场抽检",
+          "enforcement": "取消安全认证建议、公布不合格产品"
+        },
+        {
+          "name": "식품의약품안전처 (MFDS)",
+          "role": "医疗器械类PPE的全过程监管",
+          "enforcement": "取消许可、暂停生产/销售、召回、广告管制"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "KCs安全认证获证企业须每年接受定期检查",
+          "认证机构可以进行不定期突击检查",
+          "更换关键零部件或生产工艺须提前申报",
+          "产品须按规定标注KCs认证编号和使用期限",
+          "认证有效期一般为3-5年，到期须重新认证"
+        ],
+        "documentation_retention": "质量记录保存至少3年",
+        "proactive_monitoring": "KOSHA定期抽检计划+监督"
+      },
+      "incident_reporting": {
+        "system": "KOSHA安全事故报告系统 / MFDS医疗器械不良事件报告系统",
+        "reporting_obligation": [
+          "PPE事故/缺陷须向KOSHA报告",
+          "医疗器械不良事件：死亡/生命威胁事件7日内，其他严重事件15日内",
+          "境外不良事件也须在获知后30日内报告MFDS"
+        ],
+        "timeframe": "致命7日内，严重15日内",
+        "reporting_channel": "KOSHA/ MFDS在线系统"
+      },
+      "recall_procedures": {
+        "trigger": "安全认证产品不符合标准或存在安全风险",
+        "steps": [
+          "1. KOSHA或MFDS发出不合格通知",
+          "2. 制造商提交召回计划书",
+          "3. 公开发布召回公告（사업자 공표）",
+          "4. 实施召回（回收/更换/退款/修理）",
+          "5. 提交处理结果报告"
+        ],
+        "cost_bearer": "制造商"
+      },
+      "penalties": {
+        "KCs安全认证": "虚假认证：5年以下惩役或5,000万韩元以下罚金；无认证销售：3年以下惩役或3,000万韩元以下罚金",
+        "MFDS医疗器械": "无许可生产销售：5年以下惩役或5,000万韩元以下罚金",
+        "其他": "企业处罚 + 公开披露"
+      },
+      "market_sampling": {
+        "authority": "KOSHA流通品调查",
+        "frequency": "每季度/半年定期+不定期",
+        "public_disclosure": "不合格产品在KOSHA和MOEL官网公示"
+      }
+    },
+    {
+      "market": "CA",
+      "market_zh": "加拿大",
+      "regulatory_basis": "Canada Occupational Health and Safety Regulations, Medical Devices Regulations (SOR/98-282)",
+      "surveillance_authorities": [
+        {
+          "name": "Health Canada (加拿大卫生部)",
+          "role": "医疗器械类PPE的市场准入和上市后监管",
+          "enforcement": "暂停/撤销MDL、发布安全警报、要求召回"
+        },
+        {
+          "name": "Provincial/Territorial OHS Authorities",
+          "role": "省级职业健康安全机构负责工作场所PPE合规检查",
+          "enforcement": "工作场所检查、改进令、罚款、起诉"
+        },
+        {
+          "name": "CSA Group (Canadian Standards Association)",
+          "role": "PPE标准的制定和认证服务",
+          "enforcement": "撤销CSA认证标志使用权"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "制造商须实施ISO 13485质量管理体系（医疗器械类）",
+          "MDL持证人须向Health Canada提交年度许可证审查申请",
+          "须保存质量记录至少5年",
+          "制造商须建立投诉处理和不良事件报告制度"
+        ],
+        "documentation_retention": "至少5年",
+        "proactive_monitoring": "上市后监督报告制度"
+      },
+      "incident_reporting": {
+        "system": "Health Canada Medical Device Problem Reporting",
+        "reporting_obligation": [
+          "导致死亡或严重健康恶化的事件须在获知后10日内报告",
+          "其他不良事件30日内报告",
+          "制造商须进行趋势分析，识别潜在安全信号"
+        ],
+        "timeframe": "10日（严重）/ 30日（常规）",
+        "reporting_channel": "Health Canada在线报告系统 / Mandatory Medical Device Problem Report Form"
+      },
+      "recall_procedures": {
+        "trigger": "产品存在安全风险或违反法规",
+        "steps": [
+          "1. 制造商与Health Canada商议召回策略",
+          "2. Health Canada发布召回类型（Type I/II/III）",
+          "3. 发布召回通知（Health Canada Recall and Safety Alerts数据库）",
+          "4. 实施召回",
+          "5. 提交召回有效性检查报告"
+        ],
+        "cost_bearer": "制造商/进口商"
+      },
+      "penalties": {
+        "Medical Devices Regulations": "即席定罪：最高$5,000/日或监禁6个月；公诉定罪：最高$25,000/日或监禁12个月",
+        "OHS violations": "省级罚款因省份而异（Ontario: 个人最高$100,000/监禁12个月，企业最高$1,500,000）"
+      },
+      "market_sampling": {
+        "authority": "Health Canada和CSA",
+        "frequency": "根据风险评估和投诉",
+        "test_items": ["性能验证", "标签要求"]
+      }
+    },
+    {
+      "market": "AU",
+      "market_zh": "澳大利亚",
+      "regulatory_basis": "Therapeutic Goods Act 1989, Work Health and Safety (WHS) Act 2011",
+      "surveillance_authorities": [
+        {
+          "name": "TGA (Therapeutic Goods Administration)",
+          "role": "医疗器械（含医疗PPE）的全生命周期监管，ARTG注册管理",
+          "enforcement": "取消/暂停ARTG注册、发布安全警报、强制召回"
+        },
+        {
+          "name": "Safe Work Australia",
+          "role": "制定国家工作场所PPE政策框架",
+          "enforcement": "政策制定和指导（执法由各州/领地WHS监管机构执行）"
+        },
+        {
+          "name": "State/Territory WHS Regulators",
+          "role": "各州工作场所PPE合规检查和执法",
+          "examples": ["SafeWork NSW", "WorkSafe Victoria", "WorkSafe QLD"]
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "ARTG注册持有人须实施持续监控系统",
+          "TGA有权要求提供产品样品进行独立测试",
+          "制造商须建立质量管理体系",
+          "须保存记录至少5年（医疗器械）/ 10年（植入类）"
+        ],
+        "documentation_retention": "5-10年",
+        "proactive_monitoring": "TGA Laboratory进行目标性和随机抽样检测"
+      },
+      "incident_reporting": {
+        "system": "TGA Adverse Event Reporting (DAEN - Database of Adverse Event Notifications)",
+        "reporting_obligation": [
+          "导致死亡或严重伤害的须在获知后10天内报告TGA",
+          "接近事件(Near-incident)须在30天内报告",
+          "制造商须提交年度报告总结不良事件趋势"
+        ],
+        "timeframe": "10天（严重）, 30天（常规）",
+        "reporting_channel": "TGA Medical Device Incident Reporting (MDIR) System"
+      },
+      "recall_procedures": {
+        "trigger": "TGA的风险评估认定需要召回",
+        "steps": [
+          "1. 制造商与TGA协商确定召回行动",
+          "2. TGA发布召回通知(System for Australian Recall Actions - SARA)",
+          "3. 产品撤回和通知受影响用户",
+          "4. 提交进展报告",
+          "5. TGA监督召回效果"
+        ],
+        "cost_bearer": "Sponsor（保荐人）/制造商"
+      },
+      "penalties": {
+        "Therapeutic Goods Act": "民事处罚最高$1,110,000（企业）/ $222,000（个人）；刑事处罚最高$555,000或5年监禁",
+        "WHS violations": "企业最高$3,000,000+，个人最高$600,000+5年监禁（各州不同）"
+      },
+      "market_sampling": {
+        "authority": "TGA Laboratories",
+        "frequency": "年度计划+风险导向",
+        "public_disclosure": "TGA网站公示不合格产品和执法行动"
+      }
+    },
+    {
+      "market": "BR",
+      "market_zh": "巴西",
+      "regulatory_basis": "NR-6 (PPE Regulation), Law No. 9.933/1999 (INMETRO), ANVISA for medical PPE",
+      "surveillance_authorities": [
+        {
+          "name": "Ministério do Trabalho e Emprego (MTE)",
+          "role": "PPE CA证书管理、工作场所PPE合规检查",
+          "enforcement": "撤销CA证书、行政罚款"
+        },
+        {
+          "name": "INMETRO",
+          "role": "制定PPE技术法规、认可认证机构和检测实验室",
+          "enforcement": "暂停/撤销认证,监督认证机构"
+        },
+        {
+          "name": "ANVISA (Agência Nacional de Vigilância Sanitária)",
+          "role": "医疗用途PPE的市场准入和监管",
+          "enforcement": "取消注册(Registro), 禁止销售, 罚款"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "CA证书有效期5年，到期须重新检测更新",
+          "制造商须保持产品与送检样品一致",
+          "更换原料或工艺须重新测试并更新CA证书",
+          "进口PPE须每年更新CA证书",
+          "发现不合格品须立即向MTE报告"
+        ],
+        "documentation_retention": "CA证书有效期内",
+        "proactive_monitoring": "MTE定期审查+INMETRO市场抽检"
+      },
+      "incident_reporting": {
+        "system": "MTE/INMETRO事故报告系统",
+        "reporting_obligation": [
+          "制造商须向MTE报告PPE相关的工伤事故",
+          "ANVISA医疗器械不良事件须在获知后72小时内（严重）或15日（常规）报告"
+        ],
+        "timeframe": "72小时（严重不良事件）",
+        "reporting_channel": "NOTIVISA（ANVISA不良事件报告系统）"
+      },
+      "recall_procedures": {
+        "trigger": "PPE被证明不安全或不符合CA要求",
+        "steps": [
+          "1. 制造商/进口商自愿发起或MTE/INMETRO/ANVISA强制要求",
+          "2. 发布全国性召回公告（须在主要报纸和网站刊登）",
+          "3. 实施召回（回收/更换）",
+          "4. 向监管机构提交召回报告"
+        ],
+        "cost_bearer": "制造商/进口商全部承担"
+      },
+      "penalties": {
+        "NR-6 violations": "罚款最高可达REAIS 6,000+",
+        "CA造假/无CA销售": "罚款+刑事责任（产品扣押、企业查封）",
+        "ANVISA violations": "轻违规：警告至R$75,000；严重违规：R$2,000至R$1,500,000+刑事"
+      },
+      "market_sampling": {
+        "authority": "INMETRO和MTE联合执行",
+        "frequency": "定期+投诉触发"
+      }
+    },
+    {
+      "market": "IN",
+      "market_zh": "印度",
+      "regulatory_basis": "BIS Act 2016, Legal Metrology Act 2009, Drugs and Cosmetics Act (Medical Device Rules 2017)",
+      "surveillance_authorities": [
+        {
+          "name": "BIS (Bureau of Indian Standards)",
+          "role": "ISI认证标志的发放和市场监管",
+          "enforcement": "暂停/撤销ISI许可证,市场抽检,样品查扣"
+        },
+        {
+          "name": "CDSCO (Central Drugs Standard Control Organization)",
+          "role": "医疗器械（含医疗PPE）的注册和上市后监管",
+          "enforcement": "暂停/取消注册、发布安全警报、强制召回"
+        },
+        {
+          "name": "DGFT (Directorate General of Foreign Trade)",
+          "role": "进口PPE的合规管理",
+          "enforcement": "限制/禁止进口"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "ISI获证企业须接受BIS定期和不定期检查",
+          "BIS有权从市场购买样品进行测试",
+          "制造商须保存测试记录和质量控制文件",
+          "ISI许可证有效期1-2年，须定期更新",
+          "发现不合格须立即暂停生产和销售"
+        ],
+        "documentation_retention": "ISI许可证有效期内和更新审评期间",
+        "proactive_monitoring": "BIS市场监督和工厂监督两线并行"
+      },
+      "incident_reporting": {
+        "system": "Materiovigilance Programme of India (MvPI)",
+        "reporting_obligation": [
+          "医疗器械不良事件须在15日内报告",
+          "导致死亡的须在5日内报告",
+          "制造商/进口商须提交定期安全更新报告(PSUR)"
+        ],
+        "timeframe": "5日（死亡）/ 15日（严重）",
+        "reporting_channel": "MvPI在线报告平台"
+      },
+      "recall_procedures": {
+        "trigger": "产品被判定有缺陷或存在健康风险",
+        "steps": [
+          "1. 制造商/CDSCO识别产品风险",
+          "2. CDSCO发布召回指令或制造商主动召回",
+          "3. 公开发布召回通知（全国和地区报纸）",
+          "4. 实施召回并在规定时间内报告进展",
+          "5. CDSCO监督直至召回完成"
+        ],
+        "cost_bearer": "制造商/进口商"
+      },
+      "penalties": {
+        "BIS Act": "首次违规：最高₹2,00,000罚金；重复违规：最高₹5,00,000罚金；误导使用ISI标志：最高监禁1年",
+        "Medical Device Rules": "违反注册条件：取消注册+市场上3年禁售",
+        "Drugs and Cosmetics Act": "销售不合规医疗器械：监禁（最高终身监禁）+罚金"
+      },
+      "market_sampling": {
+        "authority": "BIS和CDSCO",
+        "frequency": "年度计划+针对性+投诉驱动"
+      }
+    },
+    {
+      "market": "GCC",
+      "market_zh": "海湾合作委员会",
+      "regulatory_basis": "GSO Conformity Marking Scheme, GSO Technical Regulations for PPE",
+      "surveillance_authorities": [
+        {
+          "name": "GSO (GCC Standardization Organization)",
+          "role": "G-Mark证书管理和区域标准协调",
+          "enforcement": "区域市场监督协调"
+        },
+        {
+          "name": "各成员国标准化机构和市场监管机构",
+          "examples": [
+            "沙特: SASO/SFDA",
+            "阿联酋: ESMA/MoIAT",
+            "科威特: PAI/KOWSMD",
+            "卡塔尔: QS/MOPH",
+            "阿曼: DGSM",
+            "巴林: BSMD"
+          ]
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "G-Mark认证持有者须接受至少每年一次的监督检查",
+          "认证机构有权进行突击检查",
+          "须保存质量文件至少3年",
+          "GMP体系须持续维护（适用时）"
+        ],
+        "documentation_retention": "至少3年",
+        "proactive_monitoring": "GCTS追溯系统要求产品可在市场中被追踪"
+      },
+      "incident_reporting": {
+        "system": "各成员国市场监管机构各自的报告系统",
+        "reporting_obligation": ["获证产品出现安全问题时须立即通知发证机构和成员国监管机构"],
+        "timeframe": "立即",
+        "reporting_channel": "向认证发证机构直接报告"
+      },
+      "recall_procedures": {
+        "trigger": "产品出现安全或质量问题",
+        "steps": [
+          "1. 通知发证机构",
+          "2. 发布公共召回通知",
+          "3. 产品回收/更换处理",
+          "4. 报告处理结果"
+        ],
+        "cost_bearer": "制造商/当地代理商"
+      },
+      "penalties": {
+        "range": "暂停/撤销G-Mark证书、禁止进口/销售、巨额罚款（各成员国各有标准）",
+        "Saudi Arabia": "SASO罚款可达SAR 1,000,000 + 产品销毁",
+        "UAE": "ESMA罚款可达AED 250,000 + 吊销执照"
+      },
+      "market_sampling": {
+        "authority": "各成员国标准化机构",
+        "frequency": "定期+风险导向",
+        "coordination": "GSO层面协调跨国抽检"
+      }
+    },
+    {
+      "market": "EAEU",
+      "market_zh": "欧亚经济联盟",
+      "regulatory_basis": "TR CU 019/2011 On Safety of Personal Protective Equipment",
+      "surveillance_authorities": [
+        {
+          "name": "各成员国国家市场监管机构",
+          "examples": [
+            "俄罗斯: Rosstandart / Rospotrebnadzor",
+            "白俄罗斯: Gosstandart / Ministry of Health",
+            "哈萨克斯坦: Committee for Technical Regulation / Ministry of Health",
+            "吉尔吉斯斯坦: Center for Standardization and Metrology",
+            "亚美尼亚: Ministry of Economy / Ministry of Health"
+          ]
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "制造商须持续确保产品符合EAC技术法规要求",
+          "EAC证书有效期一般为1-5年（单批证书为单次有效）",
+          "获证企业须接受年度监督检查",
+          "发现不合格须立即通知认证机构并实施纠正措施",
+          "质量记录须保存至少5年"
+        ],
+        "documentation_retention": "至少5年",
+        "proactive_monitoring": "国家监管机构定期抽检 + 海关监管"
+      },
+      "incident_reporting": {
+        "system": "各国国家监管机构的报告系统",
+        "reporting_obligation": [
+          "产品安全事件须立即通知认证机构和当地监管机构",
+          "须提交纠正措施计划"
+        ],
+        "timeframe": "立即",
+        "reporting_channel": "认证机构/当地监管"
+      },
+      "recall_procedures": {
+        "trigger": "发现产品不符合安全要求",
+        "steps": [
+          "1. 制造商告知认证机构",
+          "2. 发布消费者通知",
+          "3. 产品撤回",
+          "4. 提交纠正措施报告",
+          "5. 通知所有EAEU成员国"
+        ],
+        "cost_bearer": "制造商/授权代表"
+      },
+      "penalties": {
+        "范围": "行政罚款（因成员国不同而异）+终止/撤回EAC证书+产品扣押+刑事追责",
+        "Russia (example)": "企业罚款可达销售额金额+撤销认证"
+      },
+      "market_sampling": {
+        "authority": "各国Rosstandart等监管机构",
+        "frequency": "年度计划"
+      }
+    },
+    {
+      "market": "SG",
+      "market_zh": "新加坡",
+      "regulatory_basis": "Workplace Safety and Health Act, Health Products Act",
+      "surveillance_authorities": [
+        {
+          "name": "MOM (Ministry of Manpower)",
+          "role": "工作场所安全和PPE使用监督",
+          "enforcement": "工作场所检查、发出整改通知(Notice of Non-compliance)、罚款"
+        },
+        {
+          "name": "HSA (Health Sciences Authority)",
+          "role": "医疗器械类PPE的上市前审批和上市后监督",
+          "enforcement": "暂停/取消注册、发布Field Safety Notice、强制召回"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "医疗器械注册人须建立质量管理系统",
+          "HSA有权要求提供产品样品进行测试",
+          "须实施上市后警戒(Post-market Vigilance)计划",
+          "须保存记录：器械寿命周期+1年（至少5年）"
+        ],
+        "documentation_retention": "器械生命周期+1年（最少5年）",
+        "proactive_monitoring": "HSA根据风险定期监控"
+      },
+      "incident_reporting": {
+        "system": "HSA Medical Device Adverse Event Reporting",
+        "reporting_obligation": [
+          "死亡或严重健康威胁事件：10日内报告",
+          "其他不良事件：30日内报告",
+          "须对趋势进行分析，识别安全信号"
+        ],
+        "timeframe": "10日/30日",
+        "reporting_channel": "HSA医疗器械信息报告系统(MEDICS)"
+      },
+      "recall_procedures": {
+        "trigger": "HSA判定或企业自行决定",
+        "steps": [
+          "1. 企业向HSA提交Field Safety Corrective Action (FSCA)计划",
+          "2. HSA审查并指导召回等级和实施方式",
+          "3. 发布公众通知（如需要）",
+          "4. 产品撤回",
+          "5. 提交FSCA完成报告"
+        ],
+        "cost_bearer": "注册人"
+      },
+      "penalties": {
+        "Health Products Act": "首次违规罚款可达$20,000或监禁12个月；严重违规罚款可达$100,000或监禁3年",
+        "Workplace Safety and Health Act": "企业最高罚款$500,000"
+      },
+      "market_sampling": {
+        "authority": "HSA和MOM",
+        "frequency": "定期+风险触发"
+      }
+    },
+    {
+      "market": "MX",
+      "market_zh": "墨西哥",
+      "regulatory_basis": "NOM-113-STPS-2009 (PPE), LFMN (Federal Law on Metrology and Standardization)",
+      "surveillance_authorities": [
+        {
+          "name": "STPS (Secretaría del Trabajo y Previsión Social)",
+          "role": "发布PPE技术标准(NOM)，工作场所PPE监督",
+          "enforcement": "行政罚款、暂停运营"
+        },
+        {
+          "name": "COFEPRIS (Comisión Federal para la Protección contra Riesgos Sanitarios)",
+          "role": "医疗器械类PPE的注册和市场监督",
+          "enforcement": "撤销注册(Registro Sanitario)、市场撤回、发布健康警报"
+        },
+        {
+          "name": "PROFECO (Procuraduría Federal del Consumidor)",
+          "role": "一般消费品的市场监管和消费者保护",
+          "enforcement": "行政处罚、产品扣押、诉讼"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "NOM认证后须持续遵守标准和认证要求",
+          "COFEPRIS注册产品须接受不定期检查",
+          "须保存认证/注册相关文件",
+          "须及时处理用户投诉"
+        ],
+        "documentation_retention": "产品生命周期+证书有效期",
+        "proactive_monitoring": "STPS和PROFECO定期抽检"
+      },
+      "incident_reporting": {
+        "system": "COFEPRIS Technovigilance System",
+        "reporting_obligation": [
+          "医疗器械不良事件须在获知后向COFEPRIS报告",
+          "严重事件须在15天内报告"
+        ],
+        "timeframe": "15日",
+        "reporting_channel": "COFEPRIS技术监督(Technovigilancia)在线系统"
+      },
+      "recall_procedures": {
+        "trigger": "NOM认证失效或产品存在安全风险",
+        "steps": [
+          "1. 企业/COFEPRIS发出通知",
+          "2. 通过媒体和直接通知实施召回",
+          "3. 报告召回进度",
+          "4. 监管机构验收召回"
+        ],
+        "cost_bearer": "制造商/进口商"
+      },
+      "penalties": {
+        "NOM violations": "罚款可达50,000 UMA (约$10万+ MX$)",
+        "COFEPRIS": "罚款+关闭营业+产品查扣+刑事责任",
+        "LFMN violations": "最高监禁5年"
+      },
+      "market_sampling": {
+        "authority": "PROFECO/STPS",
+        "frequency": "年度+投诉导向"
+      }
+    },
+    {
+      "market": "ZA",
+      "market_zh": "南非",
+      "regulatory_basis": "Occupational Health and Safety Act (OHSA), National Regulator for Compulsory Specifications Act",
+      "surveillance_authorities": [
+        {
+          "name": "NRCS (National Regulator for Compulsory Specifications)",
+          "role": "强制规范类PPE产品的审批和市场监管",
+          "enforcement": "暂停/撤销LoA（批准书）、禁止进口/销售、销毁违规产品"
+        },
+        {
+          "name": "Department of Employment and Labour",
+          "role": "工作场所PPE使用的合规检查",
+          "enforcement": "工作场所禁制令、罚款、起诉"
+        },
+        {
+          "name": "SAHPRA (South African Health Products Regulatory Authority)",
+          "role": "医疗器械类PPE的注册和监管",
+          "enforcement": "撤销注册、安全警告、强制召回"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "NRCS批准的产品须保持与审批样品一致的质量",
+          "进口商须在每批进口前获得NRCS的LoA",
+          "NRCS有权在市场或边境对产品进行抽样检验",
+          "制造商须保存合规文件"
+        ],
+        "documentation_retention": "LoA有效期间",
+        "proactive_monitoring": "NRCS定期市场监督+海关联合执法"
+      },
+      "incident_reporting": {
+        "system": "NRCS Consumer Complaint Portal / SAHPRA",
+        "reporting_obligation": ["须向NRCS/SAHPRA报告产品安全问题"],
+        "timeframe": "合理期限内"
+      },
+      "recall_procedures": {
+        "trigger": "NRCS/SAHPRA发布不合格通知",
+        "steps": [
+          "1. 制造商提交回收计划",
+          "2. 公开发布警示",
+          "3. 回收/销毁产品",
+          "4. 向NRCS/SAHPRA提交完成报告"
+        ],
+        "cost_bearer": "进口商/制造商"
+      },
+      "penalties": {
+        "NRCS Act": "罚款R1,000,000或营业额10%（取大者）+ 监禁最高5年",
+        "OHSA": "罚款R100,000或监禁2年"
+      },
+      "market_sampling": {
+        "authority": "NRCS",
+        "frequency": "持续监控+投诉突击"
+      }
+    },
+    {
+      "market": "TH",
+      "market_zh": "泰国",
+      "regulatory_basis": "Industrial Product Standards Act B.E. 2511, Medical Device Act B.E. 2551",
+      "surveillance_authorities": [
+        {
+          "name": "TISI (Thai Industrial Standards Institute)",
+          "role": "TIS强制标准PPE产品的认证发放和市场监管",
+          "enforcement": "撤销TIS认证、扣押不合格产品、起诉"
+        },
+        {
+          "name": "Thai FDA (Food and Drug Administration)",
+          "role": "医疗器械类PPE的注册和上市后监督",
+          "enforcement": "注销注册、发布安全警报、召回"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "TIS认证获证企业须接受年度监督检查",
+          "产品须持续符合TIS标准",
+          "FDA注册产品须实施上市后监管",
+          "须保存质量记录"
+        ],
+        "documentation_retention": "TIS认证有效期内",
+        "proactive_monitoring": "TISI定期到工厂和市场抽查"
+      },
+      "incident_reporting": {
+        "system": "Thai FDA Medical Device Adverse Event System",
+        "reporting_obligation": ["严重不良事件须在规定期限内报告Thai FDA"],
+        "timeframe": "依据严重程度",
+        "reporting_channel": "Thai FDA在线系统"
+      },
+      "recall_procedures": {
+        "trigger": "产品不符合标准或危害安全",
+        "steps": ["TISI/Thai FDA发布不合格通知", "制造商实施回收", "公布召回信息", "报告进度"],
+        "cost_bearer": "制造商/进口商"
+      },
+      "penalties": {
+        "TISI violations": "罚款最高฿2,000,000或监禁2年",
+        "Medical Device Act": "无证销售医疗器材：罚款฿300,000或监禁3年"
+      },
+      "market_sampling": {
+        "authority": "TISI",
+        "frequency": "年度+不定时"
+      }
+    },
+    {
+      "market": "VN",
+      "market_zh": "越南",
+      "regulatory_basis": "Law on Product and Goods Quality, Law on Standards and Technical Regulations",
+      "surveillance_authorities": [
+        {
+          "name": "MOST (Ministry of Science and Technology - Directorate for Standards, Metrology and Quality)",
+          "role": "标准符合性(CR标志)管理和市场质量监督",
+          "enforcement": "撤销CR标志合规证书、行政罚款、产品扣押"
+        },
+        {
+          "name": "MOH (Ministry of Health)",
+          "role": "医疗器械类PPE的注册管理和市场监督",
+          "enforcement": "撤销注册证书、市场撤回、行政处罚"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "CR标志产品须保持持续合规",
+          "MOH注册的医疗器械须接受上市后检查",
+          "须保存合规记录",
+          "进口产品须在越南有授权代表"
+        ],
+        "documentation_retention": "CR证书有效期间",
+        "proactive_monitoring": "STAMEQ总干事指导下的市场抽检"
+      },
+      "incident_reporting": {
+        "system": "MOH医疗器械不良事件报告",
+        "reporting_obligation": ["须向MOH报告产品质量事件"],
+        "timeframe": "30天内（或按特殊要求）",
+        "reporting_channel": "MOH指定渠道"
+      },
+      "recall_procedures": {
+        "trigger": "产品不符合国家技术法规(QCVN)",
+        "steps": ["通知监管机构", "公开发布召回", "回收/退换", "整改报告"],
+        "cost_bearer": "制造商/进口商"
+      },
+      "penalties": {
+        "Administrative": "罚款可达1亿VND, 产品没收, 暂停运营6-12个月",
+        "Criminal": "可追究刑事责任"
+      },
+      "market_sampling": {
+        "authority": "STAMEQ/MOST",
+        "frequency": "年度+专项"
+      }
+    },
+    {
+      "market": "MY",
+      "market_zh": "马来西亚",
+      "regulatory_basis": "Factories and Machinery Act 1967, Medical Device Act 2012 (Act 737)",
+      "surveillance_authorities": [
+        {
+          "name": "DOSH (Department of Occupational Safety and Health)",
+          "role": "PPE审批和市场监管",
+          "enforcement": "撤销审批、禁止销售/使用"
+        },
+        {
+          "name": "MDA (Medical Device Authority)",
+          "role": "医疗器械类PPE的注册管理和上市后警戒",
+          "enforcement": "取消注册、发布Field Safety Corrective Action (FSCA)、强制召回"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "DOSH审批产品须接受定期和突击检查",
+          "MDA注册产品：须实施上市后警戒(Post-market vigilance)",
+          "建立和维持质量管理体系（医疗类PPE须ISO 13485）",
+          "须向MDA报告所有不良事件"
+        ],
+        "documentation_retention": "产品生命周期+1年（最低5年）",
+        "proactive_monitoring": "MDA定期市场抽检"
+      },
+      "incident_reporting": {
+        "system": "MDA Medical Device Adverse Event Reporting (MDA/GL/03)",
+        "reporting_obligation": [
+          "死亡或重伤：10日内报告",
+          "其他不良事件：30日内报告",
+          "制造商须提交趋势报告"
+        ],
+        "timeframe": "10/30日",
+        "reporting_channel": "MDA在线医疗器械报告系统(MeDC@St)"
+      },
+      "recall_procedures": {
+        "trigger": "MDA判断需进行现场纠正措施(FSCA)",
+        "steps": ["向MDA提交FSCA报告", "MDA指导措施层级", "发布公众通知/直接通知", "实施回收", "提交FSCA完成报告"],
+        "cost_bearer": "注册证持有人"
+      },
+      "penalties": {
+        "Medical Device Act": "无注册：罚款最高RM 200,000或监禁3年；违规FSCA：罚款最高RM 300,000或监禁5年",
+        "Factories and Machinery Act": "罚款最高RM 50,000或监禁1年"
+      },
+      "market_sampling": {
+        "authority": "MDA和DOSH",
+        "frequency": "年度+专项+投诉触发"
+      }
+    },
+    {
+      "market": "ID",
+      "market_zh": "印度尼西亚",
+      "regulatory_basis": "Government Regulation No. 86/2019 (Food Safety), Ministry of Health regulations for medical devices",
+      "surveillance_authorities": [
+        {
+          "name": "BSN (Badan Standardisasi Nasional)",
+          "role": "SNI标准认证管理和市场监管",
+          "enforcement": "撤销SNI认证、产品召回"
+        },
+        {
+          "name": "Ministry of Health (Kemenkes)",
+          "role": "医疗器械类PPE的分销许可和市场监管",
+          "enforcement": "吊销IZIN EDAR、市场撤回、行政罚款"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "SNI认证获证企业须接受定期监督检查",
+          "LSPro认证机构对获证产品进行市场抽检",
+          "医疗器械须建立上市后监测"
+        ],
+        "documentation_retention": "认证有效期间",
+        "proactive_monitoring": "SNI市场抽检(KSO)系统"
+      },
+      "incident_reporting": {
+        "system": "Ministry of Health pharmacovigilance / medical device vigilance",
+        "reporting_obligation": ["须向Kemenkes报告不良事件"],
+        "timeframe": "根据严重程度",
+        "reporting_channel": "E-reporting Kemenkes"
+      },
+      "recall_procedures": {
+        "trigger": "产品不符合SNI或存在健康风险",
+        "steps": ["通知认证机构(LSPro)", "公告", "回收", "报告"],
+        "cost_bearer": "制造商/进口商"
+      },
+      "penalties": {
+        "SNI violations": "行政罚款+产品扣押+撤销认证",
+        "Medical devices": "最高罚款IDR 1,000,000,000或监禁"
+      },
+      "market_sampling": {
+        "authority": "BSN通过KSO系统",
+        "frequency": "每季度/年度"
+      }
+    },
+    {
+      "market": "PH",
+      "market_zh": "菲律宾",
+      "regulatory_basis": "Republic Act 7394 (Consumer Act), RA 9711 (FDA Act)",
+      "surveillance_authorities": [
+        {
+          "name": "DTI-BPS (Department of Trade and Industry - Bureau of Philippine Standards)",
+          "role": "PS/ICC标志管理和市场监督",
+          "enforcement": "撤销认证、产品扣押、行政处罚"
+        },
+        {
+          "name": "DOLE (Department of Labor and Employment)",
+          "role": "工作场所PPE合规检查",
+          "enforcement": "整改令、罚款"
+        },
+        {
+          "name": "FDA Philippines",
+          "role": "医疗器械类PPE的注册和上市后监督",
+          "enforcement": "取消CPR、要求召回、安全警报"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "PS/ICC持证人须接受定期工厂和市场检查",
+          "FDA注册产品须接受合规检查",
+          "须保存合规记录文件"
+        ],
+        "documentation_retention": "证书有效期间",
+        "proactive_monitoring": "DTI-BPS市场监测"
+      },
+      "incident_reporting": {
+        "system": "FDA Philippines Pharmacovigilance System",
+        "reporting_obligation": ["须在规定时间内报告不良事件"],
+        "timeframe": "依据FDA通告",
+        "reporting_channel": "FDA e-reporting"
+      },
+      "recall_procedures": {
+        "trigger": "认证失效或产品有安全风险",
+        "steps": ["通知DTI-BPS/FDA", "发布通知", "回收", "报告"],
+        "cost_bearer": "制造商/进口商"
+      },
+      "penalties": {
+        "Consumer Act": "罚款PHP 500-PHP 300,000+监禁，取决于严重性",
+        "FDA Act": "罚款PHP 50,000-PHP 500,000或监禁1-10年"
+      },
+      "market_sampling": {
+        "authority": "DTI-BPS",
+        "frequency": "常规+专项"
+      }
+    },
+    {
+      "market": "AR",
+      "market_zh": "阿根廷",
+      "regulatory_basis": "Resolución SRT 299/2011 (PPE), ANMAT Disposición for medical devices",
+      "surveillance_authorities": [
+        {
+          "name": "SRT (Superintendencia de Riesgos del Trabajo)",
+          "role": "工作场所PPE审批和市场监管",
+          "enforcement": "撤销批准、罚款、禁止使用"
+        },
+        {
+          "name": "ANMAT (Administración Nacional de Medicamentos, Alimentos y Tecnología Médica)",
+          "role": "医疗器械类PPE的注册和市场监督",
+          "enforcement": "取消注册、市场撤回、罚款"
+        },
+        {
+          "name": "IRAM (Instituto Argentino de Normalización y Certificación)",
+          "role": "国家标准化和认证机构",
+          "enforcement": "撤销IRAM认证"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "PPE产品须维持SRT批准的持续合规性",
+          "ANMAT注册产品须实施上市后监督",
+          "保持符合性记录"
+        ],
+        "incident_reporting": {
+          "system": "ANMAT Sistema Nacional de Farmacovigilancia",
+          "reporting_obligation": ["须报告产品质量和安全事件"],
+          "timeframe": "合理期限内",
+          "reporting_channel": "ANMAT在线系统"
+        }
+      },
+      "recall_procedures": {
+        "trigger": "产品不合格",
+        "steps": ["通知SRT/ANMAT", "公告", "回收", "报告"],
+        "cost_bearer": "制造商/进口商"
+      },
+      "penalties": "罚款+撤销Approval+刑事责任（严重时）",
+      "market_sampling": {
+        "authority": "SRT/ANMAT",
+        "frequency": "根据风险"
+      }
+    },
+    {
+      "market": "SA",
+      "market_zh": "沙特阿拉伯",
+      "regulatory_basis": "SASO Technical Regulations, SFDA Medical Devices Interim Regulation",
+      "surveillance_authorities": [
+        {
+          "name": "SASO (Saudi Standards, Metrology and Quality Organization)",
+          "role": "SASO认证和G-Mark管理和市场监管",
+          "enforcement": "销毁不合格产品、禁止进口/销售、罚款、列入黑名单"
+        },
+        {
+          "name": "SFDA (Saudi Food and Drug Authority)",
+          "role": "医疗器械类PPE的注册和全生命周期监管",
+          "enforcement": "取消MDMA注册、暂停进口、强制召回、网站公示"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "SASO证书有效期1-3年，到期续证",
+          "SFDA注册产品须建立上市后警戒系统(Post-Market Surveillance System)",
+          "须有沙特境内授权代表",
+          "须接受定期/突击检查"
+        ],
+        "documentation_retention": "持续有效",
+        "proactive_monitoring": "SASO/SFDA市场随机抽检"
+      },
+      "incident_reporting": {
+        "system": "SFDA National Center for Medical Device Reporting (NCMDR)",
+        "reporting_obligation": [
+          "严重公共健康威胁：获知后2日内",
+          "死亡或意外严重恶化：获知后10日内",
+          "其他事件：获知后30日内"
+        ],
+        "timeframe": "2日/10日/30日",
+        "reporting_channel": "SFDA NCMDR在线系统"
+      },
+      "recall_procedures": {
+        "trigger": "安全事件评估结果",
+        "steps": [
+          "1. 向SFDA提交Field Safety Corrective Action (FSCA)",
+          "2. 确定分级和行动",
+          "3. 通知用户",
+          "4. 实施召回",
+          "5. 报告召回有效性"
+        ],
+        "cost_bearer": "授权代表/制造商"
+      },
+      "penalties": {
+        "SASO": "罚款可达SAR 1,000,000 + 列入进口商黑名单",
+        "SFDA": "罚款可达SAR 5,000,000 + 撤销注册+禁止经营+监禁"
+      },
+      "market_sampling": {
+        "authority": "SASO/SFDA",
+        "frequency": "持续+针对性"
+      }
+    },
+    {
+      "market": "AE",
+      "market_zh": "阿拉伯联合酋长国",
+      "regulatory_basis": "Federal Law No. 28 of 2001, ESMA Conformity Assessment Scheme",
+      "surveillance_authorities": [
+        {
+          "name": "MoIAT (Ministry of Industry and Advanced Technology)",
+          "role": "ESMA的上级机构，标准和质量政策制定"
+        },
+        {
+          "name": "ESMA（现整合入MoIAT）",
+          "role": "EQM认证管理和市场监督",
+          "enforcement": "撤销证书、禁止销售/进口"
+        },
+        {
+          "name": "MoHAP (Ministry of Health and Prevention)",
+          "role": "医疗器械注册和市场监督",
+          "enforcement": "取消注册、市场撤回"
+        }
+      ],
+      "post_market_surveillance": {
+        "obligations": [
+          "EQM证书有效期内须持续合规",
+          "须保持质量文件和样本",
+          "接受认证机构的监督检查"
+        ],
+        "documentation_retention": "证书有效期间",
+        "proactive_monitoring": "ESMA/MoIAT市场抽检"
+      },
+      "incident_reporting": {
+        "system": "MoHAP Medical Device Adverse Event Reporting",
+        "reporting_obligation": ["医疗器械制造商/进口商须提交不良事件报告"],
+        "timeframe": "30日",
+        "reporting_channel": "MoHAP在线系统"
+      },
+      "recall_procedures": {
+        "trigger": "产品不合规或有风险",
+        "steps": ["通知ESMA/MoHAP", "提交回收计划", "实施回收", "报告"],
+        "cost_bearer": "制造商/进口商"
+      },
+      "penalties": {
+        "范围": "罚款可达AED 100,000-AED 1,000,000 + 关闭业务（严重情况）",
+        "Consumer Protection Law": "多次违规可加倍处罚"
+      },
+      "market_sampling": {
+        "authority": "ESMA/MoIAT",
+        "frequency": "年度+定期"
+      }
+    }
+  ],
+  "surveillance_comparison": {
+    "description": "各主要市场监管力度对比",
+    "severity_ranking": {
+      "tier_1_highest": ["US", "EU", "CN", "KR", "SA"],
+      "tier_2_high": ["UK", "JP", "CA", "AU", "BR", "SG"],
+      "tier_3_moderate": ["EAEU", "IN", "GCC", "MX", "ZA", "MY"],
+      "tier_4_developing": ["TH", "VN", "ID", "PH", "AR", "AE", "CL", "CO", "EG", "NG", "PE", "CH", "TR", "NO", "NZ"]
+    },
+    "common_elements": [
+      "所有市场都要求制造商对产品质量和安全负责",
+      "大多数市场要求产品须标示认证/注册编号以实现可追溯",
+      "所有市场都有某种形式的不合格品禁售/撤回机制",
+      "大部分市场要求制造商建立不良事件/投诉处理机制"
+    ],
+    "differentiators": [
+      "美国（FDA）和欧盟（RAPEX）拥有最完善的快速警报系统",
+      "中国的LA安全标志和CCC认证制度对于国内制造和进口均有严格约束",
+      "韩国通过KOSHA的定期流通品调查对PPE质量实现常态化监控",
+      "巴西CA证书制度要求极高的样品一致性，任何工艺变更都须重检",
+      "沙特以极端严厉的进口禁令和黑名单作为威慑手段"
+    ]
+  }
+}

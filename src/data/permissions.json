@@ -1,0 +1,57 @@
+[
+  {
+    "role": "guest",
+    "searches": { "limit": 3, "period": "daily" },
+    "downloads": { "limit": 0, "period": "daily" },
+    "trackerProducts": { "limit": 0, "period": "permanent" },
+    "apiAccess": false,
+    "aiSearch": false,
+    "complianceTracker": false,
+    "favorites": false,
+    "reports": false
+  },
+  {
+    "role": "user",
+    "searches": { "limit": 999, "period": "monthly" },
+    "downloads": { "limit": 999, "period": "monthly" },
+    "trackerProducts": { "limit": 5, "period": "permanent" },
+    "apiAccess": false,
+    "aiSearch": true,
+    "complianceTracker": true,
+    "favorites": true,
+    "reports": true
+  },
+  {
+    "role": "vip",
+    "searches": { "limit": -1, "period": "monthly" },
+    "downloads": { "limit": -1, "period": "monthly" },
+    "trackerProducts": { "limit": -1, "period": "permanent" },
+    "apiAccess": true,
+    "aiSearch": true,
+    "complianceTracker": true,
+    "favorites": true,
+    "reports": true
+  },
+  {
+    "role": "editor",
+    "searches": { "limit": -1, "period": "monthly" },
+    "downloads": { "limit": -1, "period": "monthly" },
+    "trackerProducts": { "limit": -1, "period": "permanent" },
+    "apiAccess": true,
+    "aiSearch": true,
+    "complianceTracker": true,
+    "favorites": true,
+    "reports": true
+  },
+  {
+    "role": "admin",
+    "searches": { "limit": -1, "period": "monthly" },
+    "downloads": { "limit": -1, "period": "monthly" },
+    "trackerProducts": { "limit": -1, "period": "permanent" },
+    "apiAccess": true,
+    "aiSearch": true,
+    "complianceTracker": true,
+    "favorites": true,
+    "reports": true
+  }
+]

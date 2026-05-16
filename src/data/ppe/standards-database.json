@@ -1,0 +1,540 @@
+{
+  "_metadata": {
+    "title": "全球PPE标准数据库 (Global PPE Standards Database)",
+    "description": "涵盖ISO、IEC、CEN/EN、GB、ASTM、ANSI、JIS、KS、IS、AS/NZS、GSO等标准体系的PPE技术标准",
+    "version": "2.0",
+    "last_updated": "2026-05-11",
+    "total_standards_entry": 246,
+    "coverage": "9个标准体系 × 11个PPE品类 × 30+市场",
+    "cross_reference": "包含标准等效性映射与引用关系"
+  },
+  "standard_systems": [
+    { "prefix": "ISO", "organization": "International Organization for Standardization", "region": "Global", "url": "https://www.iso.org/" },
+    { "prefix": "IEC", "organization": "International Electrotechnical Commission", "region": "Global", "url": "https://www.iec.ch/" },
+    { "prefix": "EN", "organization": "European Committee for Standardization (CEN)", "region": "EU/EEA", "url": "https://www.cencenelec.eu/" },
+    { "prefix": "GB", "organization": "Standardization Administration of China (SAC)", "region": "China", "url": "https://openstd.samr.gov.cn/" },
+    { "prefix": "YY", "organization": "National Medical Products Administration (NMPA)", "region": "China (medical)", "url": "https://www.nmpa.gov.cn/" },
+    { "prefix": "ASTM", "organization": "ASTM International", "region": "Global/US", "url": "https://www.astm.org/" },
+    { "prefix": "ANSI", "organization": "American National Standards Institute", "region": "US", "url": "https://www.ansi.org/" },
+    { "prefix": "NFPA", "organization": "National Fire Protection Association", "region": "US", "url": "https://www.nfpa.org/" },
+    { "prefix": "JIS", "organization": "Japanese Industrial Standards Committee (JISC)", "region": "Japan", "url": "https://www.jisc.go.jp/" },
+    { "prefix": "KS", "organization": "Korean Agency for Technology and Standards (KATS)", "region": "Korea", "url": "https://www.kats.go.kr/" },
+    { "prefix": "IS", "organization": "Bureau of Indian Standards (BIS)", "region": "India", "url": "https://www.bis.gov.in/" },
+    { "prefix": "AS/NZS", "organization": "Standards Australia / Standards New Zealand", "region": "Australia/New Zealand", "url": "https://www.standards.org.au/" },
+    { "prefix": "GSO", "organization": "GCC Standardization Organization", "region": "GCC", "url": "https://www.gso.org.sa/" },
+    { "prefix": "CSA", "organization": "Canadian Standards Association", "region": "Canada", "url": "https://www.csagroup.org/" },
+    { "prefix": "NOM", "organization": "Normas Oficiales Mexicanas", "region": "Mexico", "url": "https://www.gob.mx/se/" },
+    { "prefix": "SANS", "organization": "South African National Standards", "region": "South Africa", "url": "https://www.sabs.co.za/" },
+    { "prefix": "TCVN", "organization": "Vietnam Standards (TCVN)", "region": "Vietnam", "url": "https://tcvn.gov.vn/" },
+    { "prefix": "TIS", "organization": "Thai Industrial Standards Institute", "region": "Thailand", "url": "https://www.tisi.go.th/" },
+    { "prefix": "SNI", "organization": "Badan Standardisasi Nasional (BSN)", "region": "Indonesia", "url": "https://www.bsn.go.id/" }
+  ],
+
+  "ppe_categories": [
+    { "id": "respiratory", "name_en": "Respiratory Protection", "name_zh": "呼吸防护" },
+    { "id": "eye_face", "name_en": "Eye and Face Protection", "name_zh": "眼面部防护" },
+    { "id": "head", "name_en": "Head Protection", "name_zh": "头部防护" },
+    { "id": "hearing", "name_en": "Hearing Protection", "name_zh": "听觉防护" },
+    { "id": "hand", "name_en": "Hand Protection", "name_zh": "手部防护" },
+    { "id": "foot", "name_en": "Foot Protection", "name_zh": "足部防护" },
+    { "id": "body_clothing", "name_en": "Protective Clothing / Body Protection", "name_zh": "身体防护/防护服装" },
+    { "id": "fall_protection", "name_en": "Fall Protection", "name_zh": "防坠落防护" },
+    { "id": "skin", "name_en": "Skin Protection (PPE creams)", "name_zh": "皮肤防护(防护霜)" },
+    { "id": "high_visibility", "name_en": "High-Visibility Warning Clothing", "name_zh": "高可视性警示服" },
+    { "id": "drowning", "name_en": "Drowning Prevention / Life Jackets", "name_zh": "防溺水/救生衣" }
+  ],
+
+  "standards": {
+
+    "international": {
+      "respiratory": [
+        { "standard": "ISO 16900 (series 1-14)", "title": "Respiratory protective devices - Methods of test and test equipment", "status": "active", "version": "2014-2021" },
+        { "standard": "ISO 16972:2020", "title": "Respiratory protective devices - Vocabulary and graphical symbols", "status": "active" },
+        { "standard": "ISO 17420 (series 1-4)", "title": "Respiratory protective devices - Performance requirements", "status": "active", "version": "2021", "note": "Unifies global respirator classification (RPD Classes 1-4)" },
+        { "standard": "ISO 16975 (series 1-3)", "title": "Respiratory protective devices - Selection use and maintenance", "status": "active" }
+      ],
+      "eye_face": [
+        { "standard": "ISO 16321 (series 1-3)", "title": "Eye and face protection for occupational use", "status": "active", "version": "2021" },
+        { "standard": "ISO 18526 (series 1-4)", "title": "Eye and face protection - Test methods", "status": "active", "version": "2020" },
+        { "standard": "ISO 4007:2018", "title": "Personal protective equipment - Eye and face protection - Vocabulary", "status": "active" }
+      ],
+      "head": [
+        { "standard": "ISO 3873:1977", "title": "Industrial safety helmets", "status": "withdrawn", "replaced_by": "EN 397 / ISO DIS 18527" },
+        { "standard": "ISO/DIS 18527", "title": "Head protection - Industrial safety helmets", "status": "under_development" }
+      ],
+      "hearing": [
+        { "standard": "ISO 4869 (series 1-3)", "title": "Acoustics - Hearing protectors", "status": "active", "version": "2018-2023" },
+        { "standard": "ISO 11904 (series 1-2)", "title": "Acoustics - Determination of sound immission from sound sources placed close to the ear", "status": "active" }
+      ],
+      "hand": [
+        { "standard": "ISO 374 (series 1-6)", "title": "Protective gloves against dangerous chemicals and micro-organisms", "status": "active", "version": "2016-2018" },
+        { "standard": "ISO 23388:2018", "title": "Protective gloves against mechanical risks", "status": "active" },
+        { "standard": "ISO 21420:2020", "title": "Protective gloves - General requirements and test methods", "status": "active" }
+      ],
+      "foot": [
+        { "standard": "ISO 20345:2022", "title": "Personal protective equipment - Safety footwear", "status": "active", "amendment": "A1:2024" },
+        { "standard": "ISO 20346:2021", "title": "Personal protective equipment - Protective footwear", "status": "active" },
+        { "standard": "ISO 20347:2021", "title": "Personal protective equipment - Occupational footwear", "status": "active" },
+        { "standard": "ISO 20344:2021", "title": "Personal protective equipment - Test methods for footwear", "status": "active" }
+      ],
+      "body_clothing": [
+        { "standard": "ISO 13688:2013", "title": "Protective clothing - General requirements", "status": "active", "amendment": "A1:2021" },
+        { "standard": "ISO 16602:2007", "title": "Protective clothing for protection against chemicals - Classification labelling and performance requirements", "status": "confirmed" },
+        { "standard": "ISO 13982 (series 1-2)", "title": "Protective clothing for use against solid particulates", "status": "active", "version": "2004-2005" },
+        { "standard": "ISO 6529:2013", "title": "Protective clothing - Protection against chemicals - Determination of resistance of protective clothing materials to permeation by liquids and gases", "status": "active" },
+        { "standard": "ISO 22612:2005", "title": "Clothing for protection against infectious agents - Test method for resistance to dry microbial penetration", "status": "active" },
+        { "standard": "ISO 22609:2004", "title": "Clothing for protection against infectious agents - Medical face masks - Test method for resistance against penetration by synthetic blood", "status": "active" },
+        { "standard": "ISO 11611:2024", "title": "Protective clothing for use in welding and allied processes", "status": "active" },
+        { "standard": "ISO 11612:2015", "title": "Protective clothing - Clothing to protect against heat and flame - Minimum performance requirements", "status": "active" },
+        { "standard": "ISO 14116:2015", "title": "Protective clothing - Protection against flame - Limited flame spread materials material assemblies and clothing", "status": "active" },
+        { "standard": "ISO 20471:2013", "title": "High visibility clothing - Test methods and requirements", "status": "active", "amendment": "A1:2016" }
+      ],
+      "fall_protection": [
+        { "standard": "ISO 10333 (series 1-3)", "title": "Personal fall-arrest systems", "status": "active", "version": "2000-2002" },
+        { "standard": "ISO 14567:1999", "title": "Personal protective equipment for protection against falls from a height - Single-point anchor devices", "status": "active" },
+        { "standard": "ISO 16024:2005", "title": "Personal protective equipment for protection against falls from a height - Flexible horizontal lifeline systems", "status": "active" },
+        { "standard": "ISO 22846 (series 1-2)", "title": "Personal equipment for protection against falls - Rope access systems", "status": "active", "version": "2012-2019" }
+      ],
+      "high_visibility": [
+        { "standard": "ISO 20471:2013+A1:2016", "title": "High visibility clothing - Test methods and requirements", "status": "active" }
+      ],
+      "drowning": [
+        { "standard": "ISO 12402 (series 1-10)", "title": "Personal flotation devices", "status": "active", "version": "2020" }
+      ]
+    },
+
+    "eu": {
+      "respiratory": [
+        { "standard": "EN 149:2001+A1:2009", "title": "Respiratory protective devices - Filtering half masks to protect against particles - Requirements testing marking", "harmonized": true, "equivalent_to": " Equivalent to N95/FFP1-3 class" },
+        { "standard": "EN 140:1998+AC:1999", "title": "Respiratory protective devices - Half masks and quarter masks - Requirements testing marking", "harmonized": true },
+        { "standard": "EN 143:2021", "title": "Respiratory protective devices - Particle filters - Requirements testing marking", "harmonized": true },
+        { "standard": "EN 136:1998+AC:1999", "title": "Respiratory protective devices - Full face masks - Requirements testing marking", "harmonized": true },
+        { "standard": "EN 137:2006", "title": "Respiratory protective devices - Self-contained open-circuit compressed air breathing apparatus with full face mask - Requirements testing marking", "harmonized": true },
+        { "standard": "EN 14683:2019+AC:2019", "title": "Medical face masks - Requirements and test methods", "harmonized": true, "medical": true },
+        { "standard": "EN 12941:1998+A2:2008", "title": "Respiratory protective devices - Powered filtering devices incorporating a helmet or hood", "harmonized": true },
+        { "standard": "EN 12942:1998+A2:2008", "title": "Respiratory protective devices - Powered filtering devices incorporating full/half face masks", "harmonized": true },
+        { "standard": "EN 14387:2021", "title": "Respiratory protective devices - Gas filter(s) and combined filter(s) - Requirements testing marking", "harmonized": true },
+        { "standard": "EN 13274 (series 1-8)", "title": "Respiratory protective devices - Methods of test", "harmonized": true }
+      ],
+      "eye_face": [
+        { "standard": "EN 166:2001", "title": "Personal eye-protection - Specifications", "harmonized": true, "note": "Under revision (prEN 166)" },
+        { "standard": "EN 167:2001", "title": "Personal eye-protection - Optical test methods", "harmonized": true },
+        { "standard": "EN 168:2001", "title": "Personal eye-protection - Non-optical test methods", "harmonized": true },
+        { "standard": "EN 169:2002", "title": "Personal eye-protection - Filters for welding and related techniques", "harmonized": true },
+        { "standard": "EN 170:2002", "title": "Personal eye-protection - Ultraviolet filters - Transmittance requirements and recommended use", "harmonized": true },
+        { "standard": "EN 171:2002", "title": "Personal eye-protection - Infrared filters - Transmittance requirements and recommended use", "harmonized": true },
+        { "standard": "EN 172:1995+A2:2001", "title": "Personal eye-protection - Sunglare filters for industrial use", "harmonized": true },
+        { "standard": "EN 175:1997", "title": "Personal protection - Equipment for eye and face protection during welding and allied processes", "harmonized": true },
+        { "standard": "EN 379:2003+A1:2009", "title": "Personal eye-protection - Automatic welding filters", "harmonized": true },
+        { "standard": "EN 1731:2006", "title": "Personal eye protection - Mesh eye and face protectors", "harmonized": true }
+      ],
+      "head": [
+        { "standard": "EN 397:2012+A1:2012", "title": "Industrial safety helmets", "harmonized": true },
+        { "standard": "EN 443:2008", "title": "Helmets for fire fighting in buildings and other structures", "harmonized": true },
+        { "standard": "EN 812:2012", "title": "Industrial bump caps", "harmonized": true },
+        { "standard": "EN 14052:2012+A1:2013", "title": "High performance industrial helmets", "harmonized": true },
+        { "standard": "EN 966:2012+A1:2012", "title": "Helmets for airborne sports", "harmonized": true },
+        { "standard": "EN 1078:2012+A1:2012", "title": "Helmets for pedal cyclists and for users of skateboards and roller skates", "harmonized": true },
+        { "standard": "EN 1385:2012", "title": "Helmets for canoeing and white water sports", "harmonized": true },
+        { "standard": "EN 12492:2012", "title": "Helmets for mountaineers", "harmonized": true }
+      ],
+      "hearing": [
+        { "standard": "EN 352-1:2020", "title": "Hearing protectors - General requirements - Part 1: Earmuffs", "harmonized": true },
+        { "standard": "EN 352-2:2020", "title": "Hearing protectors - General requirements - Part 2: Earplugs", "harmonized": true },
+        { "standard": "EN 352-3:2020", "title": "Hearing protectors - General requirements - Part 3: Earmuffs attached to head protection and/or face protection devices", "harmonized": true },
+        { "standard": "EN 352-4:2020", "title": "Hearing protectors - Safety requirements - Part 4: Level-dependent earmuffs", "harmonized": true },
+        { "standard": "EN 352-5:2020", "title": "Hearing protectors - Safety requirements - Part 5: Active noise reduction earmuffs", "harmonized": true },
+        { "standard": "EN 352-6:2020", "title": "Hearing protectors - Safety requirements - Part 6: Earmuffs with electrical audio input", "harmonized": true },
+        { "standard": "EN 352-7:2020", "title": "Hearing protectors - Safety requirements - Part 7: Level-dependent earplugs", "harmonized": true },
+        { "standard": "EN 352-8:2020", "title": "Hearing protectors - Safety requirements - Part 8: Entertainment audio earmuffs", "harmonized": true },
+        { "standard": "EN 458:2016", "title": "Hearing protectors - Recommendations for selection use care and maintenance", "harmonized": true }
+      ],
+      "hand": [
+        { "standard": "EN 388:2016+A1:2018", "title": "Protective gloves against mechanical risks", "harmonized": true },
+        { "standard": "EN ISO 374-1:2016+A1:2018", "title": "Protective gloves against dangerous chemicals and micro-organisms - Part 1: Terminology and performance requirements for chemical risks", "harmonized": true },
+        { "standard": "EN ISO 374-5:2016", "title": "Protective gloves against dangerous chemicals and micro-organisms - Part 5: Terminology and performance requirements for micro-organisms risks", "harmonized": true },
+        { "standard": "EN 407:2020", "title": "Protective gloves and other hand protective equipment against thermal risks (heat and/or fire)", "harmonized": true },
+        { "standard": "EN 511:2006", "title": "Protective gloves against cold", "harmonized": true },
+        { "standard": "EN 421:2010", "title": "Protective gloves against ionising radiation and radioactive contamination", "harmonized": true },
+        { "standard": "EN 12477:2021", "title": "Protective gloves for welders", "harmonized": true },
+        { "standard": "EN 1082 (series 1-3)", "title": "Protective clothing - Gloves and arm guards protecting against cuts and stabs by hand knives", "harmonized": true },
+        { "standard": "EN 455 (series 1-4)", "title": "Medical gloves for single use", "harmonized": true, "medical": true },
+        { "standard": "EN ISO 21420:2020", "title": "Protective gloves - General requirements and test methods", "harmonized": true }
+      ],
+      "foot": [
+        { "standard": "EN ISO 20345:2022+A1:2024", "title": "Personal protective equipment - Safety footwear", "harmonized": true },
+        { "standard": "EN ISO 20346:2021", "title": "Personal protective equipment - Protective footwear", "harmonized": true },
+        { "standard": "EN ISO 20347:2021", "title": "Personal protective equipment - Occupational footwear", "harmonized": true },
+        { "standard": "EN ISO 20344:2021", "title": "Personal protective equipment - Test methods for footwear", "harmonized": true },
+        { "standard": "EN 13832 (series 1-3)", "title": "Footwear protecting against chemicals", "harmonized": true },
+        { "standard": "EN ISO 20349:2017+A1:2020", "title": "Personal protective equipment - Footwear protecting against risks in foundries and welding", "harmonized": true },
+        { "standard": "EN 15090:2012", "title": "Footwear for firefighters", "harmonized": true },
+        { "standard": "EN 50321-1:2018", "title": "Electrically insulating footwear for working on low voltage installations", "harmonized": true }
+      ],
+      "body_clothing": [
+        { "standard": "EN ISO 13688:2013+A1:2021", "title": "Protective clothing - General requirements", "harmonized": true },
+        { "standard": "EN 14325:2018", "title": "Protective clothing against chemicals - Test methods and performance classification of chemical protective clothing materials seams joins and assemblages", "harmonized": true },
+        { "standard": "EN ISO 13982-1:2004+A1:2010", "title": "Protective clothing for use against solid particulates - Type 5 clothing", "harmonized": true },
+        { "standard": "EN 14605:2005+A1:2009", "title": "Protective clothing against liquid chemicals - Type 3/4 clothing", "harmonized": true },
+        { "standard": "EN 13034:2005+A1:2009", "title": "Protective clothing against liquid chemicals - Type 6 clothing", "harmonized": true },
+        { "standard": "EN ISO 14116:2015", "title": "Protective clothing - Protection against heat and flame - Limited flame spread materials material assemblies and clothing", "harmonized": true },
+        { "standard": "EN ISO 11612:2015", "title": "Protective clothing - Clothing to protect against heat and flame - Minimum performance requirements", "harmonized": true },
+        { "standard": "EN 469:2020", "title": "Protective clothing for firefighters - Performance requirements", "harmonized": true },
+        { "standard": "EN 343:2019", "title": "Protective clothing - Protection against rain", "harmonized": true },
+        { "standard": "EN 342:2017", "title": "Protective clothing - Ensembles and garments for protection against cold", "harmonized": true },
+        { "standard": "EN 14058:2017", "title": "Protective clothing - Garments for protection against cool environments", "harmonized": true },
+        { "standard": "EN ISO 20471:2013+A1:2016", "title": "High visibility clothing", "harmonized": true },
+        { "standard": "EN 1149 (series 1-5)", "title": "Protective clothing - Electrostatic properties", "harmonized": true },
+        { "standard": "EN 13795 (series 1-2)", "title": "Surgical clothing and drapes - Requirements and test methods", "harmonized": true, "medical": true },
+        { "standard": "EN ISO 22612:2005", "title": "Clothing for protection against infectious agents - Test method for resistance to dry microbial penetration", "harmonized": true, "medical": true },
+        { "standard": "EN 14126:2003+AC:2004", "title": "Protective clothing - Performance requirements and tests methods for protective clothing against infective agents", "harmonized": true, "medical": true }
+      ],
+      "fall_protection": [
+        { "standard": "EN 361:2002", "title": "Personal protective equipment against falls from a height - Full body harnesses", "harmonized": true },
+        { "standard": "EN 353 (series 1-2)", "title": "Personal fall protection equipment - Guided type fall arresters", "harmonized": true },
+        { "standard": "EN 354:2010", "title": "Personal fall protection equipment - Lanyards", "harmonized": true },
+        { "standard": "EN 355:2002", "title": "Personal protective equipment against falls from a height - Energy absorbers", "harmonized": true },
+        { "standard": "EN 358:2018", "title": "Personal protective equipment for work positioning and prevention of falls from a height - Belts and lanyards for work positioning or restraint", "harmonized": true },
+        { "standard": "EN 360:2002", "title": "Personal protective equipment against falls from a height - Retractable type fall arresters", "harmonized": true },
+        { "standard": "EN 362:2004", "title": "Personal protective equipment against falls from a height - Connectors", "harmonized": true },
+        { "standard": "EN 363:2018", "title": "Personal fall protection equipment - Personal fall protection systems", "harmonized": true },
+        { "standard": "EN 795:2012", "title": "Personal fall protection equipment - Anchor devices", "harmonized": true },
+        { "standard": "EN 813:2008", "title": "Personal fall protection equipment - Sit harnesses", "harmonized": true },
+        { "standard": "EN 1496:2017", "title": "Personal fall protection equipment - Rescue lifting devices", "harmonized": true },
+        { "standard": "EN 1497:2017", "title": "Personal fall protection equipment - Rescue harnesses", "harmonized": true },
+        { "standard": "EN 1498:2017", "title": "Personal fall protection equipment - Rescue loops", "harmonized": true }
+      ],
+      "drowning": [
+        { "standard": "EN ISO 12402 (series 1-10)", "title": "Personal flotation devices", "harmonized": true }
+      ],
+      "skin": [
+        { "standard": "EN ISO 11990-2:2014", "title": "Evaluation of skin protective creams", "harmonized": true }
+      ]
+    },
+
+    "us": {
+      "respiratory": [
+        { "standard": "42 CFR Part 84", "title": "Approval of Respiratory Protective Devices (NIOSH)", "mandatory": true },
+        { "standard": "29 CFR 1910.134", "title": "Respiratory Protection Standard (OSHA)", "mandatory": true },
+        { "standard": "ASTM F2100-23", "title": "Standard Specification for Performance of Materials Used in Medical Face Masks", "level": "Level 1-3" },
+        { "standard": "ASTM F1862/F1862M-17", "title": "Standard Test Method for Resistance of Medical Face Masks to Penetration by Synthetic Blood", "mandatory": true },
+        { "standard": "ASTM F2299/F2299M-24", "title": "Standard Test Method for Determining the Initial Efficiency of Materials Used in Medical Face Masks to Penetration by Particulates Using Latex Spheres" },
+        { "standard": "ASTM F1494-14(2021)", "title": "Standard Terminology Relating to Protective Clothing" },
+        { "standard": "ANSI Z88.2-2015", "title": "Practices for Respiratory Protection" },
+        { "standard": "ANSI Z88.10-2010(R2020)", "title": "Respirator Fit Testing Methods" },
+        { "standard": "ANSI/ASSE Z88.6-2006(R2021)", "title": "Physical Qualifications for Respirator Use" }
+      ],
+      "eye_face": [
+        { "standard": "ANSI/ISEA Z87.1-2020", "title": "Occupational and Educational Personal Eye and Face Protection Devices", "mandatory": true },
+        { "standard": "ASTM F803-19", "title": "Standard Specification for Eye Protectors for Selected Sports" },
+        { "standard": "ASTM F2879-21", "title": "Standard Specification for Eye Protectors for Paintball Sports" }
+      ],
+      "head": [
+        { "standard": "ANSI/ISEA Z89.1-2014(R2019)", "title": "Industrial Head Protection", "mandatory": true },
+        { "standard": "ANSI/ISEA Z89.2-2023", "title": "American National Standard for Head Protection for Self-Contained Breathing Apparatus (SCBA)" }
+      ],
+      "hearing": [
+        { "standard": "ANSI/ASA S12.6-2016", "title": "Methods for Measuring the Real-Ear Attenuation of Hearing Protectors" },
+        { "standard": "ANSI S3.19-1974", "title": "Method for the Measurement of Real-Ear Protection of Hearing Protectors and Physical Attenuation of Earmuffs", "status": "superseded", "replaced_by": "ANSI/ASA S12.6-2016" },
+        { "standard": "ANSI/ASA S12.42-2010(R2020)", "title": "Methods for the Measurement of Insertion Loss of Hearing Protection Devices in Continuous or Impulsive Noise Using Microphone-in-Real-Ear or Acoustic Test Fixture Procedures" },
+        { "standard": "29 CFR 1910.95", "title": "Occupational Noise Exposure Standard (OSHA)", "mandatory": true },
+        { "standard": "EPA 40 CFR Part 211", "title": "Product Noise Labeling (Hearing Protectors)", "mandatory": true }
+      ],
+      "hand": [
+        { "standard": "ANSI/ISEA 105-2016", "title": "Hand Protection Classification" },
+        { "standard": "ASTM D3578-19", "title": "Standard Specification for Rubber Examination Gloves" },
+        { "standard": "ASTM D5250-19(2024)", "title": "Standard Specification for Poly(vinyl chloride) Gloves for Medical Application" },
+        { "standard": "ASTM D6319-19(2024)", "title": "Standard Specification for Nitrile Examination Gloves for Medical Application" },
+        { "standard": "ASTM D6977-19(2024)", "title": "Standard Specification for Polychloroprene Examination Gloves for Medical Application" },
+        { "standard": "ASTM D120-15(2020)", "title": "Standard Specification for Rubber Insulating Gloves" },
+        { "standard": "ASTM F696-06(2025)", "title": "Standard Specification for Leather Protectors for Rubber Insulating Gloves" },
+        { "standard": "ASTM F1060-18", "title": "Standard Test Method for Thermal Protective Performance of Materials for Protective Clothing by Radiant Heat" }
+      ],
+      "foot": [
+        { "standard": "ASTM F2413-18", "title": "Standard Specification for Performance Requirements for Protective (Safety) Toe Cap Footwear", "mandatory": true },
+        { "standard": "ASTM F2412-24", "title": "Standard Test Methods for Foot Protection" },
+        { "standard": "ASTM F2892-18", "title": "Standard Specification for Performance Requirements for Soft Toe Protective Footwear (Non-Safety/Non-Protective Toe)" },
+        { "standard": "ASTM F1117-22", "title": "Standard Specification for Dielectric Footwear (Electrical Hazard)" },
+        { "standard": "ASTM F3445-21", "title": "Standard Specification for Foot Protection for Wildland Firefighting Operations" }
+      ],
+      "body_clothing": [
+        { "standard": "ASTM F1670-2017", "title": "Standard Test Method for Resistance of Materials Used in Protective Clothing to Penetration by Synthetic Blood", "mandatory": true },
+        { "standard": "ASTM F1671/F1671M-2013", "title": "Standard Test Method for Resistance of Materials Used in Protective Clothing to Penetration by Blood-Borne Pathogens Using Phi-X174 Bacteriophage Penetration", "mandatory": true },
+        { "standard": "ASTM F903-18", "title": "Standard Test Method for Resistance of Materials Used in Protective Clothing to Penetration by Liquids" },
+        { "standard": "ASTM F739-20", "title": "Standard Test Method for Permeation of Liquids and Gases Through Protective Clothing Materials Under Conditions of Continuous Contact" },
+        { "standard": "ASTM F3352/F3352M-23b", "title": "Standard Specification for Isolation Gowns Intended for Use in Healthcare Facilities" },
+        { "standard": "AAMI PB70:2022", "title": "Liquid Barrier Performance and Classification of Protective Apparel and Drapes Intended for Use in Health Care Facilities", "level": "Level 1-4" },
+        { "standard": "NFPA 1999:2024", "title": "Standard on Protective Clothing and Ensembles for Emergency Medical Operations" },
+        { "standard": "NFPA 1971:2023", "title": "Standard on Protective Ensembles for Structural Fire Fighting and Proximity Fire Fighting" },
+        { "standard": "NFPA 2112:2023", "title": "Standard on Flame-Resistant Clothing for Protection of Industrial Personnel Against Short-Duration Thermal Exposures from Fire" },
+        { "standard": "NFPA 70E:2024", "title": "Standard for Electrical Safety in the Workplace", "note": "Includes arc-flash PPE requirements" },
+        { "standard": "ANSI/ISEA 107-2020", "title": "High-Visibility Safety Apparel" },
+        { "standard": "ANSI/ISEA 101-2014", "title": "American National Standard for Limited-Use and Disposable Coveralls - Size and Labeling Requirements" }
+      ],
+      "fall_protection": [
+        { "standard": "ANSI/ASSP Z359.1-2020", "title": "The Fall Protection Code" },
+        { "standard": "ANSI/ASSP Z359.2-2023", "title": "Minimum Requirements for a Comprehensive Managed Fall Protection Program" },
+        { "standard": "ANSI/ASSP Z359.3-2017", "title": "Safety Requirements for Lanyards and Positioning Lanyards" },
+        { "standard": "ANSI/ASSP Z359.4-2013(R2024)", "title": "Safety Requirements for Assisted-Rescue and Self-Rescue Systems Subsystems and Components" },
+        { "standard": "ANSI/ASSP Z359.6-2016(R2021)", "title": "Specifications and Design Requirements for Active Fall Protection Systems" },
+        { "standard": "ANSI/ASSP Z359.7-2019", "title": "Qualification and Verification Testing of Fall Protection Products" },
+        { "standard": "ANSI/ASSP Z359.11-2021", "title": "Safety Requirements for Full Body Harnesses" },
+        { "standard": "ANSI/ASSP Z359.12-2019", "title": "Connecting Components for Personal Fall Arrest Systems" },
+        { "standard": "ANSI/ASSP Z359.13-2021", "title": "Personal Energy Absorbers and Energy Absorbing Lanyards" },
+        { "standard": "ANSI/ASSP Z359.14-2021", "title": "Safety Requirements for Self-Retracting Devices for Personal Fall Arrest and Rescue Systems" },
+        { "standard": "29 CFR 1910.140", "title": "Personal Fall Protection Systems (OSHA)", "mandatory": true },
+        { "standard": "29 CFR 1926 Subpart M", "title": "Fall Protection in Construction (OSHA)", "mandatory": true }
+      ],
+      "drowning": [
+        { "standard": "USCG 46 CFR 160 (series)", "title": "U.S. Coast Guard Personal Flotation Device (PFD) Standards", "mandatory": true }
+      ]
+    },
+
+    "cn": {
+      "respiratory": [
+        { "standard": "GB 2626-2019", "title": "呼吸防护 自吸过滤式防颗粒物呼吸器 (Respiratory protection - Non-powered air-purifying particle respirator)", "mandatory": true, "equivalent_to": "KN90/KN95/KN100 ≈ N90/N95/N100" },
+        { "standard": "GB 19083-2023", "title": "医用防护口罩技术要求 (Technical requirements for protective face mask for medical use)", "mandatory": true, "equivalent_to": "Class 1-3 ≈ FFP1/2/3 for medical" },
+        { "standard": "GB/T 32610-2016", "title": "日常防护型口罩技术规范 (Technical specification of daily protective mask)", "recommended": true },
+        { "standard": "YY 0469-2011", "title": "医用外科口罩 (Surgical mask for medical use)", "mandatory": true },
+        { "standard": "YY/T 0969-2013", "title": "一次性使用医用口罩 (Single-use medical face mask)", "recommended": true },
+        { "standard": "GB 2890-2022", "title": "呼吸防护 自吸过滤式防毒面具 (Respiratory protection - Non-powered air-purifying gas mask)", "mandatory": true },
+        { "standard": "GB/T 16556-2007", "title": "自给开路式压缩空气呼吸器 (Self-contained open-circuit compressed air breathing apparatus)", "recommended": true },
+        { "standard": "GB 6220-2023", "title": "呼吸防护 长管呼吸器 (Respiratory protection - Air line breathing apparatus)", "mandatory": true }
+      ],
+      "eye_face": [
+        { "standard": "GB 14866-2023", "title": "眼面防护具通用技术规范 (General technical specification for eye and face protectors)", "mandatory": true },
+        { "standard": "GB 10810.1-2022", "title": "眼镜镜片 第1部分：单光和多焦点镜片 (Spectacle lenses Part 1: Single-vision and multifocal lens)", "mandatory": true },
+        { "standard": "GB/T 3609.1-2023", "title": "焊接眼面防护具 第1部分：焊接防护具 (Welding eye and face protection - Part 1: Welding protector)", "recommended": true }
+      ],
+      "head": [
+        { "standard": "GB 2811-2019", "title": "头部防护 安全帽 (Head protection - Safety helmet)", "mandatory": true },
+        { "standard": "GB/T 30041-2013", "title": "头部防护 安全帽选用规范 (Head protection - Guidelines for selection and use of safety helmets)", "recommended": true }
+      ],
+      "hearing": [
+        { "standard": "GB 5893.1-2006", "title": "护听器 第1部分：耳塞 (Hearing protectors - Part 1: Earplugs)", "mandatory": true },
+        { "standard": "GB 5893.2-2006", "title": "护听器 第2部分：耳罩 (Hearing protectors - Part 2: Earmuffs)", "mandatory": true },
+        { "standard": "GB/T 31401-2015", "title": "个体防护装备 护听器的通用技术条件 (Personal protective equipment - Hearing protectors - General technical requirements)", "recommended": true },
+        { "standard": "GB/T 23816-2021", "title": "护听器 声衰减测试方法 主观法 (Hearing protectors - Test method for sound attenuation - Subjective method)", "recommended": true }
+      ],
+      "hand": [
+        { "standard": "GB 10213-2006", "title": "一次性使用医用橡胶检查手套 (Single-use medical rubber examination gloves)", "mandatory": true },
+        { "standard": "GB/T 17619-2022", "title": "个体防护装备 防护手套 (Personal protective equipment - Protective gloves)", "recommended": true },
+        { "standard": "GB 12624-2020", "title": "手部防护 机械危害防护手套 (Hand protection - Protective gloves against mechanical risks)", "mandatory": true },
+        { "standard": "GB 28881-2012", "title": "手部防护 防高温手套 (Hand protection - Protective gloves against thermal risks)", "mandatory": true },
+        { "standard": "GB/T 39267-2020", "title": "手部防护 防护手套的一般要求 (Hand protection - General requirements for protective gloves)", "recommended": true }
+      ],
+      "foot": [
+        { "standard": "GB 21148-2020", "title": "足部防护 安全鞋 (Foot protection - Safety footwear)", "mandatory": true },
+        { "standard": "GB 21146-2007", "title": "个体防护装备 职业鞋 (Personal protective equipment - Occupational footwear)", "mandatory": true },
+        { "standard": "GB 21147-2007", "title": "个体防护装备 防护鞋 (Personal protective equipment - Protective footwear)", "mandatory": true },
+        { "standard": "GB/T 20991-2020", "title": "个体防护装备 鞋的测试方法 (Personal protective equipment - Test methods for footwear)", "recommended": true }
+      ],
+      "body_clothing": [
+        { "standard": "GB 19082-2009", "title": "医用一次性防护服技术要求 (Technical requirements for single-use protective clothing for medical use)", "mandatory": true },
+        { "standard": "GB/T 39264-2020", "title": "个体防护装备 化学防护服 (Personal protective equipment - Chemical protective clothing)", "recommended": true },
+        { "standard": "GB/T 33536-2017", "title": "个体防护装备 阻燃防护服 (Personal protective equipment - Flame retardant protective clothing)", "recommended": true },
+        { "standard": "GB/T 17966-2023", "title": "防护服装 化学防护服的选择使用和维护 (Protective clothing - Selection use maintenance of chemical protective clothing)", "recommended": true },
+        { "standard": "GB 20653-2020", "title": "防护服装 职业用高可视性警示服 (Protective clothing - High-visibility warning clothing for occupational use)", "mandatory": true },
+        { "standard": "GB/T 1335 (series 1-3)", "title": "服装号型 (Standard sizing systems for garments)" }
+      ],
+      "fall_protection": [
+        { "standard": "GB 6095-2021", "title": "坠落防护 安全带 (Fall protection - Personal fall protection systems)", "mandatory": true },
+        { "standard": "GB/T 6096-2020", "title": "坠落防护 安全带系统性能测试方法 (Fall protection - Test methods for personal fall protection systems)", "recommended": true },
+        { "standard": "GB 24543-2009", "title": "坠落防护 安全绳 (Fall protection - Lanyards)", "mandatory": true },
+        { "standard": "GB 24544-2009", "title": "坠落防护 速差自控器 (Fall protection - Retractable type fall arresters)", "mandatory": true },
+        { "standard": "GB 5725-2009", "title": "安全网 (Safety nets)", "mandatory": true }
+      ],
+      "high_visibility": [
+        { "standard": "GB 20653-2020", "title": "防护服装 职业用高可视性警示服 (High-visibility warning clothing for occupational use)", "mandatory": true }
+      ]
+    },
+
+    "jp": {
+      "respiratory": [
+        { "standard": "JIS T 8151:2021", "title": "Particulate respirators (防じんマスク)", "equivalent_to": "DS1/DS2/DS3 ≈ N90/N95/N99" },
+        { "standard": "JIS T 8157:2018", "title": "Powered air-purifying respirators (電動ファン付き呼吸用保護具)" },
+        { "standard": "JIS T 8159:2020", "title": "Facepiece leakage rate of respirators (呼吸用保護具の面体漏れ率試験方法)" },
+        { "standard": "JIS T 8062:2016", "title": "Protective clothing against blood-borne pathogens - Test method for resistance to penetration by Phi-X174 bacteriophage" }
+      ],
+      "eye_face": [
+        { "standard": "JIS T 8147:2016", "title": "Personal eye protectors (保護めがね)" },
+        { "standard": "JIS T 8141:2020", "title": "Personal eye protectors against optical radiation" }
+      ],
+      "head": [
+        { "standard": "JIS T 8131:2020", "title": "Industrial safety helmets (産業用安全帽)" }
+      ],
+      "hearing": [
+        { "standard": "JIS T 8161:2023", "title": "Hearing protectors (耳保護具)" }
+      ],
+      "hand": [
+        { "standard": "JIS T 8113:2017", "title": "Protective gloves for occupational use (保護手袋)" }
+      ],
+      "foot": [
+        { "standard": "JIS T 8101:2022", "title": "Protective footwear (安全靴・作業靴)" }
+      ],
+      "body_clothing": [
+        { "standard": "JIS T 8115:2015", "title": "Protective clothing for use against chemicals (化学防護服)" }
+      ]
+    },
+
+    "kr": {
+      "respiratory": [
+        { "standard": "KS M 6673:2022", "title": "KF Respirator Standard (보건용 마스크)", "equivalent_to": "KF80/KF94/KF99" },
+        { "standard": "KS K ISO 17420 (series)", "title": "Respiratory protective devices performance requirements", "equivalent_to": "Adopts ISO classification" }
+      ],
+      "eye_face": [
+        { "standard": "KS P 8147:2020", "title": "Personal eye protectors (보안경)" }
+      ],
+      "head": [
+        { "standard": "KS K ISO 3873:2021", "title": "Industrial safety helmets (안전모)" }
+      ],
+      "foot": [
+        { "standard": "KS K ISO 20345:2022", "title": "Safety footwear (안전화)" }
+      ],
+
+
+      "body_clothing": [
+        { "standard": "KS K ISO 16602:2020", "title": "Protective clothing for protection against chemicals classification" }
+      ],
+      "fall_protection": [
+        { "standard": "KS K ISO 10333:2020", "title": "Personal fall-arrest systems (추락방지)" }
+      ]
+    },
+
+    "in": {
+      "respiratory": [
+        { "standard": "IS 9473:2024", "title": "Respiratory protective devices - Filtering half masks to protect against particles - Specification", "mandatory": true },
+        { "standard": "IS 14166:2021", "title": "Respiratory protective devices - Full face masks - Specification", "mandatory": true }
+      ],
+      "hand": [
+        { "standard": "IS 4148:2022", "title": "Surgical rubber gloves - Specification", "mandatory": true, "medical": true },
+        { "standard": "IS 7180:2022", "title": "Nitrile examination gloves - Specification", "mandatory": true, "medical": true }
+      ],
+      "foot": [
+        { "standard": "IS 15298 (series 1-4)", "title": "Personal protective equipment - Safety occupational and protective footwear", "mandatory": true }
+      ],
+      "head": [
+        { "standard": "IS 2925:2021", "title": "Specification for industrial safety helmets", "mandatory": true }
+      ],
+      "body_clothing": [
+        { "standard": "IS 15741:2022", "title": "Protective clothing - General requirements", "mandatory": true }
+      ]
+    },
+
+    "gcc": {
+      "respiratory": [
+        { "standard": "GSO ISO 17420:2023", "title": "Respiratory protective devices - Performance requirements" }
+      ],
+      "foot": [
+        { "standard": "GSO ISO 20345:2022", "title": "Safety footwear" }
+      ],
+      "head": [
+        { "standard": "GSO EN 397:2016", "title": "Industrial safety helmets" }
+      ],
+      "body_clothing": [
+        { "standard": "GSO ISO 16602:2023", "title": "Protective clothing against chemicals - Classification and marking" }
+      ]
+    },
+
+    "au_nz": {
+      "respiratory": [
+        { "standard": "AS/NZS 1716:2012", "title": "Respiratory protective devices", "mandatory": true },
+        { "standard": "AS/NZS 1715:2021", "title": "Selection use and maintenance of respiratory protective equipment", "mandatory": true }
+      ],
+      "eye_face": [
+        { "standard": "AS/NZS 1337.1:2021", "title": "Personal eye protection - Eye and face protectors for occupational applications", "mandatory": true }
+      ],
+      "head": [
+        { "standard": "AS/NZS 1801:2021", "title": "Occupational protective helmets - Selection care and use", "mandatory": true }
+      ],
+      "hearing": [
+        { "standard": "AS/NZS 1270:2021", "title": "Hearing protectors", "mandatory": true }
+      ],
+      "hand": [
+        { "standard": "AS/NZS 2161.1:2022", "title": "Occupational protective gloves - General requirements and test methods", "mandatory": true },
+        { "standard": "AS/NZS 2161.2:2022", "title": "Occupational protective gloves - Protection against mechanical risks", "mandatory": true }
+      ],
+      "foot": [
+        { "standard": "AS/NZS 2210.3:2021", "title": "Occupational protective footwear - Specification for safety footwear", "mandatory": true }
+      ],
+      "high_visibility": [
+        { "standard": "AS/NZS 1906.4:2023", "title": "Retroreflective materials and devices for road traffic control purposes - High-visibility garments" }
+      ]
+    },
+
+    "ca": {
+      "respiratory": [
+        { "standard": "CSA Z94.4-18(R2023)", "title": "Selection use and care of respirators", "mandatory": true }
+      ],
+      "eye_face": [
+        { "standard": "CSA Z94.3-20(R2025)", "title": "Eye and face protectors", "mandatory": true }
+      ],
+      "head": [
+        { "standard": "CSA Z94.1-15(R2020)", "title": "Industrial protective headwear - Performance selection care and use", "mandatory": true }
+      ],
+      "hearing": [
+        { "standard": "CSA Z94.2-14(R2024)", "title": "Hearing protection devices - Performance selection care and use", "mandatory": true }
+      ],
+      "hand": [
+        { "standard": "CSA Z94.5-21", "title": "Hand protection" }
+      ],
+      "foot": [
+        { "standard": "CSA Z195-14(R2024)", "title": "Protective footwear", "mandatory": true }
+      ],
+      "fall_protection": [
+        { "standard": "CSA Z259 (series)", "title": "Fall protection standards series", "mandatory": true }
+      ]
+    }
+  },
+
+  "standard_equivalence_map": [
+    {
+      "category": "respiratory_particulate",
+      "class": "N95 / FFP2 / KN95 / KF94 / P2 / DS2",
+      "standards": [
+        { "region": "US", "standard": "42 CFR Part 84", "class": "N95", "filtration": "≥95%", "test_flow": "85 L/min" },
+        { "region": "EU", "standard": "EN 149:2001+A1:2009", "class": "FFP2", "filtration": "≥94%", "test_flow": "95 L/min" },
+        { "region": "CN", "standard": "GB 2626-2019", "class": "KN95", "filtration": "≥95%", "test_flow": "85 L/min" },
+        { "region": "KR", "standard": "KS M 6673", "class": "KF94", "filtration": "≥94%", "test_flow": "95 L/min" },
+        { "region": "AU/NZ", "standard": "AS/NZS 1716:2012", "class": "P2", "filtration": "≥94%", "test_flow": "95 L/min" },
+        { "region": "JP", "standard": "JIS T 8151", "class": "DS2", "filtration": "≥95%", "test_flow": "85 L/min" }
+      ]
+    },
+    {
+      "category": "medical_mask",
+      "class": "Surgical Mask Level 2 / Type IIR / YY 0469",
+      "standards": [
+        { "region": "US", "standard": "ASTM F2100-23 Level 2", "bfe": "≥98%", "fluid": "120 mmHg" },
+        { "region": "EU", "standard": "EN 14683:2019 Type IIR", "bfe": "≥98%", "fluid": "16 kPa (120 mmHg)" },
+        { "region": "CN", "standard": "YY 0469-2011", "bfe": "≥95%", "fluid": "120 mmHg" }
+      ]
+    },
+    {
+      "category": "protective_gloves_mechanical",
+      "class": "EN 388 Level / ANSI Cut Level / GB 12624",
+      "standards": [
+        { "region": "EU", "standard": "EN 388:2016+A1:2018", "test": "Abrasion/Cut/Tear/Puncture/ISO Cut" },
+        { "region": "US", "standard": "ANSI/ISEA 105-2016", "test": "Cut Resistance (ASTM F2992)" },
+        { "region": "CN", "standard": "GB 12624-2020", "test": "Abrasion/Cut/Tear/Puncture" }
+      ]
+    },
+    {
+      "category": "safety_footwear",
+      "class": "S3 / ASTM F2413 I/75 C/75 / GB21148 S3",
+      "standards": [
+        { "region": "EU", "standard": "EN ISO 20345:2022+A1:2024", "class": "SB/S1/S2/S3/S4/S5" },
+        { "region": "US", "standard": "ASTM F2413-18", "class": "I/75 C/75 (Impact/Compression)" },
+        { "region": "CN", "standard": "GB 21148-2020", "class": "SB/S1/S2/S3" }
+      ]
+    },
+    {
+      "category": "fall_protection_harness",
+      "class": "Full Body Harness",
+      "standards": [
+        { "region": "EU", "standard": "EN 361:2002", "strength": "≥15 kN" },
+        { "region": "US", "standard": "ANSI/ASSP Z359.11-2021", "strength": "≥16 kN (3600 lbf)" },
+        { "region": "CN", "standard": "GB 6095-2021", "strength": "≥15 kN" }
+      ]
+    }
+  ]
+}

@@ -52,6 +52,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
+  // Set guest_id cookie for quota tracking
+  const guestId = request.cookies.get('guest_id')?.value
+  if (!guestId) {
+    const newGuestId = `guest_${Date.now().toString(36)}${Math.random().toString(36).substring(2, 10)}`
+    supabaseResponse.cookies.set('guest_id', newGuestId, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: 'lax',
+    })
+  }
+
   // CSRF protection: verify Origin header for state-changing requests
   if (request.method !== 'GET' && request.method !== 'HEAD' && request.method !== 'OPTIONS') {
     const origin = request.headers.get('origin')

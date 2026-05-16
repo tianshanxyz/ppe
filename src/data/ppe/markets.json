@@ -1,74 +1,503 @@
 [
   {
-    "code": "EU",
-    "name": "European Union",
-    "name_zh": "欧盟",
+    "code": "EU", "region": "Europe", "name": "European Union / EEA",
+    "name_zh": "欧盟/欧洲经济区",
     "flag_emoji": "🇪🇺",
-    "regulation_name": "EU 2016/425 (PPE Regulation)",
-    "authority": "European Commission"
+    "regulatory_framework": {
+      "ppe_regulation": "Regulation (EU) 2016/425",
+      "medical_device_regulation": "Regulation (EU) 2017/745 (MDR)",
+      "authority": ["European Commission", "DG GROW"],
+      "notified_bodies_database": "NANDO https://ec.europa.eu/growth/tools-databases/nando/",
+      "harmonized_standards_journal": "Official Journal of the European Union (OJEU)",
+      "market_surveillance": "Member State market surveillance authorities under Regulation (EU) 2019/1020"
+    },
+    "ppe_categories": {
+      "category_i": { "description": "Minimal risks", "conformity": "Self-declaration (Module A)", "examples": ["sungalsses", "rainwear"] },
+      "category_ii": { "description": "Intermediate risks", "conformity": "EU Type Examination (Module B) + Module C", "examples": ["safety spectacles", "high-visibility clothing"] },
+      "category_iii": { "description": "Risks of death or irreversible harm", "conformity": "EU Type Exam (Module B) + Module C2/D", "examples": ["respirators", "fall arrest", "chemical gloves"] }
+    },
+    "language_requirements": "Instructions in official language(s) of Member State of sale",
+    "authorized_representative_required": true
   },
   {
-    "code": "US",
-    "name": "United States",
+    "code": "US", "region": "North America", "name": "United States of America",
     "name_zh": "美国",
     "flag_emoji": "🇺🇸",
-    "regulation_name": "FDA 21 CFR / OSHA 29 CFR",
-    "authority": "FDA / OSHA"
+    "regulatory_framework": {
+      "ppe_regulation": "OSHA 29 CFR Part 1910 (Subpart I - PPE), 29 CFR 1910.132-138",
+      "medical_device_regulation": "FDA 21 CFR Parts 800-898, 510(k) Premarket Notification",
+      "respirator_approval": "42 CFR Part 84 (NIOSH)",
+      "authority": ["OSHA (occupational)", "FDA (medical)", "NIOSH (respirator approval)", "EPA (antimicrobial)"],
+      "market_surveillance": "OSHA inspections, FDA post-market surveillance (MDR 21 CFR Part 803)",
+      "consensus_standards": "ANSI/ISEA, ASTM, NFPA standards incorporated by reference"
+    },
+    "ppe_categories": {
+      "medical": { "class_i": "General Controls, exempt from 510(k)", "class_ii": "510(k) Premarket Notification required", "class_iii": "PMA required" },
+      "industrial": { "description": "NIOSH approval for respirators; ANSI/ISEA compliance for other PPE" }
+    },
+    "language_requirements": "English (US)",
+    "us_agent_required": true
   },
   {
-    "code": "UK",
-    "name": "United Kingdom",
-    "name_zh": "英国",
+    "code": "UK", "region": "Europe", "name": "United Kingdom (Great Britain)",
+    "name_zh": "英国（大不列颠）",
     "flag_emoji": "🇬🇧",
-    "regulation_name": "UKCA Marking / UK PPE Regulations",
-    "authority": "HSE / UKAS"
+    "regulatory_framework": {
+      "ppe_regulation": "UK PPE Regulations 2018 (SI 2018/390) as amended by Product Safety and Metrology etc. (Amendment) Regulations 2024",
+      "medical_device_regulation": "UK Medical Devices Regulations 2002 (SI 2002/618) as amended",
+      "authority": ["HSE (PPE)", "MHRA (medical devices)", "OPSS (market surveillance)"],
+      "approved_bodies_database": "UK Market Conformity Assessment Bodies (UKMCAB) https://www.gov.uk/uk-market-conformity-assessment-bodies",
+      "designated_standards": "UK Designated Standards list published by HSE",
+      "market_surveillance": "OPSS under the UK Market Surveillance Framework"
+    },
+    "marking_requirements": {
+      "gb": "UKCA marking mandatory from 2025 for GB market",
+      "ni": "UKNI marking + CE marking under Northern Ireland Protocol"
+    },
+    "language_requirements": "English",
+    "authorized_representative_required": "UK Responsible Person (UKRP) required for non-UK manufacturers"
   },
   {
-    "code": "CN",
-    "name": "China",
+    "code": "CN", "region": "Asia Pacific", "name": "People's Republic of China",
     "name_zh": "中国",
     "flag_emoji": "🇨🇳",
-    "regulation_name": "GB 2626 / GB 19083 / NMPA",
-    "authority": "SAMR / NMPA"
+    "regulatory_framework": {
+      "ppe_regulation": "《产品质量法》《安全生产法》《特种劳动防护用品安全标志管理规定》",
+      "medical_device_regulation": "《医疗器械监督管理条例》(State Council Order No. 739)",
+      "industrial_ppe_certification": "特种劳动防护用品安全标志 (LA) + 生产许可证 (SC)",
+      "standards_system": "GB (mandatory), GB/T (recommended), YY (medical device industry)",
+      "authority": ["SAMR/NMPA (medical devices)", "MEM (industrial PPE LA)", "SAC (standards)"],
+      "market_surveillance": "省市级市场监管局, NMPA飞行检查, 应急管理部专项检查",
+      "standards_database": "https://openstd.samr.gov.cn/"
+    },
+    "ppe_categories": {
+      "medical": { "class_i": "备案 (filing)", "class_ii": "注册 (registration)", "class_iii": "注册+临床试验" },
+      "industrial": { "la": "特种劳动防护用品需取得LA安全标志", "sc": "需取得全国工业产品生产许可证" }
+    },
+    "language_requirements": "Chinese (Simplified)",
+    "legal_agent_required": "境内责任人 (Local Responsible Entity) required for imported devices",
+    "gbt_standards_reference": "https://openstd.samr.gov.cn/"
   },
   {
-    "code": "JP",
-    "name": "Japan",
+    "code": "JP", "region": "Asia Pacific", "name": "Japan",
     "name_zh": "日本",
     "flag_emoji": "🇯🇵",
-    "regulation_name": "PMDA / MHLW Ministerial Ordinance",
-    "authority": "PMDA / MHLW"
+    "regulatory_framework": {
+      "ppe_regulation": "Industrial Safety and Health Act (ISHA), Ordinance on Industrial Safety and Health",
+      "medical_device_regulation": "Pharmaceutical and Medical Device Act (PMD Act)",
+      "authority": ["MHLW (health/labour)", "PMDA (medical device review)", "JISHA (industrial safety)"],
+      "standards_system": "JIS (Japanese Industrial Standards), JIS T series for PPE",
+      "market_surveillance": "MHLW/PMDA inspections, prefectural labour bureau inspections"
+    },
+    "ppe_certification_types": {
+      "medical": { "class_i": "Todokede (届出/notification)", "class_ii": "Ninsho (認証/certification by RCB)", "class_iii/iv": "Shonin (承認/PMDA approval)" },
+      "industrial": { "description": "JIS certification (voluntary) or Type Examination by registered body" }
+    },
+    "language_requirements": "Japanese",
+    "market_authorization_holder_required": "MAH (製造販売業者) or DMAH (選任製造販売業者) required",
+    "jis_reference": "https://www.jisc.go.jp/"
   },
   {
-    "code": "KR",
-    "name": "South Korea",
+    "code": "KR", "region": "Asia Pacific", "name": "Republic of Korea",
     "name_zh": "韩国",
     "flag_emoji": "🇰🇷",
-    "regulation_name": "MFDS Notification / KOSHA Standards",
-    "authority": "MFDS / KOSHA"
+    "regulatory_framework": {
+      "ppe_regulation": "Occupational Safety and Health Act (OSHA), KOSHA Notice on PPE",
+      "medical_device_regulation": "Medical Device Act (MDA)",
+      "authority": ["MFDS (medical devices)", "KOSHA/MOEL (industrial PPE)", "KATS (standards)"],
+      "standards_system": "KS (Korean Industrial Standards), KOSHA Guide (KOSHA-G)",
+      "market_surveillance": "MFDS GMP inspections, KOSHA workplace compliance inspections"
+    },
+    "ppe_certification_types": {
+      "medical": { "class_i": "Notification", "class_ii": "Certification (KGMP)", "class_iii/iv": "Approval (MFDS)" },
+      "industrial": { "safety_certification": "KCs Safety Certification (韩国安全认证)", "voluntary": "KCs自律安全确认" },
+      "kf_respirator": "KF80/KF94/KF99 under MFDS Health Mask Standard"
+    },
+    "language_requirements": "Korean",
+    "importer_requirements": "Importer must be registered with MFDS for medical devices"
   },
   {
-    "code": "IN",
-    "name": "India",
-    "name_zh": "印度",
-    "flag_emoji": "🇮🇳",
-    "regulation_name": "BIS Certification / CDSCO Medical Device Rules",
-    "authority": "BIS / CDSCO"
+    "code": "CA", "region": "North America", "name": "Canada",
+    "name_zh": "加拿大",
+    "flag_emoji": "🇨🇦",
+    "regulatory_framework": {
+      "ppe_regulation": "Canada Occupational Health and Safety Regulations (COHSR) Part XII, CSA standards",
+      "medical_device_regulation": "Medical Devices Regulations (SOR/98-282) under Food and Drugs Act",
+      "authority": ["Health Canada (medical devices)", "CSA Group (standards)", "Provincial OHS regulators"],
+      "medical_device_license": "MDL (Medical Device Licence) for Class II-IV, MDEL for Class I",
+      "market_surveillance": "Health Canada post-market surveillance, CSA periodic audits"
+    },
+    "ppe_certification_types": {
+      "medical": { "class_i": "MDEL (Establishment Licence)", "class_ii": "MDL + ISO 13485 QMS", "class_iii": "MDL + ISO 13485 + clinical data", "class_iv": "MDL + ISO 13485 + clinical evidence" },
+      "industrial": { "description": "CSA certification or equivalent laboratory accreditation per provincial OHS regulations" }
+    },
+    "language_requirements": "English and French (bilingual)",
+    "regulatory_correspondent_required": "Establishment must hold MDEL or use regulatory correspondent"
   },
   {
-    "code": "BR",
-    "name": "Brazil",
+    "code": "AU", "region": "Asia Pacific", "name": "Australia",
+    "name_zh": "澳大利亚",
+    "flag_emoji": "🇦🇺",
+    "regulatory_framework": {
+      "ppe_regulation": "Work Health and Safety (WHS) Regulations, AS/NZS standards",
+      "medical_device_regulation": "Therapeutic Goods Act 1989, Therapeutic Goods (Medical Devices) Regulations 2002",
+      "authority": ["TGA (medical devices)", "Safe Work Australia (industrial PPE)", "Standards Australia"],
+      "artg": "Australian Register of Therapeutic Goods (ARTG) inclusion required",
+      "market_surveillance": "TGA post-market monitoring and recalls, state WHS regulator inspections"
+    },
+    "ppe_certification_types": {
+      "medical": { "class_i": "ARTG inclusion (conformity assessment by manufacturer)", "class_ii-iv": "TGA Conformity Assessment Certificate + ARTG inclusion" },
+      "industrial": { "description": "AS/NZS certification by NATA-accredited labs or JAS-ANZ accredited bodies" }
+    },
+    "language_requirements": "English",
+    "sponsor_required": "Australian Sponsor required for overseas manufacturers"
+  },
+  {
+    "code": "BR", "region": "South America", "name": "Brazil",
     "name_zh": "巴西",
     "flag_emoji": "🇧🇷",
-    "regulation_name": "ANVISA Resolution / INMETRO Certification",
-    "authority": "ANVISA / INMETRO"
+    "regulatory_framework": {
+      "ppe_regulation": "NR-6 (Norma Regulamentadora No. 6) - Equipamento de Proteção Individual, MTE Portaria No. 451/2014",
+      "medical_device_regulation": "ANVISA RDC 185/2001 (Medical Device Registration), RDC 16/2013 (GMP)",
+      "authority": ["ANVISA (medical devices)", "MTE/INMETRO (industrial PPE + CAEPI)"],
+      "caepi": "Certificado de Aprovação de EPI (CAEPI) mandatory for all PPE sold in Brazil",
+      "market_surveillance": "ANVISA inspections, MTE labour inspections, INMETRO market sampling"
+    },
+    "ppe_certification_types": {
+      "medical": { "class_i/ii": "Cadastro (Registration)", "class_iii/iv": "Registro (ANVISA approval + BGMP)" },
+      "industrial": { "caepi": "CAEPI certificate mandatory, renewed every 5 years", "testing": "INMETRO accredited laboratory testing" }
+    },
+    "language_requirements": "Portuguese (Brazil)",
+    "legal_representative_required": "Brazil Registration Holder (BRH) required",
+    "inmetro_reference": "https://www.gov.br/inmetro/"
   },
   {
-    "code": "GCC",
-    "name": "Gulf Cooperation Council",
-    "name_zh": "海湾六国",
+    "code": "IN", "region": "Asia Pacific", "name": "India",
+    "name_zh": "印度",
+    "flag_emoji": "🇮🇳",
+    "regulatory_framework": {
+      "ppe_regulation": "Factories Act 1948, BIS (ISI Mark) certification, DGMS approval (mining PPE)",
+      "medical_device_regulation": "Medical Devices Rules 2017 under Drugs & Cosmetics Act, CDSCO",
+      "authority": ["CDSCO (medical devices)", "BIS (ISI marking)", "DGMS (mining)", "DGFASLI (industrial safety)"],
+      "bis_certification": "ISI Mark mandatory for 69 PPE products under BIS certification scheme",
+      "market_surveillance": "BIS market surveillance, State FDA inspections, CDSCO post-market vigilance"
+    },
+    "ppe_certification_types": {
+      "medical": { "class_a": "Voluntary registration (2022)", "class_b": "State licensing", "class_c/d": "CDSCO central licensing" },
+      "industrial": { "isi_mark": "BIS ISI Mark (mandatory for listed products)", "description": "BIS certification per IS standards" }
+    },
+    "language_requirements": "English and/or Hindi (varies by state)",
+    "authorized_agent_required": "Indian Authorized Agent required for overseas manufacturers",
+    "bis_reference": "https://www.bis.gov.in/"
+  },
+  {
+    "code": "GCC", "region": "Middle East", "name": "Gulf Cooperation Council",
+    "name_zh": "海湾合作委员会（海湾六国）",
     "flag_emoji": "🌍",
-    "regulation_name": "GSO Standards / GCC Technical Regulations",
-    "authority": "GCC Standardization Organization"
+    "member_states": ["SA (Saudi Arabia)", "AE (UAE)", "KW (Kuwait)", "QA (Qatar)", "BH (Bahrain)", "OM (Oman)"],
+    "regulatory_framework": {
+      "ppe_regulation": "GSO Technical Regulation for PPE (BD-142004-01), GSO Conformity Tracking Symbol (GCTS)",
+      "medical_device_regulation": "GSO Technical Regulation for Medical Devices, individual state regulations",
+      "authority": ["GSO (standards)", "SFDA (Saudi Arabia)", "ESMA (UAE)", "PAI (Kuwait)", "MOPH (Qatar)"],
+      "certification": "G-Mark / GCTS Certification required",
+      "market_surveillance": "GSO notified bodies + individual state authorities"
+    },
+    "ppe_certification_types": {
+      "g_mark": "G-mark Certification (GCTS) mandatory for PPE under GSO regulation",
+      "notified_body": "GSO Notified Body (NB) certification required",
+      "sfda": "SFDA registration for medical devices in Saudi Arabia",
+      "esma": "ESMA Emirates Conformity Assessment Scheme (ECAS) for UAE"
+    },
+    "language_requirements": "Arabic and/or English",
+    "authorized_representative_required": "Local authorized representative required in each member state"
+  },
+  {
+    "code": "CH", "region": "Europe", "name": "Switzerland",
+    "name_zh": "瑞士",
+    "flag_emoji": "🇨🇭",
+    "regulatory_framework": {
+      "ppe_regulation": "SR 930.115 (Verordnung über die Sicherheit von persönlichen Schutzausrüstungen, PSA-Verordnung) based on EU 2016/425",
+      "medical_device_regulation": "MedDO (Medical Devices Ordinance SR 812.213) based on EU MDR 2017/745, with Swiss-specific provisions",
+      "authority": ["SECO (PPE market surveillance)", "Swissmedic (medical devices)"],
+      "mutual_recognition": "Mutual Recognition Agreement (MRA) with EU for conformity assessment",
+      "market_surveillance": "SECO and Swissmedic post-market surveillance"
+    },
+    "language_requirements": "German, French, or Italian (per region of sale)",
+    "authorized_representative_required": "Swiss Authorized Representative (CH-REP) required for non-Swiss manufacturers"
+  },
+  {
+    "code": "TR", "region": "Europe/Asia", "name": "Turkey",
+    "name_zh": "土耳其",
+    "flag_emoji": "🇹🇷",
+    "regulatory_framework": {
+      "ppe_regulation": "PPE Regulation (Kişisel Koruyucu Donanım Yönetmeliği) harmonized with EU 2016/425 under EU-Turkey Customs Union",
+      "medical_device_regulation": "Medical Device Regulation harmonized with EU MDR 2017/745",
+      "authority": ["Ministry of Trade (PPE)", "TİTCK/TMMDA (medical devices)", "TSE (standards)"],
+      "certification": "Turkish Notified Body (Onaylanmış Kuruluş) certification required",
+      "market_surveillance": "Ministry of Trade and TİTCK market surveillance"
+    },
+    "language_requirements": "Turkish",
+    "authorized_representative_required": "Turkish Authorized Representative required"
+  },
+  {
+    "code": "EAEU", "region": "Eurasia", "name": "Eurasian Economic Union",
+    "name_zh": "欧亚经济联盟",
+    "flag_emoji": "🌐",
+    "member_states": ["RU (Russia)", "BY (Belarus)", "KZ (Kazakhstan)", "KG (Kyrgyzstan)", "AM (Armenia)"],
+    "regulatory_framework": {
+      "ppe_regulation": "TR CU 019/2011 (Technical Regulation on PPE Safety), GOST standards",
+      "medical_device_regulation": "EAEU Medical Device Registration per EAEU Rules",
+      "authority": ["EEC (Eurasian Economic Commission)", "Rosstandart (Russia)", "Roszdravnadzor (Russia medical)"],
+      "certification": "EAC Certification (ЕАС) for PPE, EAC Declaration/Registration for medical devices",
+      "market_surveillance": "State market surveillance authorities in each member state"
+    },
+    "language_requirements": "Russian (with member state languages optional)",
+    "authorized_representative_required": "EAC Authorized Representative based in EAEU territory required"
+  },
+  {
+    "code": "SG", "region": "Asia Pacific", "name": "Singapore",
+    "name_zh": "新加坡",
+    "flag_emoji": "🇸🇬",
+    "regulatory_framework": {
+      "ppe_regulation": "Workplace Safety and Health (WSH) Act, SS (Singapore Standards)",
+      "medical_device_regulation": "Health Products Act (Medical Devices) Regulations 2010",
+      "authority": ["HSA (medical devices)", "MOM/WSH Council (industrial PPE)", "Enterprise Singapore (standards)"],
+      "certification": "HSA medical device registration; SS compliance for industrial PPE",
+      "market_surveillance": "HSA post-market vigilance, MOM workplace inspections"
+    },
+    "language_requirements": "English",
+    "registrant_required": "Singapore-based registrant required for medical device registration"
+  },
+  {
+    "code": "MX", "region": "North America", "name": "Mexico",
+    "name_zh": "墨西哥",
+    "flag_emoji": "🇲🇽",
+    "regulatory_framework": {
+      "ppe_regulation": "NOM (Normas Oficiales Mexicanas), STPS regulations for workplace PPE",
+      "medical_device_regulation": "Ley General de Salud, Reglamento de Insumos para la Salud, COFEPRIS",
+      "authority": ["COFEPRIS (medical devices)", "STPS (industrial PPE safety)", "DGN (standards)"],
+      "certification": "NOM certification mandatory for specific PPE products; COFEPRIS Sanitary Registration for medical devices",
+      "market_surveillance": "COFEPRIS post-market surveillance, STPS workplace inspections"
+    },
+    "language_requirements": "Spanish",
+    "legal_representative_required": "Mexico-based Legal Representative (Representante Legal) required"
+  },
+  {
+    "code": "ZA", "region": "Africa", "name": "South Africa",
+    "name_zh": "南非",
+    "flag_emoji": "🇿🇦",
+    "regulatory_framework": {
+      "ppe_regulation": "Occupational Health and Safety Act (OHSA) 85 of 1993, SANS standards, NRCS compulsory specifications",
+      "medical_device_regulation": "Medicines and Related Substances Act, SAHPRA Medical Device Regulations",
+      "authority": ["SAHPRA (medical devices)", "Department of Employment and Labour (industrial PPE)", "SABS (standards)", "NRCS (compulsory specifications)"],
+      "certification": "NRCS Letter of Authority (LOA) for regulated PPE; SAHPRA medical device licence",
+      "market_surveillance": "NRCS inspections, SAHPRA post-market monitoring"
+    },
+    "language_requirements": "English",
+    "local_representative_required": "South African Responsible Person required for medical devices"
+  },
+  {
+    "code": "TH", "region": "Asia Pacific", "name": "Thailand",
+    "name_zh": "泰国",
+    "flag_emoji": "🇹🇭",
+    "regulatory_framework": {
+      "ppe_regulation": "Occupational Safety Health and Environment Act B.E. 2554, TIS standards",
+      "medical_device_regulation": "Medical Device Act B.E. 2551 (2008) and amendments, Thai FDA",
+      "authority": ["Thai FDA (medical devices)", "Ministry of Labour/DLPW (industrial PPE)", "TISI (standards)"],
+      "certification": "TIS certification (mandatory/voluntary per product); Thai FDA medical device registration",
+      "market_surveillance": "Thai FDA post-market surveillance, DLPW workplace inspections"
+    },
+    "language_requirements": "Thai",
+    "importer_requirements": "Importer or local representative must hold Thai FDA establishment licence"
+  },
+  {
+    "code": "VN", "region": "Asia Pacific", "name": "Vietnam",
+    "name_zh": "越南",
+    "flag_emoji": "🇻🇳",
+    "regulatory_framework": {
+      "ppe_regulation": "Law on Occupational Safety and Health No. 84/2015/QH13, TCVN standards, MOLISA regulations",
+      "medical_device_regulation": "Decree 98/2021/ND-CP on Medical Device Management, Law on Pharmacy, DMEC",
+      "authority": ["DMEC/MOH (medical devices)", "MOLISA (industrial PPE)", "STAMEQ (standards)"],
+      "certification": "Medical Device Classification (A/B/C/D); Industrial PPE conformity under TCVN; CR marking for certain products",
+      "market_surveillance": "DMEC post-market oversight, MOLISA labour inspections"
+    },
+    "language_requirements": "Vietnamese",
+    "legal_representative_required": "Local entity required as MAH for medical device registration"
+  },
+  {
+    "code": "MY", "region": "Asia Pacific", "name": "Malaysia",
+    "name_zh": "马来西亚",
+    "flag_emoji": "🇲🇾",
+    "regulatory_framework": {
+      "ppe_regulation": "Occupational Safety and Health Act 1994 (OSHA), Factories and Machinery Act 1967, MS standards, DOSH guidelines",
+      "medical_device_regulation": "Medical Device Act 2012 (Act 737), Medical Device Regulations 2012, MDA",
+      "authority": ["MDA (medical devices)", "DOSH (industrial PPE)", "SIRIM/DSM (standards)"],
+      "certification": "MDA medical device registration; MS certification or SIRIM certification for industrial PPE",
+      "market_surveillance": "MDA post-market vigilance, DOSH workplace inspection and enforcement"
+    },
+    "language_requirements": "Bahasa Malaysia and/or English",
+    "authorized_representative_required": "Malaysia-based Authorized Representative (AR) required for foreign medical device manufacturers"
+  },
+  {
+    "code": "ID", "region": "Asia Pacific", "name": "Indonesia",
+    "name_zh": "印度尼西亚",
+    "flag_emoji": "🇮🇩",
+    "regulatory_framework": {
+      "ppe_regulation": "Ministry of Manpower Regulation No. 8/2010 on PPE, SNI standards, K3 (Keselamatan dan Kesehatan Kerja)",
+      "medical_device_regulation": "Ministry of Health Regulation No. 62/2017, Medical Device Distribution Permit (AKD/AKL)",
+      "authority": ["Ministry of Health (medical devices)", "Ministry of Manpower (industrial PPE)", "BSN (SNI standards)"],
+      "certification": "SNI certification mandatory for certain PPE; AKD (import) or AKL (local) distribution permit for medical devices",
+      "market_surveillance": "BPOM/MOH post-market surveillance, Ministry of Manpower K3 inspections"
+    },
+    "language_requirements": "Bahasa Indonesia",
+    "local_distributor_required": "Local distributor holding distribution permit required"
+  },
+  {
+    "code": "PH", "region": "Asia Pacific", "name": "Philippines",
+    "name_zh": "菲律宾",
+    "flag_emoji": "🇵🇭",
+    "regulatory_framework": {
+      "ppe_regulation": "Occupational Safety and Health Standards (OSHS), DOLE Department Order 198, PNS standards",
+      "medical_device_regulation": "Republic Act No. 9711 (FDA Act), Administrative Order No. 2018-0002 (Medical Device Rules), PFDA",
+      "authority": ["PFDA (medical devices)", "DOLE/OSHC (industrial PPE)", "BPS/DOST (standards)"],
+      "certification": "PFDA Certificate of Medical Device Registration (CMDR); BPS product certification (mandatory for listed products)",
+      "market_surveillance": "PFDA post-market surveillance, DOLE workplace safety inspections"
+    },
+    "language_requirements": "English and/or Filipino",
+    "local_representative_required": "Licensed importer/distributor for medical devices"
+  },
+  {
+    "code": "AR", "region": "South America", "name": "Argentina",
+    "name_zh": "阿根廷",
+    "flag_emoji": "🇦🇷",
+    "regulatory_framework": {
+      "ppe_regulation": "Resolución SRT 299/2011 (PPE certification), IRAM standards, SRT/MTEySS",
+      "medical_device_regulation": "ANMAT Disposición 2318/2002, 2319/2002, Medical Device Registration",
+      "authority": ["ANMAT (medical devices)", "SRT/MTEySS (industrial PPE)", "IRAM (standards)"],
+      "certification": "ANMAT Registration Certificate; IRAM certification recognized, SRT-approved PPE list",
+      "market_surveillance": "ANMAT post-market vigilance, SRT compliance audits"
+    },
+    "language_requirements": "Spanish",
+    "local_representative_required": "Argentina-based Technical Director and Responsible Company required"
+  },
+  {
+    "code": "SA", "region": "Middle East", "name": "Saudi Arabia",
+    "name_zh": "沙特阿拉伯",
+    "flag_emoji": "🇸🇦",
+    "regulatory_framework": {
+      "ppe_regulation": "SASO Technical Regulations, GSO standards for GCC, SASO Quality Mark (SQM)",
+      "medical_device_regulation": "SFDA Medical Device Interim Regulation / Medical Devices Law, Saudi Medical Device Registration",
+      "authority": ["SFDA (medical devices)", "SASO (standards and quality)", "Ministry of Human Resources (workplace safety)"],
+      "certification": "SFDA Medical Device Marketing Authorization (MDMA); SASO/GSO conformity certificate (CoC)",
+      "market_surveillance": "SFDA post-market surveillance, SASO market surveillance testing"
+    },
+    "language_requirements": "Arabic (English accepted for labeling)",
+    "authorized_representative_required": "SFDA Authorized Representative (AR) required for foreign medical device manufacturers"
+  },
+  {
+    "code": "AE", "region": "Middle East", "name": "United Arab Emirates",
+    "name_zh": "阿拉伯联合酋长国",
+    "flag_emoji": "🇦🇪",
+    "regulatory_framework": {
+      "ppe_regulation": "ESMA conformity assessment, UAE.S standards (derived from GSO), ECAS certification",
+      "medical_device_regulation": "MOHAP Medical Device Regulation, UAE Medical Device Registration",
+      "authority": ["MOHAP (medical devices)", "ESMA/MOIAT (standards and conformity)", "Ministry of Human Resources (workplace)"],
+      "certification": "ESMA Conformity Certificate (ECAS/EQM); MOHAP Medical Device Registration Certificate"
+    },
+    "language_requirements": "Arabic and/or English",
+    "local_representative_required": "Local distributor or authorized representative required"
+  },
+  {
+    "code": "NO", "region": "Europe", "name": "Norway",
+    "name_zh": "挪威",
+    "flag_emoji": "🇳🇴",
+    "regulatory_framework": {
+      "ppe_regulation": "EU 2016/425 implemented via EEA Agreement, FOR-2019-06-06-721 Norway PPE Regulation",
+      "medical_device_regulation": "EU MDR 2017/745 implemented via EEA Agreement, Norwegian Medicines Agency (NoMA)",
+      "authority": ["NoMA/DMP (medical devices)", "DSB (PPE market surveillance)", "Standard Norge (standards)"],
+      "certification": "CE marking recognized under EEA rules; NoMA medical device notification",
+      "market_surveillance": "DSB and NoMA post-market surveillance"
+    },
+    "language_requirements": "Norwegian, Swedish, Danish, or English (per product)",
+    "authorized_representative_required": "EEA-based Authorized Representative required"
+  },
+  {
+    "code": "NZ", "region": "Asia Pacific", "name": "New Zealand",
+    "name_zh": "新西兰",
+    "flag_emoji": "🇳🇿",
+    "regulatory_framework": {
+      "ppe_regulation": "Health and Safety at Work Act 2015, AS/NZS standards, WorkSafe NZ guidelines",
+      "medical_device_regulation": "Medicines Act 1981, Medicines Regulations 1984, Medical Device Database (WAND), Medsafe",
+      "authority": ["Medsafe/MOH (medical devices)", "WorkSafe NZ (workplace safety)", "Standards NZ (standards)"],
+      "certification": "Medsafe WAND Notification for medical devices; AS/NZS certification or equivalent",
+      "market_surveillance": "Medsafe post-market monitoring, WorkSafe NZ compliance inspections"
+    },
+    "language_requirements": "English",
+    "sponsor_required": "New Zealand Sponsor or agent required for overseas manufacturers"
+  },
+  {
+    "code": "CL", "region": "South America", "name": "Chile",
+    "name_zh": "智利",
+    "flag_emoji": "🇨🇱",
+    "regulatory_framework": {
+      "ppe_regulation": "Supreme Decree No. 594/1999 (OHS), NCh standards, ISP certification",
+      "medical_device_regulation": "Law 20.724, Decree 825, ISP Registration of Medical Devices",
+      "authority": ["ISP (medical devices, Instituto de Salud Pública)", "SUSESO/Ministry of Health (workplace PPE)", "INN (standards)"],
+      "certification": "ISP Sanitary Registration; ISP certification for specific PPE (respirators, gloves)"
+    },
+    "language_requirements": "Spanish",
+    "local_representative_required": "Chile-based Responsible Party (Titular) required"
+  },
+  {
+    "code": "CO", "region": "South America", "name": "Colombia",
+    "name_zh": "哥伦比亚",
+    "flag_emoji": "🇨🇴",
+    "regulatory_framework": {
+      "ppe_regulation": "Resolución 2400/1979, NTC standards, Ministry of Labour regulations",
+      "medical_device_regulation": "Decree 4725/2005 (Medical Device Regulation), INVIMA Registration",
+      "authority": ["INVIMA (medical devices)", "Ministry of Labour (workplace PPE)", "ICONTEC (standards)"],
+      "certification": "INVIMA Sanitary Registration (mandatory for medical devices); NTC compliance for industrial PPE"
+    },
+    "language_requirements": "Spanish",
+    "local_representative_required": "INVIMA Registered Holder based in Colombia required"
+  },
+  {
+    "code": "EG", "region": "Africa/Middle East", "name": "Egypt",
+    "name_zh": "埃及",
+    "flag_emoji": "🇪🇬",
+    "regulatory_framework": {
+      "ppe_regulation": "Egyptian Labour Law No. 12/2003, ES (Egyptian Standards) adopted from ISO/EN",
+      "medical_device_regulation": "CAPA (Central Administration of Pharmaceutical Affairs) Medical Device Registration per Ministerial Decree",
+      "authority": ["CAPA/EDA (medical devices)", "Ministry of Manpower (workplace PPE)", "EOS (standards)"],
+      "certification": "EDA Medical Device Registration; EOS conformity certificate"
+    },
+    "language_requirements": "Arabic (English supplementary)",
+    "local_representative_required": "Local agent/distributor registration required"
+  },
+  {
+    "code": "NG", "region": "Africa", "name": "Nigeria",
+    "name_zh": "尼日利亚",
+    "flag_emoji": "🇳🇬",
+    "regulatory_framework": {
+      "ppe_regulation": "Factories Act Cap 126 LFN 2004, NIS (Nigerian Industrial Standards), SON regulations",
+      "medical_device_regulation": "NAFDAC Medical Device Registration Regulations 2021",
+      "authority": ["NAFDAC (medical devices)", "SON (Standards Organisation, industrial PPE)"],
+      "certification": "NAFDAC Registration; SON Mandatory Conformity Assessment Programme (MANCAP)"
+    },
+    "language_requirements": "English",
+    "local_representative_required": "Nigeria-based legal entity required for NAFDAC registration"
+  },
+  {
+    "code": "PE", "region": "South America", "name": "Peru",
+    "name_zh": "秘鲁",
+    "flag_emoji": "🇵🇪",
+    "regulatory_framework": {
+      "ppe_regulation": "Supreme Decree No. 005-2012-TR (OHS Law Regulations), NTP (Normas Técnicas Peruanas) standards",
+      "medical_device_regulation": "Supreme Decree No. 013-2014-SA, DIGEMID Medical Device Registration",
+      "authority": ["DIGEMID/MINSA (medical devices)", "SUNAFIL/Ministry of Labour (workplace)", "INACAL (standards)"],
+      "certification": "DIGEMID Sanitary Registration; INACAL certification or equivalent"
+    },
+    "language_requirements": "Spanish",
+    "local_representative_required": "Peru-based Responsible Party required"
   }
 ]
