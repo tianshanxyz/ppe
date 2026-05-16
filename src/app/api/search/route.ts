@@ -103,14 +103,14 @@ export async function GET(request: NextRequest) {
       const user = getCurrentUser(request)
       const role = detectUserRole(user)
       const userId = user?.id || getGuestId(request)
-      const permCheck = checkSearchPermission(userId, role)
+      const permCheck = await checkSearchPermission(userId, role)
       if (!permCheck.allowed) {
         return NextResponse.json(
           { error: permCheck.reason, quota: permCheck.quota },
           { status: 429 }
         )
       }
-      const quotaResult = incrementQuota(userId, role, 'searches')
+      const quotaResult = await incrementQuota(userId, role, 'searches')
 
       const supabase = await createClient()
 

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { readDataFile, writeDataFile, generateId, generateToken } from '@/lib/data-store';
-import type { UserRecord } from '@/lib/data-store';
+import { createServiceClient } from '@/lib/supabase/service-client';
+import { generateId, generateToken } from '@/lib/data-store';
 
 async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12);
@@ -10,7 +10,7 @@ async function hashPassword(password: string): Promise<string> {
 export async function POST(request: NextRequest) {
   try {
     const { email, password, name, company } = await request.json();
-    
+
     if (!email || !password || !name) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
@@ -25,30 +25,55 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
-    const users = readDataFile<UserRecord>('users.json');
-    if (users.find((u) => u.email.toLowerCase() === email.toLowerCase())) {
+    const supabase = createServiceClient();
+
+    // Check if email already exists
+    const { data: existing } = await supabase
+      .from('mdlooker_users')
+      .select('id')
+      .eq('email', email.toLowerCase().trim())
+      .maybeSingle();
+
+    if (existing) {
       return NextResponse.json({ error: 'Email already registered' }, { status: 409 });
     }
-    
+
     const hashedPassword = await hashPassword(password);
-    const newUser: UserRecord = {
-      id: generateId('user'),
+    const userId = generateId('user');
+
+    const newUser = {
+      id: userId,
       email: email.toLowerCase().trim(),
-      passwordHash: hashedPassword,
+      password_hash: hashedPassword,
       name: name.trim().substring(0, 100),
       company: (company || '').trim().substring(0, 200),
       role: 'user',
       membership: 'free',
+    };
+
+    const { error: insertError } = await supabase
+      .from('mdlooker_users')
+      .insert(newUser);
+
+    if (insertError) {
+      console.error('Register insert error:', insertError);
+      return NextResponse.json({ error: 'Registration failed' }, { status: 500 });
+    }
+
+    const userWithoutPassword = {
+      id: userId,
+      email: newUser.email,
+      name: newUser.name,
+      company: newUser.company,
+      role: newUser.role,
+      membership: newUser.membership,
       createdAt: new Date().toISOString(),
     };
-    
-    users.push(newUser);
-    writeDataFile('users.json', users);
-    
-    const { passwordHash, ...userWithoutPassword } = newUser;
-    const token = generateToken(newUser);
+
+    const token = generateToken(userWithoutPassword as any);
     return NextResponse.json({ user: userWithoutPassword, token }, { status: 201 });
   } catch (error) {
+    console.error('Register error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import {
   getCurrentUser, detectUserRole, getRolePermissions,
-  getQuota, getGuestId, setGuestIdCookie,
-} from '@/lib/permissions-server'
-import {
-  checkSearchPermission, checkDownloadPermission, checkTrackerPermission,
+  getQuota, checkSearchPermission, checkDownloadPermission,
+  checkTrackerPermission, getGuestId, setGuestIdCookie,
 } from '@/lib/permissions-server'
 import type { UserRole } from '@/lib/permissions-server'
 
@@ -19,9 +17,9 @@ export async function GET(request: NextRequest) {
 
   if (action === 'status') {
     const permissions = getRolePermissions(role)
-    const searchQuota = getQuota(userId, role, 'searches')
-    const downloadQuota = getQuota(userId, role, 'downloads')
-    const trackerQuota = getQuota(userId, role, 'trackerProducts')
+    const searchQuota = await getQuota(userId, role, 'searches')
+    const downloadQuota = await getQuota(userId, role, 'downloads')
+    const trackerQuota = await getQuota(userId, role, 'trackerProducts')
 
     const response = NextResponse.json({
       role,
@@ -42,44 +40,27 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    // Set guest cookie for tracking
     if (role === 'guest') {
       const cookie = setGuestIdCookie(userId)
-      response.cookies.set(cookie.name, cookie.value, {
-        path: '/',
-        maxAge: cookie.maxAge,
-        sameSite: 'lax',
-      })
+      response.cookies.set(cookie.name, cookie.value, { path: '/', maxAge: cookie.maxAge, sameSite: 'lax' })
     }
 
     return response
   }
 
-  // Check specific permission
   if (action === 'check') {
     let result
     switch (type) {
-      case 'search':
-        result = checkSearchPermission(userId, role)
-        break
-      case 'download':
-        result = checkDownloadPermission(userId, role)
-        break
-      case 'tracker':
-        result = checkTrackerPermission(userId, role)
-        break
-      default:
-        return NextResponse.json({ error: 'Invalid type' }, { status: 400 })
+      case 'search': result = await checkSearchPermission(userId, role); break
+      case 'download': result = await checkDownloadPermission(userId, role); break
+      case 'tracker': result = await checkTrackerPermission(userId, role); break
+      default: return NextResponse.json({ error: 'Invalid type' }, { status: 400 })
     }
 
     const response = NextResponse.json(result)
     if (role === 'guest') {
       const cookie = setGuestIdCookie(userId)
-      response.cookies.set(cookie.name, cookie.value, {
-        path: '/',
-        maxAge: cookie.maxAge,
-        sameSite: 'lax',
-      })
+      response.cookies.set(cookie.name, cookie.value, { path: '/', maxAge: cookie.maxAge, sameSite: 'lax' })
     }
     return response
   }

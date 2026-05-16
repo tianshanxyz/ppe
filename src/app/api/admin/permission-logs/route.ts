@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { readDataFile } from '@/lib/data-store'
+import { createServiceClient } from '@/lib/supabase/service-client'
 import { getCurrentUser } from '@/lib/permissions-server'
 import { isAdmin } from '@/lib/data-store'
-import type { PermissionLogEntry } from '@/lib/permissions-server'
 
 export async function GET(request: NextRequest) {
   const user = getCurrentUser(request)
@@ -15,13 +14,17 @@ export async function GET(request: NextRequest) {
   const action = searchParams.get('action')
   const limit = Math.min(parseInt(searchParams.get('limit') || '100'), 1000)
 
-  let logs = readDataFile<PermissionLogEntry>('permission_log.json')
+  const supabase = createServiceClient()
+  let query = supabase.from('mdlooker_permission_log').select('*').order('created_at', { ascending: false }).limit(limit)
 
-  if (userId) logs = logs.filter(l => l.userId === userId)
-  if (action) logs = logs.filter(l => l.action === action)
+  if (userId) query = query.eq('user_id', userId)
+  if (action) query = query.eq('action', action)
 
-  logs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-  logs = logs.slice(0, limit)
+  const { data: logs, error } = await query
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
 
   return NextResponse.json({ logs })
 }

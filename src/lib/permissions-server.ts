@@ -1,4 +1,5 @@
-import { readDataFile, writeDataFile, generateId, getCurrentUser } from './data-store'
+import { createServiceClient } from './supabase/service-client'
+import { generateId, getCurrentUser } from './data-store'
 import type { UserRecord } from './data-store'
 
 // ---- Types ----
@@ -21,28 +22,6 @@ export interface RolePermissions {
   reports: boolean
 }
 
-export interface QuotaRecord {
-  userId: string
-  userRole: UserRole
-  metric: 'searches' | 'downloads' | 'trackerProducts'
-  count: number
-  lastReset: string
-  expiresAt: string
-}
-
-export interface PermissionLogEntry {
-  id: string
-  userId: string
-  userRole: UserRole
-  action: 'search' | 'download' | 'tracker_add' | 'tracker_remove' | 'quota_exceeded' | 'quota_reset' | 'role_change'
-  resource: string
-  allowed: boolean
-  reason: string
-  quotaBefore?: number
-  quotaAfter?: number
-  createdAt: string
-}
-
 export interface PermissionCheckResult {
   allowed: boolean
   reason: string
@@ -52,7 +31,31 @@ export interface PermissionCheckResult {
 // ---- Re-export getCurrentUser ----
 export { getCurrentUser }
 
-// ---- Helper Functions (no fs dependency) ----
+// ---- Permission Config (hardcoded for server-side) ----
+
+const PERMISSIONS: Record<UserRole, RolePermissions> = {
+  guest: { role: 'guest', searches: { limit: 3, period: 'daily' }, downloads: { limit: 0, period: 'daily' }, trackerProducts: { limit: 0, period: 'permanent' }, apiAccess: false, aiSearch: false, complianceTracker: false, favorites: false, reports: false },
+  user: { role: 'user', searches: { limit: 999, period: 'monthly' }, downloads: { limit: 999, period: 'monthly' }, trackerProducts: { limit: 5, period: 'permanent' }, apiAccess: false, aiSearch: true, complianceTracker: true, favorites: true, reports: true },
+  vip: { role: 'vip', searches: { limit: -1, period: 'monthly' }, downloads: { limit: -1, period: 'monthly' }, trackerProducts: { limit: -1, period: 'permanent' }, apiAccess: true, aiSearch: true, complianceTracker: true, favorites: true, reports: true },
+  editor: { role: 'editor', searches: { limit: -1, period: 'monthly' }, downloads: { limit: -1, period: 'monthly' }, trackerProducts: { limit: -1, period: 'permanent' }, apiAccess: true, aiSearch: true, complianceTracker: true, favorites: true, reports: true },
+  admin: { role: 'admin', searches: { limit: -1, period: 'monthly' }, downloads: { limit: -1, period: 'monthly' }, trackerProducts: { limit: -1, period: 'permanent' }, apiAccess: true, aiSearch: true, complianceTracker: true, favorites: true, reports: true },
+}
+
+export function getRolePermissions(role: UserRole): RolePermissions {
+  return PERMISSIONS[role] || PERMISSIONS.guest
+}
+
+// ---- User Identity Detection ----
+
+export function detectUserRole(user: UserRecord | null): UserRole {
+  if (!user) return 'guest'
+  if (user.role === 'admin') return 'admin'
+  if (user.role === 'editor') return 'editor'
+  if (user.role === 'vip' || user.membership === 'enterprise') return 'vip'
+  return 'user'
+}
+
+// ---- Period Helpers ----
 
 function getDayKey(): string {
   return new Date().toISOString().split('T')[0]
@@ -71,48 +74,39 @@ function getPeriodKey(period: 'daily' | 'monthly' | 'permanent'): string {
   }
 }
 
-// ---- Permission Config ----
+// ---- Quota Management (Supabase) ----
 
-function getPermissionsConfig(): RolePermissions[] {
-  return readDataFile<RolePermissions>('permissions.json')
-}
-
-export function getRolePermissions(role: UserRole): RolePermissions {
-  const configs = getPermissionsConfig()
-  return configs.find(c => c.role === role) || configs.find(c => c.role === 'guest')!
-}
-
-// ---- User Identity Detection ----
-
-export function detectUserRole(user: UserRecord | null): UserRole {
-  if (!user) return 'guest'
-  if (user.role === 'admin') return 'admin'
-  if (user.role === 'editor') return 'editor'
-  if (user.role === 'vip' || user.membership === 'enterprise') return 'vip'
-  return 'user'
-}
-
-// ---- Quota Management ----
-
-export function getQuota(userId: string, role: UserRole, metric: 'searches' | 'downloads' | 'trackerProducts'): { used: number; limit: number; remaining: number; period: string } {
+export async function getQuota(userId: string, role: UserRole, metric: 'searches' | 'downloads' | 'trackerProducts'): Promise<{ used: number; limit: number; remaining: number; period: string }> {
   const permissions = getRolePermissions(role)
   const limit = permissions[metric].limit
   const period = permissions[metric].period
 
   if (limit === -1) return { used: 0, limit: -1, remaining: Infinity, period: 'unlimited' }
 
-  const quotas = readDataFile<QuotaRecord>('quotas.json')
+  const supabase = createServiceClient()
+  const { data } = await supabase
+    .from('mdlooker_quotas')
+    .select('count, last_reset')
+    .eq('user_id', userId)
+    .eq('metric', metric)
+    .maybeSingle()
+
   const periodKey = getPeriodKey(period)
-  let quota = quotas.find(q => q.userId === userId && q.metric === metric)
-  if (quota && quota.lastReset !== periodKey) {
-    quota.count = 0
-    quota.lastReset = periodKey
+
+  if (data && data.last_reset !== periodKey) {
+    await supabase
+      .from('mdlooker_quotas')
+      .update({ count: 0, last_reset: periodKey })
+      .eq('user_id', userId)
+      .eq('metric', metric)
+    return { used: 0, limit, remaining: limit, period }
   }
-  const used = quota?.count || 0
+
+  const used = data?.count || 0
   return { used, limit, remaining: Math.max(0, limit - used), period }
 }
 
-export function incrementQuota(userId: string, role: UserRole, metric: 'searches' | 'downloads' | 'trackerProducts'): { allowed: boolean; used: number; limit: number; remaining: number } {
+export async function incrementQuota(userId: string, role: UserRole, metric: 'searches' | 'downloads' | 'trackerProducts'): Promise<{ allowed: boolean; used: number; limit: number; remaining: number }> {
   const permissions = getRolePermissions(role)
   const limit = permissions[metric].limit
   const period = permissions[metric].period
@@ -120,83 +114,111 @@ export function incrementQuota(userId: string, role: UserRole, metric: 'searches
 
   if (limit === -1) return { allowed: true, used: 0, limit: -1, remaining: Infinity }
 
-  const quotas = readDataFile<QuotaRecord>('quotas.json')
-  let quota = quotas.find(q => q.userId === userId && q.metric === metric)
+  const supabase = createServiceClient()
 
-  if (quota && quota.lastReset !== periodKey) {
-    quota.count = 0
-    quota.lastReset = periodKey
-    logPermission(userId, role, 'quota_reset', metric, true, `Period reset to ${periodKey}`)
+  // Get current quota
+  const { data: existing } = await supabase
+    .from('mdlooker_quotas')
+    .select('count, last_reset')
+    .eq('user_id', userId)
+    .eq('metric', metric)
+    .maybeSingle()
+
+  // Reset if period changed
+  if (existing && existing.last_reset !== periodKey) {
+    await supabase
+      .from('mdlooker_quotas')
+      .update({ count: 0, last_reset: periodKey })
+      .eq('user_id', userId)
+      .eq('metric', metric)
   }
 
-  if (!quota) {
-    quota = { userId, userRole: role, metric, count: 0, lastReset: periodKey, expiresAt: new Date(Date.now() + 365 * 24 * 3600000).toISOString() }
-    quotas.push(quota)
+  const currentCount = (existing && existing.last_reset === periodKey) ? existing.count : 0
+
+  if (currentCount >= limit) {
+    await logPermission(userId, role, 'quota_exceeded', metric, false, `${metric} exceeded: ${currentCount}/${limit}`)
+    return { allowed: false, used: currentCount, limit, remaining: 0 }
   }
 
-  const quotaBefore = quota.count
-  if (quota.count >= limit) {
-    logPermission(userId, role, 'quota_exceeded', metric, false, `${metric} exceeded: ${quota.count}/${limit}`)
-    writeDataFile('quotas.json', quotas)
-    return { allowed: false, used: quota.count, limit, remaining: 0 }
+  // Upsert the new count
+  if (existing) {
+    await supabase
+      .from('mdlooker_quotas')
+      .update({ count: currentCount + 1, last_reset: periodKey })
+      .eq('user_id', userId)
+      .eq('metric', metric)
+  } else {
+    await supabase
+      .from('mdlooker_quotas')
+      .insert({
+        user_id: userId,
+        user_role: role,
+        metric,
+        count: 1,
+        last_reset: periodKey,
+      })
   }
 
-  quota.count += 1
-  writeDataFile('quotas.json', quotas)
-  logPermission(userId, role, metric as any, metric, true, `${metric}: ${quota.count}/${limit}`, quotaBefore, quota.count)
-  return { allowed: true, used: quota.count, limit, remaining: Math.max(0, limit - quota.count) }
+  await logPermission(userId, role, metric as any, metric, true, `${metric}: ${currentCount + 1}/${limit}`, currentCount, currentCount + 1)
+  return { allowed: true, used: currentCount + 1, limit, remaining: Math.max(0, limit - currentCount - 1) }
 }
 
-export function resetQuota(userId: string, metric: 'searches' | 'downloads' | 'trackerProducts'): void {
-  const quotas = readDataFile<QuotaRecord>('quotas.json')
-  const quota = quotas.find(q => q.userId === userId && q.metric === metric)
-  if (quota) {
-    quota.count = 0
-    quota.lastReset = getPeriodKey(getRolePermissions(quota.userRole)[metric].period)
-    writeDataFile('quotas.json', quotas)
-  }
+export async function resetQuota(userId: string, metric: 'searches' | 'downloads' | 'trackerProducts'): Promise<void> {
+  const supabase = createServiceClient()
+  await supabase
+    .from('mdlooker_quotas')
+    .update({ count: 0 })
+    .eq('user_id', userId)
+    .eq('metric', metric)
 }
 
 // ---- Permission Checks ----
 
-export function checkSearchPermission(userId: string, role: UserRole): PermissionCheckResult {
+export async function checkSearchPermission(userId: string, role: UserRole): Promise<PermissionCheckResult> {
   const permissions = getRolePermissions(role)
   const limit = permissions.searches.limit
   if (limit === -1) return { allowed: true, reason: 'Unlimited', quota: { used: 0, limit: -1, remaining: Infinity, period: 'unlimited' } }
-  const quota = getQuota(userId, role, 'searches')
+  const quota = await getQuota(userId, role, 'searches')
   if (quota.remaining <= 0) {
-    return { allowed: false, reason: role === 'guest' ? 'Guest daily limit reached' : 'Monthly limit reached', quota: { ...quota, remaining: 0 } }
+    return { allowed: false, reason: role === 'guest' ? 'Guest daily search limit (3) reached. Please register for more searches.' : 'Monthly search limit reached. Please upgrade to VIP for unlimited searches.', quota: { ...quota, remaining: 0 } }
   }
   return { allowed: true, reason: 'OK', quota }
 }
 
-export function checkDownloadPermission(userId: string, role: UserRole): PermissionCheckResult {
+export async function checkDownloadPermission(userId: string, role: UserRole): Promise<PermissionCheckResult> {
   const permissions = getRolePermissions(role)
   const limit = permissions.downloads.limit
   if (limit === -1) return { allowed: true, reason: 'Unlimited', quota: { used: 0, limit: -1, remaining: Infinity, period: 'unlimited' } }
-  if (limit === 0) return { allowed: false, reason: 'Registration required', quota: { used: 0, limit: 0, remaining: 0, period: 'none' } }
-  const quota = getQuota(userId, role, 'downloads')
-  if (quota.remaining <= 0) return { allowed: false, reason: 'Monthly limit reached', quota: { ...quota, remaining: 0 } }
+  if (limit === 0) return { allowed: false, reason: 'Downloads require registration. Please sign up for a free account.', quota: { used: 0, limit: 0, remaining: 0, period: 'none' } }
+  const quota = await getQuota(userId, role, 'downloads')
+  if (quota.remaining <= 0) return { allowed: false, reason: 'Monthly download limit reached. Please upgrade to VIP for unlimited downloads.', quota: { ...quota, remaining: 0 } }
   return { allowed: true, reason: 'OK', quota }
 }
 
-export function checkTrackerPermission(userId: string, role: UserRole): PermissionCheckResult {
+export async function checkTrackerPermission(userId: string, role: UserRole): Promise<PermissionCheckResult> {
   const permissions = getRolePermissions(role)
   const limit = permissions.trackerProducts.limit
   if (limit === -1) return { allowed: true, reason: 'Unlimited', quota: { used: 0, limit: -1, remaining: Infinity, period: 'unlimited' } }
-  if (limit === 0) return { allowed: false, reason: 'Registration required', quota: { used: 0, limit: 0, remaining: 0, period: 'none' } }
-  const quota = getQuota(userId, role, 'trackerProducts')
-  if (quota.remaining <= 0) return { allowed: false, reason: `Limited to ${limit} products`, quota: { ...quota, remaining: 0 } }
+  if (limit === 0) return { allowed: false, reason: 'Tracker requires registration. Please sign up for a free account.', quota: { used: 0, limit: 0, remaining: 0, period: 'none' } }
+  const quota = await getQuota(userId, role, 'trackerProducts')
+  if (quota.remaining <= 0) return { allowed: false, reason: `Tracker limited to ${limit} products. Please upgrade to VIP for unlimited tracking.`, quota: { ...quota, remaining: 0 } }
   return { allowed: true, reason: 'OK', quota }
 }
 
-// ---- Permission Audit Log ----
+// ---- Permission Audit Log (Supabase) ----
 
-function logPermission(userId: string, userRole: UserRole, action: PermissionLogEntry['action'], resource: string, allowed: boolean, reason: string, quotaBefore?: number, quotaAfter?: number): void {
-  const logs = readDataFile<PermissionLogEntry>('permission_log.json')
-  logs.push({ id: generateId('plog'), userId, userRole, action, resource, allowed, reason, quotaBefore, quotaAfter, createdAt: new Date().toISOString() })
-  if (logs.length > 10000) logs.splice(0, logs.length - 10000)
-  writeDataFile('permission_log.json', logs)
+async function logPermission(userId: string, userRole: UserRole, action: string, resource: string, allowed: boolean, reason: string, quotaBefore?: number, quotaAfter?: number): Promise<void> {
+  const supabase = createServiceClient()
+  await supabase.from('mdlooker_permission_log').insert({
+    user_id: userId,
+    user_role: userRole,
+    action,
+    resource,
+    allowed,
+    reason,
+    quota_before: quotaBefore,
+    quota_after: quotaAfter,
+  })
 }
 
 // ---- Guest Helpers ----

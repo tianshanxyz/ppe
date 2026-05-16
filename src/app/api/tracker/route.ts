@@ -3,14 +3,13 @@ import {
   getCurrentUser, detectUserRole, checkTrackerPermission,
   incrementQuota, getGuestId, resetQuota
 } from '@/lib/permissions-server'
-import { readDataFile, writeDataFile } from '@/lib/data-store'
 
 export async function POST(request: NextRequest) {
   const user = getCurrentUser(request)
   const role = detectUserRole(user)
   const userId = user?.id || getGuestId(request)
 
-  const permCheck = checkTrackerPermission(userId, role)
+  const permCheck = await checkTrackerPermission(userId, role)
   if (!permCheck.allowed) {
     return NextResponse.json({
       allowed: false,
@@ -30,7 +29,7 @@ export async function POST(request: NextRequest) {
       if (!productId) {
         return NextResponse.json({ error: 'Product ID required' }, { status: 400 })
       }
-      const quotaResult = incrementQuota(userId, role, 'trackerProducts')
+      const quotaResult = await incrementQuota(userId, role, 'trackerProducts')
       if (!quotaResult.allowed) {
         return NextResponse.json({
           allowed: false,
@@ -50,7 +49,7 @@ export async function POST(request: NextRequest) {
       if (!productId) {
         return NextResponse.json({ error: 'Product ID required' }, { status: 400 })
       }
-      resetQuota(userId, 'trackerProducts')
+      await resetQuota(userId, 'trackerProducts')
       return NextResponse.json({ allowed: true, action: 'remove', productId })
     }
 
